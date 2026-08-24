@@ -3,23 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MUNSoc RNSIT | Registration</title>
-  <meta name="description" content="Register for the RNSIT Model United Nations conference. Select your committee and join the debate.">
+  <title>MUNSoc RNSIT | Committees & Registration</title>
+  <meta name="description" content="Explore committee agendas and register for the RNSIT Model United Nations conference.">
+  
+  <!-- Open Graph / Meta -->
+  <link rel="canonical" href="https://mun-rnsit.vercel.app/registration">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mun-rnsit.vercel.app/registration">
+  <meta property="og:title" content="MUNSoc RNSIT | Committees & Registration">
+  <meta property="og:description" content="Explore committee agendas and register for the RNSIT Model United Nations conference.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MUNSoc RNSIT | Committees & Registration">
+  <meta name="twitter:description" content="Explore committee agendas and register for the RNSIT Model United Nations conference.">
   
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- GSAP Core for 60-120fps Fluid Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
+  <link rel="apple-touch-icon" href="./assets/Logos/MUN_logo.png">
   
   <style>
-    /* Page Specific CSS Variables */
     :root {
       --bg-color: #FFF7EB;
       --text-primary: #000000;
       --accent-color: #6C0D2C;
+      --accent-hover: #520921;
+      --gold-accent: #E5A93C;
+      --gold-hover: #d49526;
       --font-sans: 'Outfit', sans-serif;
     }
 
@@ -35,34 +52,28 @@
       overscroll-behavior: auto !important;
     }
 
-    /* Top branding positioning */
-    .top-left-logo-container, .top-right-logo-container {
-      z-index: 10;
-    }
-
-    /* Main Content Wrapper */
     .registration-viewport {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      padding: 120px 20px 80px 20px;
+      padding: 120px 20px 90px 20px;
       box-sizing: border-box;
     }
 
     .registration-header {
       text-align: center;
-      margin-bottom: 40px;
-      max-width: 600px;
-      transform: translateX(-4px); /* Minor optical balance adjustment */
+      margin-bottom: 36px;
+      max-width: 680px;
+      transform: translateX(-4px);
     }
 
     .registration-title {
-      font-size: clamp(2.5rem, 6vw, 3.6rem);
+      font-size: clamp(2.5rem, 6vw, 3.8rem);
       font-weight: 800;
       color: var(--text-primary);
-      margin: 0 0 10px 0;
+      margin: 0 0 12px 0;
       letter-spacing: -0.03em;
       text-transform: uppercase;
       line-height: 1.05;
@@ -70,57 +81,547 @@
 
     .registration-subtitle {
       font-size: clamp(0.95rem, 2vw, 1.15rem);
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.65);
       margin: 0;
       font-weight: 400;
-      letter-spacing: -0.01em;
+      line-height: 1.5;
     }
 
-    /* Neobrutalist Form Card */
-    .registration-card {
-      background: var(--bg-color);
-      border: 3px solid var(--text-primary);
-      box-shadow: 8px 8px 0px var(--text-primary);
-      border-radius: 20px;
-      width: 520px;
+    /* Committees Grid Layout */
+    .committees-section {
+      width: 840px;
       max-width: 100%;
-      padding: 40px;
+      margin-bottom: 50px;
       box-sizing: border-box;
-      transition: box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .section-header-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .committees-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      margin: 0 0 6px 0;
+      letter-spacing: 0.05em;
+      border-bottom: 3px solid var(--text-primary);
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+
+    .committees-hint {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 6px;
+    }
+
+    .committees-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+    }
+
+    /* Interactive Committee Card */
+    .committee-card {
+      background: #000000;
+      border: 3px solid var(--text-primary);
+      border-radius: 20px;
+      padding: 24px 18px;
+      box-sizing: border-box;
+      text-align: center;
+      box-shadow: 4px 4px 0px var(--text-primary);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
       position: relative;
-      z-index: 5;
+      user-select: none;
+      min-height: 225px;
+      outline: none;
+    }
+
+    .committee-card:hover, .committee-card:focus-visible {
+      transform: translate(-4px, -4px);
+      box-shadow: 8px 8px 0px var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    .committee-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0px var(--text-primary);
+    }
+
+    .card-top-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo-wrapper {
+      height: 95px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .committee-logo {
+      max-height: 100%;
+      max-width: 100%;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+    }
+
+    .committee-card:hover .committee-logo {
+      transform: scale(1.08);
+    }
+
+    .committee-name {
+      color: #FFF7EB;
+      font-weight: 800;
+      font-size: 1.25rem;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .committee-fullname {
+      color: rgba(255, 247, 235, 0.65);
+      font-size: 0.8rem;
+      margin: 0 0 14px 0;
+      font-weight: 400;
+      line-height: 1.35;
+      max-width: 190px;
+    }
+
+    .card-badge-preview {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 247, 235, 0.1);
+      color: rgba(255, 247, 235, 0.85);
+      border: 1px solid rgba(255, 247, 235, 0.2);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .committee-card:hover .card-badge-preview {
+      background: var(--accent-color);
+      color: #FFF7EB;
+      border-color: var(--accent-color);
+    }
+
+    .card-badge-preview svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+    }
+
+    /* Direct Registration Banner */
+    .direct-reg-banner {
+      width: 840px;
+      max-width: 100%;
+      background: #000000;
+      border: 3px solid var(--text-primary);
+      border-radius: 20px;
+      box-shadow: 6px 6px 0px var(--text-primary);
+      padding: 26px 34px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .banner-text-wrap {
+      text-align: left;
+    }
+
+    .banner-title {
+      color: #FFF7EB;
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .banner-desc {
+      color: rgba(255, 247, 235, 0.7);
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .banner-btn {
+      background: var(--gold-accent);
+      color: #000000;
+      border: 2px solid #000000;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-family: var(--font-sans);
+      font-size: 0.96rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .banner-btn:hover {
+      background-color: var(--gold-hover);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #000000;
+    }
+
+    .banner-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    /* ================================================= */
+    /* ENLARGED FULL COMMITTEE PROFILE MODAL */
+    /* ================================================= */
+
+    .committee-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+    }
+
+    .committee-modal-backdrop.active {
+      display: flex !important;
+      pointer-events: auto !important;
+      opacity: 1;
+    }
+
+    .committee-modal-card {
+      background: #000000;
+      color: #FFFFFF;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      box-shadow: 10px 10px 0px var(--accent-color);
+      width: 630px;
+      max-width: 94vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px 36px 36px 36px;
+      box-sizing: border-box;
+      position: relative;
+      text-align: center;
+      outline: none;
+      will-change: transform, opacity, border-radius;
+    }
+
+    .committee-modal-card::-webkit-scrollbar {
+      width: 6px;
+    }
+    .committee-modal-card::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+    }
+
+    /* Close Button */
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #141416;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.2s ease,
+                  border-color 0.2s ease;
+      z-index: 10;
+    }
+
+    .modal-close-btn:hover {
+      background-color: var(--accent-color);
+      border-color: #FFFFFF;
+      transform: scale(1.08) rotate(90deg);
+    }
+
+    .modal-close-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Top Emblem */
+    .profile-emblem-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px auto;
+      width: 100%;
+      height: 105px;
+    }
+
+    .profile-emblem {
+      max-height: 100%;
+      max-width: 100%;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+    }
+
+    /* Header Labels */
+    .profile-kicker {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-accent);
+      margin: 0 0 6px 0;
+    }
+
+    .profile-title {
+      font-size: clamp(2.6rem, 6vw, 3.4rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .profile-subtitle {
+      font-size: 1.08rem;
+      color: #C0BAB0;
+      margin: 0 0 16px 0;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .profile-tagline {
+      font-size: 0.94rem;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.55;
+      max-width: 520px;
+      margin: 0 auto 20px auto;
+      font-weight: 400;
+    }
+
+    /* Agenda Box */
+    .profile-agenda-card {
+      background: #111113;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px 20px;
+      text-align: left;
+      max-width: 520px;
+      margin: 0 auto 24px auto;
+      box-sizing: border-box;
+    }
+
+    .agenda-card-kicker {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold-accent);
+      margin: 0 0 6px 0;
+    }
+
+    .agenda-card-title {
+      font-size: 0.94rem;
+      color: #FFFFFF;
+      font-weight: 500;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* Action Buttons Row */
+    .profile-actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .btn-register-action {
+      flex: 1.2;
+      background: var(--gold-accent);
+      color: #000000;
+      border: 2px solid #000000;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .btn-register-action:hover {
+      background-color: var(--gold-hover);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #000000;
+    }
+
+    .btn-register-action:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .btn-close-action {
+      flex: 1;
+      background: transparent;
+      color: #FFFFFF;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .btn-close-action:hover {
+      border-color: #FFFFFF;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ================================================= */
+    /* DELEGATE REGISTRATION MODAL FORM */
+    /* ================================================= */
+
+    .modal-registration-card {
+      background: var(--bg-color);
+      border: 3.5px solid var(--text-primary);
+      box-shadow: 10px 10px 0px var(--text-primary);
+      border-radius: 24px;
+      width: 660px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px 34px;
+      box-sizing: border-box;
+      position: relative;
+      outline: none;
+    }
+
+    .modal-registration-card::-webkit-scrollbar {
+      width: 6px;
+    }
+    .modal-registration-card::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 9999px;
+    }
+
+    .reg-form-header {
+      text-align: center;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .reg-form-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px 0;
+      color: var(--text-primary);
+    }
+
+    .reg-form-subtitle {
+      font-size: 0.9rem;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .form-label {
-      font-size: 0.95rem;
+      font-size: 0.82rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      color: var(--text-primary);
     }
 
     .form-input, .form-select {
       background: transparent;
       border: 2.5px solid var(--text-primary);
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 11px 14px;
       font-family: var(--font-sans);
-      font-size: 1rem;
-      font-weight: 400;
+      font-size: 0.95rem;
+      font-weight: 500;
       color: var(--text-primary);
       outline: none;
+      width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .form-input::placeholder {
-      color: rgba(0, 0, 0, 0.3);
+      color: rgba(0, 0, 0, 0.35);
     }
 
     .form-input:focus, .form-select:focus {
@@ -133,39 +634,44 @@
       appearance: none;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 16px center;
+      background-position: right 14px center;
       background-size: 16px;
-      padding-right: 48px;
+      padding-right: 42px;
     }
 
-    /* Custom Number Input spinner removal */
-    .form-input[type="number"]::-webkit-inner-spin-button,
-    .form-input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    .error-container {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-top: 4px;
+      display: none;
     }
 
-    /* Submit Button */
+    .form-input.has-error, .form-select.has-error {
+      border-color: var(--accent-color) !important;
+      background: rgba(108, 13, 44, 0.03);
+    }
+
     .submit-btn {
       width: 100%;
       background: var(--accent-color);
       color: var(--bg-color);
       border: 2.5px solid var(--text-primary);
       border-radius: 10px;
-      padding: 14px 20px;
+      padding: 13px 20px;
       font-family: var(--font-sans);
-      font-size: 1.1rem;
+      font-size: 1.02rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       cursor: pointer;
       box-shadow: 4px 4px 0px var(--text-primary);
       transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .submit-btn:hover {
-      background-color: #550a22; /* Slightly darker wine red */
+      background-color: var(--accent-hover);
     }
 
     .submit-btn:active {
@@ -173,20 +679,7 @@
       box-shadow: 2px 2px 0px var(--text-primary);
     }
 
-    /* Error Handling */
-    .error-container {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--accent-color);
-      margin-top: 6px;
-      display: none;
-    }
-
-    .form-input.has-error, .form-select.has-error {
-      border-color: var(--accent-color) !important;
-    }
-
-    /* Success Screen Overlay */
+    /* Success Screen */
     .success-overlay {
       position: absolute;
       top: 0;
@@ -194,12 +687,12 @@
       width: 100%;
       height: 100%;
       background-color: var(--bg-color);
-      border-radius: 17px;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px;
+      padding: 34px;
       box-sizing: border-box;
       text-align: center;
       opacity: 0;
@@ -207,7 +700,7 @@
       transform: scale(0.95);
       transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 10;
+      z-index: 20;
     }
 
     .success-overlay.show {
@@ -216,274 +709,368 @@
       transform: scale(1);
     }
 
-    .success-icon {
-      font-size: 4rem;
-      margin-bottom: 20px;
+    .success-icon-badge {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      color: #FFF7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border: 3px solid var(--text-primary);
+      box-shadow: 4px 4px 0px var(--text-primary);
+      margin-bottom: 16px;
     }
 
     .success-title {
-      font-size: 1.8rem;
+      font-size: 1.65rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: -0.02em;
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
     }
 
     .success-message {
-      font-size: 0.98rem;
-      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.92rem;
+      color: rgba(0, 0, 0, 0.65);
       line-height: 1.5;
-      margin: 0 0 24px 0;
-      max-width: 320px;
+      margin: 0 0 18px 0;
+      max-width: 330px;
+    }
+
+    .success-committee-badge {
+      display: inline-block;
+      background: #000000;
+      color: #FFF7EB;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
     }
 
     .success-close-btn {
-      background: transparent;
-      border: 2px solid var(--text-primary);
-      border-radius: 8px;
-      padding: 10px 20px;
+      background: var(--accent-color);
+      color: #FFF7EB;
+      border: 2.5px solid var(--text-primary);
+      border-radius: 10px;
+      padding: 11px 22px;
       font-family: var(--font-sans);
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: 2px 2px 0px var(--text-primary);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-    }
-
-    .success-close-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1px 1px 0px var(--text-primary);
-    }
-
-    /* Committees Section Grid styling */
-    .committees-section {
-      width: 760px;
-      max-width: 100%;
-      margin-bottom: 50px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    .committees-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent-color);
+      box-shadow: 3px 3px 0px var(--text-primary);
       text-transform: uppercase;
-      margin: 0 0 24px 0;
-      letter-spacing: 0.05em;
-      border-bottom: 3px solid var(--text-primary);
-      display: inline-block;
-      padding-bottom: 4px;
     }
 
-    .committees-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      width: 100%;
+    /* ================================================= */
+    /* COMPREHENSIVE RESPONSIVE DESIGN FOR ALL DEVICES */
+    /* ================================================= */
+
+    @media (max-width: 900px) {
+      .committees-section, .direct-reg-banner {
+        width: 100%;
+      }
+      .committees-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
     }
 
-    .committee-card {
-      background: #000000;
-      border: 3px solid var(--text-primary);
-      border-radius: 16px;
-      padding: 20px 16px;
-      box-sizing: border-box;
-      text-align: center;
-      box-shadow: 4px 4px 0px var(--text-primary);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: default;
-    }
-
-    .committee-card:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 7px 7px 0px var(--accent-color);
-    }
-
-    .logo-wrapper {
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      width: 100%;
-    }
-
-    .committee-logo {
-      max-height: 100%;
-      max-width: 100%;
-      transition: transform 0.2s ease;
-    }
-
-    .committee-card:hover .committee-logo {
-      transform: scale(1.06);
-    }
-
-    .committee-name {
-      color: #FFF7EB;
-      font-weight: 800;
-      font-size: 1.15rem;
-      margin: 0 0 4px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .committee-fullname {
-      color: rgba(255, 247, 235, 0.6);
-      font-size: 0.78rem;
-      margin: 0;
-      font-weight: 400;
-      line-height: 1.3;
-      max-width: 160px;
-    }
-
-    /* Mobile Responsive Tweaks (< 768px) */
     @media (max-width: 768px) {
+      .top-left-logo-container {
+        top: 12px;
+        left: 12px;
+      }
+      .top-right-logo-container {
+        top: 12px;
+        right: 12px;
+      }
+      .top-left-logo, .top-right-logo {
+        max-width: 38px;
+        max-height: 38px;
+      }
+
       .registration-viewport {
-        padding: 100px 16px 120px 16px;
+        padding: 75px 16px 130px 16px;
       }
       .registration-header {
-        margin-bottom: 25px;
+        margin-bottom: 24px;
+        transform: none;
+        max-width: 100%;
       }
-      .registration-card {
-        padding: 24px;
-        border-width: 2.5px;
-        box-shadow: 5px 5px 0px var(--text-primary);
+      .registration-title {
+        font-size: clamp(1.85rem, 6.5vw, 2.4rem);
+        letter-spacing: -0.02em;
       }
-      .form-group {
-        margin-bottom: 18px;
+      .registration-subtitle {
+        font-size: 0.88rem;
+        line-height: 1.45;
       }
-      .form-input, .form-select {
-        padding: 10px 14px;
-        border-width: 2px;
+      .committees-title {
+        font-size: 1.4rem;
       }
       .committees-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
+        gap: 12px;
       }
       .committee-card {
-        padding: 16px 12px;
-        border-width: 2.5px;
+        padding: 18px 12px;
+        border-width: 2px;
         box-shadow: 3px 3px 0px var(--text-primary);
-        border-radius: 12px;
+        min-height: 185px;
+        border-radius: 16px;
       }
       .logo-wrapper {
-        height: 80px;
-        margin-bottom: 10px;
+        height: 72px;
+        margin-bottom: 8px;
       }
       .committee-name {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
       .committee-fullname {
         font-size: 0.72rem;
+        line-height: 1.3;
+        margin-bottom: 8px;
+        max-width: 100%;
+      }
+      .direct-reg-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px 18px;
+        gap: 14px;
+      }
+      .banner-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Modal Cards on Tablet/Mobile */
+      .committee-modal-card {
+        width: calc(100vw - 28px);
+        max-width: 500px;
+        padding: 28px 18px 22px 18px;
+        border-radius: 22px;
+        box-shadow: 6px 6px 0px var(--accent-color);
+        max-height: 86vh;
+      }
+      .profile-emblem-wrap {
+        height: 78px;
+        margin-bottom: 10px;
+      }
+      .profile-title {
+        font-size: 2.2rem;
+      }
+      .profile-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+      .profile-tagline {
+        font-size: 0.86rem;
+        margin-bottom: 16px;
+      }
+      .profile-agenda-card {
+        padding: 12px 14px;
+        margin-bottom: 18px;
+      }
+      .profile-actions-row {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+      }
+      .btn-register-action, .btn-close-action {
+        width: 100%;
+        padding: 13px 16px;
+        font-size: 0.92rem;
+      }
+
+      /* Registration Form on Tablet/Mobile */
+      .modal-registration-card {
+        width: calc(100vw - 24px);
+        max-width: 520px;
+        padding: 26px 18px 26px 18px;
+        border-radius: 20px;
+        max-height: 87vh;
+        -webkit-overflow-scrolling: touch;
+      }
+      .reg-form-title {
+        font-size: 1.4rem;
+      }
+      .reg-form-subtitle {
+        font-size: 0.82rem;
+        margin-bottom: 14px;
+      }
+      .form-group {
+        margin-bottom: 12px;
+      }
+      .form-input, .form-select {
+        font-size: 16px !important;
+        padding: 10px 12px;
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 520px) {
+      .top-left-logo-container {
+        top: 10px;
+        left: 10px;
+      }
+      .top-right-logo-container {
+        top: 10px;
+        right: 10px;
+      }
+      .top-left-logo, .top-right-logo {
+        max-width: 32px;
+        max-height: 32px;
+      }
+      .registration-viewport {
+        padding: 68px 10px 120px 10px;
+      }
+      .registration-title {
+        font-size: 1.65rem;
+      }
+      .registration-subtitle {
+        font-size: 0.82rem;
+      }
       .committees-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
       }
       .committee-card {
         padding: 12px 8px;
         border-width: 2px;
         box-shadow: 2px 2px 0px var(--text-primary);
+        min-height: 165px;
+        border-radius: 12px;
       }
       .logo-wrapper {
-        height: 65px;
-        margin-bottom: 8px;
+        height: 56px;
+        margin-bottom: 6px;
       }
       .committee-name {
-        font-size: 0.9rem;
+        font-size: 0.98rem;
+        margin-bottom: 2px;
       }
       .committee-fullname {
-        display: none;
+        font-size: 0.68rem;
+        line-height: 1.2;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .card-badge-preview {
+        font-size: 0.62rem;
+        padding: 2.5px 6px;
+        gap: 2px;
+      }
+      .card-badge-preview svg {
+        width: 9px;
+        height: 9px;
+      }
+      .direct-reg-banner {
+        padding: 16px 14px;
+        border-radius: 14px;
+      }
+      .banner-title {
+        font-size: 1.1rem;
+      }
+      .banner-desc {
+        font-size: 0.8rem;
+      }
+
+      /* Modal Sizing on Small Phones */
+      .committee-modal-card {
+        width: calc(100vw - 16px);
+        padding: 22px 14px 18px 14px;
+        border-radius: 18px;
+        max-height: 88vh;
+        box-shadow: 4px 4px 0px var(--accent-color);
+      }
+      .modal-close-btn {
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+      }
+      .profile-emblem-wrap {
+        height: 64px;
+        margin-bottom: 8px;
+      }
+      .profile-kicker {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 2px;
+      }
+      .profile-title {
+        font-size: 1.95rem;
+        margin-bottom: 2px;
+      }
+      .profile-subtitle {
+        font-size: 0.86rem;
+        margin-bottom: 8px;
+      }
+      .profile-tagline {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+      .profile-agenda-card {
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+      .agenda-card-kicker {
+        font-size: 0.64rem;
+        margin-bottom: 3px;
+      }
+      .agenda-card-title {
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+      .btn-register-action, .btn-close-action {
+        font-size: 0.85rem;
+        padding: 11px 12px;
+      }
+
+      /* Registration Form on Small Phones */
+      .modal-registration-card {
+        width: calc(100vw - 12px);
+        padding: 22px 12px 22px 12px;
+        border-radius: 16px;
+        box-shadow: 4px 4px 0px var(--text-primary);
+        max-height: 89vh;
+      }
+      .reg-form-title {
+        font-size: 1.25rem;
+      }
+      .reg-form-subtitle {
+        font-size: 0.76rem;
+        margin-bottom: 10px;
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      .form-label {
+        font-size: 0.74rem;
+        margin-bottom: 3px;
+      }
+      .form-input, .form-select {
+        font-size: 16px !important;
+        padding: 9px 10px;
+        border-width: 2px;
+        border-radius: 7px;
+      }
+      .submit-btn {
+        font-size: 0.88rem;
+        padding: 12px 12px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Landscape Orientation Warning Overlay -->
-  <div class="orientation-warning">
-    <div class="warning-content">
-      <div class="phone-icon">📱</div>
-      <h2>Please Rotate Your Device</h2>
-      <p>This experience is optimized for portrait mode.</p>
-    </div>
-  </div>
-
-  <!-- Preloader Screen -->
-  <div id="preloader">
-    <p id="preloader-text">Hello</p>
-    <svg id="preloader-svg">
-      <path id="preloader-path" />
-    </svg>
-  </div>
-  <script>
-    // Synchronously hide preloader if visited before in session to prevent flashing
-    if (sessionStorage.getItem("hasVisited") === "true") {
-      document.getElementById("preloader").style.display = "none";
-    }
-  </script>
-
-  <script>
-    (function() {
-      // If already visited, remove the preloader element immediately on load and return
-      if (sessionStorage.getItem("hasVisited") === "true") {
-        document.addEventListener("DOMContentLoaded", () => {
-          const preloaderEl = document.getElementById("preloader");
-          if (preloaderEl) preloaderEl.remove();
-        });
-        return;
-      }
-
-      const words = ["Hello", "bonjour", "Ciao", "Olà", "やあ", "Hallå", "Guten tag", "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ"];
-      let index = 0;
-      
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      
-      const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width/2} ${height + 300} 0 ${height} L0 0`;
-      
-      document.addEventListener("DOMContentLoaded", () => {
-        const pathEl = document.getElementById("preloader-path");
-        const textEl = document.getElementById("preloader-text");
-        const preloaderEl = document.getElementById("preloader");
-        
-        if (pathEl) pathEl.setAttribute("d", initialPath);
-        
-        const cycleWords = () => {
-          if (index < words.length - 1) {
-            const timeout = index === 0 ? 1000 : 150;
-            setTimeout(() => {
-              index++;
-              if (textEl) textEl.textContent = words[index];
-              cycleWords();
-            }, timeout);
-          } else {
-            setTimeout(() => {
-              if (preloaderEl) preloaderEl.classList.add("exit");
-              
-              // Set the session flag when preloader begins exiting
-              sessionStorage.setItem("hasVisited", "true");
-              
-              setTimeout(() => {
-                if (preloaderEl) preloaderEl.remove();
-              }, 850); // Matches the 0.8s CSS fade transition
-            }, 100);
-          }
-        };
-        
-        cycleWords();
-      });
-    })();
-  </script>
-
-  <!-- Navigation Pill (Includes new Registration tab) -->
+  <!-- Navigation Pill -->
   <nav class="nav-pill">
     <a href="/" class="nav-item" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
@@ -491,30 +1078,6 @@
     <a href="/stay-connected" class="nav-item" id="nav-connected">Stay Connected</a>
     <a href="/team" class="nav-item" id="nav-team">Team</a>
   </nav>
-
-  <script>
-    (function() {
-      const nav = document.querySelector('.nav-pill');
-      const items = nav.querySelectorAll('.nav-item');
-      
-      // Prefetch page on hover to ensure instant load
-      items.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-          const href = item.getAttribute('href');
-          if (href && href !== window.location.pathname) {
-            const linkId = `prefetch-${href.replace(/\//g, '')}`;
-            if (!document.getElementById(linkId)) {
-              const link = document.createElement('link');
-              link.id = linkId;
-              link.rel = 'prefetch';
-              link.href = href;
-              document.head.appendChild(link);
-            }
-          }
-        });
-      });
-    })();
-  </script>
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
@@ -529,67 +1092,723 @@
   <!-- Main Content Viewport -->
   <main class="registration-viewport">
     <div class="registration-header">
-      <h1 class="registration-title">Delegate Registration</h1>
-      <p class="registration-subtitle">Join the debate. Select your preferred committee and register as a delegate.</p>
+      <h1 class="registration-title">Committees & Registration</h1>
+      <p class="registration-subtitle">Join the debate. Select your preferred committee below to explore its official agenda and register as a delegate.</p>
     </div>
 
     <!-- Committees Section -->
     <div class="committees-section">
-      <h2 class="committees-title">Committees</h2>
+      <div class="section-header-wrap">
+        <h2 class="committees-title">Committees</h2>
+        <span class="committees-hint">Click any card to expand profile</span>
+      </div>
+
       <div class="committees-grid">
-        <!-- UNSC -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/2.svg" alt="UNSC Logo" class="committee-logo">
+        <!-- 1. UNSC -->
+        <div class="committee-card" data-committee-id="unsc" role="button" tabindex="0" onclick="handleCardClick('unsc', this)" aria-haspopup="dialog" aria-label="UNSC United Nations Security Council Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/2.svg" alt="UNSC Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">UNSC</h3>
+            <p class="committee-fullname">United Nations Security Council</p>
           </div>
-          <h3 class="committee-name">UNSC</h3>
-          <p class="committee-fullname">United Nations Security Council</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-        <!-- AIPPM -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/5.svg" alt="AIPPM Logo" class="committee-logo">
+
+        <!-- 2. LOK SABHA -->
+        <div class="committee-card" data-committee-id="loksabha" role="button" tabindex="0" onclick="handleCardClick('loksabha', this)" aria-haspopup="dialog" aria-label="LOK SABHA House of the People Indian Parliament Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/5.svg" alt="Lok Sabha Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">LOK SABHA</h3>
+            <p class="committee-fullname">House of the People (Indian Parliament)</p>
           </div>
-          <h3 class="committee-name">AIPPM</h3>
-          <p class="committee-fullname">All India Political Parties Meet</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-        <!-- DISEC -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/4.svg" alt="DISEC Logo" class="committee-logo">
+
+        <!-- 3. DISEC -->
+        <div class="committee-card" data-committee-id="disec" role="button" tabindex="0" onclick="handleCardClick('disec', this)" aria-haspopup="dialog" aria-label="DISEC Disarmament & International Security Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/4.svg" alt="DISEC Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">DISEC</h3>
+            <p class="committee-fullname">Disarmament & International Security</p>
           </div>
-          <h3 class="committee-name">DISEC</h3>
-          <p class="committee-fullname">Disarmament & International Security</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-        <!-- UNHRC -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/3.svg" alt="UNHRC Logo" class="committee-logo">
+
+        <!-- 4. UNHRC -->
+        <div class="committee-card" data-committee-id="unhrc" role="button" tabindex="0" onclick="handleCardClick('unhrc', this)" aria-haspopup="dialog" aria-label="UNHRC United Nations Human Rights Council Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/3.svg" alt="UNHRC Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">UNHRC</h3>
+            <p class="committee-fullname">United Nations Human Rights Council</p>
           </div>
-          <h3 class="committee-name">UNHRC</h3>
-          <p class="committee-fullname">United Nations Human Rights Council</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-        <!-- UNODC -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/1.svg" alt="UNODC Logo" class="committee-logo">
+
+        <!-- 5. UNODC -->
+        <div class="committee-card" data-committee-id="unodc" role="button" tabindex="0" onclick="handleCardClick('unodc', this)" aria-haspopup="dialog" aria-label="UNODC United Nations Office on Drugs and Crime Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/1.svg" alt="UNODC Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">UNODC</h3>
+            <p class="committee-fullname">United Nations Office on Drugs and Crime</p>
           </div>
-          <h3 class="committee-name">UNODC</h3>
-          <p class="committee-fullname">United Nations Office on Drugs and Crime</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-        <!-- IP -->
-        <div class="committee-card">
-          <div class="logo-wrapper">
-            <img src="/RNSMUN_LOGO/6.svg" alt="IP Logo" class="committee-logo">
+
+        <!-- 6. IP -->
+        <div class="committee-card" data-committee-id="ip" role="button" tabindex="0" onclick="handleCardClick('ip', this)" aria-haspopup="dialog" aria-label="IP International Press Explore Details">
+          <div class="card-top-content">
+            <div class="logo-wrapper">
+              <img src="/RNSMUN_LOGO/6.svg" alt="IP Official Logo" class="committee-logo" width="80" height="80" loading="lazy" decoding="async">
+            </div>
+            <h3 class="committee-name">IP</h3>
+            <p class="committee-fullname">International Press</p>
           </div>
-          <h3 class="committee-name">IP</h3>
-          <p class="committee-fullname">International Press</p>
+          <span class="card-badge-preview">
+            Explore Details
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
       </div>
     </div>
 
+    <!-- Direct Registration Banner -->
+    <div class="direct-reg-banner">
+      <div class="banner-text-wrap">
+        <h3 class="banner-title">Ready to Represent Your Delegation?</h3>
+        <p class="banner-desc">Registrations are now open across all 6 councils. Secure your preferred committee allocation today.</p>
+      </div>
+      <button class="banner-btn" onclick="openRegistrationModal('unsc')">Register as Delegate</button>
+    </div>
   </main>
 
-  <script src="/register-sw.js"></script>
+  <!-- ================================================= -->
+  <!-- ENLARGED COMMITTEE PROFILE CARD VIEW (FLIP TARGET) -->
+  <!-- ================================================= -->
+  <div id="committee-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="committee-modal-card" class="committee-modal-card" tabindex="-1">
+      
+      <!-- Close Button -->
+      <button id="committee-modal-close" class="modal-close-btn" onclick="closeCommitteeModal()" aria-label="Close profile">✕</button>
+
+      <div id="committee-modal-content">
+        <!-- Center Emblem -->
+        <div class="profile-emblem-wrap">
+          <img id="modal-logo" src="/RNSMUN_LOGO/4.svg" alt="Committee Emblem" class="profile-emblem">
+        </div>
+
+        <!-- Header Labels -->
+        <p class="profile-kicker">COMMITTEE PROFILE</p>
+        <h2 id="modal-name" class="profile-title">DISEC</h2>
+        <p id="modal-fullname" class="profile-subtitle">Disarmament & International Security</p>
+        
+        <!-- Tagline Summary -->
+        <p id="modal-tagline" class="profile-tagline">
+          Tackle the world's most complex security challenges and negotiate practical paths toward disarmament and lasting peace.
+        </p>
+
+        <!-- Agenda Box -->
+        <div class="profile-agenda-card">
+          <p class="agenda-card-kicker">AGENDA</p>
+          <p id="modal-agenda-title" class="agenda-card-title">
+            Regulating the Militarisation of Outer Space and the Development of Anti-Satellite (ASAT) Weapons
+          </p>
+        </div>
+
+        <!-- Action Buttons Row -->
+        <div class="profile-actions-row">
+          <button id="modal-register-btn" class="btn-register-action" onclick="handleRegisterFromModal()">REGISTER AS A DELEGATE</button>
+          <button class="btn-close-action" onclick="closeCommitteeModal()">BACK TO COMMITTEES</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- EXTERNAL DELEGATE REGISTRATION MODAL FORM -->
+  <!-- ================================================= -->
+  <div id="registration-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="registration-modal-card" class="modal-registration-card" tabindex="-1">
+      <button id="reg-modal-close" class="modal-close-btn" style="background: #FFF7EB; color: #000; border-color: #000;" onclick="closeRegistrationModal()" aria-label="Close Registration Form">✕</button>
+
+      <div class="reg-form-header">
+        <h2 class="reg-form-title">External Delegate Registration</h2>
+        <p class="reg-form-subtitle">Complete the official application form below to secure your committee seat</p>
+      </div>
+
+      <form id="delegate-registration-form" novalidate onsubmit="handleRegistrationSubmit(event)">
+        
+        <!-- Personal Details Section -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name *</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="e.g. Aditi Sharma" required>
+            <div id="reg-name-error" class="error-container">Full Name is required</div>
+          </div>
+          <div class="form-group" style="flex: 0.6;">
+            <label class="form-label" for="reg-age">Age *</label>
+            <input type="number" id="reg-age" class="form-input" placeholder="e.g. 19" min="12" max="30" required>
+            <div id="reg-age-error" class="error-container">Valid age is required</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-institution">College / Institution Name *</label>
+            <input type="text" id="reg-institution" class="form-input" placeholder="e.g. RNS Institute of Technology" required>
+            <div id="reg-institution-error" class="error-container">Institution name is required</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-usn">USN / Roll No *</label>
+            <input type="text" id="reg-usn" class="form-input" placeholder="e.g. 1RN22CS001" required>
+            <div id="reg-usn-error" class="error-container">USN/Roll No is required</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-city">City *</label>
+            <input type="text" id="reg-city" class="form-input" placeholder="e.g. Bengaluru" required>
+            <div id="reg-city-error" class="error-container">City is required</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">WhatsApp Number *</label>
+            <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
+            <div id="reg-phone-error" class="error-container">WhatsApp number is required</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address *</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="aditi@example.com" required>
+            <div id="reg-email-error" class="error-container">Valid email is required</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-experience">MUN Experience as a Delegate *</label>
+            <select id="reg-experience" class="form-select" required>
+              <option value="fresher">First-time Delegate (Fresher)</option>
+              <option value="1-3">1 - 3 Conferences</option>
+              <option value="4-6">4 - 6 Conferences</option>
+              <option value="7+">7+ Conferences (Experienced)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Committee Preferences (Stacked Vertically) -->
+        <div class="form-group">
+          <label class="form-label" for="reg-committee-1">Committee Preference 1 *</label>
+          <select id="reg-committee-1" class="form-select" required>
+            <option value="unsc">UNSC — United Nations Security Council</option>
+            <option value="loksabha">Lok Sabha — House of the People</option>
+            <option value="disec">DISEC — Disarmament & Int'l Security</option>
+            <option value="unhrc">UNHRC — UN Human Rights Council</option>
+            <option value="unodc">UNODC — UN Office on Drugs & Crime</option>
+            <option value="ip">IP — International Press Corps</option>
+          </select>
+          <div id="reg-committee-1-error" class="error-container">Committee preference 1 is required</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-committee-2">Committee Preference 2 *</label>
+          <select id="reg-committee-2" class="form-select" required>
+            <option value="disec">DISEC — Disarmament & Int'l Security</option>
+            <option value="unsc">UNSC — United Nations Security Council</option>
+            <option value="loksabha">Lok Sabha — House of the People</option>
+            <option value="unhrc">UNHRC — UN Human Rights Council</option>
+            <option value="unodc">UNODC — UN Office on Drugs & Crime</option>
+            <option value="ip">IP — International Press Corps</option>
+          </select>
+          <div id="reg-committee-2-error" class="error-container">Committee preference 2 is required</div>
+        </div>
+
+        <!-- Portfolio Preferences -->
+        <div class="form-group">
+          <label class="form-label" for="reg-portfolio-1">Portfolio Preference 1 (as per Portfolio Matrix) *</label>
+          <input type="text" id="reg-portfolio-1" class="form-input" placeholder="e.g. United States / France / Home Minister" required>
+          <div id="reg-portfolio-1-error" class="error-container">Portfolio preference 1 is required</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-portfolio-2">Portfolio Preference 2 (as per Portfolio Matrix)</label>
+            <input type="text" id="reg-portfolio-2" class="form-input" placeholder="e.g. United Kingdom / Rahul Gandhi">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-portfolio-3">Portfolio Preference 3 (as per Portfolio Matrix)</label>
+            <input type="text" id="reg-portfolio-3" class="form-input" placeholder="e.g. Japan / Photojournalist">
+          </div>
+        </div>
+
+        <!-- Payment Scheme -->
+        <div class="form-group">
+          <label class="form-label" for="reg-payment-scheme">Payment Scheme *</label>
+          <select id="reg-payment-scheme" class="form-select" required>
+            <option value="standard-individual">Standard Individual Delegate Pass — ₹1,499</option>
+            <option value="early-bird">Early Bird Registration Pass — ₹1,299</option>
+            <option value="double-delegation">Double Delegation Pass (DISEC/UNHRC) — ₹2,499</option>
+            <option value="institutional-delegation">Institutional / College Delegation Scheme</option>
+            <option value="ip-journalist">International Press / Caricaturist Pass — ₹1,199</option>
+          </select>
+          <div id="reg-payment-scheme-error" class="error-container">Payment scheme is required</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="reg-submit-btn">Submit External Delegate Registration</button>
+      </form>
+
+      <!-- Success Screen Overlay -->
+      <div id="success-overlay" class="success-overlay">
+        <div class="success-icon-badge">✓</div>
+        <h3 class="success-title">Registration Submitted!</h3>
+        <p class="success-message">
+          Thank you for registering. Your external delegate application for <span id="success-committee-name" class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to your WhatsApp/email with payment verification and portfolio allotment.
+        </p>
+        <button id="success-close-btn" class="success-close-btn" onclick="handleSuccessDone()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline Self-Contained High-Performance Animation Script -->
+  <script>
+    const COMMITTEES = {
+      unsc: {
+        id: "unsc",
+        name: "UNSC",
+        fullName: "United Nations Security Council",
+        logo: "/RNSMUN_LOGO/2.svg",
+        tagline: "Navigate sovereign flashpoints, contested territorial control, and international recognition dynamics in civil warfare.",
+        agenda: "Addressing Parallel Governments and De Facto Authorities in Civil Wars: Sovereignty, Territorial Control and International Recognition"
+      },
+      loksabha: {
+        id: "loksabha",
+        name: "LOK SABHA",
+        fullName: "House of the People (Indian Parliament)",
+        logo: "/RNSMUN_LOGO/5.svg",
+        tagline: "Deliberate constitutional representation, parliamentary seat distribution, and inter-state fiscal equity in modern India.",
+        agenda: "Post Census Delimitation and Fiscal Redistribution: Addressing Regional Representation and Inter-State Fiscal Equity"
+      },
+      disec: {
+        id: "disec",
+        name: "DISEC",
+        fullName: "Disarmament & International Security",
+        logo: "/RNSMUN_LOGO/4.svg",
+        tagline: "Tackle the world's most complex security challenges and negotiate practical paths toward disarmament and lasting peace.",
+        agenda: "Regulating the Militarisation of Outer space and the Development of ANTI-SATELLITE (ASAT) Weapons"
+      },
+      unhrc: {
+        id: "unhrc",
+        name: "UNHRC",
+        fullName: "United Nations Human Rights Council",
+        logo: "/RNSMUN_LOGO/3.svg",
+        tagline: "Champion fundamental civil liberties, protect media freedom, and enforce the safety of journalists in conflict zones.",
+        agenda: "Safeguarding Freedom of Expression and the Safety of Journalists in Conflict and Post-Conflict Zone"
+      },
+      unodc: {
+        id: "unodc",
+        name: "UNODC",
+        fullName: "United Nations Office on Drugs and Crime",
+        logo: "/RNSMUN_LOGO/1.svg",
+        tagline: "Disrupt darknet contraband cartels, combat tech-enabled human exploitation, and freeze illicit cross-border money flows.",
+        agenda: "Combating technology - Facilitated Human Trafficking, Online Child Exploitation, and Illicit Financial Flows"
+      },
+      ip: {
+        id: "ip",
+        name: "IP",
+        fullName: "International Press",
+        logo: "/RNSMUN_LOGO/6.svg",
+        tagline: "Hold global councils accountable through unfiltered investigative reporting, live press briefings, and daily editorial journalism.",
+        agenda: "Unfiltered Investigative Journalism, Real-Time Crisis Coverage, Press Conferences, and Daily Newsletter Publications"
+      }
+    };
+
+    let activeCommitteeData = null;
+    let activeClickedCard = null;
+    let isCardAnimating = false;
+
+    // Handle Card Click - Ultra Smooth FLIP Expansion
+    function handleCardClick(committeeId, cardElement) {
+      if (isCardAnimating) return;
+      const data = COMMITTEES[committeeId];
+      if (!data) return;
+
+      activeCommitteeData = data;
+      activeClickedCard = cardElement;
+      isCardAnimating = true;
+
+      // 1. Populate Modal Content
+      document.getElementById('modal-logo').src = data.logo;
+      document.getElementById('modal-name').textContent = data.name;
+      document.getElementById('modal-fullname').textContent = data.fullName;
+      document.getElementById('modal-tagline').textContent = data.tagline;
+      document.getElementById('modal-agenda-title').textContent = data.agenda;
+
+      const backdrop = document.getElementById('committee-modal-backdrop');
+      const modalCard = document.getElementById('committee-modal-card');
+
+      // 2. Measure initial card bounding rect
+      const startRect = cardElement ? cardElement.getBoundingClientRect() : {
+        left: window.innerWidth / 2 - 100,
+        top: window.innerHeight / 2 - 100,
+        width: 200,
+        height: 200
+      };
+
+      // 3. Activate backdrop
+      backdrop.classList.add('active');
+      backdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      // 4. Measure target modal rect
+      if (window.gsap) {
+        gsap.set(modalCard, { clearProps: 'transform,x,y,scale,scaleX,scaleY,opacity' });
+      }
+
+      const endRect = modalCard.getBoundingClientRect();
+
+      // 5. Invert geometry calculation
+      const deltaX = startRect.left - endRect.left;
+      const deltaY = startRect.top - endRect.top;
+      const scaleX = endRect.width > 0 ? startRect.width / endRect.width : 1;
+      const scaleY = endRect.height > 0 ? startRect.height / endRect.height : 1;
+
+      if (window.gsap) {
+        // Set modal start position exactly over the clicked card
+        gsap.set(modalCard, {
+          x: deltaX,
+          y: deltaY,
+          scaleX: scaleX,
+          scaleY: scaleY,
+          transformOrigin: 'top left',
+          borderRadius: '20px',
+          boxShadow: '4px 4px 0px #000000',
+          opacity: 1
+        });
+
+        // Hide clicked card during morph
+        if (cardElement) {
+          gsap.set(cardElement, { opacity: 0 });
+        }
+
+        // Stagger inner items
+        const innerStagger = [
+          document.querySelector('.profile-emblem-wrap'),
+          document.querySelector('.profile-kicker'),
+          document.getElementById('modal-name'),
+          document.getElementById('modal-fullname'),
+          document.getElementById('modal-tagline'),
+          document.querySelector('.profile-agenda-card'),
+          document.querySelector('.profile-actions-row')
+        ].filter(Boolean);
+
+        gsap.set(innerStagger, { opacity: 0, y: 16 });
+
+        // Buttery smooth expansion animation
+        const tl = gsap.timeline({
+          onComplete: () => {
+            isCardAnimating = false;
+            modalCard.focus();
+          }
+        });
+
+        tl.to(modalCard, {
+          x: 0,
+          y: 0,
+          scaleX: 1,
+          scaleY: 1,
+          borderRadius: '28px',
+          boxShadow: '10px 10px 0px #6C0D2C',
+          duration: 0.52,
+          ease: 'power4.out'
+        }, 0);
+
+        tl.to(innerStagger, {
+          opacity: 1,
+          y: 0,
+          duration: 0.38,
+          stagger: 0.03,
+          ease: 'power3.out'
+        }, 0.1);
+      } else {
+        isCardAnimating = false;
+      }
+    }
+
+    // Close Modal - Ultra Smooth Reverse FLIP Collapse
+    function closeCommitteeModal(callback) {
+      if (isCardAnimating) {
+        if (typeof callback === 'function') callback();
+        return;
+      }
+
+      const backdrop = document.getElementById('committee-modal-backdrop');
+      const modalCard = document.getElementById('committee-modal-card');
+      const targetCard = activeClickedCard;
+
+      if (!backdrop || !modalCard) {
+        if (typeof callback === 'function') callback();
+        return;
+      }
+
+      isCardAnimating = true;
+
+      const currentCardRect = targetCard ? targetCard.getBoundingClientRect() : {
+        left: window.innerWidth / 2 - 100,
+        top: window.innerHeight / 2 - 100,
+        width: 200,
+        height: 200
+      };
+      const currentModalRect = modalCard.getBoundingClientRect();
+
+      const deltaX = currentCardRect.left - currentModalRect.left;
+      const deltaY = currentCardRect.top - currentModalRect.top;
+      const scaleX = currentModalRect.width > 0 ? currentCardRect.width / currentModalRect.width : 1;
+      const scaleY = currentModalRect.height > 0 ? currentCardRect.height / currentModalRect.height : 1;
+
+      if (window.gsap) {
+        const innerStagger = [
+          document.querySelector('.profile-emblem-wrap'),
+          document.querySelector('.profile-kicker'),
+          document.getElementById('modal-name'),
+          document.getElementById('modal-fullname'),
+          document.getElementById('modal-tagline'),
+          document.querySelector('.profile-agenda-card'),
+          document.querySelector('.profile-actions-row')
+        ].filter(Boolean);
+
+        const tl = gsap.timeline({
+          onComplete: () => {
+            backdrop.classList.remove('active');
+            backdrop.style.display = 'none';
+            document.body.style.overflow = '';
+
+            // Restore all cards to visible
+            document.querySelectorAll('.committee-card').forEach(c => {
+              gsap.set(c, { opacity: 1, clearProps: 'opacity' });
+              c.style.opacity = '1';
+            });
+
+            gsap.set(modalCard, { clearProps: 'all' });
+            activeCommitteeData = null;
+            activeClickedCard = null;
+            isCardAnimating = false;
+
+            if (targetCard) targetCard.focus();
+            if (typeof callback === 'function') callback();
+          }
+        });
+
+        tl.to(innerStagger, {
+          opacity: 0,
+          duration: 0.14,
+          ease: 'power2.in'
+        }, 0);
+
+        tl.to(modalCard, {
+          x: deltaX,
+          y: deltaY,
+          scaleX: scaleX,
+          scaleY: scaleY,
+          borderRadius: '20px',
+          boxShadow: '4px 4px 0px #000000',
+          duration: 0.42,
+          ease: 'power3.inOut'
+        }, 0.02);
+      } else {
+        backdrop.classList.remove('active');
+        backdrop.style.display = 'none';
+        document.body.style.overflow = '';
+        if (targetCard) targetCard.style.opacity = '1';
+        isCardAnimating = false;
+        if (typeof callback === 'function') callback();
+      }
+    }
+
+    // Register CTA inside Committee Modal
+    function handleRegisterFromModal() {
+      const commId = activeCommitteeData ? activeCommitteeData.id : 'unsc';
+      closeCommitteeModal(() => {
+        openRegistrationModal(commId);
+      });
+    }
+
+    // Open Registration Modal
+    function openRegistrationModal(preferredCommitteeId = 'unsc') {
+      const regBackdrop = document.getElementById('registration-modal-backdrop');
+      const regCard = document.getElementById('registration-modal-card');
+      const commSelect1 = document.getElementById('reg-committee-1');
+
+      if (commSelect1 && preferredCommitteeId) {
+        commSelect1.value = preferredCommitteeId.toLowerCase();
+      }
+
+      if (!regBackdrop || !regCard) return;
+
+      regBackdrop.classList.add('active');
+      regBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      if (window.gsap) {
+        gsap.fromTo(regCard,
+          { scale: 0.92, y: 30, opacity: 0 },
+          { scale: 1, y: 0, opacity: 1, duration: 0.45, ease: 'power4.out' }
+        );
+      }
+    }
+
+    // Close Registration Modal
+    function closeRegistrationModal() {
+      const regBackdrop = document.getElementById('registration-modal-backdrop');
+      const regCard = document.getElementById('registration-modal-card');
+      if (!regBackdrop || !regCard) return;
+
+      if (window.gsap) {
+        gsap.to(regCard, {
+          scale: 0.94,
+          y: 20,
+          opacity: 0,
+          duration: 0.28,
+          ease: 'power3.in',
+          onComplete: () => {
+            regBackdrop.classList.remove('active');
+            regBackdrop.style.display = 'none';
+            document.body.style.overflow = '';
+            gsap.set(regCard, { clearProps: 'all' });
+          }
+        });
+      } else {
+        regBackdrop.classList.remove('active');
+        regBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    // External Delegate Registration Form Submission
+    function handleRegistrationSubmit(e) {
+      e.preventDefault();
+
+      let hasError = false;
+      const fullName = document.getElementById('reg-name');
+      const age = document.getElementById('reg-age');
+      const institution = document.getElementById('reg-institution');
+      const usn = document.getElementById('reg-usn');
+      const city = document.getElementById('reg-city');
+      const email = document.getElementById('reg-email');
+      const phone = document.getElementById('reg-phone');
+      const experience = document.getElementById('reg-experience');
+      const committee1 = document.getElementById('reg-committee-1');
+      const committee2 = document.getElementById('reg-committee-2');
+      const portfolio1 = document.getElementById('reg-portfolio-1');
+      const paymentScheme = document.getElementById('reg-payment-scheme');
+
+      const requiredFields = [
+        fullName, age, institution, usn, city, email, phone, experience, committee1, committee2, portfolio1, paymentScheme
+      ];
+
+      requiredFields.forEach((input) => {
+        if (!input) return;
+        const errorEl = document.getElementById(`${input.id}-error`);
+        if (!input.value.trim()) {
+          input.classList.add('has-error');
+          if (errorEl) errorEl.style.display = 'block';
+          hasError = true;
+        } else {
+          input.classList.remove('has-error');
+          if (errorEl) errorEl.style.display = 'none';
+        }
+      });
+
+      if (email && email.value && !/^\S+@\S+\.\S+$/.test(email.value)) {
+        email.classList.add('has-error');
+        const errorEl = document.getElementById('reg-email-error');
+        if (errorEl) {
+          errorEl.textContent = 'Please enter a valid email address';
+          errorEl.style.display = 'block';
+        }
+        hasError = true;
+      }
+
+      if (age && (parseInt(age.value) < 10 || parseInt(age.value) > 40 || isNaN(parseInt(age.value)))) {
+        age.classList.add('has-error');
+        const errorEl = document.getElementById('reg-age-error');
+        if (errorEl) {
+          errorEl.textContent = 'Please enter a valid age (12-35)';
+          errorEl.style.display = 'block';
+        }
+        hasError = true;
+      }
+
+      if (hasError) {
+        const regCard = document.getElementById('registration-modal-card');
+        if (window.gsap && regCard) {
+          gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
+        }
+        return;
+      }
+
+      // Show Success Screen
+      const successOverlay = document.getElementById('success-overlay');
+      if (successOverlay) {
+        successOverlay.classList.add('show');
+        const selectedCommName = committee1 ? committee1.options[committee1.selectedIndex]?.text : 'Selected Committee';
+        const successMsg = document.getElementById('success-committee-name');
+        if (successMsg) successMsg.textContent = selectedCommName;
+      }
+    }
+
+    function handleSuccessDone() {
+      const successOverlay = document.getElementById('success-overlay');
+      if (successOverlay) successOverlay.classList.remove('show');
+      closeRegistrationModal();
+      const form = document.getElementById('delegate-registration-form');
+      if (form) form.reset();
+    }
+
+    // Keyboard and Backdrop Click Listeners
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const regBackdrop = document.getElementById('registration-modal-backdrop');
+        const commBackdrop = document.getElementById('committee-modal-backdrop');
+        if (regBackdrop && regBackdrop.classList.contains('active')) {
+          closeRegistrationModal();
+        } else if (commBackdrop && commBackdrop.classList.contains('active')) {
+          closeCommitteeModal();
+        }
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const commBackdrop = document.getElementById('committee-modal-backdrop');
+      const regBackdrop = document.getElementById('registration-modal-backdrop');
+      if (e.target === commBackdrop) {
+        closeCommitteeModal();
+      } else if (e.target === regBackdrop) {
+        closeRegistrationModal();
+      }
+    });
+  </script>
 </body>
 </html>

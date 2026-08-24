@@ -45,7 +45,8 @@ export default defineConfig({
       },
       webp: {
         quality: 75,
-      }
+      },
+      svg: false
     })
   ],
   server: {

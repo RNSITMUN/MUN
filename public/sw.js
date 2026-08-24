@@ -34,8 +34,15 @@ self.addEventListener('activate', (e) => {
 
 // Fetch Event - Stale-While-Revalidate Strategy
 self.addEventListener('fetch', (e) => {
-  // Only handle GET requests and ignore chrome-extension / third-party protocols
-  if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) {
+  // Ignore in localhost dev mode, non-GET requests, or third-party/vite internal requests
+  if (
+    self.location.hostname === 'localhost' ||
+    self.location.hostname === '127.0.0.1' ||
+    e.request.method !== 'GET' ||
+    !e.request.url.startsWith(self.location.origin) ||
+    e.request.url.includes('/@') ||
+    e.request.url.includes('node_modules')
+  ) {
     return;
   }
 
