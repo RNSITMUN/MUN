@@ -220,14 +220,48 @@ body {
 @media (max-width: 768px) {
   .nav-pill {
     top: auto;
-    bottom: calc(24px + env(safe-area-inset-bottom)); /* Adjust bottom safe margin to prevent home indicator overlap */
-    padding: 5px;
-    gap: 5px;
+    bottom: calc(18px + env(safe-area-inset-bottom)); /* Adjust bottom safe margin to prevent home indicator overlap */
+    padding: 3px 5px;
+    gap: 2px;
+    max-width: calc(100vw - 16px);
+    box-sizing: border-box;
   }
   .nav-item {
-    font-size: 0.86rem; /* Comfortable and highly readable mobile font size */
-    padding: 8px 14px;
-    height: 36px; /* Restored standard height for easy tapping */
+    font-size: clamp(0.70rem, 2.6vw, 0.80rem); /* Sleek compact mobile font */
+    padding: 5px clamp(6px, 1.8vw, 9px);
+    height: 30px;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Landscape Mode for Phones & Short Displays (< 560px height) */
+@media (max-height: 560px) and (orientation: landscape) {
+  .top-left-logo, .top-right-logo {
+    height: clamp(46px, 12vh, 62px);
+  }
+  .top-left-logo-container {
+    top: 12px;
+    left: 16px;
+  }
+  .top-right-logo-container {
+    top: 12px;
+    right: 16px;
+  }
+  .nav-pill {
+    top: 10px;
+    bottom: auto;
+    padding: 3px;
+    gap: 4px;
+    transform: translateX(-50%) scale(0.9);
+    transform-origin: top center;
+  }
+  .nav-item {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    height: 30px;
+  }
+  .globe-viewport {
+    padding-top: 24px;
   }
 }
 
@@ -248,65 +282,7 @@ body {
   background: rgba(0, 0, 0, 0.28);
 }
 
-/* Landscape Orientation Warning Overlay */
-.orientation-warning {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #FFF7EB; /* Warm cream background */
-  z-index: 99999; /* Sits on top of all layers */
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
-  box-sizing: border-box;
-}
 
-.warning-content {
-  max-width: 320px;
-  font-family: 'Outfit', sans-serif;
-  color: #000000;
-}
-
-.phone-icon {
-  font-size: 3.5rem;
-  margin-bottom: 16px;
-  animation: rotatePhone 2s ease-in-out infinite;
-  display: inline-block;
-}
-
-.warning-content h2 {
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-  color: #6C0D2C; /* Branded Wine Red */
-  letter-spacing: -0.02em;
-}
-
-.warning-content p {
-  font-size: 0.95rem;
-  color: rgba(0, 0, 0, 0.6);
-  line-height: 1.5;
-}
-
-@keyframes rotatePhone {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(-90deg);
-  }
-}
-
-/* Activate warning on small heights (landscape phones) */
-@media (max-height: 500px) and (orientation: landscape) {
-  .orientation-warning {
-    display: flex;
-  }
-}
 
 /* Tactile Touch Feedback (Active Tap Scaling) */
 .nav-item:active,
