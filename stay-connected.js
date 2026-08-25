@@ -21,12 +21,11 @@ if (canvas) {
     // TWEEN FACTORIES
     const resetPeep = ({ stage, peep }) => {
       const direction = Math.random() > 0.5 ? 1 : -1;
-      const isMobile = window.innerWidth < 768;
-      const offsetRange = isMobile ? 80 : 250;
-      const maxOffset = isMobile ? 30 : 100;
-      const offsetY = maxOffset - offsetRange * gsap.parseEase("power2.in")(Math.random());
-      const heightShift = isMobile ? 75 : 0; // Shift peeps 75px higher on mobile viewports
-      const startY = stage.height - peep.height + offsetY - heightShift;
+      // Stagger peeps organically within the bottom crowd zone
+      const maxSink = Math.round(peep.height * 0.18); // Feet bleed past bottom edge
+      const maxRise = Math.round(peep.height * 0.22); // Upper row stagger
+      const offsetY = maxSink - maxRise * gsap.parseEase("power2.in")(Math.random());
+      const startY = stage.height - peep.height + offsetY;
       let startX;
       let endX;
 
@@ -89,7 +88,11 @@ if (canvas) {
         image,
         rect: rect,
         get scaleFactor() {
-          return window.innerWidth < 768 ? 0.45 : 1.0;
+          const h = window.innerHeight || 800;
+          // Character height occupies ~52% of screen height at maximum
+          // Guarantees the top 48% (navbar, title, and email input) is completely clear of overlap!
+          const targetPeepHeight = Math.min(420, Math.max(160, h * 0.52));
+          return targetPeepHeight / rect[3];
         },
         get width() {
           return rect[2] * this.scaleFactor;
@@ -159,8 +162,8 @@ if (canvas) {
 
     const initCrowd = () => {
       const isMobile = window.innerWidth < 768;
-      // Cap maximum active walking crowd members to 32 on mobile and 85 on PC to prevent clutter
-      const maxActive = isMobile ? 32 : 85;
+      // Full active walking crowd members
+      const maxActive = isMobile ? 40 : 100;
 
       while (crowd.length < maxActive && availablePeeps.length) {
         addPeepToCrowd().walk.progress(Math.random());

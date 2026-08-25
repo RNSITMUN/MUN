@@ -45,27 +45,26 @@
     
     .connected-header {
       position: absolute;
-      top: 150px;
+      top: clamp(65px, 14vh, 140px);
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       text-align: center;
-      z-index: 10;
+      z-index: 50;
       pointer-events: none;
       font-family: 'Outfit', sans-serif;
     }
     
     .connected-title {
-      font-size: 3rem;
+      font-size: clamp(2rem, 4.2vw, 3.2rem);
       font-weight: 800;
       color: var(--text-primary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.03em;
       text-transform: uppercase;
     }
     
-    /* Pill-shaped Subscription Form */
-    /* Minimalist Single-Line Subscription Form matching skiper56 */
+    /* Minimalist Single-Line Subscription Form */
     .subscribe-form {
       display: flex;
       align-items: center;
@@ -74,11 +73,12 @@
       box-shadow: none;
       padding: 0;
       width: 440px;
-      max-width: 90%;
-      margin: 30px auto 0 auto;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      max-width: 88%;
+      margin: clamp(10px, 2.5vh, 26px) auto 0 auto;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.15);
       transition: border-color 0.3s ease;
       pointer-events: auto; /* Enable input interactions */
+      z-index: 60;
     }
 
     .subscribe-form:focus-within {
@@ -91,9 +91,9 @@
       min-width: 0;
       border: none;
       background: transparent;
-      padding: 12px 16px 12px 0;
+      padding: 8px 16px 8px 0;
       font-family: 'Outfit', sans-serif;
-      font-size: 1.8rem; /* Large minimalist typography */
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
       font-weight: 400;
       color: var(--text-primary);
       outline: none;
@@ -199,14 +199,7 @@
   </style>
 </head>
 <body>
-  <!-- Landscape Orientation Warning Overlay -->
-  <div class="orientation-warning">
-    <div class="warning-content">
-      <div class="phone-icon">📱</div>
-      <h2>Please Rotate Your Device</h2>
-      <p>This experience is optimized for portrait mode.</p>
-    </div>
-  </div>
+
 
   <!-- Navigation Pill -->
   <nav class="nav-pill">
