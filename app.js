@@ -60,7 +60,59 @@ const images = doubleGalleryData.map(item => ({
 
 const carouselRoot = document.getElementById("carousel-root");
 
-const isMobile = window.innerWidth <= 768;
+function getResponsiveDimensions() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isLandscape = w > h;
+  const isMobilePortrait = w <= 768 && !isLandscape;
+
+  let topClearance = 0;
+  let bottomClearance = 0;
+
+  if (isLandscape) {
+    // In landscape: navbar is fixed at top (~58px with padding)
+    topClearance = Math.min(75, Math.max(54, Math.floor(h * 0.16)));
+    bottomClearance = 15;
+  } else if (isMobilePortrait) {
+    // In portrait mobile: navbar is fixed at bottom (~75px)
+    topClearance = 20;
+    bottomClearance = 80;
+  } else {
+    // Desktop standard
+    topClearance = 80;
+    bottomClearance = 25;
+  }
+
+  // Available vertical window for the sphere
+  const availableH = h - topClearance - bottomClearance;
+  const availableW = w - 30;
+
+  // Center of the available visual window (avoids navbar collision)
+  const visualCenterY = topClearance + (availableH / 2);
+  const offsetY = Math.round(visualCenterY - (h / 2));
+
+  // The limiting viewport dimension
+  const limitingDim = Math.min(availableW, availableH);
+
+  // Maximum safe diameter occupying 93% of available window for a larger presence
+  const safeDiameter = Math.max(240, Math.min(520, Math.round(limitingDim * 0.93)));
+
+  // Proportional radius and tile dimensions derived from the enlarged safe diameter
+  const radius = Math.round((safeDiameter * 0.77) / 2);
+  const tileHeight = Math.round(safeDiameter * 0.27);
+  const tileWidth = Math.round(tileHeight * 0.8);
+  const distance = Math.max(390, Math.round(radius * 2.38));
+
+  return {
+    radius,
+    tileWidth,
+    tileHeight,
+    distance,
+    offsetY
+  };
+}
+
+const initialDims = getResponsiveDimensions();
 
 // Standard configuration matching the Framer default properties, with PC parameters for mobile too
 const config = {
@@ -70,10 +122,11 @@ const config = {
   axis: 'y',
   direction: 1,
   count: 55, // Full card count on mobile to form the dense globe
-  radius: isMobile ? 165 : 190, // 190 for PC, 165 for mobile
-  distance: 445, // Full PC depth perspective on mobile
-  tileWidth: isMobile ? 64 : 72, // 72 for PC, 64 for mobile
-  tileHeight: isMobile ? 80 : 90, // 90 for PC, 80 for mobile
+  radius: initialDims.radius,
+  distance: initialDims.distance,
+  tileWidth: initialDims.tileWidth,
+  tileHeight: initialDims.tileHeight,
+  offsetY: initialDims.offsetY,
   depthFade: 0.8,
   hideBack: false,
   tilt: 0,
@@ -89,7 +142,10 @@ const config = {
 // Initialize the 3D Sphere Orbit Carousel
 const carousel = createSphereOrbit(carouselRoot, config);
 
-// Handle Window Resize to keep things centered
+// Handle Window Resize and orientation change
 window.addEventListener("resize", () => {
+  const newDims = getResponsiveDimensions();
+  carousel.update(newDims);
   carousel.resize();
 });
+

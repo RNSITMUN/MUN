@@ -557,8 +557,8 @@ export function createSphereOrbit(root, userOptions = {}) {
 
   function layout() {
     if (tiles.length === 0 || pics.length === 0) return;
-    const cx = W / 2;
-    const cy = H / 2;
+    const cx = o.offsetX !== undefined ? W / 2 + o.offsetX : W / 2;
+    const cy = o.offsetY !== undefined ? H / 2 + o.offsetY : H / 2;
     
     const fit = o.autoFit 
       ? (Math.min(W, H) < 500 ? Math.min(W, H) / 520 : Math.min(W, H) / FIT_REFERENCE)
