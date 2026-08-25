@@ -28,9 +28,9 @@ body {
   background-color: var(--bg-color);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
+  /* NOTE: overflow is intentionally NOT set here.
+     The home globe page adds .home-page to <html> which locks
+     the body; all other pages remain naturally scrollable. */
   position: relative;
 }
 
@@ -220,14 +220,31 @@ body {
 @media (max-width: 768px) {
   .nav-pill {
     top: auto;
-    bottom: calc(24px + env(safe-area-inset-bottom)); /* Adjust bottom safe margin to prevent home indicator overlap */
-    padding: 5px;
-    gap: 5px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    padding: 4px;
+    gap: 2px;
+    /* Prevent pill from being wider than the screen */
+    max-width: calc(100vw - 16px);
   }
   .nav-item {
-    font-size: 0.86rem; /* Comfortable and highly readable mobile font size */
-    padding: 8px 14px;
-    height: 36px; /* Restored standard height for easy tapping */
+    font-size: 0.82rem;
+    padding: 8px 11px;
+    height: 36px;
+  }
+}
+
+/* Extra-narrow phones (≤380px) — condense nav further */
+@media (max-width: 380px) {
+  .nav-pill {
+    gap: 1px;
+    padding: 3px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+  .nav-item {
+    font-size: 0.72rem;
+    padding: 7px 8px;
+    height: 33px;
+    letter-spacing: -0.01em;
   }
 }
 

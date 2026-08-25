@@ -589,6 +589,11 @@
       gap: 14px;
     }
 
+    /* Age column narrower on desktop */
+    .form-row .form-group[style*="flex: 0.6"] {
+      min-width: 0;
+    }
+
     .form-group {
       display: flex;
       flex-direction: column;
@@ -907,6 +912,16 @@
         font-size: 16px !important;
         padding: 10px 12px;
       }
+
+      /* All two-col rows become single column on tablet */
+      .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0;
+      }
+      /* Override age column inline style */
+      .form-row .form-group[style*="flex: 0.6"] {
+        flex: 1 !important;
+      }
     }
 
     @media (max-width: 520px) {
@@ -1062,9 +1077,65 @@
         border-width: 2px;
         border-radius: 7px;
       }
+      .form-select {
+        /* Prevent long option text from overflowing the select box */
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 100%;
+        padding-right: 36px;
+      }
       .submit-btn {
         font-size: 0.88rem;
         padding: 12px 12px;
+      }
+    }
+
+    /* ================================================= */
+    /* EXTRA SMALL PHONES (≤380px) — Galaxy A series etc */
+    /* ================================================= */
+    @media (max-width: 380px) {
+      .registration-viewport {
+        padding: 62px 8px 110px 8px;
+      }
+      .registration-title {
+        font-size: 1.45rem;
+      }
+      .committees-grid {
+        gap: 6px;
+      }
+      .committee-card {
+        padding: 10px 6px;
+        min-height: 148px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 0 var(--text-primary);
+      }
+      .logo-wrapper {
+        height: 48px;
+      }
+      .committee-name {
+        font-size: 0.88rem;
+      }
+      .committee-fullname {
+        font-size: 0.64rem;
+      }
+      .card-badge-preview {
+        font-size: 0.58rem;
+        padding: 2px 5px;
+      }
+      .modal-registration-card {
+        width: calc(100vw - 8px);
+        padding: 18px 10px;
+      }
+      .reg-form-title {
+        font-size: 1.15rem;
+      }
+      .form-label {
+        font-size: 0.7rem;
+      }
+      .form-input, .form-select {
+        font-size: 16px !important;
+        padding: 8px 9px;
       }
     }
   </style>
