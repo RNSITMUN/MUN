@@ -25,10 +25,12 @@ img,
   user-select: none;
 }
 
+
+
 html,
 body {
-  overscroll-behavior: none;
-  /* Prevent elastic bounce scroll on mobile viewports */
+  overscroll-behavior-x: none;
+  /* Block horizontal elastic bounce; preserve vertical pull-to-refresh */
 }
 
 body {
