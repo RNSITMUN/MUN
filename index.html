@@ -266,7 +266,7 @@
     /* ===== SCROLL CUE ===== */
     .scroll-cue {
       position: absolute;
-      bottom: 28px;
+      bottom: calc(76px + env(safe-area-inset-bottom, 0px));
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -278,7 +278,7 @@
       color: #000;
       opacity: 0.55;
       transition: opacity 0.4s ease;
-      animation: scrollBob 2.2s ease-in-out infinite;
+      animation: scrollBobPortrait 2.2s ease-in-out infinite;
     }
     .scroll-cue:hover { opacity: 0.9; }
     .scroll-cue-label {
@@ -288,9 +288,32 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
     }
-    @keyframes scrollBob {
+    @keyframes scrollBobPortrait {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50%       { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* Shift to side in Landscape mode (desktops, laptops, landscape tablets/phones) */
+    @media (orientation: landscape) {
+      .scroll-cue {
+        left: auto;
+        right: 36px;
+        bottom: 32px;
+        transform: none;
+        animation: scrollBobLandscape 2.2s ease-in-out infinite;
+      }
+    }
+    @keyframes scrollBobLandscape {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(7px); }
+    }
+
+    /* Short landscape displays */
+    @media (orientation: landscape) and (max-height: 560px) {
+      .scroll-cue {
+        right: 24px;
+        bottom: 18px;
+      }
     }
 
     /* ===== MUN'26 SECTION ===== */
