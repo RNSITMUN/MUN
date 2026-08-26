@@ -34,6 +34,17 @@ body {
   position: relative;
 }
 
+/* Fluid Topographic Contour Lines Canvas */
+.topology-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Viewport Layout */
 .globe-viewport {
   width: 100vw;
@@ -165,7 +176,7 @@ body {
   }
 }
 
-/* Centered Navigation Pill */
+/* Centered Navigation Pill (21st.dev Framer Motion Physics Animation) */
 .nav-pill {
   position: fixed;
   top: 24px;
@@ -173,20 +184,40 @@ body {
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  align-items: center; /* Align items vertically in the center */
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.85); /* Semi-opaque white glassmorphism to mask underlying black figures */
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.88); /* Semi-opaque white glassmorphism */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 5px; /* Clean even gutter */
+  padding: 5px;
   border-radius: 9999px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  transition: border-color 0.3s ease;
+  height: 48px;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-width: 95vw;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              padding 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease;
+  user-select: none;
 }
 
+/* Nav Links Wrapper */
+.nav-items-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.5s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: auto;
+}
+
+/* Individual Nav Item Stagger Animations */
 .nav-item {
-  position: relative; /* Layer relative to the container */
+  position: relative;
   color: rgba(0, 0, 0, 0.6);
   font-family: var(--font-sans);
   font-size: 0.9rem;
@@ -194,13 +225,78 @@ body {
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 9999px;
-  white-space: nowrap; /* Prevent wrapping onto multiple lines */
+  white-space: nowrap;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 36px; /* Explicit height on all items to match perfectly */
+  height: 36px;
   box-sizing: border-box;
   z-index: 2;
+  touch-action: manipulation;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.6s ease,
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.25s ease;
+}
+
+/* Stagger delays when expanding (Luxuriously slow cascade) */
+.nav-pill:not(.is-collapsed) .nav-item:nth-child(1) { transition-delay: 0.15s; }
+.nav-pill:not(.is-collapsed) .nav-item:nth-child(2) { transition-delay: 0.25s; }
+.nav-pill:not(.is-collapsed) .nav-item:nth-child(3) { transition-delay: 0.35s; }
+.nav-pill:not(.is-collapsed) .nav-item:nth-child(4) { transition-delay: 0.45s; }
+.nav-pill:not(.is-collapsed) .nav-item:nth-child(5) { transition-delay: 0.55s; }
+
+/* Stagger delays when collapsing (Reverse stagger order) */
+.nav-pill.is-collapsed .nav-item:nth-child(5) { transition-delay: 0.00s; }
+.nav-pill.is-collapsed .nav-item:nth-child(4) { transition-delay: 0.08s; }
+.nav-pill.is-collapsed .nav-item:nth-child(3) { transition-delay: 0.16s; }
+.nav-pill.is-collapsed .nav-item:nth-child(2) { transition-delay: 0.24s; }
+.nav-pill.is-collapsed .nav-item:nth-child(1) { transition-delay: 0.32s; }
+
+.nav-pill.is-collapsed .nav-item {
+  opacity: 0;
+  transform: translateX(-24px) scale(0.92);
+  pointer-events: none;
+}
+
+/* Collapsed Circular State on Scroll Down */
+.nav-pill.is-collapsed {
+  width: 48px !important;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.nav-pill.is-collapsed:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.15);
+}
+
+.nav-pill.is-collapsed:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* Centered Menu Icon in Collapsed State */
+.nav-collapsed-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  opacity: 0;
+  transform: scale(0.7) rotate(-60deg);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-pill.is-collapsed .nav-collapsed-icon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  pointer-events: auto;
+  transition-delay: 0.25s;
 }
 
 .nav-item.active {
@@ -219,68 +315,260 @@ body {
 
 @media (max-width: 768px) {
   .nav-pill {
-    top: auto;
-    bottom: calc(18px + env(safe-area-inset-bottom)); /* Adjust bottom safe margin to prevent home indicator overlap */
-    padding: 3px 5px;
-    gap: 2px;
-    max-width: calc(100vw - 16px);
-    box-sizing: border-box;
-  }
-  .nav-item {
-    font-size: clamp(0.70rem, 2.6vw, 0.80rem); /* Sleek compact mobile font */
-    padding: 5px clamp(6px, 1.8vw, 9px);
-    height: 30px;
-    letter-spacing: -0.01em;
+    display: none !important; /* Replaced by Liquid Morph Floating Menu on mobile */
   }
 }
 
-/* Extra-narrow phones (≤380px) — condense nav further */
-@media (max-width: 380px) {
-  .nav-pill {
-    gap: 1px;
-    padding: 3px;
-    bottom: calc(14px + env(safe-area-inset-bottom));
-  }
-  .nav-item {
-    font-size: 0.72rem;
-    padding: 5px 6px;
-    height: 28px;
-    letter-spacing: -0.01em;
+/* ========================================================
+   LIQUID MORPH FLOATING MENU (Mobile Phones Only ≤ 768px)
+   ======================================================== */
+.mobile-floating-menu-root {
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: auto;
+  font-family: 'Outfit', sans-serif;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-floating-menu-root {
+    display: block;
   }
 }
 
-/* Landscape Mode for Phones & Short Displays (< 560px height) */
-@media (max-height: 560px) and (orientation: landscape) {
-  .top-left-logo, .top-right-logo {
-    height: clamp(46px, 12vh, 62px);
-  }
-  .top-left-logo-container {
-    top: 12px;
-    left: 16px;
-  }
-  .top-right-logo-container {
-    top: 12px;
-    right: 16px;
-  }
-  .nav-pill {
-    top: 10px;
-    bottom: auto;
-    padding: 3px;
-    gap: 4px;
-    transform: translateX(-50%) scale(0.9);
-    transform-origin: top center;
-  }
-  .nav-item {
-    font-size: 0.78rem;
-    padding: 5px 12px;
-    height: 30px;
-  }
-  .globe-viewport {
-    padding-top: 24px;
-  }
+.floating-menu-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 96px;
+  height: 33px;
+  border-radius: 72px;
+  cursor: pointer;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0 #000000;
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              border-radius 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s ease,
+              transform 0.25s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.floating-menu-container:not(.is-open):hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 #6C0D2C;
+}
+
+.floating-menu-container.is-open {
+  width: 175px;
+  height: 205px;
+  border-radius: 18px;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0 #000000;
+  cursor: default;
+}
+
+/* Warm Cream Background Layer */
+.floating-menu-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #FFF7EB;
+  border-radius: inherit;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+}
+
+/* Deep Wine Red Liquid Expanding Circle */
+.floating-menu-dark-circle {
+  position: absolute;
+  left: 50%;
+  bottom: -350%;
+  width: 240%;
+  height: 240%;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background-color: #6C0D2C;
+  z-index: 2;
+  opacity: 0;
+  transition: bottom 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.floating-menu-container.is-open .floating-menu-dark-circle {
+  bottom: -15%;
+  opacity: 1;
+}
+
+/* Links Container */
+.floating-menu-links {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 12px 4px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  flex: 1;
+  overflow: hidden;
+}
+
+.floating-menu-container.is-open .floating-menu-links {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Menu Items with Staggered Slide In */
+.floating-menu-item {
+  text-decoration: none;
+  color: #FFF7EB;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.1em;
+  overflow: hidden;
+  transform: translateY(8px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease,
+              color 0.2s ease;
+}
+
+.floating-menu-container.is-open .floating-menu-item {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.floating-menu-item.is-active {
+  color: #E5A93C;
+}
+
+.floating-menu-item:hover {
+  color: #E5A93C;
+}
+
+/* Rolling Characters */
+.rolling-chars {
+  display: flex;
+  justify-content: center;
+  height: 1.1em;
+  overflow: hidden;
+}
+
+.char-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.1em;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.char-cell {
+  display: block;
+  height: 1.15em;
+  line-height: 1.15em;
+}
+
+.floating-menu-item.is-hovered .char-wrap,
+.floating-menu-item:hover .char-wrap {
+  transform: translateY(-50%);
+}
+
+/* Bottom Bar: Menu + Hamburger */
+.floating-menu-bottom-bar {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 33px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.floating-menu-container.is-open .floating-menu-bottom-bar {
+  padding: 0 14px 10px 14px;
+}
+
+.floating-menu-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+.floating-menu-container.is-open .floating-menu-label {
+  color: #FFF7EB;
+}
+
+/* Animated Hamburger Icon */
+.floating-hamburger-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-bar {
+  position: absolute;
+  display: block;
+  width: 13px;
+  height: 2px;
+  border-radius: 999px;
+  background-color: #000000;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.3s ease;
+}
+
+.hamburger-bar.bar-1 {
+  transform: translateY(-2.5px);
+}
+
+.hamburger-bar.bar-2 {
+  transform: translateY(2.5px);
+}
+
+.floating-menu-container.is-open .hamburger-bar {
+  background-color: #E5A93C;
+}
+
+.floating-menu-container.is-open .hamburger-bar.bar-1 {
+  transform: translateY(0) rotate(45deg);
+}
+
+.floating-menu-container.is-open .hamburger-bar.bar-2 {
+  transform: translateY(0) rotate(-45deg);
 }
 
 /* Custom Minimal Scrollbar matching warm cream and black aesthetics */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #6C0D2C var(--bg-color);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -289,12 +577,16 @@ body {
   background: var(--bg-color);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
+  background: #6C0D2C;
   border-radius: 9999px;
   border: 2px solid var(--bg-color);
+  transition: background-color 0.2s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.28);
+  background: #520921;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #E5A93C;
 }
 
 

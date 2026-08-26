@@ -18,6 +18,8 @@ const cleanUrlsPlugin = () => ({
           req.url = '/past-events.html' + req.url.substring(12);
         } else if (url === '/registration') {
           req.url = '/registration.html' + req.url.substring(13);
+        } else if (url === '/channels') {
+          req.url = '/channels.html' + req.url.substring(9);
         } else if (url === '/404') {
           req.url = '/404.html' + req.url.substring(4);
         } else if (url !== '/' && url !== '') {
@@ -55,7 +57,8 @@ export default defineConfig({
         '**/*.crdownload',
         '**/*.tmp',
         '**/*.part',
-        '**/node_modules/**'
+        '**/node_modules/**',
+        '**/shoe-finder/**'
       ]
     }
   },
@@ -67,6 +70,7 @@ export default defineConfig({
         team: resolve(process.cwd(), 'team.html'),
         past: resolve(process.cwd(), 'past-events.html'),
         registration: resolve(process.cwd(), 'registration.html'),
+        channels: resolve(process.cwd(), 'channels.html'),
         error: resolve(process.cwd(), '404.html')
       }
     }

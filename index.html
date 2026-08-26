@@ -19,10 +19,11 @@
   <meta property="twitter:title" content="MUNSoc RNSIT | Home">
   <meta property="twitter:description" content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
+  
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
@@ -36,32 +37,326 @@
   <link rel="preload" as="image" href="./globe/1.jpeg">
   <link rel="preload" as="image" href="./globe/2.jpeg">
   <link rel="preload" as="image" href="./globe/3.jpeg">
-  <!-- Globe page: lock body so the 3D carousel fills 100vh without page scroll.
-       The JS adds .home-page to <html> which then unlocks overflow-y for the
-       MUN'26 section below. -->
+
   <style>
     html, body {
       overflow: hidden;
       width: 100%;
       height: 100%;
     }
-    /* .home-page override (added by JS) makes the page scrollable */
     html.home-page,
     html.home-page body {
       overflow-y: auto !important;
       overflow-x: hidden !important;
       height: auto !important;
       width: 100% !important;
+      overscroll-behavior-y: auto !important;
     }
     html.home-page .globe-viewport {
       height: 100svh;
       min-height: 100svh;
       width: 100%;
+      position: relative;
+    }
+
+    /* ===== HIGH-END EDITORIAL SECTION ===== */
+    .mun26-editorial-section {
+      position: relative;
+      z-index: 2;
+      border-top: 3px solid #000;
+      padding: 110px 48px 140px 48px;
+      background: transparent;
+    }
+
+    .mun26-editorial-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* Top Meta Bar */
+    .editorial-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #6C0D2C;
+    }
+
+    /* Main Headline */
+    .editorial-headline-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-bottom: 3px solid #000;
+      padding-bottom: 40px;
+    }
+
+    .editorial-main-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(4.5rem, 11vw, 8.8rem);
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.055em;
+      color: #000;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .title-apostrophe {
+      color: #6C0D2C;
+    }
+
+    .editorial-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.7);
+      line-height: 1.5;
+      margin: 0;
+      max-width: 680px;
+    }
+
+    /* 3-Column Swiss Grid */
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .editorial-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .col-index {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+    }
+
+    .col-main-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: #000;
+      margin: 0;
+    }
+
+    /* Councils list */
+    .councils-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 2px 0 4px 0;
+    }
+
+    .council-item {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #000;
+      background: #FFF7EB;
+      border: 1.5px solid #000;
+      border-radius: 6px;
+      padding: 3px 8px;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    /* VIP Delegate Pass Card */
+    .editorial-pass-card {
+      background: #6C0D2C;
+      color: #FFF7EB;
+      border: 3px solid #000;
+      border-radius: 20px;
+      padding: 36px 40px;
+      text-decoration: none;
+      box-shadow: 6px 6px 0 #000;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .editorial-pass-card:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0 #000;
+    }
+
+    .editorial-pass-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 3px 3px 0 #000;
+    }
+
+    .pass-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 247, 235, 0.2);
+      padding-bottom: 14px;
+    }
+
+    .pass-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(229, 169, 60, 0.18);
+      border: 1.5px solid #E5A93C;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #E5A93C;
+      text-transform: uppercase;
+    }
+
+    .status-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #E5A93C;
+      box-shadow: 0 0 6px #E5A93C;
+      animation: pulseDot 1.8s infinite;
+    }
+
+    .pass-id {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(255, 247, 235, 0.5);
+    }
+
+    .pass-card-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .pass-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pass-headline {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #FFF7EB;
+      margin: 0;
+    }
+
+    .pass-sub {
+      font-size: 0.92rem;
+      color: rgba(255, 247, 235, 0.78);
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .pass-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #E5A93C;
+      color: #000;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 2.5px solid #000;
+      border-radius: 12px;
+      padding: 14px 24px;
+      box-shadow: 3.5px 3.5px 0 #000;
+      white-space: nowrap;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .editorial-pass-card:hover .pass-action-btn {
+      background: #FFF7EB;
+      color: #000;
+      transform: translateX(4px);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .mun26-editorial-section {
+        padding: 70px 24px 90px 24px;
+      }
+      .editorial-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .pass-card-body {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .pass-action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .editorial-pass-card {
+        padding: 24px 20px;
+      }
+    }
+
+    /* Scroll reveal transitions */
+    .mun26-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mun26-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-
+  <!-- Landscape Orientation Warning Overlay -->
+  <div class="orientation-warning">
+    <div class="warning-content">
+      <div class="phone-icon">📱</div>
+      <h2>Please Rotate Your Device</h2>
+      <p>This experience is optimized for portrait mode.</p>
+    </div>
+  </div>
 
   <!-- Preloader Screen -->
   <div id="preloader">
@@ -71,7 +366,6 @@
     </svg>
   </div>
   <script>
-    // Synchronously hide the preloader if already visited in this session to prevent visual flashes
     if (sessionStorage.getItem("hasVisited") === "true") {
       document.getElementById("preloader").style.display = "none";
     }
@@ -79,11 +373,22 @@
 
   <script>
     (function() {
-      // If already visited, remove the preloader element immediately on load and return
       if (sessionStorage.getItem("hasVisited") === "true") {
         document.addEventListener("DOMContentLoaded", () => {
           const preloaderEl = document.getElementById("preloader");
           if (preloaderEl) preloaderEl.remove();
+          // Already visited — show nav pill immediately
+          document.querySelector('.nav-pill')?.classList.add('nav-ready');
+          // Mobile menu is injected by a module; retry until it mounts
+          const revealMobileMenu = () => {
+            const mobileMenu = document.querySelector('.mobile-floating-menu-root');
+            if (mobileMenu) {
+              mobileMenu.classList.add('nav-ready');
+            } else {
+              requestAnimationFrame(revealMobileMenu);
+            }
+          };
+          requestAnimationFrame(revealMobileMenu);
         });
         return;
       }
@@ -95,7 +400,6 @@
       const height = window.innerHeight;
       
       const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width/2} ${height + 300} 0 ${height} L0 0`;
-      const targetPath = `M0 0 L${width} 0 L${width} ${height} Q${width/2} ${height} 0 ${height} L0 0`;
       
       document.addEventListener("DOMContentLoaded", () => {
         const pathEl = document.getElementById("preloader-path");
@@ -115,13 +419,13 @@
           } else {
             setTimeout(() => {
               if (preloaderEl) preloaderEl.classList.add("exit");
-              
-              // Set the session flag when preloader begins exiting
               sessionStorage.setItem("hasVisited", "true");
-              
+              // Reveal nav after preloader begins exit
+              document.querySelector('.nav-pill')?.classList.add('nav-ready');
+              document.querySelector('.mobile-floating-menu-root')?.classList.add('nav-ready');
               setTimeout(() => {
                 if (preloaderEl) preloaderEl.remove();
-              }, 850); // Matches the 0.8s CSS fade transition
+              }, 850);
             }, 100);
           }
         };
@@ -130,8 +434,30 @@
       });
     })();
   </script>
+  <!-- Hide nav during preloader, reveal after -->
+  <style>
+    .nav-pill {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease 0.2s;
+    }
+    .nav-pill.nav-ready {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-floating-menu-root {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease 0.3s;
+    }
+    .mobile-floating-menu-root.nav-ready {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
 
-  <!-- Navigation Pill -->
+
+  <!-- Navigation Pill (PC Desktop with Scroll Morph Animation) -->
   <nav class="nav-pill">
     <a href="/" class="nav-item active" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
@@ -144,8 +470,6 @@
     (function() {
       const nav = document.querySelector('.nav-pill');
       const items = nav.querySelectorAll('.nav-item');
-      
-      // Prefetch page on hover to ensure instant load
       items.forEach(item => {
         item.addEventListener('mouseenter', () => {
           const href = item.getAttribute('href');
@@ -177,432 +501,91 @@
   <!-- Main Globe Container -->
   <main class="globe-viewport">
     <div id="carousel-root" class="carousel-container"></div>
-
-    <!-- Scroll indicator -->
-    <div class="scroll-cue" id="scrollCue" aria-label="Scroll down">
-      <span class="scroll-cue-label">Scroll</span>
-      <div class="scroll-cue-chevron">
-        <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
-          <polyline points="1,1 10,10 19,1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-    </div>
   </main>
 
-  <!-- RNS MUN'26 SECTION -->
-  <section class="mun26-section" id="mun26">
+  <!-- RNS MUN'26 EDITORIAL SUMMIT SECTION -->
+  <section class="mun26-editorial-section" id="mun26">
+    <div class="mun26-editorial-wrap">
 
-    <div class="mun26-inner">
-
-      <!-- Page-width headline -->
-      <div class="mun26-headline-row">
-        <h2 class="mun26-title">RNS&nbsp;MUN<span class="mun26-apostrophe">'</span>26</h2>
-        <div class="mun26-divider-line"></div>
+      <!-- Top Meta Bar -->
+      <div class="editorial-meta-bar">
+        <span class="meta-tag">FLAGSHIP EDITION // 2026</span>
+        <span class="meta-dot"></span>
+        <span class="meta-tag">BENGALURU, INDIA</span>
+        <span class="meta-dot"></span>
+        <span class="meta-tag">RNSIT</span>
       </div>
 
-      <!-- Two-column body -->
-      <div class="mun26-body">
+      <!-- Main Headline Lockup -->
+      <div class="editorial-headline-block">
+        <h2 class="editorial-main-title">RNS MUN<span class="title-apostrophe">'</span>26</h2>
+        <p class="editorial-tagline">The annual intercollegiate Model United Nations conference at RNS Institute of Technology.</p>
+      </div>
 
-        <!-- Left: description + stats row -->
-        <div class="mun26-left">
-          <p class="mun26-desc">
-            The premier collegiate Model United Nations conference at RNS Institute of Technology.
-            Six elite committees. One agenda: to challenge the world as it is.
-          </p>
+      <!-- 3-Column Swiss Information Grid -->
+      <div class="editorial-grid">
+        
+        <!-- Column 1: Dates -->
+        <div class="editorial-col">
+          <span class="col-index">[ 01 ] SCHEDULE</span>
+          <h3 class="col-main-heading">OCT 06 — 07</h3>
+        </div>
 
-          <div class="mun26-meta-row">
-            <div class="mun26-meta-item">
-              <span class="mun26-meta-num">6</span>
-              <span class="mun26-meta-label">Committees</span>
-            </div>
-            <div class="mun26-meta-sep"></div>
-            <div class="mun26-meta-item">
-              <span class="mun26-meta-num">300+</span>
-              <span class="mun26-meta-label">Delegates</span>
-            </div>
-            <div class="mun26-meta-sep"></div>
-            <div class="mun26-meta-item">
-              <span class="mun26-meta-num">2</span>
-              <span class="mun26-meta-label">Days</span>
-            </div>
+        <!-- Column 2: 6 Councils -->
+        <div class="editorial-col">
+          <span class="col-index">[ 02 ] 06 COMMITTEES</span>
+          <div class="councils-list">
+            <span class="council-item">UNSC</span>
+            <span class="council-item">LOK SABHA</span>
+            <span class="council-item">DISEC</span>
+            <span class="council-item">UNHRC</span>
+            <span class="council-item">UNODC</span>
+            <span class="council-item">IP</span>
           </div>
         </div>
 
-        <!-- Right: register card -->
-        <a href="/registration" class="mun26-reg-card" id="regCard" aria-label="Register for RNS MUN 2026">
-          <div class="mun26-reg-card-top">
-            <span class="mun26-reg-open">Registrations Open</span>
+        <!-- Column 3: Venue & Delegation -->
+        <div class="editorial-col">
+          <span class="col-index">[ 03 ] CONVOCATION</span>
+          <h3 class="col-main-heading">RNSIT BENGALURU</h3>
+        </div>
+
+      </div>
+
+      <!-- Delegate Invitation Card -->
+      <a href="/registration" class="editorial-pass-card" id="homeDelegateCard" aria-label="Open delegate registration">
+        <div class="pass-card-header">
+          <span class="pass-status-pill">
+            <span class="status-live-dot"></span>
+            <span>APPLICATIONS OPEN</span>
+          </span>
+          <span class="pass-id">PASS // 2026-DEL</span>
+        </div>
+
+        <div class="pass-card-body">
+          <div class="pass-card-text">
+            <h3 class="pass-headline">Represent Your Delegation</h3>
+            <p class="pass-sub">Choose from 6 councils and apply for your preferred country or portfolio allocation.</p>
           </div>
-          <h3 class="mun26-reg-title">Register as<br>a Delegate</h3>
-          <div class="mun26-reg-cta">
-            <span>Click to Register</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          
+          <div class="pass-action-btn">
+            <span>Register as Delegate</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
             </svg>
           </div>
-        </a>
+        </div>
+      </a>
 
-      </div>
     </div>
   </section>
-
-  <style>
-    /* ===== SCROLLABLE HOMEPAGE ===== */
-    html.home-page,
-    html.home-page body {
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      height: auto !important;
-      overscroll-behavior-y: auto !important;
-    }
-
-    html.home-page .globe-viewport {
-      height: 100svh;
-      min-height: 100svh;
-      position: relative;
-    }
-
-    /* ===== SCROLL CUE ===== */
-    .scroll-cue {
-      position: absolute;
-      bottom: calc(76px + env(safe-area-inset-bottom, 0px));
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      z-index: 200;
-      cursor: pointer;
-      color: #000;
-      opacity: 0.55;
-      transition: opacity 0.4s ease;
-      animation: scrollBobPortrait 2.2s ease-in-out infinite;
-    }
-    .scroll-cue:hover { opacity: 0.9; }
-    .scroll-cue-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-    @keyframes scrollBobPortrait {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(7px); }
-    }
-
-    /* Shift to side in Landscape mode (desktops, laptops, landscape tablets/phones) */
-    @media (orientation: landscape) {
-      .scroll-cue {
-        left: auto;
-        right: 36px;
-        bottom: 32px;
-        transform: none;
-        animation: scrollBobLandscape 2.2s ease-in-out infinite;
-      }
-    }
-    @keyframes scrollBobLandscape {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(7px); }
-    }
-
-    /* Short landscape displays */
-    @media (orientation: landscape) and (max-height: 560px) {
-      .scroll-cue {
-        right: 24px;
-        bottom: 18px;
-      }
-    }
-
-    /* ===== MUN'26 SECTION ===== */
-    .mun26-section {
-      background: #FFF7EB;
-      border-top: 3px solid #000;
-      padding: 80px 48px 100px 48px;
-    }
-
-    .mun26-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Headline row */
-    .mun26-headline-row {
-      display: flex;
-      align-items: baseline;
-      gap: 32px;
-      margin-bottom: 56px;
-    }
-
-    .mun26-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(4.5rem, 10vw, 8rem);
-      font-weight: 800;
-      line-height: 0.9;
-      letter-spacing: -0.05em;
-      color: #000;
-      margin: 0;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .mun26-apostrophe {
-      color: #6C0D2C;
-    }
-
-    .mun26-divider-line {
-      flex: 1;
-      height: 3px;
-      background: #000;
-      margin-bottom: 6px; /* optical alignment with baseline */
-    }
-
-    /* Body two-column */
-    .mun26-body {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 60px;
-      align-items: start;
-    }
-
-    /* Left */
-    .mun26-desc {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 400;
-      color: rgba(0, 0, 0, 0.65);
-      line-height: 1.6;
-      margin: 0 0 40px 0;
-      max-width: 480px;
-    }
-
-    .mun26-meta-row {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .mun26-meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .mun26-meta-num {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2.8rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      color: #000;
-    }
-
-    .mun26-meta-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(0, 0, 0, 0.5);
-    }
-
-    .mun26-meta-sep {
-      width: 1px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    /* Register card — matches committee card language */
-    .mun26-reg-card {
-      display: flex;
-      flex-direction: column;
-      background: #000;
-      color: #FFF7EB;
-      border: 3px solid #000;
-      border-radius: 20px;
-      padding: 32px 28px;
-      text-decoration: none;
-      box-shadow: 6px 6px 0 #6C0D2C;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
-    }
-    .mun26-reg-card:hover {
-      transform: translate(-4px, -4px);
-      box-shadow: 10px 10px 0 #6C0D2C;
-    }
-    .mun26-reg-card:active {
-      transform: translate(1px, 1px);
-      box-shadow: 4px 4px 0 #6C0D2C;
-    }
-
-    .mun26-reg-card-top {
-      margin-bottom: 20px;
-    }
-
-    .mun26-reg-open {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #E5A93C;
-    }
-
-    .mun26-reg-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      color: #FFF7EB;
-      margin: 0 0 28px 0;
-    }
-
-    .mun26-reg-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #6C0D2C;
-      color: #FFF7EB;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border: 2px solid #FFF7EB;
-      border-radius: 10px;
-      padding: 10px 18px;
-      align-self: flex-start;
-      transition: background 0.15s ease, color 0.15s ease;
-    }
-    .mun26-reg-card:hover .mun26-reg-cta {
-      background: #E5A93C;
-      color: #000;
-      border-color: #E5A93C;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .mun26-section {
-        padding: 64px 28px 80px 28px;
-      }
-      .mun26-headline-row {
-        margin-bottom: 40px;
-      }
-      .mun26-body {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      .mun26-title {
-        font-size: clamp(3.5rem, 13vw, 6rem);
-      }
-    }
-
-    @media (max-width: 520px) {
-      .mun26-section {
-        padding: 48px 16px 64px 16px;
-      }
-      .mun26-headline-row {
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-      .mun26-title {
-        font-size: clamp(3rem, 14vw, 4.5rem);
-      }
-      .mun26-desc {
-        font-size: 1rem;
-        margin-bottom: 28px;
-      }
-      .mun26-meta-row {
-        gap: 18px;
-      }
-      .mun26-meta-num {
-        font-size: 2.2rem;
-      }
-      .mun26-reg-card {
-        padding: 24px 20px;
-      }
-      .mun26-reg-title {
-        font-size: 1.8rem;
-      }
-    }
-
-    /* Scroll-in reveal */
-    .mun26-reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .mun26-reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ===== HOMEPAGE LOGO RESPONSIVE ===== */
-    /* Logos on home page stay clear of nav pill on mobile */
-    @media (max-width: 768px) {
-      .top-left-logo, .top-right-logo {
-        height: 52px;
-        width: auto;
-      }
-    }
-    @media (max-width: 520px) {
-      .top-left-logo, .top-right-logo {
-        height: 40px;
-      }
-      .top-left-logo-container {
-        top: 14px;
-        left: 14px;
-      }
-      .top-right-logo-container {
-        top: 14px;
-        right: 14px;
-      }
-    }
-    @media (max-width: 380px) {
-      .top-left-logo, .top-right-logo {
-        height: 32px;
-      }
-      .top-left-logo-container {
-        top: 10px;
-        left: 10px;
-      }
-      .top-right-logo-container {
-        top: 10px;
-        right: 10px;
-      }
-      .mun26-title {
-        font-size: 2.6rem !important;
-        white-space: normal;
-        letter-spacing: -0.04em;
-      }
-      .mun26-divider-line {
-        display: none;
-      }
-      .mun26-meta-num {
-        font-size: 1.9rem;
-      }
-      .mun26-reg-title {
-        font-size: 1.5rem;
-      }
-    }
-  </style>
 
   <script>
     document.documentElement.classList.add('home-page');
 
-    // Scroll cue
-    const scrollCue = document.getElementById('scrollCue');
-    scrollCue?.addEventListener('click', () => {
-      document.getElementById('mun26')?.scrollIntoView({ behavior: 'smooth' });
-    });
-    window.addEventListener('scroll', () => {
-      if (scrollCue) scrollCue.style.opacity = window.scrollY > 80 ? '0' : '';
-    }, { passive: true });
-
-    // Staggered reveal on scroll
-    const reveals = document.querySelectorAll('.mun26-headline-row, .mun26-desc, .mun26-meta-row, .mun26-reg-card');
+    // Staggered reveal
+    const reveals = document.querySelectorAll('.editorial-meta-bar, .editorial-headline-block, .editorial-grid, .editorial-pass-card');
     reveals.forEach(el => el.classList.add('mun26-reveal'));
 
     const obs = new IntersectionObserver((entries) => {
@@ -612,9 +595,13 @@
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
     reveals.forEach(el => obs.observe(el));
   </script>
+
+  <script type="module" src="./topology-background.js"></script>
+  <script type="module" src="./mobile-floating-menu.js"></script>
+  <script type="module" src="./animated-nav.js"></script>
   <script type="module" src="./app.js"></script>
   <script src="/register-sw.js"></script>
 </body>

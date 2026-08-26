@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Channels | MUNSoc RNSIT & Qlue Quiz Club</title>
+  <meta name="description" content="Official channels, communities, and social hubs for Model United Nations Society and Qlue Quiz Club at RNSIT.">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mun-rnsit.vercel.app/channels">
+  <meta property="og:title" content="Official Channels | MUNSoc RNSIT & Qlue Quiz Club">
+  <meta property="og:description" content="Official channels, communities, and social hubs for Model United Nations Society and Qlue Quiz Club at RNSIT.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
+  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#6C0D2C">
+
+  <style>
+    /* ===== CHANNELS PAGE BENTO BOX SYSTEM ===== */
+    html, body {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      height: auto !important;
+      min-height: 100vh !important;
+      background: #FFF7EB;
+      color: #000;
+      font-family: 'Outfit', sans-serif;
+      overscroll-behavior-y: auto !important;
+    }
+
+    .channels-wrapper {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 120px 24px 90px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Profile Section */
+    .channels-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      padding-bottom: 20px;
+    }
+
+    .channels-avatar-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .avatar-crest {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: #FFF7EB;
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0 #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s ease;
+    }
+
+    .avatar-crest:hover {
+      transform: scale(1.08) rotate(-3deg);
+    }
+
+    .avatar-crest img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-qlue {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: #FFF7EB;
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0 #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-left: -18px;
+      z-index: 1;
+      transition: transform 0.2s ease;
+    }
+
+    .avatar-qlue:hover {
+      transform: scale(1.08) rotate(4deg);
+      z-index: 3;
+    }
+
+    .avatar-qlue img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .channels-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      border-radius: 999px;
+      padding: 5px 16px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #6C0D2C;
+      text-transform: uppercase;
+    }
+
+    .live-beacon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6C0D2C;
+      box-shadow: 0 0 8px #6C0D2C;
+      animation: pulseDot 1.8s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .channels-title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 1;
+      color: #000;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .channels-subtitle {
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      color: rgba(0, 0, 0, 0.68);
+      max-width: 580px;
+      line-height: 1.5;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* ===== BENTO GRID ===== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    /* Bento Card Base */
+    .bento-card {
+      background: #FFF7EB;
+      border: 2.5px solid #000;
+      border-radius: 18px;
+      padding: 26px;
+      text-decoration: none;
+      color: #000;
+      box-shadow: 5px 5px 0 #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .bento-card:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 9px 9px 0 #000;
+    }
+
+    .bento-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    /* Bento Card Grid Placements */
+    .bento-featured-1 {
+      grid-column: span 6;
+      background: #192734;
+      color: #FFF7EB;
+    }
+
+    .bento-featured-2 {
+      grid-column: span 6;
+      background: #6C0D2C;
+      color: #FFF7EB;
+    }
+
+    .bento-standard-1 {
+      grid-column: span 6;
+      background: #FFF7EB;
+    }
+
+    .bento-standard-2 {
+      grid-column: span 6;
+      background: #FFF7EB;
+    }
+
+    .bento-compact-1 {
+      grid-column: span 6;
+      background: #FFF7EB;
+    }
+
+    .bento-compact-2 {
+      grid-column: span 6;
+      background: #E5A93C;
+      color: #000;
+    }
+
+    /* Card Elements */
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-index {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      opacity: 0.65;
+      text-transform: uppercase;
+    }
+
+    .card-icon-pill {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      border: 2px solid #000;
+      background: #FFF7EB;
+      box-shadow: 2.5px 2.5px 0 #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .bento-badge-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-main-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    .card-handle {
+      font-size: 0.88rem;
+      opacity: 0.78;
+      font-weight: 500;
+      margin: 0;
+      word-break: break-all;
+    }
+
+    .card-bottom-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1.5px solid rgba(0, 0, 0, 0.1);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .bento-featured-1 .card-bottom-action,
+    .bento-featured-2 .card-bottom-action {
+      border-top-color: rgba(255, 247, 235, 0.2);
+    }
+
+    .action-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .bento-card:hover .action-arrow {
+      transform: translate(3px, -3px);
+    }
+
+    /* Email Copy Feedback Toast */
+    .copy-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #000;
+      color: #FFF7EB;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 2px solid #FFF7EB;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 9999;
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 820px) {
+      .bento-featured-1,
+      .bento-featured-2,
+      .bento-standard-1,
+      .bento-standard-2,
+      .bento-compact-1,
+      .bento-compact-2 {
+        grid-column: span 12;
+      }
+      .channels-wrapper {
+        padding: 100px 18px 80px 18px;
+      }
+      .bento-card {
+        padding: 22px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Left Logo -->
+  <div class="top-left-logo-container">
+    <a href="/" aria-label="MUNSoc Home">
+      <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-left-logo">
+    </a>
+  </div>
+
+  <!-- Top Right Logo -->
+  <div class="top-right-logo-container">
+    <a href="/" aria-label="MUNSoc Home">
+      <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-right-logo">
+    </a>
+  </div>
+
+  <!-- Navigation Pill (PC Desktop) -->
+  <nav class="nav-pill">
+    <a href="/" class="nav-item" id="nav-gallery">Home</a>
+    <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
+    <a href="/registration" class="nav-item" id="nav-registration">Registration</a>
+    <a href="/stay-connected" class="nav-item" id="nav-connected">Stay Connected</a>
+    <a href="/team" class="nav-item" id="nav-team">Team</a>
+  </nav>
+
+  <!-- Main Bento Content Container -->
+  <main class="channels-wrapper">
+
+    <!-- Hero Header -->
+    <header class="channels-header">
+      <div class="channels-avatar-group">
+        <div class="avatar-crest" title="MUN Society RNSIT">
+          <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society Logo">
+        </div>
+        <div class="avatar-qlue" title="Qlue Quiz Club RNSIT">
+          <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club Logo">
+        </div>
+      </div>
+
+      <div class="channels-pill-tag">
+        <span class="live-beacon"></span>
+        <span>Official Community Directory</span>
+      </div>
+
+      <h1 class="channels-title">Channels & Hub</h1>
+      <p class="channels-subtitle">Direct links to official communication channels, announcements, and communities for MUN Society & Qlue Quiz Club, RNSIT.</p>
+    </header>
+
+    <!-- Bento Box Grid -->
+    <section class="bento-grid" aria-label="Official Links Grid">
+
+      <!-- 01: MUN Society WhatsApp Community -->
+      <a href="https://chat.whatsapp.com/Ey8PYNbA70cHR06dhrCzP5" target="_blank" rel="noopener noreferrer" class="bento-card bento-featured-1">
+        <div class="card-top-row">
+          <span class="card-index">[ 01 ] WHATSAPP COMMUNITY</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">MUN Society: WhatsApp Community</h2>
+          <p class="card-handle">chat.whatsapp.com/Ey8PYNbA70cHR06dhrCzP5</p>
+        </div>
+        <div class="card-bottom-action">
+          <span>Join MUN Community</span>
+          <div class="action-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- 02: Qlue Quiz Club WhatsApp Community -->
+      <a href="https://chat.whatsapp.com/I9X8nPBUeA17kuCu1OOabq" target="_blank" rel="noopener noreferrer" class="bento-card bento-featured-2">
+        <div class="card-top-row">
+          <span class="card-index">[ 02 ] WHATSAPP COMMUNITY</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">Qlue Quiz Club: WhatsApp Community</h2>
+          <p class="card-handle">chat.whatsapp.com/I9X8nPBUeA17kuCu1OOabq</p>
+        </div>
+        <div class="card-bottom-action">
+          <span>Join Quiz Community</span>
+          <div class="action-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- 03: MUN Society Instagram -->
+      <a href="https://www.instagram.com/rnsit.mun/" target="_blank" rel="noopener noreferrer" class="bento-card bento-standard-1">
+        <div class="card-top-row">
+          <span class="card-index">[ 03 ] INSTAGRAM</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">MUN Society: Instagram</h2>
+          <p class="card-handle">@rnsit.mun</p>
+        </div>
+        <div class="card-bottom-action">
+          <span>Follow @rnsit.mun</span>
+          <div class="action-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- 04: Qlue Quiz Club Instagram -->
+      <a href="https://www.instagram.com/qlue.rnsit" target="_blank" rel="noopener noreferrer" class="bento-card bento-standard-2">
+        <div class="card-top-row">
+          <span class="card-index">[ 04 ] INSTAGRAM</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">Qlue Quiz Club: Instagram</h2>
+          <p class="card-handle">@qlue.rnsit</p>
+        </div>
+        <div class="card-bottom-action">
+          <span>Follow @qlue.rnsit</span>
+          <div class="action-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- 05: MUN Society LinkedIn -->
+      <a href="https://in.linkedin.com/company/rnsit-mun-club" target="_blank" rel="noopener noreferrer" class="bento-card bento-compact-1">
+        <div class="card-top-row">
+          <span class="card-index">[ 05 ] LINKEDIN</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">MUN Society: LinkedIn</h2>
+          <p class="card-handle">RNSIT MUN Club</p>
+        </div>
+        <div class="card-bottom-action">
+          <span>Connect on LinkedIn</span>
+          <div class="action-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- 06: MUN Society Email (Click to Copy or Mailto) -->
+      <div class="bento-card bento-compact-2" id="emailBentoCard" role="button" tabindex="0" title="Click to copy or email">
+        <div class="card-top-row">
+          <span class="card-index">[ 06 ] DIRECT CONTACT</span>
+          <div class="card-icon-pill" aria-hidden="true">
+            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img">
+          </div>
+        </div>
+        <div class="card-main-info">
+          <h2 class="card-title">MUN Society: Email</h2>
+          <p class="card-handle">mun@rnsit.ac.in</p>
+        </div>
+        <div class="card-bottom-action">
+          <span id="emailActionText">Click to Copy / Send</span>
+          <div class="action-arrow">📋</div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Copy Toast -->
+  <div class="copy-toast" id="copyToast" aria-live="polite">
+    <span>✓</span> Email copied: mun@rnsit.ac.in
+  </div>
+
+  <script>
+    // Copy email interaction
+    (function() {
+      const emailCard = document.getElementById('emailBentoCard');
+      const toast = document.getElementById('copyToast');
+      const actionText = document.getElementById('emailActionText');
+
+      if (emailCard) {
+        emailCard.addEventListener('click', (e) => {
+          const email = 'mun@rnsit.ac.in';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(() => {
+              showToast();
+            }).catch(() => {
+              window.location.href = `mailto:${email}`;
+            });
+          } else {
+            window.location.href = `mailto:${email}`;
+          }
+        });
+
+        emailCard.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            emailCard.click();
+          }
+        });
+      }
+
+      function showToast() {
+        if (!toast) return;
+        toast.classList.add('show');
+        if (actionText) actionText.textContent = 'COPIED TO CLIPBOARD!';
+        setTimeout(() => {
+          toast.classList.remove('show');
+          if (actionText) actionText.textContent = 'Click to Copy / Send';
+        }, 2400);
+      }
+    })();
+  </script>
+
+  <script type="module" src="./topology-background.js"></script>
+  <script type="module" src="./mobile-floating-menu.js"></script>
+  <script type="module" src="./animated-nav.js"></script>
+  <script src="/register-sw.js"></script>
+</body>
+</html>
