@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MUNSoc RNSIT | Home</title>
-  <meta name="description" content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
-  
+  <meta name="description"
+    content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mun-rnsit.vercel.app/">
   <meta property="og:title" content="MUNSoc RNSIT | Home">
-  <meta property="og:description" content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
+  <meta property="og:description"
+    content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
+  <meta property="og:image"
+    content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://mun-rnsit.vercel.app/">
   <meta property="twitter:title" content="MUNSoc RNSIT | Home">
-  <meta property="twitter:description" content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
-  <meta property="twitter:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
-  
+  <meta property="twitter:description"
+    content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
+  <meta property="twitter:image"
+    content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
+
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
   <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
-  
+
   <!-- Preload Critical Assets for Instant Rendering -->
   <link rel="preload" as="image" href="./assets/Logos/25_logo.png">
   <link rel="preload" as="image" href="./assets/Logos/MUN_logo.png">
@@ -39,11 +45,13 @@
   <link rel="preload" as="image" href="./globe/3.jpeg">
 
   <style>
-    html, body {
+    html,
+    body {
       overflow: hidden;
       width: 100%;
       height: 100%;
     }
+
     html.home-page,
     html.home-page body {
       overflow-y: auto !important;
@@ -52,6 +60,7 @@
       width: 100% !important;
       overscroll-behavior-y: auto !important;
     }
+
     html.home-page .globe-viewport {
       height: 100svh;
       min-height: 100svh;
@@ -202,7 +211,7 @@
       flex-direction: column;
       gap: 24px;
       transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
 
@@ -315,15 +324,18 @@
       .mun26-editorial-section {
         padding: 70px 24px 90px 24px;
       }
+
       .editorial-grid {
         grid-template-columns: 1fr;
         gap: 28px;
       }
+
       .pass-card-body {
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
       }
+
       .pass-action-btn {
         width: 100%;
         justify-content: center;
@@ -342,12 +354,14 @@
       transform: translateY(20px);
       transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .mun26-reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
   </style>
 </head>
+
 <body>
   <!-- Preloader Screen -->
   <div id="preloader">
@@ -363,7 +377,7 @@
   </script>
 
   <script>
-    (function() {
+    (function () {
       if (sessionStorage.getItem("hasVisited") === "true") {
         document.addEventListener("DOMContentLoaded", () => {
           const preloaderEl = document.getElementById("preloader");
@@ -386,19 +400,19 @@
 
       const words = ["Hello", "bonjour", "Ciao", "Olà", "やあ", "Hallå", "Guten tag", "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ"];
       let index = 0;
-      
+
       const width = window.innerWidth;
       const height = window.innerHeight;
-      
-      const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width/2} ${height + 300} 0 ${height} L0 0`;
-      
+
+      const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 300} 0 ${height} L0 0`;
+
       document.addEventListener("DOMContentLoaded", () => {
         const pathEl = document.getElementById("preloader-path");
         const textEl = document.getElementById("preloader-text");
         const preloaderEl = document.getElementById("preloader");
-        
+
         if (pathEl) pathEl.setAttribute("d", initialPath);
-        
+
         const cycleWords = () => {
           if (index < words.length - 1) {
             const timeout = index === 0 ? 1000 : 150;
@@ -420,7 +434,7 @@
             }, 100);
           }
         };
-        
+
         cycleWords();
       });
     })();
@@ -430,17 +444,19 @@
     .nav-pill {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.6s ease 0.2s;
     }
+
     .nav-pill.nav-ready {
       opacity: 1;
       pointer-events: auto;
     }
+
     .mobile-floating-menu-root {
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease 0.3s;
     }
+
     .mobile-floating-menu-root.nav-ready {
       opacity: 1;
       pointer-events: auto;
@@ -458,7 +474,7 @@
   </nav>
 
   <script>
-    (function() {
+    (function () {
       const nav = document.querySelector('.nav-pill');
       const items = nav.querySelectorAll('.nav-item');
       items.forEach(item => {
@@ -510,12 +526,13 @@
       <!-- Main Headline Lockup -->
       <div class="editorial-headline-block">
         <h2 class="editorial-main-title">RNS MUN<span class="title-apostrophe">'</span>26</h2>
-        <p class="editorial-tagline">The annual intercollegiate Model United Nations conference at RNS Institute of Technology.</p>
+        <p class="editorial-tagline">The annual intercollegiate Model United Nations conference at RNS Institute of
+          Technology.</p>
       </div>
 
       <!-- 3-Column Swiss Information Grid -->
       <div class="editorial-grid">
-        
+
         <!-- Column 1: Dates -->
         <div class="editorial-col">
           <span class="col-index">[ 01 ] SCHEDULE</span>
@@ -558,12 +575,13 @@
             <h3 class="pass-headline">Represent Your Delegation</h3>
             <p class="pass-sub">Choose from 6 councils and apply for your preferred country or portfolio allocation.</p>
           </div>
-          
+
           <div class="pass-action-btn">
             <span>Register as Delegate</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
             </svg>
           </div>
         </div>
@@ -596,4 +614,5 @@
   <script type="module" src="./app.js"></script>
   <script src="/register-sw.js"></script>
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-// Physics-based Morphing Scroll Navigation (inspired by @larsen66 / 21st.dev)
+// Scroll Morph & Dropdown Navigation Handler
 (function () {
   function initAnimatedNav() {
     const navPill = document.querySelector(".nav-pill");
@@ -8,104 +8,129 @@
     if (!navPill.querySelector(".nav-items-wrap")) {
       const items = Array.from(navPill.querySelectorAll(".nav-item"));
 
-      // Wrapper for nav links
+      // 1. Horizontal links wrapper (centered pill state)
       const wrap = document.createElement("div");
       wrap.className = "nav-items-wrap";
       items.forEach((it) => wrap.appendChild(it));
 
-      // Collapsed center hamburger icon
-      const collapsedIcon = document.createElement("div");
+      // 2. Collapsed Hamburger / Close button
+      const collapsedIcon = document.createElement("button");
+      collapsedIcon.type = "button";
       collapsedIcon.className = "nav-collapsed-icon";
-      collapsedIcon.setAttribute("aria-label", "Expand navigation");
+      collapsedIcon.setAttribute("aria-label", "Toggle navigation");
       collapsedIcon.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="nav-icon-hamburger" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="4" y1="7" x2="20" y2="7"/>
           <line x1="4" y1="12" x2="20" y2="12"/>
           <line x1="4" y1="17" x2="20" y2="17"/>
         </svg>
+        <svg class="nav-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
       `;
+
+      // 3. Dropdown Menu for scrolled top-right state
+      const dropdown = document.createElement("div");
+      dropdown.className = "nav-dropdown";
+      items.forEach((it) => {
+        const clone = it.cloneNode(true);
+        clone.className = "nav-dropdown-item" + (it.classList.contains("active") ? " active" : "");
+        // Prefetch on hover
+        clone.addEventListener("mouseenter", () => {
+          const href = clone.getAttribute("href");
+          if (href && href !== window.location.pathname) {
+            const linkId = `prefetch-${href.replace(/\//g, "")}`;
+            if (!document.getElementById(linkId)) {
+              const link = document.createElement("link");
+              link.id = linkId;
+              link.rel = "prefetch";
+              link.href = href;
+              document.head.appendChild(link);
+            }
+          }
+        });
+        clone.addEventListener("click", () => {
+          navPill.classList.remove("is-open");
+        });
+        dropdown.appendChild(clone);
+      });
 
       navPill.innerHTML = "";
       navPill.appendChild(wrap);
       navPill.appendChild(collapsedIcon);
+      navPill.appendChild(dropdown);
     }
 
-    let isExpanded = true;
-    let lastScrollY = window.scrollY;
-    let scrollPositionOnCollapse = 0;
-    const EXPAND_SCROLL_THRESHOLD = 80;
+    const collapsedBtn = navPill.querySelector(".nav-collapsed-icon");
+    let isScrolled = false;
+    const SCROLL_THRESHOLD = 100;
     let naturalWidth = 0;
 
     function measureExpandedWidth() {
       if (window.innerWidth <= 768) return;
-      // Temporarily remove collapsed class to measure full content width
-      const wasCollapsed = navPill.classList.contains("is-collapsed");
-      if (wasCollapsed) navPill.classList.remove("is-collapsed");
+      const wasScrolled = navPill.classList.contains("nav-scrolled");
+      if (wasScrolled) navPill.classList.remove("nav-scrolled");
 
       navPill.style.width = "auto";
       naturalWidth = navPill.offsetWidth;
 
-      if (wasCollapsed) {
-        navPill.classList.add("is-collapsed");
+      if (wasScrolled) {
+        navPill.classList.add("nav-scrolled");
         navPill.style.width = "48px";
       } else {
         navPill.style.width = `${naturalWidth}px`;
       }
     }
 
-    // Measure on load and resize
+    // Toggle dropdown when clicking collapsed hamburger button
+    if (collapsedBtn) {
+      collapsedBtn.addEventListener("click", (e) => {
+        if (navPill.classList.contains("nav-scrolled")) {
+          e.stopPropagation();
+          navPill.classList.toggle("is-open");
+        }
+      });
+    }
+
+    // Close dropdown on outside click
+    document.addEventListener("click", (e) => {
+      if (!navPill.contains(e.target)) {
+        navPill.classList.remove("is-open");
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        navPill.classList.remove("is-open");
+      }
+    });
+
+    function handleScroll() {
+      if (window.innerWidth <= 768) return;
+      const scrollY = window.scrollY;
+
+      if (scrollY > SCROLL_THRESHOLD && !isScrolled) {
+        isScrolled = true;
+        navPill.classList.add("nav-scrolled");
+        navPill.style.width = "48px";
+      } else if (scrollY <= SCROLL_THRESHOLD && isScrolled) {
+        isScrolled = false;
+        navPill.classList.remove("nav-scrolled", "is-open");
+        if (!naturalWidth) measureExpandedWidth();
+        navPill.style.width = naturalWidth ? `${naturalWidth}px` : "auto";
+      }
+    }
+
     setTimeout(measureExpandedWidth, 50);
     window.addEventListener("resize", () => {
       measureExpandedWidth();
-    });
+      handleScroll();
+    }, { passive: true });
 
-    function setExpanded(expanded) {
-      if (window.innerWidth <= 768) return; // Desktop PC only
-      if (isExpanded === expanded) return;
-      isExpanded = expanded;
-
-      if (isExpanded) {
-        if (!naturalWidth) measureExpandedWidth();
-        navPill.classList.remove("is-collapsed");
-        navPill.style.width = `${naturalWidth}px`;
-      } else {
-        navPill.classList.add("is-collapsed");
-        navPill.style.width = "48px";
-      }
-    }
-
-    // Expand on click when collapsed
-    navPill.addEventListener("click", (e) => {
-      if (!isExpanded) {
-        e.preventDefault();
-        e.stopPropagation();
-        setExpanded(true);
-      }
-    });
-
-    // Scroll listener with threshold detection matching Framer Motion motionValue event
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (window.innerWidth <= 768) return;
-        const latest = window.scrollY;
-        const previous = lastScrollY;
-
-        if (isExpanded && latest > previous && latest > 150) {
-          setExpanded(false);
-          scrollPositionOnCollapse = latest;
-        } else if (
-          !isExpanded &&
-          latest < previous &&
-          scrollPositionOnCollapse - latest > EXPAND_SCROLL_THRESHOLD
-        ) {
-          setExpanded(true);
-        }
-
-        lastScrollY = latest;
-      },
-      { passive: true }
-    );
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
   }
 
   if (document.readyState === "loading") {
