@@ -80,7 +80,7 @@ function orthonormalize(m) {
   ax /= la;
   ay /= la;
   az /= la;
-  
+
   // make b perpendicular to a
   const dot = bx * ax + by * ay + bz * az;
   bx -= ax * dot;
@@ -90,7 +90,7 @@ function orthonormalize(m) {
   bx /= lb;
   by /= lb;
   bz /= lb;
-  
+
   // c follows from the cross product, so it is correct by construction
   const cx = ay * bz - az * by;
   const cy = az * bx - ax * bz;
@@ -125,7 +125,7 @@ function updateSizes(img, cssPx) {
 /** Sets source, srcset and alt at once, touching nothing that hasn't changed. */
 function applyImage(img, source, cssPx) {
   if (cssPx !== undefined) updateSizes(img, cssPx);
-  
+
   img.onerror = () => {
     const currentSrc = img.src || "";
     if (currentSrc.includes("/globe/")) {
@@ -192,7 +192,7 @@ function prefersReducedMotion() {
 }
 
 function onReducedMotionChange(cb) {
-  if (typeof window === "undefined" || !window.matchMedia) return () => {};
+  if (typeof window === "undefined" || !window.matchMedia) return () => { };
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   const handler = () => cb(mq.matches);
   mq.addEventListener("change", handler);
@@ -345,38 +345,38 @@ function createLightbox(root, userOptions = {}) {
     }
     ensureOverlay();
     if (!detail || !detailImg || !backdrop) return;
-    
+
     const start = relativeRect(el);
     current = el;
     returnFocusTo = document.activeElement ?? null;
     const dur = o.respectReducedMotion && prefersReducedMotion() ? 0 : o.openDuration;
-    
+
     detail.style.setProperty("--lb-dur", `${dur}ms`);
     backdrop.style.setProperty("--lb-dur", `${dur}ms`);
     backdrop.style.background = `rgba(0,0,0,${o.backdropOpacity})`;
     backdrop.style.backdropFilter = o.backdropBlur ? `blur(${o.backdropBlur}px)` : "";
-    
+
     applyImage(detailImg, image, Math.round(root.clientWidth * o.openScale));
     detail.setAttribute("aria-label", image.alt || `Image ${index + 1}`);
     detail.style.borderRadius = `${o.cornerRadius}px`;
     detail.style.boxShadow = o.openShadow || "none";
     detail.style.transition = "none";
-    
+
     applyRect(detail, start);
     detail.style.opacity = "1";
-    
+
     // force a reflow
     void detail.offsetWidth;
-    
+
     const ease = "cubic-bezier(.22,1,.36,1)";
     detail.style.transition = ["left", "top", "width", "height"].map(p => `${p} var(--lb-dur) ${ease}`).join(",");
     applyRect(detail, targetRect(detailImg));
-    
+
     backdrop.style.opacity = "1";
     backdrop.style.pointerEvents = "auto";
     detail.style.pointerEvents = "auto";
     detail.focus({ preventScroll: true });
-    
+
     o.onOpen?.(index, image.src);
   }
 
@@ -387,10 +387,10 @@ function createLightbox(root, userOptions = {}) {
     backdrop.style.pointerEvents = "none";
     detail.style.pointerEvents = "none";
     detail.removeAttribute("aria-label");
-    
+
     returnFocusTo?.focus({ preventScroll: true });
     returnFocusTo = null;
-    
+
     if (!animate) {
       detail.style.transition = "none";
       detail.style.opacity = "0";
@@ -398,10 +398,10 @@ function createLightbox(root, userOptions = {}) {
       o.onClose?.();
       return;
     }
-    
+
     applyRect(detail, relativeRect(el));
     const dur = o.respectReducedMotion && prefersReducedMotion() ? 0 : o.openDuration;
-    
+
     closeTimer = setTimeout(() => {
       if (detail) detail.style.opacity = "0";
       current = null;
@@ -471,7 +471,7 @@ export function createSphereOrbit(root, userOptions = {}) {
     const normalized = normalizeImages(list);
     return normalized.length > 0 ? normalized : placeholderImages();
   };
-  
+
   let pics = withFallback(o.images);
   let W = 0;
   let H = 0;
@@ -480,7 +480,7 @@ export function createSphereOrbit(root, userOptions = {}) {
   let velYaw = 0;
   let velPitch = 0;
   let spun = 0;
-  
+
   const pt = { x: 0, y: 0, z: 0 };
   let dragging = false;
   let lastX = 0;
@@ -489,26 +489,26 @@ export function createSphereOrbit(root, userOptions = {}) {
   let lastFrame = 0;
   let raf = 0;
   let destroyed = false;
-  
+
   const tap = createTapTracker();
   const tileByEl = new WeakMap();
   let lightbox = null;
   let ro = null;
   let focusEl = null;
   let stilstaan = o.respectReducedMotion && prefersReducedMotion();
-  
+
   const stopMotionWatch = onReducedMotionChange(reduced => {
     stilstaan = o.respectReducedMotion && reduced;
   });
-  
+
   const prevPosition = root.style.position;
   if (getComputedStyle(root).position === "static") root.style.position = "relative";
   const prevOverflow = root.style.overflow;
   const prevTouch = root.style.touchAction;
   const prevSelect = root.style.userSelect;
-  
+
   root.style.overflow = "hidden";
-  root.style.touchAction = "none";
+  root.style.touchAction = "pan-y";
   root.style.userSelect = "none";
   root.setAttribute("role", "group");
   root.setAttribute("aria-label", o.label);
@@ -521,27 +521,27 @@ export function createSphereOrbit(root, userOptions = {}) {
     tiles = [];
     focusEl = null;
     const n = Math.max(1, Math.floor(o.count));
-    
+
     for (let i = 0; i < n; i++) {
       const uy = n === 1 ? 0 : 1 - (i / (n - 1)) * 2;
       const r = Math.sqrt(Math.max(0, 1 - uy * uy));
       const theta = i * GOLDEN_ANGLE;
-      
+
       const el = document.createElement("div");
       el.style.cssText = "position:absolute;top:0;left:0;overflow:hidden;will-change:transform,opacity;" +
         `border-radius:${o.cornerRadius}px;box-shadow:${o.tileShadow || "none"}`;
-      
+
       const img = document.createElement("img");
       img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block;pointer-events:none";
       img.draggable = false;
       img.alt = "";
       img.decoding = "async";
-      
+
       el.style.cursor = o.openable && o.interactive ? "zoom-in" : "";
       el.setAttribute("role", "img");
       el.appendChild(img);
       root.appendChild(el);
-      
+
       const tile = {
         el,
         img,
@@ -557,19 +557,19 @@ export function createSphereOrbit(root, userOptions = {}) {
 
   function layout() {
     if (tiles.length === 0 || pics.length === 0) return;
-    const cx = o.offsetX !== undefined ? W / 2 + o.offsetX : W / 2;
-    const cy = o.offsetY !== undefined ? H / 2 + o.offsetY : H / 2;
-    
-    const fit = o.autoFit 
+    const cx = W / 2;
+    const cy = H / 2;
+
+    const fit = o.autoFit
       ? (Math.min(W, H) < 500 ? Math.min(W, H) / 520 : Math.min(W, H) / FIT_REFERENCE)
       : 1;
     const radius = o.radius * fit;
     const tileW = o.tileWidth * fit;
     const tileH = o.tileHeight * fit;
-    
+
     const M = o.tilt ? multiply(rotationX(o.tilt * DEG), R) : R;
     const dist = Math.max(o.distance * fit, radius * 1.05);
-    
+
     for (let i = 0; i < tiles.length; i++) {
       const t = tiles[i];
       transform(M, t.ux, t.uy, t.uz, pt);
@@ -577,23 +577,23 @@ export function createSphereOrbit(root, userOptions = {}) {
       const wx = pt.x * radius;
       const wy = pt.y * radius;
       const wz = pt.z * radius;
-      
+
       const scale = dist / (dist - wz);
       const tw = tileW * scale;
       const th = tileH * scale;
       const x = cx + wx * scale - tw / 2;
       const y = cy + wy * scale - th / 2;
-      
+
       const front = (z2 + 1) / 2;
       const opacity = o.hideBack ? (z2 >= 0 ? 1 : 0) : 1 - o.depthFade * (1 - front);
       const s = t.el.style;
-      
+
       s.width = `${tw}px`;
       s.height = `${th}px`;
       s.zIndex = String(Math.round(front * 1e3));
       s.opacity = t.el === lightbox?.openElement ? "0" : String(opacity);
       s.transform = `translate3d(${x}px, ${y}px, 0)`;
-      
+
       const idx = i % pics.length;
       if (idx !== t.index) {
         t.index = idx;
@@ -608,7 +608,7 @@ export function createSphereOrbit(root, userOptions = {}) {
     if (destroyed) return;
     const dt = lastFrame ? Math.min(0.1, (now - lastFrame) / 1e3) : 0;
     lastFrame = now;
-    
+
     if (!dragging && !lightbox?.openElement) {
       if (o.autoRotate && !stilstaan) {
         const a = o.speed * DEG * o.direction * dt;
@@ -618,7 +618,7 @@ export function createSphereOrbit(root, userOptions = {}) {
           R = multiply(multiply(R, rotationY(a)), rotationX(a * 0.618));
         } else R = multiply(R, rotationY(a));
       }
-      
+
       if (velYaw || velPitch) {
         R = multiply(multiply(rotationY(velYaw * dt), rotationX(velPitch * dt)), R);
         const decay = Math.pow(o.friction, dt * 60);
@@ -627,10 +627,10 @@ export function createSphereOrbit(root, userOptions = {}) {
         if (Math.abs(velYaw) < 5e-4) velYaw = 0;
         if (Math.abs(velPitch) < 5e-4) velPitch = 0;
       }
-      
+
       if (++spun % 240 === 0) R = orthonormalize(R);
     }
-    
+
     layout();
     markFocus();
     raf = requestAnimationFrame(frame);
@@ -638,7 +638,7 @@ export function createSphereOrbit(root, userOptions = {}) {
 
   const onDown = e => {
     if (lightbox?.openElement) return;
-    
+
     const hit = e.target?.closest?.("div");
     const tile = hit ? tileByEl.get(hit) ?? null : null;
     if (!tile) return;
@@ -648,36 +648,36 @@ export function createSphereOrbit(root, userOptions = {}) {
     lastT = performance.now();
     velYaw = 0;
     velPitch = 0;
-    
+
     if (o.draggable) {
       dragging = true;
       root.style.cursor = "grabbing";
       try {
         root.setPointerCapture(e.pointerId);
-      } catch {}
+      } catch { }
     }
-    
+
     tap.down(e, tile);
   };
 
   const onMove = e => {
     tap.move(e);
     if (!dragging) return;
-    
+
     const now = performance.now();
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
     const dt = Math.max(1, now - lastT) / 1e3;
-    
+
     // Use a constant reference width (1500) so dragging speed is identical on both PC and mobile viewports
     const perPx = Math.PI / 1500;
     const ay = dx * perPx;
     const ax = dy * perPx;
-    
+
     R = multiply(multiply(rotationY(ay), rotationX(ax)), R);
     velYaw = ay / dt;
     velPitch = ax / dt;
-    
+
     lastX = e.clientX;
     lastY = e.clientY;
     lastT = now;
@@ -692,7 +692,7 @@ export function createSphereOrbit(root, userOptions = {}) {
     if (!tile || !o.openable || lightbox?.openElement) return;
     if (tile.index < 0 || !pics[tile.index]) return;
     if (parseFloat(tile.el.style.opacity || "0") < 0.35) return;
-    
+
     velYaw = 0;
     velPitch = 0;
     lightbox?.open(tile.el, pics[tile.index], tile.index);
@@ -794,7 +794,7 @@ export function createSphereOrbit(root, userOptions = {}) {
 
   build();
   start();
-  
+
   ro = new ResizeObserver(() => {
     lightbox?.close(false);
     W = root.clientWidth;
@@ -811,22 +811,22 @@ export function createSphereOrbit(root, userOptions = {}) {
       const wasInteractive = o.interactive;
       const imagesChanged = next.images !== undefined && next.images !== o.images;
       const shadowChanged = next.tileShadow !== undefined && next.tileShadow !== o.tileShadow;
-      
+
       o = { ...o, ...next };
-      
+
       if (shadowChanged) refreshShadows();
       if (imagesChanged) {
         pics = withFallback(o.images);
         for (const t of tiles) t.index = -1;
       }
-      
+
       lightbox?.update(o);
-      
+
       if (needsRebuild) {
         lightbox?.close(false);
         build();
       }
-      
+
       if (o.interactive !== wasInteractive) {
         lightbox?.close(false);
         cancelAnimationFrame(raf);

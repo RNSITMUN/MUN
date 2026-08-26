@@ -89,9 +89,11 @@ if (canvas) {
         rect: rect,
         get scaleFactor() {
           const h = window.innerHeight || 800;
-          // Character height occupies ~52% of screen height at maximum
-          // Guarantees the top 48% (navbar, title, and email input) is completely clear of overlap!
-          const targetPeepHeight = Math.min(420, Math.max(160, h * 0.52));
+          const isMobile = (window.innerWidth || 800) < 768;
+          // Responsive scaling: Desktop ~35-40% viewport height, Mobile ~25-30% viewport height
+          const targetPeepHeight = isMobile
+            ? Math.min(220, Math.max(160, h * 0.28))
+            : Math.min(350, Math.max(240, h * 0.38));
           return targetPeepHeight / rect[3];
         },
         get width() {
