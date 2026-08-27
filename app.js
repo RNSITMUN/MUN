@@ -81,10 +81,10 @@ function getGlobeDimensions() {
     // Mobile portrait (< 768px portrait) - exact existing values
     return {
       count: 55,
-      radius: 190,
-      distance: 445,
-      tileWidth: 72,
-      tileHeight: 90
+      radius: 180,
+      distance: 420,
+      tileWidth: 70,
+      tileHeight: 88
     };
   } else {
     // Desktop - exact existing values
