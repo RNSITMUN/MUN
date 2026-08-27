@@ -80,11 +80,11 @@ function getGlobeDimensions() {
   } else if (isMobilePortrait) {
     // Mobile portrait (< 768px portrait) - exact existing values
     return {
-      count: 38,
-      radius: 160,
-      distance: 420,
-      tileWidth: 62,
-      tileHeight: 78
+      count: 55,
+      radius: 190,
+      distance: 445,
+      tileWidth: 72,
+      tileHeight: 90
     };
   } else {
     // Desktop - exact existing values
@@ -132,4 +132,4 @@ window.addEventListener("resize", () => {
   const newDims = getGlobeDimensions();
   carousel.update(newDims);
   carousel.resize();
-});
+});
