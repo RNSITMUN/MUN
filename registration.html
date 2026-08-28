@@ -1375,20 +1375,6 @@
       color: #FFF7EB;
     }
 
-    .sheet-helper-tip {
-      font-size: 0.76rem;
-      color: #0b8043;
-      background: #e6f4ea;
-      border: 1.5px solid #b7e1cd;
-      border-radius: 8px;
-      padding: 8px 11px;
-      margin-top: 8px;
-      line-height: 1.4;
-      display: flex;
-      align-items: flex-start;
-      gap: 7px;
-    }
-
     /* Delegate Number Input with Integrated Stepper Arrows (10 - 18) */
     .delegate-number-input-wrap {
       position: relative;
@@ -2315,40 +2301,30 @@
           <div class="sheet-generator-box">
             <div class="sheet-generator-header">
               <span class="sheet-icon">📋</span>
-              <h4 class="sheet-title">Delegation Roster Sheet (Auto-filled Headers)</h4>
+              <h4 class="sheet-title">Delegation Roster Sheet</h4>
             </div>
-            <p class="sheet-desc">Generate a Google Sheet formatted with all column headings automatically filled for your delegation members.</p>
-            <div class="sheet-columns-preview" id="dlg-columns-preview">
-              Auto-filled Headers: Sl No. | Name | Institution | USN | Committee Pref 1 | Portfolio Pref 1, 2, 3 | Committee Pref 2 | Portfolio Pref 1, 2, 3
-            </div>
+            <p class="sheet-desc">Fill the details of all the delegation members</p>
 
             <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
               onclick="generateDelegationGoogleSheet()">
-              <span>Create Pre-filled Delegate Sheet</span>
+              <span>Create Delegation Sheet</span>
             </button>
 
             <!-- Sheet link result -->
             <div id="dlg-sheet-result" class="sheet-link-result">
               <div class="sheet-link-card">
                 <div class="sheet-link-info">
-                  <span>✓</span>
                   <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
                     class="sheet-link-text">Open Google Sheet</a>
                 </div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download CSV</button>
-                  <button type="button" class="sheet-btn-action" onclick="copyDelegationHeaders()">Copy 11 Headers</button>
-                  <button type="button" class="sheet-btn-action" onclick="copyDelegationSheetLink()">Copy Link</button>
+                <div>
+                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download as CSV</button>
                 </div>
-              </div>
-              <div class="sheet-helper-tip">
-                <span>💡</span>
-                <span><strong>Headers Auto-Copied!</strong> If your new Google Sheet opens empty, simply click cell <strong>A1</strong> and press <strong>Ctrl + V</strong> (Paste) to instantly fill all 11 columns.</span>
               </div>
             </div>
             <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
           </div>
-          <div id="dlg-sheet-error" class="error-container">Please click "Create Pre-filled Delegate Sheet" to generate your delegation sheet</div>
+          <div id="dlg-sheet-error" class="error-container">Please click "Create Delegation Sheet" to generate your delegation sheet</div>
         </div>
 
         <!-- Payment Scheme -->
@@ -3607,21 +3583,6 @@
       URL.revokeObjectURL(url);
     }
 
-    function copyDelegationHeaders() {
-      const headers = getDelegationHeaders();
-      const headRow = getHeadRowData();
-      const text = headers.join('\t') + '\n' + headRow.join('\t');
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-          alert('✓ Headers & Head of Delegation details copied to clipboard!\n\nOpen your Google Sheet, click cell A1, and press Ctrl+V to paste.');
-        }).catch(() => {
-          prompt('Copy Headers & Row 1:', text);
-        });
-      } else {
-        prompt('Copy Headers & Row 1:', text);
-      }
-    }
-
     async function generateDelegationGoogleSheet() {
       const delegationNameInput = document.getElementById('dlg-delegation-name');
       const delegationName = delegationNameInput ? delegationNameInput.value.trim() : '';
@@ -3642,10 +3603,12 @@
         return;
       }
 
+      const gasUrl = "https://script.google.com/macros/s/AKfycby_2bPSyHzRoxP-Q20KX-sD-ZgM9AQV9hiUuGnntovGNbxmxbuSBCAG_BfCINruXbPbmw/exec";
+      const headers = getDelegationHeaders();
+      const headRow = getHeadRowData();
+
       // Auto copy the formatted headers & Head of Delegation into user's clipboard immediately
       try {
-        const headers = getDelegationHeaders();
-        const headRow = getHeadRowData();
         const clipboardText = headers.join('\t') + '\n' + headRow.join('\t');
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(clipboardText);
@@ -3655,53 +3618,84 @@
       }
 
       const btn = document.getElementById('dlg-create-sheet-btn');
-      const originalBtnText = btn ? btn.innerHTML : 'Create Pre-filled Delegate Sheet';
+      const originalBtnText = btn ? btn.innerHTML : 'Create Delegation Sheet';
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Preparing Auto-Filled Sheet...</span>';
+        btn.innerHTML = '<span>⏳ Preparing Delegation Sheet...</span>';
       }
 
       const errorEl = document.getElementById('dlg-sheet-error');
       if (errorEl) errorEl.style.display = 'none';
 
+      let sheetUrl = null;
+
+      // 1. Try Google Apps Script direct web app call
       try {
-        const response = await fetch('/api/create-sheet', {
+        const payload = JSON.stringify({
+          delegationName,
+          delegationType,
+          headName,
+          email,
+          phone,
+          headers,
+          headRow
+        });
+
+        const response = await fetch(gasUrl, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            delegationName,
-            delegationType,
-            headName,
-            email,
-            phone
-          })
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: payload
         });
 
         const data = await response.json();
-
-        if (data.success && data.sheetUrl) {
-          const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-          if (hiddenLinkInput) hiddenLinkInput.value = data.sheetUrl;
-
-          const resultBox = document.getElementById('dlg-sheet-result');
-          const anchor = document.getElementById('dlg-sheet-anchor');
-          if (resultBox && anchor) {
-            anchor.href = data.sheetUrl;
-            anchor.textContent = `Open Google Sheet: ${delegationName}`;
-            resultBox.classList.add('is-generated');
-          }
-
-          if (btn) {
-            btn.innerHTML = '<span>✓ Headers Formatted & Sheet Ready</span>';
-          }
-        } else {
-          throw new Error(data.error || 'Failed to generate Google Sheet');
+        if (data && data.sheetUrl) {
+          sheetUrl = data.sheetUrl;
         }
-      } catch (err) {
-        console.error('Sheet creation error:', err);
-        // Seamless client-side template fallback
+      } catch (gasErr) {
+        console.log('Direct Apps Script notice:', gasErr);
+      }
+
+      // 2. If not obtained, try backend API route
+      if (!sheetUrl) {
+        try {
+          const response = await fetch('/api/create-sheet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              delegationName,
+              delegationType,
+              headName,
+              email,
+              phone
+            })
+          });
+          const data = await response.json();
+          if (data && data.sheetUrl && !data.isFallback) {
+            sheetUrl = data.sheetUrl;
+          }
+        } catch (apiErr) {
+          console.log('Backend API notice:', apiErr);
+        }
+      }
+
+      // 3. If live sheet created, show ready status
+      if (sheetUrl) {
+        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+        if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
+
+        const resultBox = document.getElementById('dlg-sheet-result');
+        const anchor = document.getElementById('dlg-sheet-anchor');
+        if (resultBox && anchor) {
+          anchor.href = sheetUrl;
+          anchor.textContent = `Open Google Sheet: ${delegationName}`;
+          resultBox.classList.add('is-generated');
+        }
+
+        if (btn) {
+          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+        }
+      } else {
+        // Fallback with auto-titled sheet & instant clipboard sync
         const hiddenLinkInput = document.getElementById('dlg-sheet-link');
         const fallbackUrl = `https://docs.google.com/spreadsheets/create?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
         if (hiddenLinkInput) hiddenLinkInput.value = fallbackUrl;
@@ -3714,10 +3708,8 @@
           resultBox.classList.add('is-generated');
         }
         if (btn) {
-          btn.innerHTML = '<span>✓ Sheet & Download CSV Ready</span>';
+          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
         }
-      } finally {
-        if (btn) btn.disabled = false;
       }
     }
 
