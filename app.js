@@ -68,36 +68,30 @@ function getGlobeDimensions() {
   const isMobilePortrait = w <= 768 && !isLandscape;
 
   if (isMobileLandscape) {
-    // Landscape mobile / compact landscape - slightly reduced for ideal clearance
-    const dynamicRadius = Math.round(Math.min(152, Math.max(132, h * 0.33)));
-    const dynamicDistance = Math.round(Math.min(390, Math.max(360, h * 0.86)));
-    const dynamicTileW = Math.round(Math.min(56, Math.max(48, h * 0.12)));
-    const dynamicTileH = Math.round(Math.min(70, Math.max(60, h * 0.15)));
-
     return {
-      count: 55, // Retain full pool of images
-      radius: dynamicRadius,
-      distance: dynamicDistance,
-      tileWidth: dynamicTileW,
-      tileHeight: dynamicTileH
+      count: 55,
+      radius: 170,
+      distance: 420,
+      tileWidth: 64,
+      tileHeight: 80
     };
   } else if (isMobilePortrait) {
-    // Mobile portrait (< 768px portrait)
+    // Mobile portrait (< 768px portrait) - exact original values
     return {
       count: 55,
-      radius: 180,
-      distance: 420,
-      tileWidth: 70,
-      tileHeight: 88
+      radius: 190,
+      distance: 445,
+      tileWidth: 72,
+      tileHeight: 90
     };
   } else {
-    // Desktop / Large screen
+    // Desktop - exact original values
     return {
       count: 55,
-      radius: 200,
-      distance: 460,
-      tileWidth: 76,
-      tileHeight: 96
+      radius: 190,
+      distance: 445,
+      tileWidth: 72,
+      tileHeight: 90
     };
   }
 }
