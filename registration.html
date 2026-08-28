@@ -319,12 +319,12 @@
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100svh;
       z-index: 99999;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       box-sizing: border-box;
       background-color: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(14px);
@@ -1862,10 +1862,12 @@
       /* Registration Form on Small Phones */
       .modal-registration-card {
         width: calc(100vw - 12px);
-        padding: 22px 12px 22px 12px;
+        padding: 20px 12px 60px 12px;
         border-radius: 16px;
         box-shadow: 4px 4px 0px var(--text-primary);
-        max-height: 89vh;
+        max-height: calc(100svh - 20px);
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
 
       .reg-form-title {
@@ -1915,7 +1917,7 @@
     /* ================================================= */
     @media (max-width: 380px) {
       .registration-viewport {
-        padding: 62px 8px 110px 8px;
+        padding: 62px 8px 40px 8px;
       }
 
       .registration-title {
@@ -1952,7 +1954,10 @@
 
       .modal-registration-card {
         width: calc(100vw - 8px);
-        padding: 18px 10px;
+        padding: 16px 10px 56px 10px;
+        max-height: calc(100svh - 16px);
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
 
       .reg-form-title {
