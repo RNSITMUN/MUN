@@ -3628,63 +3628,53 @@
 
       let sheetUrl = null;
 
-      // 1. Try Google Apps Script direct web app call with 4-second fast timeout
+      // 1. Try backend API endpoint (handles Node redirect & Google Auth with 0 CORS issues)
       try {
-        const payload = JSON.stringify({
-          delegationName,
-          delegationType,
-          headName,
-          email,
-          phone,
-          headers,
-          headRow
-        });
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4500);
-
-        const response = await fetch(gasUrl, {
+        const response = await fetch('/api/create-sheet', {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: payload,
-          signal: controller.signal
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            delegationName,
+            delegationType,
+            headName,
+            email,
+            phone
+          })
         });
-        clearTimeout(timeoutId);
 
         const data = await response.json();
-        if (data && data.sheetUrl) {
+        if (data && data.sheetUrl && !data.isFallback) {
           sheetUrl = data.sheetUrl;
         }
-      } catch (gasErr) {
-        console.log('Direct Apps Script notice:', gasErr);
+      } catch (apiErr) {
+        console.log('API notice:', apiErr);
       }
 
-      // 2. If not obtained, try backend API route with fast timeout
+      // 2. Direct fallback to Google Apps Script Web App
       if (!sheetUrl) {
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-          const response = await fetch('/api/create-sheet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              delegationName,
-              delegationType,
-              headName,
-              email,
-              phone
-            }),
-            signal: controller.signal
+          const payload = JSON.stringify({
+            delegationName,
+            delegationType,
+            headName,
+            email,
+            phone,
+            headers,
+            headRow
           });
-          clearTimeout(timeoutId);
+
+          const response = await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: payload
+          });
 
           const data = await response.json();
-          if (data && data.sheetUrl && !data.isFallback) {
+          if (data && data.sheetUrl) {
             sheetUrl = data.sheetUrl;
           }
-        } catch (apiErr) {
-          console.log('Backend API notice:', apiErr);
+        } catch (gasErr) {
+          console.log('Direct Apps Script notice:', gasErr);
         }
       }
 
