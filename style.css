@@ -365,6 +365,13 @@ body {
   /* Keep active wine red on hover */
 }
 
+/* Hide Past Events from Navbar */
+#nav-past,
+.nav-item[href*="past-events"],
+.nav-dropdown-item[href*="past-events"] {
+  display: none !important;
+}
+
 /* Collapsed Hamburger Icon Button */
 .nav-collapsed-icon {
   position: absolute;

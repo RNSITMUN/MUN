@@ -2,7 +2,6 @@
 (function () {
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Past Events", href: "/past-events" },
     { label: "Registration", href: "/registration" },
     { label: "Stay Connected", href: "/stay-connected" },
     { label: "Team", href: "/team" },
