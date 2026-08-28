@@ -220,12 +220,12 @@
       color: #FFF7EB;
       border: 3px solid #000;
       border-radius: 20px;
-      padding: 36px 40px;
+      padding: 32px 32px 28px 32px;
       text-decoration: none;
       box-shadow: 6px 6px 0 #000;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
       transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
         box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
@@ -245,7 +245,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 247, 235, 0.2);
+      border-bottom: 1px solid rgba(255, 247, 235, 0.18);
       padding-bottom: 14px;
     }
 
@@ -294,15 +294,14 @@
 
     .pass-card-body {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .pass-card-text {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
     }
 
     .pass-headline {
@@ -312,63 +311,42 @@
       letter-spacing: -0.03em;
       color: #FFF7EB;
       margin: 0;
+      line-height: 1.15;
     }
 
     .pass-sub {
-      font-size: 0.92rem;
-      color: rgba(255, 247, 235, 0.78);
+      font-size: 0.94rem;
+      line-height: 1.45;
+      color: rgba(255, 247, 235, 0.82);
       margin: 0;
       font-weight: 400;
     }
 
-    .pass-actions-group {
+    .pass-action-btn {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .pass-action-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #E5A93C;
+      background: #FFF7EB;
       color: #000;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       font-weight: 800;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       border: 2.5px solid #000;
       border-radius: 12px;
-      padding: 13px 22px;
+      padding: 14px 24px;
       box-shadow: 3.5px 3.5px 0 #000;
-      white-space: nowrap;
-      text-decoration: none;
+      width: 100%;
+      box-sizing: border-box;
       transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
     }
 
-    .pass-action-btn:hover {
-      background: #FFF7EB;
-      color: #000;
-      transform: translate(-2px, -2px);
+    .editorial-pass-card:hover .pass-action-btn {
+      background: #FFFFFF;
+      transform: translateY(-2px);
       box-shadow: 5px 5px 0 #000;
-    }
-
-    .pass-action-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 2px 2px 0 #000;
-    }
-
-    .pass-action-btn-secondary {
-      background: #FFF7EB;
-      color: #000;
-    }
-
-    .pass-action-btn-secondary:hover {
-      background: #E5A93C;
-      color: #000;
     }
 
     /* Landscape & Compact Screen Adjustments for Globe Positioning */
@@ -641,41 +619,31 @@
       </div>
 
       <!-- Delegate Invitation Card -->
-      <div class="editorial-pass-card" id="homeDelegateCard" aria-label="Open registration options">
+      <a href="/registration" class="editorial-pass-card" id="homeDelegateCard" aria-label="Open delegate registration">
         <div class="pass-card-header">
           <span class="pass-status-pill">
             <span class="status-live-dot"></span>
             <span>APPLICATIONS OPEN</span>
           </span>
-          <span class="pass-id">PASS // 2026-REG</span>
+          <span class="pass-id">PASS // 2026-DEL</span>
         </div>
 
         <div class="pass-card-body">
           <div class="pass-card-text">
             <h3 class="pass-headline">Represent Your Delegation</h3>
-            <p class="pass-sub">Apply as an individual delegate across 6 councils or register your complete institutional delegation roster.</p>
+            <p class="pass-sub">Choose from 6 councils and apply for your preferred country or portfolio allocation.</p>
           </div>
 
-          <div class="pass-actions-group">
-            <a href="/registration" class="pass-action-btn">
-              <span>Register as Delegate</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a href="/registration?type=delegation" class="pass-action-btn pass-action-btn-secondary">
-              <span>Register as Delegation</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
+          <div class="pass-action-btn">
+            <span>REGISTER AS DELEGATE</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </div>
         </div>
-      </div>
+      </a>
 
     </div>
   </section>
