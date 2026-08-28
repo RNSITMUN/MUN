@@ -90,10 +90,10 @@ if (canvas) {
         get scaleFactor() {
           const h = window.innerHeight || 800;
           const isMobile = (window.innerWidth || 800) < 768;
-          // Responsive scaling: Desktop ~35-40% viewport height, Mobile ~25-30% viewport height
+          // Responsive scaling: gently increased crowd size with clean anchor
           const targetPeepHeight = isMobile
-            ? Math.min(220, Math.max(160, h * 0.28))
-            : Math.min(350, Math.max(240, h * 0.38));
+            ? Math.min(215, Math.max(140, h * 0.25))
+            : Math.min(290, Math.max(165, h * 0.31));
           return targetPeepHeight / rect[3];
         },
         get width() {
@@ -249,24 +249,32 @@ if (form) {
     e.preventDefault();
     const input = form.querySelector(".subscribe-input");
     const btn = form.querySelector(".subscribe-btn");
-    const email = input.value;
-    if (email) {
-      const originalText = btn.textContent;
-      btn.textContent = "✓";
-      btn.style.color = "#22c55e"; // Success green text
-      btn.disabled = true;
-      input.value = "";
-      input.disabled = true;
-      input.placeholder = "Thank you for connecting!";
-
-      // Revert to original states after 2.5s
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.color = ""; // Revert to black
-        btn.disabled = false;
-        input.disabled = false;
-        input.placeholder = "sup@gmail.com";
-      }, 2500);
+    const email = input.value.trim();
+    
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      input.focus();
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (window.gsap) {
+        gsap.fromTo(input, { x: -6 }, { x: 6, duration: 0.08, repeat: 3, yoyo: true, onComplete: () => gsap.set(input, { x: 0 }) });
+      }
+      return;
     }
+
+    const originalText = btn.textContent;
+    btn.textContent = "✓";
+    btn.style.color = "#22c55e"; // Success green text
+    btn.disabled = true;
+    input.value = "";
+    input.disabled = true;
+    input.placeholder = "Thank you for connecting!";
+
+    // Revert to original states after 2.5s
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.color = ""; // Revert to black
+      btn.disabled = false;
+      input.disabled = false;
+      input.placeholder = "sup@gmail.com";
+    }, 2500);
   });
 }
