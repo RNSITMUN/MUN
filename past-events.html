@@ -65,9 +65,9 @@
       box-sizing: border-box;
     }
 
-    /* Header Container */
+    /* Header Container matching original styling */
     .header-container {
-      min-height: 85vh;
+      height: 100vh;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -78,21 +78,20 @@
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
-      padding: clamp(100px, 14vh, 140px) 24px 60px 24px;
-      transform: none;
+      padding: 0 40px 120px 40px;
+      transform: translateX(-40px);
     }
 
     .title {
       position: relative;
       z-index: 10;
       font-family: var(--font-sans);
-      font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+      font-size: clamp(3.2rem, 8.5vw, 6.8rem);
       font-weight: 800;
-      line-height: 0.98;
-      letter-spacing: -0.04em;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
       margin: 0;
       color: #000000;
-      text-align: center;
     }
 
     .subtitle {
@@ -105,37 +104,37 @@
       letter-spacing: -0.01em;
     }
 
-    /* Centered SVG follow path */
+    /* Absolute positioned SVG follow path */
     .scroll-svg {
       position: absolute;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1200px, 95vw);
-      height: auto;
-      max-height: 2400px;
+      top: 120px;
+      right: 4%;
+      width: 1200px;
+      height: 2319px;
       z-index: 0;
       overflow: visible;
       pointer-events: none;
     }
 
-    /* Responsive adjustments for SVG layout */
+    /* Responsive adjustments for the giant SVG layout */
     @media (max-width: 1024px) {
       .scroll-svg {
-        top: 80px;
-        width: min(900px, 95vw);
+        top: 100px;
+        right: -15%;
+        width: 1000px;
       }
     }
     @media (max-width: 768px) {
       .scroll-container {
-        height: 250vh;
+        height: 250vh; /* Scaled down layout height for smaller screens */
       }
       .scroll-svg {
-        width: 750px;
-        top: 90px;
+        right: -25%;
+        width: 800px;
+        top: 120px;
       }
       .title {
-        font-size: clamp(2.2rem, 8vw, 4.2rem);
+        font-size: clamp(2.2rem, 8.5vw, 4.5rem);
       }
     }
 
@@ -226,20 +225,19 @@
         overflow-x: hidden !important;
       }
       .scroll-svg {
-        left: 50% !important;
+        left: -2.5vw !important;
         right: auto !important;
-        transform: translateX(-50%) !important;
-        width: 100vw !important;
+        width: 105vw !important;
         height: auto !important;
-        top: 240px !important;
+        top: 300px !important;
       }
       .header-container {
         justify-content: flex-start !important;
-        padding: 130px 16px 0 16px !important;
-        transform: none !important;
+        padding: 205px 20px 0 20px !important;
+        transform: translateX(-42px) !important; /* Center heading more cleanly on narrow screens */
       }
       .title {
-        font-size: clamp(2.4rem, 10.5vw, 3.6rem) !important;
+        font-size: clamp(2.5rem, 11vw, 3.8rem) !important;
         line-height: 1.05 !important;
       }
       .footer-card {
@@ -253,7 +251,14 @@
 </head>
 <body>
 
-
+  <!-- Landscape orientation warning overlay -->
+  <div class="orientation-warning">
+    <div class="warning-content">
+      <div class="phone-icon">📱</div>
+      <h2>Please Rotate Your Device</h2>
+      <p>This experience is optimized for portrait mode.</p>
+    </div>
+  </div>
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
@@ -277,7 +282,7 @@
           stroke="var(--accent-color)"
           stroke-width="24"
           pathLength="1"
-          stroke-dasharray="0.35 1"
+          stroke-dasharray="0.5 1"
           stroke-dashoffset="0">
         </path>
       </svg>
@@ -329,20 +334,16 @@
         });
       });
 
-      // 2. Exact Scroll progress calculation
+      // 2. Exact Scroll progress calculation from reference page
       const path = document.getElementById('scroll-path');
       const svg = document.querySelector('.scroll-svg');
 
-      function adjustViewBox() {
-        if (window.innerWidth <= 480) {
-          svg.setAttribute('viewBox', '360 0 900 2319');
-          path.setAttribute('stroke-width', '28');
-        } else {
-          svg.setAttribute('viewBox', '0 0 1278 2319');
-          path.setAttribute('stroke-width', '24');
-        }
+      if (window.innerWidth <= 480) {
+        // Crop SVG viewBox horizontal margins to scale up the curves, keeping them fully inside the viewport
+        svg.setAttribute('viewBox', '360 0 900 2319');
+        // Increase stroke weight to make the curves look bold and thick on mobile
+        path.setAttribute('stroke-width', '28');
       }
-      adjustViewBox();
 
       let scrollTickerActive = false;
       function updatePathProgress() {
@@ -352,8 +353,8 @@
         // Calculate fraction scrolled from 0 to 1
         const fraction = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
         
-        // Map progress from 0.35 to 1.0 so scrolling immediately animates and draws the stroke down the canvas
-        const pathLength = 0.35 + fraction * 0.65;
+        // Map progress to go from 0.5 to 1.0 (starting half drawn on page load to display behind title)
+        const pathLength = 0.5 + fraction * 0.5;
         
         // Update SVG path length attribute
         path.setAttribute('stroke-dasharray', `${pathLength} 1`);
@@ -363,7 +364,6 @@
         if (!scrollTickerActive) {
           scrollTickerActive = true;
           requestAnimationFrame(() => {
-            adjustViewBox();
             updatePathProgress();
             scrollTickerActive = false;
           });
@@ -371,13 +371,12 @@
       }
 
       // Bind scroll and resize events
-      window.addEventListener('scroll', onScrollOrResize, { passive: true });
+      window.addEventListener('scroll', onScrollOrResize);
       window.addEventListener('resize', onScrollOrResize);
       
-      // Initial executions to ensure instant correct draw on load
+      // Initial snap execution
       updatePathProgress();
-      setTimeout(updatePathProgress, 100);
-      setTimeout(updatePathProgress, 400);
+      setTimeout(updatePathProgress, 200);
     })();
   </script>
   <script type="module" src="./topology-background.js"></script>
