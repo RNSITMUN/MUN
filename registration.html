@@ -939,8 +939,31 @@
       cursor: pointer;
       box-shadow: 4px 4px 0px var(--text-primary);
       transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
-      margin-top: 14px;
-      margin-bottom: 12px;
+      margin: 0;
+    }
+
+    /* Sticky bottom bar: keeps Next/Submit always visible at modal bottom */
+    .sticky-btn-bar,
+    .wizard-btn-row {
+      position: sticky;
+      bottom: -1px;
+      z-index: 10;
+      background: var(--bg-color);
+      padding: 14px 0 6px 0;
+      margin-top: 4px;
+    }
+
+    /* Subtle top fade so content scrolls cleanly behind the sticky bar */
+    .sticky-btn-bar::before,
+    .wizard-btn-row::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: linear-gradient(to bottom, transparent, var(--bg-color));
+      pointer-events: none;
     }
 
     .submit-btn:hover {
@@ -1018,7 +1041,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-top: 8px;
     }
 
     .btn-wizard-back {
@@ -2344,7 +2366,9 @@
           <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
         </div>
 
-        <button type="submit" class="submit-btn" id="dlg-submit-btn">Submit Delegation Registration</button>
+        <div class="sticky-btn-bar">
+          <button type="submit" class="submit-btn" id="dlg-submit-btn">Submit Delegation Registration</button>
+        </div>
       </form>
 
       <!-- Delegation Success Screen Overlay -->
@@ -2498,7 +2522,9 @@
               'Fresher')</div>
           </div>
 
-          <button type="button" class="submit-btn" id="reg-step-1-next" onclick="goToStep(2)">Next</button>
+          <div class="sticky-btn-bar">
+            <button type="button" class="submit-btn" id="reg-step-1-next" onclick="goToStep(2)">Next</button>
+          </div>
         </div>
 
         <!-- STEP 2: Committee Preference 1 & Portfolios -->
