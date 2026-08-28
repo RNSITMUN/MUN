@@ -64,21 +64,25 @@ function getGlobeDimensions() {
   const w = window.innerWidth;
   const h = window.innerHeight;
   const isLandscape = w > h;
-  const isMobileLandscape = isLandscape && (h <= 500 || w <= 950);
+  const isMobileLandscape = isLandscape && (h <= 550 || w <= 950);
   const isMobilePortrait = w <= 768 && !isLandscape;
 
   if (isMobileLandscape) {
-    // Landscape mobile (e.g. iPhone 15 Pro Max 932x430, 844x390, etc.)
-    // Compact spherical globe occupying ~50-60% viewport height without clipping
+    // Landscape mobile / compact landscape - slightly reduced for ideal clearance
+    const dynamicRadius = Math.round(Math.min(152, Math.max(132, h * 0.33)));
+    const dynamicDistance = Math.round(Math.min(390, Math.max(360, h * 0.86)));
+    const dynamicTileW = Math.round(Math.min(56, Math.max(48, h * 0.12)));
+    const dynamicTileH = Math.round(Math.min(70, Math.max(60, h * 0.15)));
+
     return {
-      count: 30,
-      radius: 95,
-      distance: 290,
-      tileWidth: 38,
-      tileHeight: 48
+      count: 55, // Retain full pool of images
+      radius: dynamicRadius,
+      distance: dynamicDistance,
+      tileWidth: dynamicTileW,
+      tileHeight: dynamicTileH
     };
   } else if (isMobilePortrait) {
-    // Mobile portrait (< 768px portrait) - exact existing values
+    // Mobile portrait (< 768px portrait)
     return {
       count: 55,
       radius: 180,
@@ -87,13 +91,13 @@ function getGlobeDimensions() {
       tileHeight: 88
     };
   } else {
-    // Desktop - exact existing values
+    // Desktop / Large screen
     return {
       count: 55,
-      radius: 190,
-      distance: 445,
-      tileWidth: 72,
-      tileHeight: 90
+      radius: 200,
+      distance: 460,
+      tileWidth: 76,
+      tileHeight: 96
     };
   }
 }
