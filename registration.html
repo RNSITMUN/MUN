@@ -1006,6 +1006,7 @@
         opacity: 0;
         transform: translateY(5px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1146,6 +1147,226 @@
       background: rgba(0, 0, 0, 0.04);
       cursor: not-allowed;
       color: rgba(0, 0, 0, 0.75);
+    }
+
+    /* ================================================= */
+    /* DELEGATION REGISTRATION MODAL & SHEET GENERATOR */
+    /* ================================================= */
+    .banner-btns-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .banner-btn-secondary {
+      background: #FFF7EB;
+      color: #000000;
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    .banner-btn-secondary:hover {
+      background-color: #f5e4cd;
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #000000;
+    }
+
+    /* Radio Button Group */
+    .radio-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .radio-card-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-color);
+      border: 2.5px solid var(--text-primary);
+      border-radius: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .radio-card-label:hover {
+      background: rgba(108, 13, 44, 0.05);
+      border-color: var(--accent-color);
+    }
+
+    .radio-card-label input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--text-primary);
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      margin: 0;
+      transition: all 0.15s ease;
+    }
+
+    .radio-card-label input[type="radio"]::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      background-color: var(--accent-color);
+    }
+
+    .radio-card-label input[type="radio"]:checked::before {
+      transform: scale(1);
+    }
+
+    .radio-card-label:has(input[type="radio"]:checked) {
+      border-color: var(--accent-color);
+      background: rgba(108, 13, 44, 0.08);
+      box-shadow: 2px 2px 0px var(--text-primary);
+    }
+
+    /* Google Sheet Generator Section */
+    .sheet-generator-box {
+      background: rgba(0, 0, 0, 0.03);
+      border: 2px dashed var(--text-primary);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+
+    .sheet-generator-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sheet-icon {
+      font-size: 1.4rem;
+    }
+
+    .sheet-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    .sheet-desc {
+      font-size: 0.82rem;
+      color: rgba(0, 0, 0, 0.65);
+      line-height: 1.4;
+      margin: 0 0 10px 0;
+    }
+
+    .sheet-columns-preview {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.55);
+      background: var(--bg-color);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+
+    .btn-create-sheet {
+      width: 100%;
+      background: #0F9D58;
+      color: #FFFFFF;
+      border: 2px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 11px 16px;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px var(--text-primary);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-create-sheet:hover {
+      background-color: #0b8043;
+    }
+
+    .btn-create-sheet:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--text-primary);
+    }
+
+    .sheet-link-result {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .sheet-link-result.is-generated {
+      display: block;
+    }
+
+    .sheet-link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 2px solid #0F9D58;
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    .sheet-link-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .sheet-link-text {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #0F9D58;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+
+    .sheet-link-text:hover {
+      text-decoration: underline;
+    }
+
+    .sheet-btn-action {
+      background: transparent;
+      border: 1.5px solid var(--text-primary);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
     /* Success Screen */
@@ -1326,6 +1547,7 @@
         gap: 14px;
       }
 
+      .banner-btns-container,
       .banner-btn {
         width: 100%;
         text-align: center;
@@ -1859,10 +2081,14 @@
     <div class="direct-reg-banner">
       <div class="banner-text-wrap">
         <h3 class="banner-title">Ready to Represent Your Delegation?</h3>
-        <p class="banner-desc">Registrations are now open across all 6 councils. Secure your preferred committee
-          allocation today.</p>
+        <p class="banner-desc">Registrations are now open across all 6 councils. Secure individual or full institutional
+          delegation allocations today.</p>
       </div>
-      <button class="banner-btn" onclick="openDelegateTypeModal('unsc')">Register as Delegate</button>
+      <div class="banner-btns-container">
+        <button class="banner-btn" onclick="openDelegateTypeModal('unsc')">Register as Delegate</button>
+        <button class="banner-btn banner-btn-secondary" onclick="openDelegationRegistrationModal()">Register as
+          Delegation</button>
+      </div>
     </div>
   </main>
 
@@ -1914,6 +2140,150 @@
             DELEGATE</button>
           <button class="btn-close-action" onclick="closeCommitteeModal()">BACK TO COMMITTEES</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- DELEGATION REGISTRATION MODAL FORM -->
+  <!-- ================================================= -->
+  <div id="delegation-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true"
+    aria-hidden="true" style="display: none;">
+    <div id="delegation-modal-card" class="modal-registration-card" tabindex="-1">
+      <button id="dlg-modal-close" class="modal-close-btn modal-close-btn-light"
+        onclick="closeDelegationRegistrationModal()" aria-label="Close Delegation Registration Form">
+        <svg class="close-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="reg-form-header">
+        <h2 class="reg-form-title">Register Your Delegation</h2>
+        <p class="reg-form-subtitle">Register your institution's delegation and generate your delegate roster sheet</p>
+      </div>
+
+      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)">
+
+        <!-- 1. Name of the Delegation -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-delegation-name">Name of the Delegation *</label>
+          <input type="text" id="dlg-delegation-name" class="form-input"
+            placeholder="e.g. RNSIT MUN Society / St. Joseph's Delegation" required>
+          <div id="dlg-delegation-name-error" class="error-container">Delegation name is required</div>
+        </div>
+
+        <!-- 2. Name of Head of Delegation -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-head-name">Name of Head of Delegation *</label>
+          <input type="text" id="dlg-head-name" class="form-input" placeholder="e.g. Rahul Sharma" required>
+          <div id="dlg-head-name-error" class="error-container">Head of Delegation name is required</div>
+        </div>
+
+        <!-- 3. Phone Number of Head of Delegation -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-phone">Phone Number of Head of Delegation *</label>
+          <input type="tel" id="dlg-phone" class="form-input" placeholder="+91 98765 43210" required>
+          <div id="dlg-phone-error" class="error-container">Valid phone number is required</div>
+        </div>
+
+        <!-- 4. Email ID of Head of Delegation -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
+          <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com" required>
+          <div id="dlg-email-error" class="error-container">Valid email address is required</div>
+        </div>
+
+        <!-- 5. Number of Delegates in Delegation (text box, not number) -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-count">Number of Delegates in Delegation *</label>
+          <input type="text" id="dlg-count" class="form-input" placeholder="e.g. 12" required>
+          <div id="dlg-count-error" class="error-container">Number of delegates is required</div>
+        </div>
+
+        <!-- 6. Internal or External Radio -->
+        <div class="form-group">
+          <label class="form-label">Delegation Category *</label>
+          <div class="radio-group">
+            <label class="radio-card-label" for="dlg-type-internal">
+              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal" required>
+              <span>Internal (RNSIT)</span>
+            </label>
+            <label class="radio-card-label" for="dlg-type-external">
+              <input type="radio" id="dlg-type-external" name="dlg-type" value="external" required checked>
+              <span>External</span>
+            </label>
+          </div>
+          <div id="dlg-type-error" class="error-container">Please select Internal or External</div>
+        </div>
+
+        <!-- Google Sheet Integration Section -->
+        <div class="form-group">
+          <label class="form-label">Delegate Details *</label>
+          <div class="sheet-generator-box">
+            <div class="sheet-generator-header">
+              <span class="sheet-icon"></span>
+              <h4 class="sheet-title">Delegation Roster Sheet</h4>
+            </div>
+            <p class="sheet-desc">Generate a Google Sheet formatted with all 11 delegate preference columns for your
+              delegation members.</p>
+            <div class="sheet-columns-preview">
+              Columns: Sl No. | Name | USN | Committee Pref 1 | Portfolio Pref 1, 2, 3 | Committee Pref 2 | Portfolio
+              Pref 1, 2, 3
+            </div>
+
+            <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
+              onclick="generateDelegationGoogleSheet()">
+              <span>Create Delegate Sheet</span>
+            </button>
+
+            <!-- Sheet link result -->
+            <div id="dlg-sheet-result" class="sheet-link-result">
+              <div class="sheet-link-card">
+                <div class="sheet-link-info">
+                  <span>✓</span>
+                  <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
+                    class="sheet-link-text">Open Google Sheet</a>
+                </div>
+                <button type="button" class="sheet-btn-action" onclick="copyDelegationSheetLink()">Copy Link</button>
+              </div>
+            </div>
+            <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
+          </div>
+          <div id="dlg-sheet-error" class="error-container">Please click "Create Delegate Sheet" to generate your
+            delegation sheet</div>
+        </div>
+
+        <!-- Payment Scheme -->
+        <div class="form-group">
+          <label class="form-label" for="dlg-payment-scheme">Payment Scheme *</label>
+          <select id="dlg-payment-scheme" class="form-select" required>
+            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)
+            </option>
+            <option value="double-delegation">Double Delegation Pass (DISEC/UNHRC) — ₹2,499</option>
+            <option value="standard-delegation">Standard Delegation Scheme</option>
+          </select>
+          <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="dlg-submit-btn">Submit Delegation Registration</button>
+      </form>
+
+      <!-- Delegation Success Screen Overlay -->
+      <div id="dlg-success-overlay" class="success-overlay">
+        <div class="success-icon-badge">✓</div>
+        <h3 class="success-title">Delegation Registered!</h3>
+        <p class="success-message">
+          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your application has been
+          recorded. Our delegate affairs team will reach out to the Head of Delegation via WhatsApp/email.
+        </p>
+        <div style="margin-bottom: 16px; font-size: 0.85rem; font-weight: 600; color: #0F9D58;">
+          Roster Sheet: <a id="dlg-success-sheet-link" href="#" target="_blank"
+            style="color: var(--accent-color); text-decoration: underline;">View Generated Sheet</a>
+        </div>
+        <button id="dlg-success-close-btn" class="success-close-btn"
+          onclick="handleDelegationSuccessDone()">Done</button>
       </div>
     </div>
   </div>
@@ -2042,7 +2412,8 @@
             <textarea id="reg-experience" class="form-input form-textarea"
               placeholder="Mention past MUN conferences, committees, awards, or enter 'Fresher'" rows="3"
               required></textarea>
-            <div id="reg-experience-error" class="error-container">Please describe your MUN experience (or enter 'Fresher')</div>
+            <div id="reg-experience-error" class="error-container">Please describe your MUN experience (or enter
+              'Fresher')</div>
           </div>
 
           <button type="button" class="submit-btn" id="reg-step-1-next" onclick="goToStep(2)">Next</button>
@@ -2082,7 +2453,8 @@
 
           <div class="wizard-btn-row">
             <button type="button" class="btn-wizard-back" id="reg-step-2-back" onclick="goToStep(1)">Back</button>
-            <button type="button" class="submit-btn wizard-next-btn" id="reg-step-2-next" onclick="goToStep(3)">Next</button>
+            <button type="button" class="submit-btn wizard-next-btn" id="reg-step-2-next"
+              onclick="goToStep(3)">Next</button>
           </div>
         </div>
 
@@ -2102,21 +2474,23 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-comm2-portfolio-1">Portfolio Preference 1 (as per Portfolio Matrix)</label>
+            <label class="form-label" for="reg-comm2-portfolio-1">Portfolio Preference 1 (as per Portfolio
+              Matrix)</label>
             <input type="text" id="reg-comm2-portfolio-1" class="form-input"
               placeholder="e.g. Russian Federation / S. Jaishankar">
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-comm2-portfolio-2">Portfolio Preference 2 (as per Portfolio Matrix)</label>
+            <label class="form-label" for="reg-comm2-portfolio-2">Portfolio Preference 2 (as per Portfolio
+              Matrix)</label>
             <input type="text" id="reg-comm2-portfolio-2" class="form-input"
               placeholder="e.g. China / Germany / Opposition Leader">
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-comm2-portfolio-3">Portfolio Preference 3 (as per Portfolio Matrix)</label>
-            <input type="text" id="reg-comm2-portfolio-3" class="form-input"
-              placeholder="e.g. Brazil / Caricaturist">
+            <label class="form-label" for="reg-comm2-portfolio-3">Portfolio Preference 3 (as per Portfolio
+              Matrix)</label>
+            <input type="text" id="reg-comm2-portfolio-3" class="form-input" placeholder="e.g. Brazil / Caricaturist">
           </div>
 
           <div class="form-group">
@@ -2133,7 +2507,8 @@
 
           <div class="wizard-btn-row">
             <button type="button" class="btn-wizard-back" id="reg-step-3-back" onclick="goToStep(2)">Back</button>
-            <button type="submit" class="submit-btn wizard-next-btn" id="reg-submit-btn">Submit External Delegate Registration</button>
+            <button type="submit" class="submit-btn wizard-next-btn" id="reg-submit-btn">Submit External Delegate
+              Registration</button>
           </div>
         </div>
 
@@ -2940,6 +3315,271 @@
       }
     }
 
+    // ==========================================
+    // DELEGATION REGISTRATION FLOW & GOOGLE SHEETS
+    // ==========================================
+    function openDelegationRegistrationModal() {
+      const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
+      const dlgCard = document.getElementById('delegation-modal-card');
+      if (!dlgBackdrop || !dlgCard) return;
+
+      dlgBackdrop.classList.add('active');
+      dlgBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      if (window.gsap) {
+        gsap.fromTo(dlgCard,
+          { scale: 0.92, y: 30, opacity: 0 },
+          { scale: 1, y: 0, opacity: 1, duration: 0.45, ease: 'power4.out' }
+        );
+      }
+    }
+
+    function closeDelegationRegistrationModal() {
+      const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
+      const dlgCard = document.getElementById('delegation-modal-card');
+      closeAllCustomSelects();
+      if (!dlgBackdrop || !dlgCard) return;
+
+      if (window.gsap) {
+        gsap.to(dlgCard, {
+          scale: 0.94,
+          y: 20,
+          opacity: 0,
+          duration: 0.28,
+          ease: 'power3.in',
+          onComplete: () => {
+            dlgBackdrop.classList.remove('active');
+            dlgBackdrop.style.display = 'none';
+            document.body.style.overflow = '';
+            gsap.set(dlgCard, { clearProps: 'all' });
+          }
+        });
+      } else {
+        dlgBackdrop.classList.remove('active');
+        dlgBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    async function generateDelegationGoogleSheet() {
+      const delegationNameInput = document.getElementById('dlg-delegation-name');
+      const delegationName = delegationNameInput ? delegationNameInput.value.trim() : '';
+      const headName = document.getElementById('dlg-head-name')?.value.trim() || '';
+      const phone = document.getElementById('dlg-phone')?.value.trim() || '';
+      const email = document.getElementById('dlg-email')?.value.trim() || '';
+      const typeInternal = document.getElementById('dlg-type-internal');
+      const delegationType = typeInternal && typeInternal.checked ? 'internal' : 'external';
+
+      if (!delegationName) {
+        if (delegationNameInput) delegationNameInput.classList.add('has-error');
+        const err = document.getElementById('dlg-delegation-name-error');
+        if (err) {
+          err.textContent = 'Please enter Delegation Name before creating sheet';
+          err.style.display = 'block';
+        }
+        return;
+      }
+
+      const btn = document.getElementById('dlg-create-sheet-btn');
+      const originalBtnText = btn ? btn.innerHTML : 'Create Delegate Sheet';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Creating Google Sheet...</span>';
+      }
+
+      const errorEl = document.getElementById('dlg-sheet-error');
+      if (errorEl) errorEl.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/create-sheet', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            delegationName,
+            delegationType,
+            headName,
+            email,
+            phone
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.sheetUrl) {
+          const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+          if (hiddenLinkInput) hiddenLinkInput.value = data.sheetUrl;
+
+          const resultBox = document.getElementById('dlg-sheet-result');
+          const anchor = document.getElementById('dlg-sheet-anchor');
+          if (resultBox && anchor) {
+            anchor.href = data.sheetUrl;
+            anchor.textContent = `Open Sheet: RNS MUN 26 - ${delegationName}`;
+            resultBox.classList.add('is-generated');
+          }
+
+          if (btn) {
+            btn.innerHTML = '<span>✓ Google Sheet Created Successfully</span>';
+          }
+        } else {
+          throw new Error(data.error || 'Failed to generate Google Sheet');
+        }
+      } catch (err) {
+        console.error('Sheet creation error:', err);
+        if (errorEl) {
+          errorEl.textContent = `Error creating sheet: ${err.message}. Please try again.`;
+          errorEl.style.display = 'block';
+        }
+        if (btn) {
+          btn.innerHTML = originalBtnText;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function copyDelegationSheetLink() {
+      const link = document.getElementById('dlg-sheet-link')?.value;
+      if (link) {
+        navigator.clipboard.writeText(link).then(() => {
+          alert('Google Sheet link copied to clipboard!');
+        });
+      }
+    }
+
+    function handleDelegationSubmit(e) {
+      e.preventDefault();
+
+      let hasError = false;
+      const delegationName = document.getElementById('dlg-delegation-name');
+      const headName = document.getElementById('dlg-head-name');
+      const phone = document.getElementById('dlg-phone');
+      const email = document.getElementById('dlg-email');
+      const count = document.getElementById('dlg-count');
+      const typeInternal = document.getElementById('dlg-type-internal');
+      const typeExternal = document.getElementById('dlg-type-external');
+      const sheetLink = document.getElementById('dlg-sheet-link');
+      const paymentScheme = document.getElementById('dlg-payment-scheme');
+
+      // Validate Text Fields
+      [
+        { el: delegationName, errId: 'dlg-delegation-name-error' },
+        { el: headName, errId: 'dlg-head-name-error' },
+        { el: phone, errId: 'dlg-phone-error' },
+        { el: count, errId: 'dlg-count-error' }
+      ].forEach(({ el, errId }) => {
+        if (!el) return;
+        const err = document.getElementById(errId);
+        if (!el.value.trim()) {
+          el.classList.add('has-error');
+          if (err) err.style.display = 'block';
+          hasError = true;
+        } else {
+          el.classList.remove('has-error');
+          if (err) err.style.display = 'none';
+        }
+      });
+
+      // Email Validation
+      if (email) {
+        const err = document.getElementById('dlg-email-error');
+        if (!email.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value)) {
+          email.classList.add('has-error');
+          if (err) {
+            err.textContent = 'Please enter a valid email address';
+            err.style.display = 'block';
+          }
+          hasError = true;
+        } else {
+          email.classList.remove('has-error');
+          if (err) err.style.display = 'none';
+        }
+      }
+
+      // Type Radio Validation
+      const isTypeSelected = (typeInternal && typeInternal.checked) || (typeExternal && typeExternal.checked);
+      const typeErr = document.getElementById('dlg-type-error');
+      if (!isTypeSelected) {
+        if (typeErr) typeErr.style.display = 'block';
+        hasError = true;
+      } else {
+        if (typeErr) typeErr.style.display = 'none';
+      }
+
+      // Google Sheet Validation
+      const sheetErr = document.getElementById('dlg-sheet-error');
+      if (!sheetLink || !sheetLink.value.trim()) {
+        if (sheetErr) sheetErr.style.display = 'block';
+        hasError = true;
+      } else {
+        if (sheetErr) sheetErr.style.display = 'none';
+      }
+
+      // Payment Scheme Validation
+      if (paymentScheme) {
+        const err = document.getElementById('dlg-payment-scheme-error');
+        const trigger = paymentScheme.parentElement?.querySelector('.custom-select-trigger');
+        if (!paymentScheme.value.trim()) {
+          paymentScheme.classList.add('has-error');
+          if (trigger) trigger.classList.add('has-error');
+          if (err) err.style.display = 'block';
+          hasError = true;
+        } else {
+          paymentScheme.classList.remove('has-error');
+          if (trigger) trigger.classList.remove('has-error');
+          if (err) err.style.display = 'none';
+        }
+      }
+
+      if (hasError) {
+        const dlgCard = document.getElementById('delegation-modal-card');
+        if (window.gsap && dlgCard) {
+          gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
+        }
+        return;
+      }
+
+      // Construct Payload
+      const payload = {
+        registrationType: "delegation",
+        delegationName: delegationName.value.trim(),
+        headName: headName.value.trim(),
+        phone: phone.value.trim(),
+        email: email.value.trim(),
+        delegateCount: count.value.trim(),
+        delegateType: typeInternal && typeInternal.checked ? "internal" : "external",
+        googleSheetLink: sheetLink.value.trim(),
+        paymentDetails: paymentScheme.value
+      };
+
+      // Show Delegation Success Screen
+      const successOverlay = document.getElementById('dlg-success-overlay');
+      if (successOverlay) {
+        successOverlay.classList.add('show');
+        const successName = document.getElementById('dlg-success-name');
+        if (successName) successName.textContent = payload.delegationName;
+        const successSheetLink = document.getElementById('dlg-success-sheet-link');
+        if (successSheetLink) successSheetLink.href = payload.googleSheetLink;
+      }
+    }
+
+    function handleDelegationSuccessDone() {
+      const successOverlay = document.getElementById('dlg-success-overlay');
+      if (successOverlay) successOverlay.classList.remove('show');
+      closeDelegationRegistrationModal();
+      const form = document.getElementById('delegation-registration-form');
+      if (form) {
+        form.reset();
+        const sheetResult = document.getElementById('dlg-sheet-result');
+        if (sheetResult) sheetResult.classList.remove('is-generated');
+        const sheetLink = document.getElementById('dlg-sheet-link');
+        if (sheetLink) sheetLink.value = '';
+        document.querySelectorAll('#delegation-registration-form select.form-select').forEach(s => s.dispatchEvent(new Event('change')));
+      }
+    }
+
     // External Delegate Registration Form Submission
     function handleRegistrationSubmit(e) {
       e.preventDefault();
@@ -2989,10 +3629,13 @@
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeAllCustomSelects();
+        const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
         const typeBackdrop = document.getElementById('delegate-type-modal-backdrop');
         const regBackdrop = document.getElementById('registration-modal-backdrop');
         const commBackdrop = document.getElementById('committee-modal-backdrop');
-        if (typeBackdrop && typeBackdrop.classList.contains('active')) {
+        if (dlgBackdrop && dlgBackdrop.classList.contains('active')) {
+          closeDelegationRegistrationModal();
+        } else if (typeBackdrop && typeBackdrop.classList.contains('active')) {
           closeDelegateTypeModal();
         } else if (regBackdrop && regBackdrop.classList.contains('active')) {
           closeRegistrationModal();
@@ -3006,10 +3649,13 @@
       if (!e.target.closest('.custom-select-wrapper')) {
         closeAllCustomSelects();
       }
+      const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
       const typeBackdrop = document.getElementById('delegate-type-modal-backdrop');
       const commBackdrop = document.getElementById('committee-modal-backdrop');
       const regBackdrop = document.getElementById('registration-modal-backdrop');
-      if (e.target === typeBackdrop) {
+      if (e.target === dlgBackdrop) {
+        closeDelegationRegistrationModal();
+      } else if (e.target === typeBackdrop) {
         closeDelegateTypeModal();
       } else if (e.target === commBackdrop) {
         closeCommitteeModal();

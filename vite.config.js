@@ -2,11 +2,43 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
+import createSheetHandler from './api/create-sheet.js';
+
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
   configureServer(server) {
-    server.middlewares.use((req, res, next) => {
+    server.middlewares.use(async (req, res, next) => {
       const url = req.url.split('?')[0];
+
+      if (url === '/api/create-sheet') {
+        let body = '';
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', async () => {
+          try {
+            req.body = body ? JSON.parse(body) : {};
+          } catch (e) {
+            req.body = {};
+          }
+          res.status = (code) => {
+            res.statusCode = code;
+            return res;
+          };
+          res.json = (data) => {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(data));
+            return res;
+          };
+          try {
+            await createSheetHandler(req, res);
+          } catch (err) {
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: false, error: err.message }));
+          }
+        });
+        return;
+      }
+
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
       
       if (!hasExtension) {
