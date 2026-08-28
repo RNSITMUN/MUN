@@ -3618,10 +3618,9 @@
       }
 
       const btn = document.getElementById('dlg-create-sheet-btn');
-      const originalBtnText = btn ? btn.innerHTML : 'Create Delegation Sheet';
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Preparing Delegation Sheet...</span>';
+        btn.innerHTML = '<span>⏳ Creating in Google Drive...</span>';
       }
 
       const errorEl = document.getElementById('dlg-sheet-error');
@@ -3629,7 +3628,7 @@
 
       let sheetUrl = null;
 
-      // 1. Try Google Apps Script direct web app call
+      // 1. Try Google Apps Script direct web app call with 4-second fast timeout
       try {
         const payload = JSON.stringify({
           delegationName,
@@ -3641,11 +3640,16 @@
           headRow
         });
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
+
         const response = await fetch(gasUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: payload
+          body: payload,
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
 
         const data = await response.json();
         if (data && data.sheetUrl) {
@@ -3655,9 +3659,12 @@
         console.log('Direct Apps Script notice:', gasErr);
       }
 
-      // 2. If not obtained, try backend API route
+      // 2. If not obtained, try backend API route with fast timeout
       if (!sheetUrl) {
         try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3500);
+
           const response = await fetch('/api/create-sheet', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -3667,8 +3674,11 @@
               headName,
               email,
               phone
-            })
+            }),
+            signal: controller.signal
           });
+          clearTimeout(timeoutId);
+
           const data = await response.json();
           if (data && data.sheetUrl && !data.isFallback) {
             sheetUrl = data.sheetUrl;
@@ -3678,38 +3688,22 @@
         }
       }
 
-      // 3. If live sheet created, show ready status
-      if (sheetUrl) {
-        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-        if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
+      // 3. Display sheet ready result
+      const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+      const finalUrl = sheetUrl || `https://docs.google.com/spreadsheets/create?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
+      if (hiddenLinkInput) hiddenLinkInput.value = finalUrl;
 
-        const resultBox = document.getElementById('dlg-sheet-result');
-        const anchor = document.getElementById('dlg-sheet-anchor');
-        if (resultBox && anchor) {
-          anchor.href = sheetUrl;
-          anchor.textContent = `Open Google Sheet: ${delegationName}`;
-          resultBox.classList.add('is-generated');
-        }
+      const resultBox = document.getElementById('dlg-sheet-result');
+      const anchor = document.getElementById('dlg-sheet-anchor');
+      if (resultBox && anchor) {
+        anchor.href = finalUrl;
+        anchor.textContent = `Open Google Sheet: ${delegationName}`;
+        resultBox.classList.add('is-generated');
+      }
 
-        if (btn) {
-          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-        }
-      } else {
-        // Fallback with auto-titled sheet & instant clipboard sync
-        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-        const fallbackUrl = `https://docs.google.com/spreadsheets/create?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
-        if (hiddenLinkInput) hiddenLinkInput.value = fallbackUrl;
-
-        const resultBox = document.getElementById('dlg-sheet-result');
-        const anchor = document.getElementById('dlg-sheet-anchor');
-        if (resultBox && anchor) {
-          anchor.href = fallbackUrl;
-          anchor.textContent = `Open Google Sheet: ${delegationName}`;
-          resultBox.classList.add('is-generated');
-        }
-        if (btn) {
-          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-        }
+      if (btn) {
+        btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+        btn.disabled = false;
       }
     }
 
