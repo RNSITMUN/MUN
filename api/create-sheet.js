@@ -27,41 +27,73 @@ export default async function handler(req, res) {
 
     const isInternal = (delegationType || '').toLowerCase() === 'internal';
 
-    // RNS MUN 26 Official Standard Headers
-    const headers = [
-      'Sl No',
-      'Delegate Name',
-      'Institution / College Name',
-      'USN / Roll No',
-      'Committee Preference 1',
-      'Portfolio Preference 1',
-      'Portfolio Preference 2',
-      'Portfolio Preference 3',
-      'Committee Preference 2',
-      'Comm 2 - Portfolio Preference 1',
-      'Comm 2 - Portfolio Preference 2',
-      'Comm 2 - Portfolio Preference 3'
-    ];
+    // RNS MUN 26 Official Standard Headers (with Email & WhatsApp)
+    const headers = isInternal
+      ? [
+          'Sl No',
+          'Delegate Name',
+          'Email Address',
+          'WhatsApp / Mobile Number',
+          'USN / Roll No',
+          'Committee Preference 1',
+          'Portfolio Preference 1',
+          'Portfolio Preference 2',
+          'Portfolio Preference 3',
+          'Committee Preference 2',
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
+        ]
+      : [
+          'Sl No',
+          'Delegate Name',
+          'Email Address',
+          'WhatsApp / Mobile Number',
+          'Institution / College Name',
+          'USN / Roll No',
+          'Committee Preference 1',
+          'Portfolio Preference 1',
+          'Portfolio Preference 2',
+          'Portfolio Preference 3',
+          'Committee Preference 2',
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
+        ];
 
-    // Prepare Row 2: Only pre-fill the fields that were asked in the form!
-    // Col 1: '1'
-    // Col 2: Delegate Name: headName (Head of Delegation)
-    // Col 3: Institution / College Name: isInternal ? 'RNSIT' : delegationName
-    // Col 4 to 12: USN, Committee, and Portfolio preferences are left blank for the user to fill!
-    const headRow = [
-      '1',
-      headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
-      isInternal ? 'RNSIT' : (delegationName ? delegationName.trim() : ''),
-      '', // USN / Roll No (blank for user)
-      '', // Committee Preference 1
-      '', // Portfolio Preference 1
-      '', // Portfolio Preference 2
-      '', // Portfolio Preference 3
-      '', // Committee Preference 2
-      '', // Comm 2 - Portfolio Preference 1
-      '', // Comm 2 - Portfolio Preference 2
-      ''  // Comm 2 - Portfolio Preference 3
-    ];
+    // Prepare Row 2: Pre-fill Head of Delegation Name, Email, and Phone!
+    const headRow = isInternal
+      ? [
+          '1',
+          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
+          email ? email.trim() : '',
+          phone ? phone.trim() : '',
+          '', // USN / Roll No (blank for user)
+          '', // Committee Preference 1
+          '', // Portfolio Preference 1
+          '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
+          '', // Committee Preference 2
+          '', // Comm 2 - Portfolio Preference 1
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
+        ]
+      : [
+          '1',
+          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
+          email ? email.trim() : '',
+          phone ? phone.trim() : '',
+          delegationName ? delegationName.trim() : '',
+          '', // USN / Roll No (blank for user)
+          '', // Committee Preference 1
+          '', // Portfolio Preference 1
+          '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
+          '', // Committee Preference 2
+          '', // Comm 2 - Portfolio Preference 1
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
+        ];
 
     const title = `RNS MUN 26 - ${delegationName.trim()} Roster`;
 

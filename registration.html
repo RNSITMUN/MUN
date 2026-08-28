@@ -3539,6 +3539,8 @@
         ? [
             'Sl No',
             'Delegate Name',
+            'Email Address',
+            'WhatsApp / Mobile Number',
             'USN / Roll No',
             'Committee Preference 1',
             'Portfolio Preference 1',
@@ -3552,6 +3554,8 @@
         : [
             'Sl No',
             'Delegate Name',
+            'Email Address',
+            'WhatsApp / Mobile Number',
             'Institution / College Name',
             'USN / Roll No',
             'Committee Preference 1',
@@ -3576,22 +3580,42 @@
       const typeInternal = document.getElementById('dlg-type-internal');
       const isInternal = typeInternal && typeInternal.checked;
       const headName = document.getElementById('dlg-head-name')?.value.trim() || 'Head of Delegation';
+      const email = document.getElementById('dlg-email')?.value.trim() || '';
+      const phone = document.getElementById('dlg-phone')?.value.trim() || '';
       const delegationName = document.getElementById('dlg-delegation-name')?.value.trim() || '';
 
-      return [
-        '1',
-        headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
-        isInternal ? 'RNSIT' : delegationName,
-        '', // USN / Roll No (blank for user to fill)
-        '', // Committee Preference 1
-        '', // Portfolio Preference 1
-        '', // Portfolio Preference 2
-        '', // Portfolio Preference 3
-        '', // Committee Preference 2
-        '', // Comm 2 - Portfolio Preference 1
-        '', // Comm 2 - Portfolio Preference 2
-        ''  // Comm 2 - Portfolio Preference 3
-      ];
+      return isInternal
+        ? [
+            '1',
+            headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
+            email,
+            phone,
+            '', // USN / Roll No (blank for user to fill)
+            '', // Committee Preference 1
+            '', // Portfolio Preference 1
+            '', // Portfolio Preference 2
+            '', // Portfolio Preference 3
+            '', // Committee Preference 2
+            '', // Comm 2 - Portfolio Preference 1
+            '', // Comm 2 - Portfolio Preference 2
+            ''  // Comm 2 - Portfolio Preference 3
+          ]
+        : [
+            '1',
+            headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
+            email,
+            phone,
+            delegationName,
+            '', // USN / Roll No (blank for user to fill)
+            '', // Committee Preference 1
+            '', // Portfolio Preference 1
+            '', // Portfolio Preference 2
+            '', // Portfolio Preference 3
+            '', // Committee Preference 2
+            '', // Comm 2 - Portfolio Preference 1
+            '', // Comm 2 - Portfolio Preference 2
+            ''  // Comm 2 - Portfolio Preference 3
+          ];
     }
 
     function downloadDelegationRosterCSV() {
@@ -3656,7 +3680,49 @@
           err.textContent = 'Please enter Delegation Name before creating sheet';
           err.style.display = 'block';
         }
+        return;
+      }
 
+      const cleanName = delegationName.toLowerCase().trim().replace(/\s+/g, '_');
+      const cleanEmail = email.toLowerCase().trim();
+      const btn = document.getElementById('dlg-create-sheet-btn');
+
+      // 1. Prevent duplicate sheet creation if this delegation/email has already submitted
+      const prevSubmittedLink = (cleanName && localStorage.getItem(`submitted_dlg_${cleanName}`)) ||
+                                (cleanEmail && localStorage.getItem(`submitted_dlg_email_${cleanEmail}`));
+
+      if (prevSubmittedLink) {
+        const errorEl = document.getElementById('dlg-sheet-error');
+        if (errorEl) {
+          errorEl.innerHTML = `⚠️ A roster sheet has already been submitted for this delegation/email.<br><a href="${prevSubmittedLink}" target="_blank" style="color:var(--accent-color);font-weight:700;text-decoration:underline;">Click to open submitted Google Sheet</a>`;
+          errorEl.style.display = 'block';
+        }
+        if (btn) {
+          btn.innerHTML = '<span>⚠️ Already Submitted</span>';
+          btn.disabled = true;
+        }
+        return;
+      }
+
+      // 2. Reuse existing active sheet for this delegation if already created
+      const activeSheetKey = `active_dlg_sheet_${cleanName}`;
+      const existingActiveSheet = localStorage.getItem(activeSheetKey);
+      if (existingActiveSheet) {
+        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+        if (hiddenLinkInput) hiddenLinkInput.value = existingActiveSheet;
+
+        const resultBox = document.getElementById('dlg-sheet-result');
+        const anchor = document.getElementById('dlg-sheet-anchor');
+        if (resultBox && anchor) {
+          anchor.href = existingActiveSheet;
+          anchor.textContent = `Open Google Sheet: ${delegationName}`;
+          resultBox.classList.add('is-generated');
+        }
+
+        if (btn) {
+          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+          btn.disabled = false;
+        }
         return;
       }
 
@@ -3674,7 +3740,6 @@
         console.log('Clipboard notice:', e);
       }
 
-      const btn = document.getElementById('dlg-create-sheet-btn');
       if (btn) {
         btn.disabled = true;
         btn.innerHTML = '<span>⏳ Creating in Google Drive...</span>';
@@ -3685,7 +3750,7 @@
 
       let sheetUrl = null;
 
-      // 1. Try backend API endpoint (handles Node redirect & Google Auth with 0 CORS issues)
+      // Try backend API endpoint
       try {
         const response = await fetch('/api/create-sheet', {
           method: 'POST',
@@ -3707,7 +3772,7 @@
         console.log('API notice:', apiErr);
       }
 
-      // 2. Direct fallback to Google Apps Script Web App
+      // Fallback to Google Apps Script Web App
       if (!sheetUrl) {
         try {
           const payload = JSON.stringify({
@@ -3735,10 +3800,13 @@
         }
       }
 
-      // 3. Display sheet ready result
+      // Display sheet ready result
       const hiddenLinkInput = document.getElementById('dlg-sheet-link');
       const finalUrl = sheetUrl || `https://docs.google.com/spreadsheets/d/1jel7NFjYw78sDX4P8Bsia0HpozcRcs1SzjpLgY2tw24/copy?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
       if (hiddenLinkInput) hiddenLinkInput.value = finalUrl;
+
+      // Save active sheet URL in localStorage to avoid creating duplicates
+      localStorage.setItem(activeSheetKey, finalUrl);
 
       const resultBox = document.getElementById('dlg-sheet-result');
       const anchor = document.getElementById('dlg-sheet-anchor');
@@ -3884,6 +3952,12 @@
         googleSheetLink: sheetLink.value.trim(),
         paymentDetails: paymentScheme.value
       };
+
+      // Save delegation submission state to prevent generating another sheet later
+      const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+      const cleanEmail = email.value.trim().toLowerCase();
+      if (cleanName) localStorage.setItem(`submitted_dlg_${cleanName}`, sheetLink.value.trim());
+      if (cleanEmail) localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, sheetLink.value.trim());
 
       // Show Delegation Success Screen
       const successOverlay = document.getElementById('dlg-success-overlay');
