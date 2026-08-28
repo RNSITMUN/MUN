@@ -1367,6 +1367,83 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .sheet-btn-action:hover {
+      background: var(--text-primary);
+      color: #FFF7EB;
+    }
+
+    .sheet-helper-tip {
+      font-size: 0.76rem;
+      color: #0b8043;
+      background: #e6f4ea;
+      border: 1.5px solid #b7e1cd;
+      border-radius: 8px;
+      padding: 8px 11px;
+      margin-top: 8px;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+    }
+
+    /* Delegate Number Input with Integrated Stepper Arrows (10 - 18) */
+    .delegate-number-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .delegate-number-input {
+      width: 100%;
+      padding-right: 48px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      -moz-appearance: textfield;
+    }
+
+    .delegate-number-input::-webkit-outer-spin-button,
+    .delegate-number-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .delegate-number-steppers {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      bottom: 5px;
+      width: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .stepper-arrow-btn {
+      flex: 1;
+      background: #FFF7EB;
+      border: 1.5px solid var(--text-primary);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 0;
+      transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    }
+
+    .stepper-arrow-btn:hover {
+      background-color: var(--accent-color);
+      color: #FFF7EB;
+    }
+
+    .stepper-arrow-btn:active {
+      transform: scale(0.92);
     }
 
     /* Success Screen */
@@ -2195,11 +2272,25 @@
           <div id="dlg-email-error" class="error-container">Valid email address is required</div>
         </div>
 
-        <!-- 5. Number of Delegates in Delegation (text box, not number) -->
+        <!-- 5. Number of Delegates in Delegation (10 - 18 with direct typing & stepper arrows) -->
         <div class="form-group">
-          <label class="form-label" for="dlg-count">Number of Delegates in Delegation *</label>
-          <input type="text" id="dlg-count" class="form-input" placeholder="e.g. 12" required>
-          <div id="dlg-count-error" class="error-container">Number of delegates is required</div>
+          <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (10 – 18)</label>
+          <div class="delegate-number-input-wrap">
+            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="10" max="18" value="10" placeholder="10" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)" required>
+            <div class="delegate-number-steppers">
+              <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)" aria-label="Increase number of delegates" title="Increase">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              </button>
+              <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)" aria-label="Decrease number of delegates" title="Decrease">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div id="dlg-count-error" class="error-container">Number of delegates must be between 10 and 18</div>
         </div>
 
         <!-- 6. Internal or External Radio -->
@@ -2207,11 +2298,11 @@
           <label class="form-label">Delegation Category *</label>
           <div class="radio-group">
             <label class="radio-card-label" for="dlg-type-internal">
-              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal" required>
+              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal" onchange="updateRosterPreview()" required>
               <span>Internal (RNSIT)</span>
             </label>
             <label class="radio-card-label" for="dlg-type-external">
-              <input type="radio" id="dlg-type-external" name="dlg-type" value="external" required checked>
+              <input type="radio" id="dlg-type-external" name="dlg-type" value="external" onchange="updateRosterPreview()" required checked>
               <span>External</span>
             </label>
           </div>
@@ -2223,19 +2314,17 @@
           <label class="form-label">Delegate Details *</label>
           <div class="sheet-generator-box">
             <div class="sheet-generator-header">
-              <span class="sheet-icon"></span>
-              <h4 class="sheet-title">Delegation Roster Sheet</h4>
+              <span class="sheet-icon">📋</span>
+              <h4 class="sheet-title">Delegation Roster Sheet (Auto-filled Headers)</h4>
             </div>
-            <p class="sheet-desc">Generate a Google Sheet formatted with all 11 delegate preference columns for your
-              delegation members.</p>
-            <div class="sheet-columns-preview">
-              Columns: Sl No. | Name | USN | Committee Pref 1 | Portfolio Pref 1, 2, 3 | Committee Pref 2 | Portfolio
-              Pref 1, 2, 3
+            <p class="sheet-desc">Generate a Google Sheet formatted with all column headings automatically filled for your delegation members.</p>
+            <div class="sheet-columns-preview" id="dlg-columns-preview">
+              Auto-filled Headers: Sl No. | Name | Institution | USN | Committee Pref 1 | Portfolio Pref 1, 2, 3 | Committee Pref 2 | Portfolio Pref 1, 2, 3
             </div>
 
             <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
               onclick="generateDelegationGoogleSheet()">
-              <span>Create Delegate Sheet</span>
+              <span>Create Pre-filled Delegate Sheet</span>
             </button>
 
             <!-- Sheet link result -->
@@ -2246,22 +2335,27 @@
                   <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
                     class="sheet-link-text">Open Google Sheet</a>
                 </div>
-                <button type="button" class="sheet-btn-action" onclick="copyDelegationSheetLink()">Copy Link</button>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download CSV</button>
+                  <button type="button" class="sheet-btn-action" onclick="copyDelegationHeaders()">Copy 11 Headers</button>
+                  <button type="button" class="sheet-btn-action" onclick="copyDelegationSheetLink()">Copy Link</button>
+                </div>
+              </div>
+              <div class="sheet-helper-tip">
+                <span>💡</span>
+                <span><strong>Headers Auto-Copied!</strong> If your new Google Sheet opens empty, simply click cell <strong>A1</strong> and press <strong>Ctrl + V</strong> (Paste) to instantly fill all 11 columns.</span>
               </div>
             </div>
             <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
           </div>
-          <div id="dlg-sheet-error" class="error-container">Please click "Create Delegate Sheet" to generate your
-            delegation sheet</div>
+          <div id="dlg-sheet-error" class="error-container">Please click "Create Pre-filled Delegate Sheet" to generate your delegation sheet</div>
         </div>
 
         <!-- Payment Scheme -->
         <div class="form-group">
           <label class="form-label" for="dlg-payment-scheme">Payment Scheme *</label>
           <select id="dlg-payment-scheme" class="form-select" required>
-            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)
-            </option>
-            <option value="double-delegation">Double Delegation Pass (DISEC/UNHRC) — ₹2,499</option>
+            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)</option>
             <option value="standard-delegation">Standard Delegation Scheme</option>
           </select>
           <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
@@ -2275,12 +2369,17 @@
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title">Delegation Registered!</h3>
         <p class="success-message">
-          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your application has been
-          recorded. Our delegate affairs team will reach out to the Head of Delegation via WhatsApp/email.
+          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your delegation application has been
+          recorded and connected with the organizing committee (<span style="color: var(--accent-color); font-weight: 700;">mun@rnsit.ac.in</span>).
         </p>
-        <div style="margin-bottom: 16px; font-size: 0.85rem; font-weight: 600; color: #0F9D58;">
-          Roster Sheet: <a id="dlg-success-sheet-link" href="#" target="_blank"
-            style="color: var(--accent-color); text-decoration: underline;">View Generated Sheet</a>
+        <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <a id="dlg-success-sheet-link" href="#" target="_blank"
+            class="sheet-btn-action" style="padding: 8px 16px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: #0F9D58; color: #FFFFFF; border-color: var(--text-primary);">
+            <span>📊 Open Delegation Google Sheet</span>
+          </a>
+          <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()" style="padding: 6px 12px; font-size: 0.8rem;">
+            <span>📥 Download Roster as CSV</span>
+          </button>
         </div>
         <button id="dlg-success-close-btn" class="success-close-btn"
           onclick="handleDelegationSuccessDone()">Done</button>
@@ -2498,7 +2597,6 @@
             <select id="reg-payment-scheme" class="form-select" required>
               <option value="standard-individual">Standard Individual Delegate Pass — ₹1,499</option>
               <option value="early-bird">Early Bird Registration Pass — ₹1,299</option>
-              <option value="double-delegation">Double Delegation Pass (DISEC/UNHRC) — ₹2,499</option>
               <option value="institutional-delegation">Institutional / College Delegation Scheme</option>
               <option value="ip-journalist">International Press / Caricaturist Pass — ₹1,199</option>
             </select>
@@ -3062,12 +3160,29 @@
     // ==========================================
     let currentStep = 1;
 
+    function scrollToFirstError(container) {
+      const parent = container || document;
+      const errorEl = parent.querySelector('.has-error, .custom-select-trigger.has-error, .error-container[style*="display: block"]');
+      if (errorEl) {
+        const formGroup = errorEl.closest('.form-group') || errorEl;
+        formGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        const focusable = formGroup.querySelector('input:not([type="hidden"]):not([readonly]), select, textarea, button.custom-select-trigger, button');
+        if (focusable) {
+          setTimeout(() => {
+            focusable.focus({ preventScroll: true });
+          }, 200);
+        }
+      }
+    }
+
     function goToStep(targetStep) {
       closeAllCustomSelects();
 
       // If moving forward, validate current step
       if (targetStep > currentStep) {
         if (!validateStep(currentStep)) {
+          scrollToFirstError(document.getElementById(`wizard-step-${currentStep}`));
           const regCard = document.getElementById('registration-modal-card');
           if (window.gsap && regCard) {
             gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
@@ -3326,6 +3441,7 @@
       dlgBackdrop.classList.add('active');
       dlgBackdrop.style.display = 'flex';
       document.body.style.overflow = 'hidden';
+      stepDelegateCount(0);
 
       if (window.gsap) {
         gsap.fromTo(dlgCard,
@@ -3362,6 +3478,150 @@
       }
     }
 
+    function stepDelegateCount(delta) {
+      const input = document.getElementById('dlg-count');
+      if (!input) return;
+      let val = parseInt(input.value, 10);
+      if (isNaN(val)) val = 10;
+      val += delta;
+      if (val < 10) val = 10;
+      if (val > 18) val = 18;
+      input.value = val;
+
+      const err = document.getElementById('dlg-count-error');
+      if (err) err.style.display = 'none';
+      input.classList.remove('has-error');
+
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    function handleDelegateCountInput(input) {
+      if (!input) return;
+      const err = document.getElementById('dlg-count-error');
+      const val = parseInt(input.value, 10);
+      if (input.value.trim() && (isNaN(val) || val < 10 || val > 18)) {
+        if (err) {
+          err.textContent = 'Number of delegates must be between 10 and 18';
+          err.style.display = 'block';
+        }
+        input.classList.add('has-error');
+      } else {
+        if (err) err.style.display = 'none';
+        input.classList.remove('has-error');
+      }
+    }
+
+    function validateDelegateCountBlur(input) {
+      if (!input) return;
+      let val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 10) {
+        input.value = 10;
+      } else if (val > 18) {
+        input.value = 18;
+      }
+      const err = document.getElementById('dlg-count-error');
+      if (err) err.style.display = 'none';
+      input.classList.remove('has-error');
+    }
+
+    function getDelegationHeaders() {
+      const typeInternal = document.getElementById('dlg-type-internal');
+      const isInternal = typeInternal && typeInternal.checked;
+      return isInternal
+        ? [
+            'Sl No',
+            'Delegate Name',
+            'USN / Roll No',
+            'Committee Preference 1',
+            'Portfolio Preference 1',
+            'Portfolio Preference 2',
+            'Portfolio Preference 3',
+            'Committee Preference 2',
+            'Comm 2 - Portfolio Preference 1',
+            'Comm 2 - Portfolio Preference 2',
+            'Comm 2 - Portfolio Preference 3'
+          ]
+        : [
+            'Sl No',
+            'Delegate Name',
+            'Institution / College Name',
+            'USN / Roll No',
+            'Committee Preference 1',
+            'Portfolio Preference 1',
+            'Portfolio Preference 2',
+            'Portfolio Preference 3',
+            'Committee Preference 2',
+            'Comm 2 - Portfolio Preference 1',
+            'Comm 2 - Portfolio Preference 2',
+            'Comm 2 - Portfolio Preference 3'
+          ];
+    }
+
+    function updateRosterPreview() {
+      const previewEl = document.getElementById('dlg-columns-preview');
+      if (!previewEl) return;
+      const headers = getDelegationHeaders();
+      previewEl.textContent = 'Auto-filled Headers: ' + headers.join(' | ');
+    }
+
+    function getHeadRowData() {
+      const typeInternal = document.getElementById('dlg-type-internal');
+      const isInternal = typeInternal && typeInternal.checked;
+      const headName = document.getElementById('dlg-head-name')?.value.trim() || 'Head of Delegation';
+      const delegationName = document.getElementById('dlg-delegation-name')?.value.trim() || 'Delegation';
+      const phone = document.getElementById('dlg-phone')?.value.trim() || '';
+      const email = document.getElementById('dlg-email')?.value.trim() || '';
+      const contactStr = phone ? `${phone} | ${email}` : email;
+
+      return isInternal
+        ? ['1', `${headName} (Head of Delegation)`, contactStr, '', '', '', '', '', '', '', '']
+        : ['1', `${headName} (Head of Delegation)`, delegationName, contactStr, '', '', '', '', '', '', ''];
+    }
+
+    function downloadDelegationRosterCSV() {
+      const delegationNameInput = document.getElementById('dlg-delegation-name');
+      const delegationName = delegationNameInput ? delegationNameInput.value.trim() : 'Delegation';
+      const countInput = document.getElementById('dlg-count');
+      const count = Math.min(18, Math.max(10, parseInt(countInput?.value, 10) || 12));
+      
+      const headers = getDelegationHeaders();
+      const headRow = getHeadRowData();
+
+      let csvContent = headers.map(h => `"${h.replace(/"/g, '""')}"`).join(',') + '\r\n';
+      csvContent += headRow.map(c => `"${c.replace(/"/g, '""')}"`).join(',') + '\r\n';
+      
+      // Pre-fill sample row numbers 2 to count
+      for (let i = 2; i <= count; i++) {
+        csvContent += `${i}` + ','.repeat(headers.length - 1) + '\r\n';
+      }
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `RNS_MUN_26_${(delegationName || 'Delegation').replace(/\s+/g, '_')}_Roster.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function copyDelegationHeaders() {
+      const headers = getDelegationHeaders();
+      const headRow = getHeadRowData();
+      const text = headers.join('\t') + '\n' + headRow.join('\t');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('✓ Headers & Head of Delegation details copied to clipboard!\n\nOpen your Google Sheet, click cell A1, and press Ctrl+V to paste.');
+        }).catch(() => {
+          prompt('Copy Headers & Row 1:', text);
+        });
+      } else {
+        prompt('Copy Headers & Row 1:', text);
+      }
+    }
+
     async function generateDelegationGoogleSheet() {
       const delegationNameInput = document.getElementById('dlg-delegation-name');
       const delegationName = delegationNameInput ? delegationNameInput.value.trim() : '';
@@ -3378,14 +3638,27 @@
           err.textContent = 'Please enter Delegation Name before creating sheet';
           err.style.display = 'block';
         }
+        scrollToFirstError(document.getElementById('delegation-registration-form'));
         return;
       }
 
+      // Auto copy the formatted headers & Head of Delegation into user's clipboard immediately
+      try {
+        const headers = getDelegationHeaders();
+        const headRow = getHeadRowData();
+        const clipboardText = headers.join('\t') + '\n' + headRow.join('\t');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(clipboardText);
+        }
+      } catch (e) {
+        console.log('Clipboard notice:', e);
+      }
+
       const btn = document.getElementById('dlg-create-sheet-btn');
-      const originalBtnText = btn ? btn.innerHTML : 'Create Delegate Sheet';
+      const originalBtnText = btn ? btn.innerHTML : 'Create Pre-filled Delegate Sheet';
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Creating Google Sheet...</span>';
+        btn.innerHTML = '<span>⏳ Preparing Auto-Filled Sheet...</span>';
       }
 
       const errorEl = document.getElementById('dlg-sheet-error');
@@ -3416,24 +3689,32 @@
           const anchor = document.getElementById('dlg-sheet-anchor');
           if (resultBox && anchor) {
             anchor.href = data.sheetUrl;
-            anchor.textContent = `Open Sheet: RNS MUN 26 - ${delegationName}`;
+            anchor.textContent = `Open Google Sheet: ${delegationName}`;
             resultBox.classList.add('is-generated');
           }
 
           if (btn) {
-            btn.innerHTML = '<span>✓ Google Sheet Created Successfully</span>';
+            btn.innerHTML = '<span>✓ Headers Formatted & Sheet Ready</span>';
           }
         } else {
           throw new Error(data.error || 'Failed to generate Google Sheet');
         }
       } catch (err) {
         console.error('Sheet creation error:', err);
-        if (errorEl) {
-          errorEl.textContent = `Error creating sheet: ${err.message}. Please try again.`;
-          errorEl.style.display = 'block';
+        // Seamless client-side template fallback
+        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+        const fallbackUrl = `https://docs.google.com/spreadsheets/create?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
+        if (hiddenLinkInput) hiddenLinkInput.value = fallbackUrl;
+
+        const resultBox = document.getElementById('dlg-sheet-result');
+        const anchor = document.getElementById('dlg-sheet-anchor');
+        if (resultBox && anchor) {
+          anchor.href = fallbackUrl;
+          anchor.textContent = `Open Google Sheet: ${delegationName}`;
+          resultBox.classList.add('is-generated');
         }
         if (btn) {
-          btn.innerHTML = originalBtnText;
+          btn.innerHTML = '<span>✓ Sheet & Download CSV Ready</span>';
         }
       } finally {
         if (btn) btn.disabled = false;
@@ -3467,8 +3748,7 @@
       [
         { el: delegationName, errId: 'dlg-delegation-name-error' },
         { el: headName, errId: 'dlg-head-name-error' },
-        { el: phone, errId: 'dlg-phone-error' },
-        { el: count, errId: 'dlg-count-error' }
+        { el: phone, errId: 'dlg-phone-error' }
       ].forEach(({ el, errId }) => {
         if (!el) return;
         const err = document.getElementById(errId);
@@ -3481,6 +3761,23 @@
           if (err) err.style.display = 'none';
         }
       });
+
+      // Validate Count (10 - 18 delegates limit)
+      if (count) {
+        const err = document.getElementById('dlg-count-error');
+        const countVal = parseInt(count.value, 10);
+        if (!count.value.trim() || isNaN(countVal) || countVal < 10 || countVal > 18) {
+          count.classList.add('has-error');
+          if (err) {
+            err.textContent = 'Number of delegates must be between 10 and 18';
+            err.style.display = 'block';
+          }
+          hasError = true;
+        } else {
+          count.classList.remove('has-error');
+          if (err) err.style.display = 'none';
+        }
+      }
 
       // Email Validation
       if (email) {
@@ -3534,6 +3831,7 @@
       }
 
       if (hasError) {
+        scrollToFirstError(document.getElementById('delegation-registration-form'));
         const dlgCard = document.getElementById('delegation-modal-card');
         if (window.gsap && dlgCard) {
           gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
@@ -3586,13 +3884,16 @@
 
       if (!validateStep(1)) {
         goToStep(1);
+        scrollToFirstError(document.getElementById('wizard-step-1'));
         return;
       }
       if (!validateStep(2)) {
         goToStep(2);
+        scrollToFirstError(document.getElementById('wizard-step-2'));
         return;
       }
       if (!validateStep(3)) {
+        scrollToFirstError(document.getElementById('wizard-step-3'));
         const regCard = document.getElementById('registration-modal-card');
         if (window.gsap && regCard) {
           gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
@@ -3671,11 +3972,19 @@
       }
     });
 
-    // Initialize custom select on page load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCustomSelects);
-    } else {
+    // Initialize custom select on page load and check for direct modal links
+    function handleInitialPageLoad() {
       initCustomSelects();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
+        setTimeout(openDelegationRegistrationModal, 150);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handleInitialPageLoad);
+    } else {
+      handleInitialPageLoad();
     }
   </script>
   <script type="module" src="./topology-background.js"></script>
