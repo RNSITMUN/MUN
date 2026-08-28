@@ -3169,21 +3169,7 @@
     // ==========================================
     let currentStep = 1;
 
-    function scrollToFirstError(container) {
-      const parent = container || document;
-      const errorEl = parent.querySelector('.has-error, .custom-select-trigger.has-error, .error-container[style*="display: block"]');
-      if (errorEl) {
-        const formGroup = errorEl.closest('.form-group') || errorEl;
-        formGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        const focusable = formGroup.querySelector('input:not([type="hidden"]):not([readonly]), select, textarea, button.custom-select-trigger, button');
-        if (focusable) {
-          setTimeout(() => {
-            focusable.focus({ preventScroll: true });
-          }, 200);
-        }
-      }
-    }
+
 
     function goToStep(targetStep) {
       closeAllCustomSelects();
@@ -3191,7 +3177,6 @@
       // If moving forward, validate current step
       if (targetStep > currentStep) {
         if (!validateStep(currentStep)) {
-          scrollToFirstError(document.getElementById(`wizard-step-${currentStep}`));
           const regCard = document.getElementById('registration-modal-card');
           if (window.gsap && regCard) {
             gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
@@ -3378,14 +3363,6 @@
             if (trigger) trigger.classList.remove('has-error');
             if (errorEl) errorEl.style.display = 'none';
           }
-        }
-      }
-
-      if (!isValid) {
-        const firstError = document.querySelector('.wizard-step-panel.is-active .has-error');
-        if (firstError) {
-          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          try { firstError.focus(); } catch (e) {}
         }
       }
 
@@ -3666,7 +3643,7 @@
           err.textContent = 'Please enter Delegation Name before creating sheet';
           err.style.display = 'block';
         }
-        scrollToFirstError(document.getElementById('delegation-registration-form'));
+
         return;
       }
 
@@ -3874,7 +3851,7 @@
       }
 
       if (hasError) {
-        scrollToFirstError(document.getElementById('delegation-registration-form'));
+
         const dlgCard = document.getElementById('delegation-modal-card');
         if (window.gsap && dlgCard) {
           gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
@@ -3927,16 +3904,16 @@
 
       if (!validateStep(1)) {
         goToStep(1);
-        scrollToFirstError(document.getElementById('wizard-step-1'));
+
         return;
       }
       if (!validateStep(2)) {
         goToStep(2);
-        scrollToFirstError(document.getElementById('wizard-step-2'));
+
         return;
       }
       if (!validateStep(3)) {
-        scrollToFirstError(document.getElementById('wizard-step-3'));
+
         const regCard = document.getElementById('registration-modal-card');
         if (window.gsap && regCard) {
           gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
