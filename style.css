@@ -217,23 +217,44 @@ body {
   transition: d 0.7s cubic-bezier(0.76, 0, 0.24, 1) 0.3s;
 }
 
-/* Responsive adjustments for phones (< 500px) */
-@media (max-width: 500px) {
-
-  .top-left-logo,
-  .top-right-logo {
-    height: 90px;
-    /* Bolder logo scale on mobile phones */
-  }
-
+/* Responsive adjustments for logos across devices */
+@media (max-width: 900px) {
   .top-left-logo-container {
-    top: 20px;
-    left: 20px;
+    top: 14px;
+    left: 14px;
   }
 
   .top-right-logo-container {
-    top: 20px;
-    right: 20px;
+    top: 14px;
+    right: 14px;
+  }
+
+  .top-left-logo,
+  .top-right-logo {
+    max-width: 38px;
+    max-height: 38px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .top-left-logo-container {
+    top: 10px;
+    left: 10px;
+  }
+
+  .top-right-logo-container {
+    top: 10px;
+    right: 10px;
+  }
+
+  .top-left-logo,
+  .top-right-logo {
+    max-width: 32px;
+    max-height: 32px;
+    width: auto;
+    height: auto;
   }
 }
 

@@ -54,9 +54,17 @@
       margin: 0;
       width: 100% !important;
       height: auto !important;
-      overflow-y: auto !important;
+      overflow-y: auto;
       overflow-x: hidden !important;
       overscroll-behavior: auto !important;
+    }
+
+    html.modal-open,
+    body.modal-open {
+      overflow: hidden !important;
+      height: 100% !important;
+      touch-action: none !important;
+      overscroll-behavior: contain !important;
     }
 
     .registration-viewport {
@@ -65,7 +73,7 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      padding: 110px 20px 60px 20px;
+      padding: 110px 20px 70px 20px;
       box-sizing: border-box;
     }
 
@@ -1551,7 +1559,7 @@
       }
 
       .registration-viewport {
-        padding: 75px 16px 90px 16px;
+        padding: 75px 16px 95px 16px;
       }
 
       .registration-header {
@@ -1724,7 +1732,7 @@
       }
 
       .registration-viewport {
-        padding: 68px 10px 90px 10px;
+        padding: 68px 10px 95px 10px;
       }
 
       .registration-title {
@@ -1916,7 +1924,7 @@
     /* ================================================= */
     @media (max-width: 380px) {
       .registration-viewport {
-        padding: 62px 8px 90px 8px;
+        padding: 62px 8px 95px 8px;
       }
 
       .registration-title {
@@ -2665,6 +2673,38 @@
     let activeClickedCard = null;
     let isCardAnimating = false;
 
+    // Robust background scroll locking when modals are active
+    function lockBackgroundScroll() {
+      document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function unlockBackgroundScroll() {
+      // Check if any backdrop is still visible/active
+      setTimeout(() => {
+        const activeModals = document.querySelectorAll('.committee-modal-backdrop.active');
+        if (activeModals.length === 0) {
+          document.body.classList.remove('modal-open');
+          document.documentElement.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+        }
+      }, 50);
+    }
+
+    // Prevent touch gestures on backdrops from scrolling underlying page on mobile
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.committee-modal-backdrop').forEach(backdrop => {
+        backdrop.addEventListener('touchmove', (e) => {
+          if (e.target === backdrop) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+      });
+    });
+
     // Handle Card Click - Ultra Smooth FLIP Expansion
     function handleCardClick(committeeId, cardElement) {
       if (isCardAnimating) return;
@@ -2696,7 +2736,7 @@
       // 3. Activate backdrop
       backdrop.classList.add('active');
       backdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      lockBackgroundScroll();
 
       // 4. Measure target modal rect
       if (window.gsap) {
@@ -2819,7 +2859,7 @@
           onComplete: () => {
             backdrop.classList.remove('active');
             backdrop.style.display = 'none';
-            document.body.style.overflow = '';
+            unlockBackgroundScroll();
 
             // Restore all cards to visible
             document.querySelectorAll('.committee-card').forEach(c => {
@@ -2856,7 +2896,7 @@
       } else {
         backdrop.classList.remove('active');
         backdrop.style.display = 'none';
-        document.body.style.overflow = '';
+        unlockBackgroundScroll();
         if (targetCard) targetCard.style.opacity = '1';
         isCardAnimating = false;
         if (typeof callback === 'function') callback();
@@ -3062,7 +3102,7 @@
 
       typeBackdrop.classList.add('active');
       typeBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      lockBackgroundScroll();
 
       if (window.gsap) {
         gsap.fromTo(typeCard,
@@ -3087,7 +3127,7 @@
           onComplete: () => {
             typeBackdrop.classList.remove('active');
             typeBackdrop.style.display = 'none';
-            document.body.style.overflow = '';
+            unlockBackgroundScroll();
             gsap.set(typeCard, { clearProps: 'all' });
             if (callback) callback();
           }
@@ -3095,7 +3135,7 @@
       } else {
         typeBackdrop.classList.remove('active');
         typeBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
+        unlockBackgroundScroll();
         if (callback) callback();
       }
     }
@@ -3359,7 +3399,7 @@
 
       regBackdrop.classList.add('active');
       regBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      lockBackgroundScroll();
 
       if (window.gsap) {
         gsap.fromTo(regCard,
@@ -3386,14 +3426,14 @@
           onComplete: () => {
             regBackdrop.classList.remove('active');
             regBackdrop.style.display = 'none';
-            document.body.style.overflow = '';
+            unlockBackgroundScroll();
             gsap.set(regCard, { clearProps: 'all' });
           }
         });
       } else {
         regBackdrop.classList.remove('active');
         regBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
+        unlockBackgroundScroll();
       }
     }
 
@@ -3407,7 +3447,7 @@
 
       dlgBackdrop.classList.add('active');
       dlgBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      lockBackgroundScroll();
       stepDelegateCount(0);
 
       if (window.gsap) {
@@ -3434,14 +3474,14 @@
           onComplete: () => {
             dlgBackdrop.classList.remove('active');
             dlgBackdrop.style.display = 'none';
-            document.body.style.overflow = '';
+            unlockBackgroundScroll();
             gsap.set(dlgCard, { clearProps: 'all' });
           }
         });
       } else {
         dlgBackdrop.classList.remove('active');
         dlgBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
+        unlockBackgroundScroll();
       }
     }
 
