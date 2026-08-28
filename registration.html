@@ -3545,19 +3545,45 @@
       const typeInternal = document.getElementById('dlg-type-internal');
       const isInternal = typeInternal && typeInternal.checked;
       const headName = document.getElementById('dlg-head-name')?.value.trim() || 'Head of Delegation';
-      const delegationName = document.getElementById('dlg-delegation-name')?.value.trim() || 'Delegation';
-      const phone = document.getElementById('dlg-phone')?.value.trim() || '';
-      const email = document.getElementById('dlg-email')?.value.trim() || '';
-      const contactStr = phone ? `${phone} | ${email}` : email;
+      const delegationName = document.getElementById('dlg-delegation-name')?.value.trim() || '';
 
-      return isInternal
-        ? ['1', `${headName} (Head of Delegation)`, contactStr, '', '', '', '', '', '', '', '']
-        : ['1', `${headName} (Head of Delegation)`, delegationName, contactStr, '', '', '', '', '', '', ''];
+      return [
+        '1',
+        headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
+        isInternal ? 'RNSIT' : delegationName,
+        '', // USN / Roll No (blank for user to fill)
+        '', // Committee Preference 1
+        '', // Portfolio Preference 1
+        '', // Portfolio Preference 2
+        '', // Portfolio Preference 3
+        '', // Committee Preference 2
+        '', // Comm 2 - Portfolio Preference 1
+        '', // Comm 2 - Portfolio Preference 2
+        ''  // Comm 2 - Portfolio Preference 3
+      ];
     }
 
     function downloadDelegationRosterCSV() {
       const delegationNameInput = document.getElementById('dlg-delegation-name');
       const delegationName = delegationNameInput ? delegationNameInput.value.trim() : 'Delegation';
+      const sheetLink = document.getElementById('dlg-sheet-link')?.value || '';
+
+      // If a Google Sheet was generated, download the real-time live filled CSV directly from Google Sheets!
+      const match = sheetLink.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (match && match[1]) {
+        const sheetId = match[1];
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`;
+        const a = document.createElement('a');
+        a.href = exportUrl;
+        a.download = `RNS_MUN_26_${delegationName.replace(/\s+/g, '_')}_Roster.csv`;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+
+      // Local fallback CSV generator
       const countInput = document.getElementById('dlg-count');
       const count = Math.min(18, Math.max(10, parseInt(countInput?.value, 10) || 12));
       

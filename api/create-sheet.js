@@ -28,50 +28,40 @@ export default async function handler(req, res) {
     const isInternal = (delegationType || '').toLowerCase() === 'internal';
 
     // RNS MUN 26 Official Standard Headers
-    const headers = isInternal
-      ? [
-          'Sl No',
-          'Delegate Name',
-          'USN / Roll No',
-          'Committee Preference 1',
-          'Portfolio Preference 1',
-          'Portfolio Preference 2',
-          'Portfolio Preference 3',
-          'Committee Preference 2',
-          'Comm 2 - Portfolio Preference 1',
-          'Comm 2 - Portfolio Preference 2',
-          'Comm 2 - Portfolio Preference 3'
-        ]
-      : [
-          'Sl No',
-          'Delegate Name',
-          'Institution / College Name',
-          'USN / Roll No',
-          'Committee Preference 1',
-          'Portfolio Preference 1',
-          'Portfolio Preference 2',
-          'Portfolio Preference 3',
-          'Committee Preference 2',
-          'Comm 2 - Portfolio Preference 1',
-          'Comm 2 - Portfolio Preference 2',
-          'Comm 2 - Portfolio Preference 3'
-        ];
+    const headers = [
+      'Sl No',
+      'Delegate Name',
+      'Institution / College Name',
+      'USN / Roll No',
+      'Committee Preference 1',
+      'Portfolio Preference 1',
+      'Portfolio Preference 2',
+      'Portfolio Preference 3',
+      'Committee Preference 2',
+      'Comm 2 - Portfolio Preference 1',
+      'Comm 2 - Portfolio Preference 2',
+      'Comm 2 - Portfolio Preference 3'
+    ];
 
-    // Prepare Row 2: Pre-filled with Head of Delegation details
-    const headRow = isInternal
-      ? [
-          '1',
-          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
-          phone ? `Phone: ${phone.trim()} | ${email ? email.trim() : ''}` : '',
-          '', '', '', '', '', '', '', ''
-        ]
-      : [
-          '1',
-          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
-          delegationName ? delegationName.trim() : 'External Institution',
-          phone ? `Phone: ${phone.trim()} | ${email ? email.trim() : ''}` : '',
-          '', '', '', '', '', '', '', ''
-        ];
+    // Prepare Row 2: Only pre-fill the fields that were asked in the form!
+    // Col 1: '1'
+    // Col 2: Delegate Name: headName (Head of Delegation)
+    // Col 3: Institution / College Name: isInternal ? 'RNSIT' : delegationName
+    // Col 4 to 12: USN, Committee, and Portfolio preferences are left blank for the user to fill!
+    const headRow = [
+      '1',
+      headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
+      isInternal ? 'RNSIT' : (delegationName ? delegationName.trim() : ''),
+      '', // USN / Roll No (blank for user)
+      '', // Committee Preference 1
+      '', // Portfolio Preference 1
+      '', // Portfolio Preference 2
+      '', // Portfolio Preference 3
+      '', // Committee Preference 2
+      '', // Comm 2 - Portfolio Preference 1
+      '', // Comm 2 - Portfolio Preference 2
+      ''  // Comm 2 - Portfolio Preference 3
+    ];
 
     const title = `RNS MUN 26 - ${delegationName.trim()} Roster`;
 
