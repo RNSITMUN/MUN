@@ -27,37 +27,91 @@ export default async function handler(req, res) {
 
     const isInternal = (delegationType || '').toLowerCase() === 'internal';
 
-    // RNS MUN 26 Headers
+    // RNS MUN 26 Official Standard Headers
     const headers = isInternal
       ? [
           'Sl No',
-          'Name',
-          'USN',
+          'Delegate Name',
+          'USN / Roll No',
           'Committee Preference 1',
           'Portfolio Preference 1',
           'Portfolio Preference 2',
           'Portfolio Preference 3',
           'Committee Preference 2',
-          'Portfolio Preference 1',
-          'Portfolio Preference 2',
-          'Portfolio Preference 3'
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
         ]
       : [
           'Sl No',
-          'Name',
-          'Institution',
-          'USN',
+          'Delegate Name',
+          'Institution / College Name',
+          'USN / Roll No',
           'Committee Preference 1',
           'Portfolio Preference 1',
           'Portfolio Preference 2',
           'Portfolio Preference 3',
           'Committee Preference 2',
-          'Portfolio Preference 1',
-          'Portfolio Preference 2',
-          'Portfolio Preference 3'
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
+        ];
+
+    // Prepare Row 2: Pre-filled with Head of Delegation details
+    const headRow = isInternal
+      ? [
+          '1',
+          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
+          phone ? `Phone: ${phone.trim()} | ${email ? email.trim() : ''}` : '',
+          '', '', '', '', '', '', '', ''
+        ]
+      : [
+          '1',
+          headName ? `${headName.trim()} (Head of Delegation)` : 'Head of Delegation',
+          delegationName ? delegationName.trim() : 'External Institution',
+          phone ? `Phone: ${phone.trim()} | ${email ? email.trim() : ''}` : '',
+          '', '', '', '', '', '', '', ''
         ];
 
     const title = `RNS MUN 26 - ${delegationName.trim()} Roster`;
+
+    // 1. Google Apps Script Webhook URL
+    const gasEndpoint = process.env.GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbxE1kr1fAjSP4JiNyRQYu-JU9vMk61chP6YGX_rG2n-5M7iTMz4oE1UJpsIfN5d5f1VRw/exec';
+    if (gasEndpoint) {
+      try {
+        const gasResponse = await fetch(gasEndpoint, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            delegationName,
+            delegationType,
+            headName,
+            email,
+            phone,
+            headers,
+            headRow,
+            ownerEmail: 'mun@rnsit.ac.in'
+          })
+        });
+        const rawText = await gasResponse.text();
+        try {
+          const gasData = JSON.parse(rawText);
+          if (gasData && gasData.sheetUrl) {
+            return res.status(200).json({
+              success: true,
+              sheetUrl: gasData.sheetUrl,
+              headers,
+              headRow
+            });
+          }
+        } catch (jsonErr) {
+          console.warn('Google Apps Script returned HTML instead of JSON. Ensure "Who has access" is set to "Anyone" in Apps Script deployment.');
+        }
+      } catch (gasErr) {
+        console.warn('Google Apps Script proxy notice:', gasErr.message);
+      }
+    }
 
     // Parse Google Credentials from process.env.GOOGLE_SERVICE_ACCOUNT or individual vars
     let credentials = null;
@@ -79,14 +133,16 @@ export default async function handler(req, res) {
 
     // Graceful fallback for local development or until env credentials are provided
     if (!credentials) {
-      console.warn('[INFO] GOOGLE_SERVICE_ACCOUNT not configured in environment. Using fallback Google Sheets template creation URL.');
+      console.warn('[INFO] GOOGLE_SERVICE_ACCOUNT not configured. Returning formatted client template & copy payload for mun@rnsit.ac.in.');
       const encodedTitle = encodeURIComponent(title);
       const fallbackUrl = `https://docs.google.com/spreadsheets/create?title=${encodedTitle}`;
       return res.status(200).json({
         success: true,
         sheetUrl: fallbackUrl,
+        headers,
+        headRow,
         isFallback: true,
-        message: 'Google Service Account credentials not set. Returned Google Sheets template URL.'
+        message: 'Google Sheet payload ready. Row 1 (Headers) and Row 2 (Head of Delegation) generated.'
       });
     }
 
@@ -124,35 +180,77 @@ export default async function handler(req, res) {
     });
 
     const spreadsheetId = createResponse.data.spreadsheetId;
-    const sheetUrl = createResponse.data.spreadsheetUrl || `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`;
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit?usp=sharing`;
 
-    // 2. Insert Header Row
+    // 2. Insert Header Row (Row 1) and Head of Delegation (Row 2) + numbered rows (3..18)
+    const rows = [
+      headers,
+      headRow
+    ];
+    for (let i = 2; i <= 18; i++) {
+      rows.push([`${i}`, '', '', '', '', '', '', '', '', '', '']);
+    }
+
     await sheets.spreadsheets.values.update({
       spreadsheetId,
       range: 'Delegates Roster!A1',
       valueInputOption: 'RAW',
       requestBody: {
-        values: [headers]
+        values: rows
       }
     });
 
-    // 3. Grant Writer access to anyone with link so delegation head can fill the roster
+    // 3. Grant Writer (Edit Access) directly to the User / Delegation Head's email
+    if (email && email.trim() && /^\S+@\S+\.\S+$/.test(email.trim())) {
+      try {
+        await drive.permissions.create({
+          fileId: spreadsheetId,
+          sendNotificationEmail: false,
+          requestBody: {
+            role: 'writer',
+            type: 'user',
+            emailAddress: email.trim()
+          }
+        });
+      } catch (userPermErr) {
+        console.warn('Could not share edit permission directly with user email:', userPermErr.message);
+      }
+    }
+
+    // 4. Grant Editor permission to mun@rnsit.ac.in so organizing committee retains access
     try {
       await drive.permissions.create({
         fileId: spreadsheetId,
         requestBody: {
           role: 'writer',
-          type: 'anyone'
+          type: 'user',
+          emailAddress: 'mun@rnsit.ac.in'
+        }
+      });
+    } catch (munErr) {
+      console.warn('Could not share with mun@rnsit.ac.in:', munErr.message);
+    }
+
+    // 5. Grant Writer access to anyone with link (ensures seamless edit access for all delegation members)
+    try {
+      await drive.permissions.create({
+        fileId: spreadsheetId,
+        requestBody: {
+          role: 'writer',
+          type: 'anyone',
+          allowFileDiscovery: false
         }
       });
     } catch (permError) {
-      console.warn('Could not set anyone permission on sheet:', permError.message);
+      console.warn('Could not set anyone edit permission on sheet:', permError.message);
     }
 
     return res.status(200).json({
       success: true,
       sheetUrl,
-      spreadsheetId
+      spreadsheetId,
+      headers,
+      headRow
     });
   } catch (error) {
     console.error('Error creating Google Sheet:', error);
