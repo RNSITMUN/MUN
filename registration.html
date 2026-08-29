@@ -1446,7 +1446,9 @@
       top: 0;
       left: 0;
       width: 100%;
+      /* Match the card's own padding area — never taller than the card */
       height: 100%;
+      min-height: unset;
       background-color: var(--bg-color);
       border-radius: 20px;
       display: flex;
@@ -1468,6 +1470,12 @@
       opacity: 1;
       pointer-events: auto;
       transform: scale(1);
+    }
+
+    /* Internal pay-now: both buttons equal flex */
+    #reg-step-3-btns.internal-mode .btn-wizard-back,
+    #reg-step-3-btns.internal-mode #reg-submit-btn {
+      flex: 1;
     }
 
     .success-icon-badge {
@@ -1494,11 +1502,12 @@
     }
 
     .success-message {
-      font-size: 0.92rem;
-      color: rgba(0, 0, 0, 0.65);
-      line-height: 1.5;
-      margin: 0 0 18px 0;
-      max-width: 330px;
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.7);
+      line-height: 1.65;
+      margin: 0 0 24px 0;
+      max-width: 360px;
+      text-align: center;
     }
 
     .success-committee-badge {
@@ -2581,7 +2590,8 @@
             <input type="text" id="reg-comm2-portfolio-3" class="form-input" placeholder="e.g. Brazil / Caricaturist">
           </div>
 
-          <div class="form-group">
+          <!-- External Payment Scheme Dropdown -->
+          <div class="form-group" id="reg-external-payment-group">
             <label class="form-label" for="reg-payment-scheme">Payment Scheme *</label>
             <select id="reg-payment-scheme" class="form-select" required>
               <option value="standard-individual">Standard Individual Delegate Pass — ₹1,499</option>
@@ -2592,10 +2602,23 @@
             <div id="reg-payment-scheme-error" class="error-container">Payment scheme is required</div>
           </div>
 
-          <div class="wizard-btn-row">
+          <!-- Internal Delegate Direct Payment Card (₹999) -->
+          <div class="form-group" id="reg-internal-payment-group" style="display: none;">
+            <label class="form-label">Internal Delegate Fee *</label>
+            <div class="internal-fee-card" style="background: #111113; border: 2px solid #000000; border-radius: 14px; padding: 18px 20px; color: #FFF7EB; margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <span style="font-weight: 800; text-transform: uppercase; font-size: 0.95rem; color: var(--gold-accent);">RNSIT Exclusive Tier</span>
+                <span style="font-size: 1.4rem; font-weight: 900; color: #FFFFFF;">₹999</span>
+              </div>
+              <p style="margin: 0; font-size: 0.85rem; color: rgba(255, 247, 235, 0.75); line-height: 1.4;">
+                Exclusive subsidized delegate pass for RNS Institute of Technology students. Click below to proceed with your payment.
+              </p>
+            </div>
+          </div>
+
+          <div class="wizard-btn-row" id="reg-step-3-btns">
             <button type="button" class="btn-wizard-back" id="reg-step-3-back" onclick="goToStep(2)">Back</button>
-            <button type="submit" class="submit-btn wizard-next-btn" id="reg-submit-btn">Submit External Delegate
-              Registration</button>
+            <button type="submit" class="submit-btn wizard-next-btn" id="reg-submit-btn">Submit External Delegate Registration</button>
           </div>
         </div>
 
@@ -2604,8 +2627,8 @@
       <!-- Success Screen Overlay -->
       <div id="success-overlay" class="success-overlay">
         <div class="success-icon-badge">✓</div>
-        <h3 class="success-title">Registration Submitted!</h3>
-        <p class="success-message">
+        <h3 class="success-title" id="success-title">Registration Submitted!</h3>
+        <p class="success-message" id="success-message-text">
           Thank you for registering. Your external delegate application for <span id="success-committee-name"
             class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to
           your WhatsApp/email with payment verification and portfolio allotment.
@@ -3008,7 +3031,16 @@
           }
         }
 
+        const isSingleOption = select.options.length <= 1;
+        if (isSingleOption) {
+          trigger.disabled = true;
+          trigger.style.cursor = 'default';
+          trigger.style.opacity = '0.9';
+          arrowSpan.style.display = 'none';
+        }
+
         trigger.addEventListener('click', (e) => {
+          if (isSingleOption) return;
           e.stopPropagation();
           const isOpen = wrapper.classList.contains('is-open');
           closeAllCustomSelects();
@@ -3091,6 +3123,25 @@
       { value: 'ip', label: 'IP — International Press Corps' }
     ];
 
+    function setCommittee1Selection(preferredCommId) {
+      const comm1Select = document.getElementById('reg-committee-1');
+      if (!comm1Select) return;
+
+      const targetId = (preferredCommId || 'unsc').toLowerCase();
+      const matchedComm = ALL_COMMITTEES_LIST.find(c => c.value === targetId) || ALL_COMMITTEES_LIST[0];
+
+      // Committee 1 only shows this selected committee option
+      comm1Select.innerHTML = '';
+      const opt = document.createElement('option');
+      opt.value = matchedComm.value;
+      opt.textContent = matchedComm.label;
+      comm1Select.appendChild(opt);
+      comm1Select.value = matchedComm.value;
+
+      rebuildCustomSelect('reg-committee-1');
+      updateCommittee2Options();
+    }
+
     function updateCommittee2Options() {
       const comm1Select = document.getElementById('reg-committee-1');
       const comm2Select = document.getElementById('reg-committee-2');
@@ -3099,7 +3150,7 @@
       const selectedComm1 = comm1Select.value.toLowerCase();
       const currentComm2Val = comm2Select.value.toLowerCase();
 
-      // Filter out Committee 1
+      // Filter out Committee 1 so Preference 2 only contains all OTHER committees
       const availableComm2 = ALL_COMMITTEES_LIST.filter(c => c.value !== selectedComm1);
 
       // Rebuild native options for Committee 2
@@ -3111,7 +3162,7 @@
         comm2Select.appendChild(opt);
       });
 
-      // Keep previously selected value if still valid, otherwise pick first available
+      // Keep previously selected value if still valid in available options, otherwise default to first available
       if (currentComm2Val && currentComm2Val !== selectedComm1 && availableComm2.some(c => c.value === currentComm2Val)) {
         comm2Select.value = currentComm2Val;
       } else if (availableComm2.length > 0) {
@@ -3202,7 +3253,17 @@
 
       const submitBtn = document.getElementById('reg-submit-btn');
       if (submitBtn) {
-        submitBtn.textContent = type === 'internal' ? 'Submit Internal Delegate Registration' : 'Submit External Delegate Registration';
+        submitBtn.textContent = type === 'internal' ? 'Pay Now — ₹999' : 'Submit External Delegate Registration';
+      }
+
+      const extPaymentGroup = document.getElementById('reg-external-payment-group');
+      const intPaymentGroup = document.getElementById('reg-internal-payment-group');
+      if (type === 'internal') {
+        if (extPaymentGroup) extPaymentGroup.style.display = 'none';
+        if (intPaymentGroup) intPaymentGroup.style.display = 'block';
+      } else {
+        if (extPaymentGroup) extPaymentGroup.style.display = 'block';
+        if (intPaymentGroup) intPaymentGroup.style.display = 'none';
       }
 
       const institution = document.getElementById('reg-institution');
@@ -3220,6 +3281,12 @@
           institution.readOnly = false;
           institution.placeholder = 'e.g. RV College / BMS College';
         }
+      }
+
+      // Toggle button row mode so Pay Now button sizes match Back button for internal
+      const step3BtnRow = document.getElementById('reg-step-3-btns');
+      if (step3BtnRow) {
+        step3BtnRow.classList.toggle('internal-mode', type === 'internal');
       }
 
       closeDelegateTypeModal(() => {
@@ -3413,7 +3480,7 @@
           }
         }
 
-        if (paymentScheme) {
+        if (currentDelegateType !== 'internal' && paymentScheme) {
           const errorEl = document.getElementById('reg-payment-scheme-error');
           const trigger = paymentScheme.parentElement?.querySelector('.custom-select-trigger');
           if (!paymentScheme.value.trim()) {
@@ -3436,13 +3503,8 @@
     function openRegistrationModal(preferredCommitteeId = 'unsc') {
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
-      const commSelect1 = document.getElementById('reg-committee-1');
 
-      if (commSelect1 && preferredCommitteeId) {
-        commSelect1.value = preferredCommitteeId.toLowerCase();
-        commSelect1.dispatchEvent(new Event('change'));
-      }
-      updateCommittee2Options();
+      setCommittee1Selection(preferredCommitteeId);
 
       goToStep(1);
 
@@ -4036,22 +4098,19 @@
       }
     }
 
-    // External Delegate Registration Form Submission
+    // Delegate Registration Form Submission
     function handleRegistrationSubmit(e) {
       e.preventDefault();
 
       if (!validateStep(1)) {
         goToStep(1);
-
         return;
       }
       if (!validateStep(2)) {
         goToStep(2);
-
         return;
       }
       if (!validateStep(3)) {
-
         const regCard = document.getElementById('registration-modal-card');
         if (window.gsap && regCard) {
           gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
@@ -4059,29 +4118,106 @@
         return;
       }
 
-      // Show Success Screen
+      const committee1 = document.getElementById('reg-committee-1');
+      const selectedCommName = committee1 ? committee1.options[committee1.selectedIndex]?.text : 'Selected Committee';
+      const nameInput = document.getElementById('reg-name');
+      const delegateName = nameInput ? nameInput.value.trim() : 'Delegate';
+
+      // If internal delegate, handle payment redirect flow and reload
+      if (currentDelegateType === 'internal') {
+        const paymentState = {
+          isInternal: true,
+          delegateName: delegateName,
+          committeeName: selectedCommName,
+          timestamp: Date.now()
+        };
+        sessionStorage.setItem('pending_internal_payment', JSON.stringify(paymentState));
+
+        // External Payment Gateway URL (can be updated with direct payment portal link)
+        const paymentGatewayUrl = "https://rzp.io/l/rnsmun-internal";
+
+        // Open external payment in new tab
+        window.open(paymentGatewayUrl, '_blank', 'noopener,noreferrer');
+
+        // Reload current page to reveal professional payment instruction confirmation state
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+        return;
+      }
+
+      // External Delegate Success Screen
       const successOverlay = document.getElementById('success-overlay');
       if (successOverlay) {
-        successOverlay.classList.add('show');
-        const committee1 = document.getElementById('reg-committee-1');
-        const selectedCommName = committee1 ? committee1.options[committee1.selectedIndex]?.text : 'Selected Committee';
-        const successMsg = document.getElementById('success-committee-name');
-        if (successMsg) successMsg.textContent = selectedCommName;
+        const successTitle = document.getElementById('success-title');
+        if (successTitle) successTitle.textContent = 'Registration Submitted!';
+
+        const successMsg = document.getElementById('success-message-text');
+        if (successMsg) {
+          successMsg.innerHTML = `Thank you for registering. Your external delegate application for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> has been recorded. Our delegate affairs team will reach out to your WhatsApp/email with payment verification and portfolio allotment.`;
+        }
+
+        showSuccessOverlay();
       }
     }
 
-    function handleSuccessDone() {
+    // Scroll modal to top, constrain card height, and lock scroll so form is hidden
+    function showSuccessOverlay() {
+      const regCard = document.getElementById('registration-modal-card');
       const successOverlay = document.getElementById('success-overlay');
-      if (successOverlay) successOverlay.classList.remove('show');
-      closeRegistrationModal();
-      const form = document.getElementById('delegate-registration-form');
-      if (form) {
-        form.reset();
-        const institution = document.getElementById('reg-institution');
-        if (institution) institution.readOnly = false;
-        document.querySelectorAll('select.form-select').forEach(s => s.dispatchEvent(new Event('change')));
+      if (regCard) {
+        regCard.scrollTop = 0;
+        regCard.style.overflow = 'hidden';
+        regCard.style.maxHeight = '500px'; // Compact — no full-screen on mobile
       }
-      goToStep(1);
+      if (successOverlay) successOverlay.classList.add('show');
+    }
+
+    function handleSuccessDone() {
+      sessionStorage.removeItem('pending_internal_payment');
+      const regBackdrop = document.getElementById('registration-modal-backdrop');
+      const regCard = document.getElementById('registration-modal-card');
+      closeAllCustomSelects();
+      if (!regBackdrop || !regCard) return;
+
+      // Animate modal OUT with overlay still visible — form never shown
+      if (window.gsap) {
+        gsap.to(regCard, {
+          scale: 0.94, y: 20, opacity: 0, duration: 0.28, ease: 'power3.in',
+          onComplete: () => {
+            regBackdrop.classList.remove('active');
+            regBackdrop.style.display = 'none';
+            unlockBackgroundScroll();
+            gsap.set(regCard, { clearProps: 'all' });
+            // Now hidden — reset everything silently
+            const successOverlay = document.getElementById('success-overlay');
+            if (successOverlay) successOverlay.classList.remove('show');
+            regCard.style.overflow = '';
+            regCard.style.maxHeight = '';
+            const form = document.getElementById('delegate-registration-form');
+            if (form) {
+              form.reset();
+              const institution = document.getElementById('reg-institution');
+              if (institution) institution.readOnly = false;
+            }
+            goToStep(1);
+            setTimeout(() => {
+              document.querySelectorAll('select.form-select').forEach(s => s.dispatchEvent(new Event('change')));
+            }, 50);
+          }
+        });
+      } else {
+        regBackdrop.classList.remove('active');
+        regBackdrop.style.display = 'none';
+        unlockBackgroundScroll();
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) successOverlay.classList.remove('show');
+        regCard.style.overflow = '';
+        regCard.style.maxHeight = '';
+        const form = document.getElementById('delegate-registration-form');
+        if (form) form.reset();
+        goToStep(1);
+      }
     }
 
     // Keyboard and Backdrop Click Listeners
@@ -4130,6 +4266,45 @@
       }
     });
 
+    // Check for post-reload internal payment confirmation
+    function checkInternalPaymentState() {
+      const savedStateStr = sessionStorage.getItem('pending_internal_payment');
+      if (!savedStateStr) return;
+
+      try {
+        const state = JSON.parse(savedStateStr);
+        if (state && state.isInternal) {
+          const regBackdrop = document.getElementById('registration-modal-backdrop');
+          const regCard = document.getElementById('registration-modal-card');
+          const successOverlay = document.getElementById('success-overlay');
+          const successTitle = document.getElementById('success-title');
+          const successMsg = document.getElementById('success-message-text');
+
+          if (successTitle) {
+            successTitle.textContent = 'Complete Your Payment';
+          }
+
+          if (successMsg) {
+            successMsg.innerHTML = `
+              <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br><br>
+              <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br><br>
+              <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">Thank you for registering with RNS MUN '26.</em>
+            `;
+          }
+
+          if (regBackdrop) {
+            regBackdrop.classList.add('active');
+            regBackdrop.style.display = 'flex';
+            lockBackgroundScroll();
+            // Use helper so modal scrolls to top and scroll is locked
+            showSuccessOverlay();
+          }
+        }
+      } catch (err) {
+        console.log('Payment state parsing notice:', err);
+      }
+    }
+
     // Initialize custom select on page load and check for direct modal links
     function handleInitialPageLoad() {
       initCustomSelects();
@@ -4140,6 +4315,9 @@
         });
       }
       updateCommittee2Options();
+
+      // Check if user just redirected from internal payment
+      checkInternalPaymentState();
 
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
