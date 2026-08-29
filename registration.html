@@ -4165,12 +4165,10 @@
       const typeInternal = document.getElementById('dlg-type-internal');
       const delegationType = typeInternal && typeInternal.checked ? 'internal' : 'external';
 
-      if (!delegationName) {
-        if (delegationNameInput) delegationNameInput.classList.add('has-error');
-        const err = document.getElementById('dlg-delegation-name-error');
-        if (err) {
-          err.textContent = 'Please enter Delegation Name before creating sheet';
-          err.style.display = 'block';
+      if (!validateDelegationFields()) {
+        const dlgCard = document.getElementById('delegation-modal-card');
+        if (window.gsap && dlgCard) {
+          gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
         }
         return;
       }
@@ -4323,9 +4321,7 @@
       }
     }
 
-    function handleDelegationSubmit(e) {
-      e.preventDefault();
-
+    function validateDelegationFields() {
       let hasError = false;
       const delegationName = document.getElementById('dlg-delegation-name');
       const headName = document.getElementById('dlg-head-name');
@@ -4334,7 +4330,6 @@
       const count = document.getElementById('dlg-count');
       const typeInternal = document.getElementById('dlg-type-internal');
       const typeExternal = document.getElementById('dlg-type-external');
-      const sheetLink = document.getElementById('dlg-sheet-link');
 
       // Validate Text Fields
       [
@@ -4396,6 +4391,22 @@
       } else {
         if (typeErr) typeErr.style.display = 'none';
       }
+
+      return !hasError;
+    }
+
+    function handleDelegationSubmit(e) {
+      e.preventDefault();
+
+      let hasError = !validateDelegationFields();
+      const delegationName = document.getElementById('dlg-delegation-name');
+      const headName = document.getElementById('dlg-head-name');
+      const phone = document.getElementById('dlg-phone');
+      const email = document.getElementById('dlg-email');
+      const count = document.getElementById('dlg-count');
+      const typeInternal = document.getElementById('dlg-type-internal');
+      const typeExternal = document.getElementById('dlg-type-external');
+      const sheetLink = document.getElementById('dlg-sheet-link');
 
       // Google Sheet Validation
       const sheetErr = document.getElementById('dlg-sheet-error');
