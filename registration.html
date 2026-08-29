@@ -2276,15 +2276,21 @@
         <div class="form-group">
           <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (10 – 18)</label>
           <div class="delegate-number-input-wrap">
-            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="10" max="18" value="10" placeholder="10" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)" required>
+            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="10" max="18" value="10"
+              placeholder="10" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
+              required>
             <div class="delegate-number-steppers">
-              <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)" aria-label="Increase number of delegates" title="Increase">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)"
+                aria-label="Increase number of delegates" title="Increase">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="18 15 12 9 6 15"></polyline>
                 </svg>
               </button>
-              <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)" aria-label="Decrease number of delegates" title="Decrease">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)"
+                aria-label="Decrease number of delegates" title="Decrease">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
@@ -2298,11 +2304,13 @@
           <label class="form-label">Delegation Category *</label>
           <div class="radio-group">
             <label class="radio-card-label" for="dlg-type-internal">
-              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal" onchange="updateRosterPreview()" required>
+              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal"
+                onchange="updateRosterPreview()" required>
               <span>Internal (RNSIT)</span>
             </label>
             <label class="radio-card-label" for="dlg-type-external">
-              <input type="radio" id="dlg-type-external" name="dlg-type" value="external" onchange="updateRosterPreview()" required checked>
+              <input type="radio" id="dlg-type-external" name="dlg-type" value="external"
+                onchange="updateRosterPreview()" required checked>
               <span>External</span>
             </label>
           </div>
@@ -2332,20 +2340,23 @@
                     class="sheet-link-text">Open Google Sheet</a>
                 </div>
                 <div>
-                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download as CSV</button>
+                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download as
+                    CSV</button>
                 </div>
               </div>
             </div>
             <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
           </div>
-          <div id="dlg-sheet-error" class="error-container">Please click "Create Delegation Sheet" to generate your delegation sheet</div>
+          <div id="dlg-sheet-error" class="error-container">Please click "Create Delegation Sheet" to generate your
+            delegation sheet</div>
         </div>
 
         <!-- Payment Scheme -->
         <div class="form-group">
           <label class="form-label" for="dlg-payment-scheme">Payment Scheme *</label>
           <select id="dlg-payment-scheme" class="form-select" required>
-            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)</option>
+            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)
+            </option>
             <option value="standard-delegation">Standard Delegation Scheme</option>
           </select>
           <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
@@ -2359,15 +2370,18 @@
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title">Delegation Registered!</h3>
         <p class="success-message">
-          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your delegation application has been
-          recorded and connected with the organizing committee (<span style="color: var(--accent-color); font-weight: 700;">mun@rnsit.ac.in</span>).
+          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your delegation application
+          has been
+          recorded and connected with the organizing committee (<span
+            style="color: var(--accent-color); font-weight: 700;">mun@rnsit.ac.in</span>).
         </p>
         <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-          <a id="dlg-success-sheet-link" href="#" target="_blank"
-            class="sheet-btn-action" style="padding: 8px 16px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: #0F9D58; color: #FFFFFF; border-color: var(--text-primary);">
+          <a id="dlg-success-sheet-link" href="#" target="_blank" class="sheet-btn-action"
+            style="padding: 8px 16px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: #0F9D58; color: #FFFFFF; border-color: var(--text-primary);">
             <span>📊 Open Delegation Google Sheet</span>
           </a>
-          <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()" style="padding: 6px 12px; font-size: 0.8rem;">
+          <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
+            style="padding: 6px 12px; font-size: 0.8rem;">
             <span>📥 Download Roster as CSV</span>
           </button>
         </div>
@@ -3537,36 +3551,36 @@
       const isInternal = typeInternal && typeInternal.checked;
       return isInternal
         ? [
-            'Sl No',
-            'Delegate Name',
-            'Email Address',
-            'WhatsApp / Mobile Number',
-            'USN / Roll No',
-            'Committee Preference 1',
-            'Portfolio Preference 1',
-            'Portfolio Preference 2',
-            'Portfolio Preference 3',
-            'Committee Preference 2',
-            'Comm 2 - Portfolio Preference 1',
-            'Comm 2 - Portfolio Preference 2',
-            'Comm 2 - Portfolio Preference 3'
-          ]
+          'Sl No',
+          'Delegate Name',
+          'Email Address',
+          'WhatsApp / Mobile Number',
+          'USN / Roll No',
+          'Committee Preference 1',
+          'Portfolio Preference 1',
+          'Portfolio Preference 2',
+          'Portfolio Preference 3',
+          'Committee Preference 2',
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
+        ]
         : [
-            'Sl No',
-            'Delegate Name',
-            'Email Address',
-            'WhatsApp / Mobile Number',
-            'Institution / College Name',
-            'USN / Roll No',
-            'Committee Preference 1',
-            'Portfolio Preference 1',
-            'Portfolio Preference 2',
-            'Portfolio Preference 3',
-            'Committee Preference 2',
-            'Comm 2 - Portfolio Preference 1',
-            'Comm 2 - Portfolio Preference 2',
-            'Comm 2 - Portfolio Preference 3'
-          ];
+          'Sl No',
+          'Delegate Name',
+          'Email Address',
+          'WhatsApp / Mobile Number',
+          'Institution / College Name',
+          'USN / Roll No',
+          'Committee Preference 1',
+          'Portfolio Preference 1',
+          'Portfolio Preference 2',
+          'Portfolio Preference 3',
+          'Committee Preference 2',
+          'Comm 2 - Portfolio Preference 1',
+          'Comm 2 - Portfolio Preference 2',
+          'Comm 2 - Portfolio Preference 3'
+        ];
     }
 
     function updateRosterPreview() {
@@ -3586,36 +3600,36 @@
 
       return isInternal
         ? [
-            '1',
-            headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
-            email,
-            phone,
-            '', // USN / Roll No (blank for user to fill)
-            '', // Committee Preference 1
-            '', // Portfolio Preference 1
-            '', // Portfolio Preference 2
-            '', // Portfolio Preference 3
-            '', // Committee Preference 2
-            '', // Comm 2 - Portfolio Preference 1
-            '', // Comm 2 - Portfolio Preference 2
-            ''  // Comm 2 - Portfolio Preference 3
-          ]
+          '1',
+          headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
+          email,
+          phone,
+          '', // USN / Roll No (blank for user to fill)
+          '', // Committee Preference 1
+          '', // Portfolio Preference 1
+          '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
+          '', // Committee Preference 2
+          '', // Comm 2 - Portfolio Preference 1
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
+        ]
         : [
-            '1',
-            headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
-            email,
-            phone,
-            delegationName,
-            '', // USN / Roll No (blank for user to fill)
-            '', // Committee Preference 1
-            '', // Portfolio Preference 1
-            '', // Portfolio Preference 2
-            '', // Portfolio Preference 3
-            '', // Committee Preference 2
-            '', // Comm 2 - Portfolio Preference 1
-            '', // Comm 2 - Portfolio Preference 2
-            ''  // Comm 2 - Portfolio Preference 3
-          ];
+          '1',
+          headName ? `${headName} (Head of Delegation)` : 'Head of Delegation',
+          email,
+          phone,
+          delegationName,
+          '', // USN / Roll No (blank for user to fill)
+          '', // Committee Preference 1
+          '', // Portfolio Preference 1
+          '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
+          '', // Committee Preference 2
+          '', // Comm 2 - Portfolio Preference 1
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
+        ];
     }
 
     function downloadDelegationRosterCSV() {
@@ -3641,18 +3655,18 @@
       // Local fallback CSV generator
       const countInput = document.getElementById('dlg-count');
       const count = Math.min(18, Math.max(10, parseInt(countInput?.value, 10) || 12));
-      
+
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
 
       let csvContent = headers.map(h => `"${h.replace(/"/g, '""')}"`).join(',') + '\r\n';
       csvContent += headRow.map(c => `"${c.replace(/"/g, '""')}"`).join(',') + '\r\n';
-      
+
       // Pre-fill sample row numbers 2 to count
       for (let i = 2; i <= count; i++) {
         csvContent += `${i}` + ','.repeat(headers.length - 1) + '\r\n';
       }
-      
+
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -3689,7 +3703,7 @@
 
       // 1. Prevent duplicate sheet creation if this delegation/email has already submitted
       const prevSubmittedLink = (cleanName && localStorage.getItem(`submitted_dlg_${cleanName}`)) ||
-                                (cleanEmail && localStorage.getItem(`submitted_dlg_email_${cleanEmail}`));
+        (cleanEmail && localStorage.getItem(`submitted_dlg_email_${cleanEmail}`));
 
       if (prevSubmittedLink) {
         const errorEl = document.getElementById('dlg-sheet-error');
