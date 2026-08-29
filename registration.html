@@ -2162,8 +2162,7 @@
           delegation allocations today.</p>
       </div>
       <div class="banner-btns-container">
-        <button class="banner-btn" onclick="openDelegateTypeModal('unsc')">Register as Delegate</button>
-        <button class="banner-btn banner-btn-secondary" onclick="openDelegationRegistrationModal()">Register as
+        <button class="banner-btn" onclick="openDelegationRegistrationModal()">Register as
           Delegation</button>
       </div>
     </div>
@@ -3072,6 +3071,57 @@
       });
     }
 
+    function rebuildCustomSelect(selectId) {
+      const select = document.getElementById(selectId);
+      if (!select) return;
+      const wrapper = select.closest('.custom-select-wrapper');
+      if (wrapper) {
+        wrapper.parentNode.insertBefore(select, wrapper);
+        wrapper.remove();
+      }
+      initCustomSelects();
+    }
+
+    const ALL_COMMITTEES_LIST = [
+      { value: 'unsc', label: 'UNSC — United Nations Security Council' },
+      { value: 'loksabha', label: 'Lok Sabha — House of the People' },
+      { value: 'disec', label: "DISEC — Disarmament & Int'l Security" },
+      { value: 'unhrc', label: 'UNHRC — UN Human Rights Council' },
+      { value: 'unodc', label: 'UNODC — UN Office on Drugs & Crime' },
+      { value: 'ip', label: 'IP — International Press Corps' }
+    ];
+
+    function updateCommittee2Options() {
+      const comm1Select = document.getElementById('reg-committee-1');
+      const comm2Select = document.getElementById('reg-committee-2');
+      if (!comm1Select || !comm2Select) return;
+
+      const selectedComm1 = comm1Select.value.toLowerCase();
+      const currentComm2Val = comm2Select.value.toLowerCase();
+
+      // Filter out Committee 1
+      const availableComm2 = ALL_COMMITTEES_LIST.filter(c => c.value !== selectedComm1);
+
+      // Rebuild native options for Committee 2
+      comm2Select.innerHTML = '';
+      availableComm2.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.value;
+        opt.textContent = c.label;
+        comm2Select.appendChild(opt);
+      });
+
+      // Keep previously selected value if still valid, otherwise pick first available
+      if (currentComm2Val && currentComm2Val !== selectedComm1 && availableComm2.some(c => c.value === currentComm2Val)) {
+        comm2Select.value = currentComm2Val;
+      } else if (availableComm2.length > 0) {
+        comm2Select.value = availableComm2[0].value;
+      }
+
+      // Rebuild custom dropdown UI for Committee 2
+      rebuildCustomSelect('reg-committee-2');
+    }
+
     function closeAllCustomSelects() {
       document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
         w.classList.remove('is-open');
@@ -3392,6 +3442,7 @@
         commSelect1.value = preferredCommitteeId.toLowerCase();
         commSelect1.dispatchEvent(new Event('change'));
       }
+      updateCommittee2Options();
 
       goToStep(1);
 
@@ -4082,6 +4133,14 @@
     // Initialize custom select on page load and check for direct modal links
     function handleInitialPageLoad() {
       initCustomSelects();
+      const comm1Select = document.getElementById('reg-committee-1');
+      if (comm1Select) {
+        comm1Select.addEventListener('change', () => {
+          updateCommittee2Options();
+        });
+      }
+      updateCommittee2Options();
+
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
         setTimeout(openDelegationRegistrationModal, 150);
