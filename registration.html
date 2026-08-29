@@ -4456,6 +4456,13 @@
       if (cleanEmail) localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, sheetLink.value.trim());
 
       // Show Delegation Success Screen
+      const dlgCard = document.getElementById('delegation-modal-card');
+      if (dlgCard) {
+        dlgCard.scrollTop = 0;
+        dlgCard.style.overflow = 'hidden';
+        dlgCard.style.maxHeight = '500px'; // Compact - no full-screen on mobile
+      }
+      
       const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) {
         successOverlay.classList.add('show');
