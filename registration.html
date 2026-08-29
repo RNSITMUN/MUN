@@ -2285,7 +2285,7 @@
         <p class="reg-form-subtitle">Register your institution's delegation and generate your delegate roster sheet</p>
       </div>
 
-      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)">
+      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)" oninput="toggleDelegationClearBtn()" onchange="toggleDelegationClearBtn()">
 
         <!-- 1. Name of the Delegation -->
         <div class="form-group">
@@ -2314,7 +2314,7 @@
           <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
           <div style="display: flex; gap: 8px;">
             <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com" oninput="checkEmailRegistration(this)" required style="flex: 1;">
-            <button type="button" class="btn-wizard-back" onclick="clearDelegationForm()" style="padding: 0 16px; min-height: 48px; border-radius: 12px;" title="Clear Data">Clear Data</button>
+            <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()" style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear Data</button>
           </div>
           <div id="dlg-email-error" class="error-container">Valid email address is required</div>
           <div id="dlg-email-exists-msg" class="error-container" style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
@@ -3938,6 +3938,20 @@
       }
     }
 
+    function toggleDelegationClearBtn() {
+      const form = document.getElementById('delegation-registration-form');
+      const clearBtn = document.getElementById('dlg-clear-data-btn');
+      if (!form || !clearBtn) return;
+      
+      const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+      let hasData = false;
+      inputs.forEach(input => {
+        if (input.value.trim() !== '') hasData = true;
+      });
+      
+      clearBtn.style.display = hasData ? 'block' : 'none';
+    }
+
     function clearDelegationForm() {
       const form = document.getElementById('delegation-registration-form');
       if (form) {
@@ -3964,6 +3978,8 @@
         if (emailInput) {
           checkEmailRegistration(emailInput);
         }
+        
+        toggleDelegationClearBtn();
       }
     }
 
