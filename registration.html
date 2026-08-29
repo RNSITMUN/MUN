@@ -3844,18 +3844,39 @@
       const submitBtn = document.getElementById('dlg-submit-btn');
       const exitBtn = document.getElementById('dlg-exit-btn');
       
-      const hasRegistered = email ? localStorage.getItem(`submitted_dlg_email_${email}`) : null;
+      const sheetResult = document.getElementById('dlg-sheet-result');
+      const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+      const sheetAnchor = document.getElementById('dlg-sheet-anchor');
+      
+      const hasRegisteredUrl = email ? localStorage.getItem(`submitted_dlg_email_${email}`) : null;
 
-      if (hasRegistered) {
+      if (hasRegisteredUrl) {
         if (existsMsg) existsMsg.style.display = 'block';
         if (createSheetBtn) createSheetBtn.style.display = 'none';
         if (submitBtn) submitBtn.style.display = 'none';
         if (exitBtn) exitBtn.style.display = 'block';
+        
+        // Display previously generated sheet
+        if (hiddenLinkInput) {
+          hiddenLinkInput.value = hasRegisteredUrl;
+          hiddenLinkInput.dataset.fromHistory = 'true';
+        }
+        if (sheetAnchor) sheetAnchor.href = hasRegisteredUrl;
+        if (sheetResult) sheetResult.classList.add('is-generated');
+        
       } else {
         if (existsMsg) existsMsg.style.display = 'none';
         if (createSheetBtn) createSheetBtn.style.display = 'inline-flex';
         if (submitBtn) submitBtn.style.display = 'block';
         if (exitBtn) exitBtn.style.display = 'none';
+        
+        // Hide sheet if it was populated by a historic registered email match
+        if (hiddenLinkInput && hiddenLinkInput.dataset.fromHistory === 'true') {
+          hiddenLinkInput.value = '';
+          hiddenLinkInput.dataset.fromHistory = 'false';
+          if (sheetAnchor) sheetAnchor.href = '#';
+          if (sheetResult) sheetResult.classList.remove('is-generated');
+        }
       }
     }
 
