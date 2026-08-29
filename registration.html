@@ -4246,7 +4246,6 @@
       const typeInternal = document.getElementById('dlg-type-internal');
       const typeExternal = document.getElementById('dlg-type-external');
       const sheetLink = document.getElementById('dlg-sheet-link');
-      const paymentScheme = document.getElementById('dlg-payment-scheme');
 
       // Validate Text Fields
       [
@@ -4318,22 +4317,6 @@
         if (sheetErr) sheetErr.style.display = 'none';
       }
 
-      // Payment Scheme Validation
-      if (paymentScheme) {
-        const err = document.getElementById('dlg-payment-scheme-error');
-        const trigger = paymentScheme.parentElement?.querySelector('.custom-select-trigger');
-        if (!paymentScheme.value.trim()) {
-          paymentScheme.classList.add('has-error');
-          if (trigger) trigger.classList.add('has-error');
-          if (err) err.style.display = 'block';
-          hasError = true;
-        } else {
-          paymentScheme.classList.remove('has-error');
-          if (trigger) trigger.classList.remove('has-error');
-          if (err) err.style.display = 'none';
-        }
-      }
-
       if (hasError) {
 
         const dlgCard = document.getElementById('delegation-modal-card');
@@ -4352,8 +4335,7 @@
         email: email.value.trim(),
         delegateCount: count.value.trim(),
         delegateType: typeInternal && typeInternal.checked ? "internal" : "external",
-        googleSheetLink: sheetLink.value.trim(),
-        paymentDetails: paymentScheme.value
+        googleSheetLink: sheetLink.value.trim()
       };
 
       // Save delegation submission state to prevent generating another sheet later
