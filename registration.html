@@ -61,10 +61,8 @@
 
     html.modal-open,
     body.modal-open {
-      overflow: hidden !important;
-      height: 100% !important;
-      touch-action: none !important;
-      overscroll-behavior: contain !important;
+      overflow: hidden;
+      overscroll-behavior: contain;
     }
 
     .registration-viewport {
@@ -2686,9 +2684,11 @@
     let activeCommitteeData = null;
     let activeClickedCard = null;
     let isCardAnimating = false;
+    let savedScrollPosition = 0;
 
     // Robust background scroll locking when modals are active
     function lockBackgroundScroll() {
+      savedScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
       document.body.classList.add('modal-open');
       document.documentElement.classList.add('modal-open');
       document.body.style.overflow = 'hidden';
@@ -2704,6 +2704,13 @@
           document.documentElement.classList.remove('modal-open');
           document.body.style.overflow = '';
           document.documentElement.style.overflow = '';
+
+          requestAnimationFrame(() => {
+            window.scrollTo({
+              top: savedScrollPosition,
+              behavior: 'instant'
+            });
+          });
         }
       }, 50);
     }
@@ -2886,7 +2893,13 @@
             activeClickedCard = null;
             isCardAnimating = false;
 
-            if (targetCard) targetCard.focus();
+            if (targetCard) {
+              try {
+                targetCard.focus({ preventScroll: true });
+              } catch (e) {
+                targetCard.focus();
+              }
+            }
             if (typeof callback === 'function') callback();
           }
         });
@@ -4099,6 +4112,17 @@
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
         setTimeout(openDelegationRegistrationModal, 150);
+      } else {
+        const committeeParam = urlParams.get('committee');
+        if (committeeParam) {
+          const cId = committeeParam.toLowerCase().replace(/[\s-_]/g, '');
+          if (COMMITTEES && COMMITTEES[cId]) {
+            const cardEl = document.querySelector(`.committee-card[data-committee-id="${cId}"]`);
+            setTimeout(() => {
+              handleCardClick(cId, cardEl);
+            }, 150);
+          }
+        }
       }
     }
 

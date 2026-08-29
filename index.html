@@ -145,16 +145,30 @@
     /* 3-Column Swiss Grid */
     .editorial-grid {
       display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      gap: 32px;
+      grid-template-columns: 0.9fr 1.5fr 1fr;
+      column-gap: 35px;
+      row-gap: 32px;
       padding-bottom: 24px;
       border-bottom: 1.5px solid rgba(0, 0, 0, 0.15);
+      align-items: start;
     }
 
     .editorial-col {
       display: flex;
       flex-direction: column;
       gap: 12px;
+    }
+
+    .editorial-col:first-child {
+      min-width: max-content;
+    }
+
+    .editorial-col:nth-child(2) {
+      justify-self: center;
+    }
+
+    .editorial-col:last-child {
+      justify-self: end;
     }
 
     .col-index {
@@ -179,12 +193,14 @@
     /* Councils 3x2 Grid */
     .councils-list {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 95px);
       gap: 7px;
       margin: 4px 0 6px 0;
+      padding: 2px 4px 4px 2px;
     }
 
     .council-item {
+      position: relative;
       font-family: 'Outfit', sans-serif;
       font-size: 0.78rem;
       font-weight: 800;
@@ -194,24 +210,42 @@
       border: 1.5px solid #000;
       border-radius: 8px;
       padding: 6px 4px;
-      box-shadow: 2px 2px 0 #000;
+      box-shadow: 3px 3px 0 #000;
       text-align: center;
+      text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
-      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+      overflow: visible;
+      isolation: isolate;
+      transform: translateZ(0);
+      will-change: transform;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
         background-color 0.18s ease,
         color 0.18s ease;
-      cursor: default;
+      cursor: pointer;
+    }
+
+    .council-item::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      pointer-events: none;
     }
 
     .council-item:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 3.5px 3.5px 0 #000;
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0 #000;
       background-color: #6C0D2C;
       color: #FFF7EB;
+    }
+
+    .council-item:active {
+      transform: translateY(0);
+      box-shadow: 1.5px 1.5px 0 #000;
     }
 
     /* VIP Delegate Pass Card */
@@ -327,7 +361,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      background: #FFF7EB;
+      background: #E5A93C;
       color: #000;
       font-family: 'Outfit', sans-serif;
       font-size: 0.92rem;
@@ -344,7 +378,7 @@
     }
 
     .editorial-pass-card:hover .pass-action-btn {
-      background: #FFFFFF;
+      background: #F5B94C;
       transform: translateY(-2px);
       box-shadow: 5px 5px 0 #000;
     }
@@ -381,6 +415,13 @@
       .editorial-grid {
         grid-template-columns: 1fr;
         gap: 28px;
+      }
+
+      .editorial-col:first-child,
+      .editorial-col:nth-child(2),
+      .editorial-col:last-child {
+        justify-self: start;
+        min-width: 0;
       }
 
       .pass-card-body {
@@ -606,12 +647,12 @@
         <div class="editorial-col">
           <span class="col-index">[ 02 ] 06 COMMITTEES</span>
           <div class="councils-list">
-            <span class="council-item">UNSC</span>
-            <span class="council-item">LOK SABHA</span>
-            <span class="council-item">DISEC</span>
-            <span class="council-item">UNHRC</span>
-            <span class="council-item">UNODC</span>
-            <span class="council-item">IP</span>
+            <a href="/registration?committee=unsc" class="council-item" aria-label="Explore UNSC Committee">UNSC</a>
+            <a href="/registration?committee=loksabha" class="council-item" aria-label="Explore Lok Sabha Committee">LOK SABHA</a>
+            <a href="/registration?committee=disec" class="council-item" aria-label="Explore DISEC Committee">DISEC</a>
+            <a href="/registration?committee=unhrc" class="council-item" aria-label="Explore UNHRC Committee">UNHRC</a>
+            <a href="/registration?committee=unodc" class="council-item" aria-label="Explore UNODC Committee">UNODC</a>
+            <a href="/registration?committee=ip" class="council-item" aria-label="Explore IP Committee">IP</a>
           </div>
         </div>
 
