@@ -1,5 +1,17 @@
 // Scroll Morph & Dropdown Navigation Handler
 (function () {
+  function prefetchUrl(href) {
+    if (!href || href === window.location.pathname || href.startsWith("#") || href.startsWith("http")) return;
+    const linkId = `prefetch-${href.replace(/[^a-zA-Z0-9]/g, "")}`;
+    if (!document.getElementById(linkId)) {
+      const link = document.createElement("link");
+      link.id = linkId;
+      link.rel = "prefetch";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }
+
   function initAnimatedNav() {
     const navPill = document.querySelector(".nav-pill");
     if (!navPill) return;
@@ -11,7 +23,12 @@
       // 1. Horizontal links wrapper (centered pill state)
       const wrap = document.createElement("div");
       wrap.className = "nav-items-wrap";
-      items.forEach((it) => wrap.appendChild(it));
+      items.forEach((it) => {
+        it.addEventListener("mouseenter", () => {
+          prefetchUrl(it.getAttribute("href"));
+        }, { passive: true });
+        wrap.appendChild(it);
+      });
 
       // 2. Collapsed Hamburger / Close button
       const collapsedIcon = document.createElement("button");
@@ -38,18 +55,8 @@
         clone.className = "nav-dropdown-item" + (it.classList.contains("active") ? " active" : "");
         // Prefetch on hover
         clone.addEventListener("mouseenter", () => {
-          const href = clone.getAttribute("href");
-          if (href && href !== window.location.pathname) {
-            const linkId = `prefetch-${href.replace(/\//g, "")}`;
-            if (!document.getElementById(linkId)) {
-              const link = document.createElement("link");
-              link.id = linkId;
-              link.rel = "prefetch";
-              link.href = href;
-              document.head.appendChild(link);
-            }
-          }
-        });
+          prefetchUrl(clone.getAttribute("href"));
+        }, { passive: true });
         clone.addEventListener("click", () => {
           navPill.classList.remove("is-open");
         });
@@ -109,7 +116,7 @@
 
     function handleScroll() {
       if (window.innerWidth <= 768) return;
-      const scrollY = window.scrollY;
+      const scrollY = window.scrollY || window.pageYOffset;
 
       if (scrollY > SCROLL_THRESHOLD && !isScrolled) {
         isScrolled = true;
@@ -123,13 +130,29 @@
       }
     }
 
-    setTimeout(measureExpandedWidth, 50);
-    window.addEventListener("resize", () => {
-      measureExpandedWidth();
-      handleScroll();
-    }, { passive: true });
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    let resizeTimeout = null;
+    function onResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        measureExpandedWidth();
+        handleScroll();
+      }, 150);
+    }
+
+    setTimeout(measureExpandedWidth, 50);
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     handleScroll();
   }
 
