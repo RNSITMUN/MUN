@@ -3934,13 +3934,48 @@
       const form = document.getElementById('delegation-registration-form');
       const clearBtn = document.getElementById('dlg-clear-data-btn');
       
-      // Clear error message dynamically as the user types
+      // Clear error message dynamically as the user types & validate real-time
       if (e && e.target) {
         const el = e.target;
-        if (el.classList.contains('has-error')) {
-          el.classList.remove('has-error');
-          const err = document.getElementById(el.id + '-error');
-          if (err) err.style.display = 'none';
+        let isValid = true;
+        let errMsg = '';
+
+        if (el.id === 'dlg-email') {
+          isValid = /^\S+@\S+\.\S+$/.test(el.value.trim());
+          errMsg = 'Please enter a valid email address';
+        } else if (el.id === 'dlg-count') {
+          const val = parseInt(el.value, 10);
+          isValid = !isNaN(val) && val >= 10 && val <= 18;
+          errMsg = 'Number of delegates must be between 10 and 18';
+        } else if (el.type === 'tel' || el.id === 'dlg-phone') {
+          isValid = /^\d{10,15}$/.test(el.value.replace(/[\s\-\+]/g, ''));
+          errMsg = 'Please enter a valid 10-digit mobile number';
+        } else if (el.type === 'text') {
+          isValid = el.value.trim().length > 0;
+          if (el.id === 'dlg-delegation-name') errMsg = 'Delegation Name is required';
+          if (el.id === 'dlg-head-name') errMsg = 'Head Delegate Name is required';
+        }
+
+        const errEl = document.getElementById(el.id + '-error');
+        // Only show real-time error if they are typing an invalid value AND it already had an error (to not annoy them while typing a fresh valid email)
+        // BUT wait, the user requested: "validated as its being entered...if wrong..show error meesage and it shd disappear immedaitely as soon its corrected"
+        if (!isValid && el.value.trim().length > 0) {
+           // We show error if they typed something invalid
+           el.classList.add('has-error');
+           if (errEl) {
+             errEl.textContent = errMsg;
+             errEl.style.display = 'block';
+           }
+        } else if (isValid) {
+           el.classList.remove('has-error');
+           if (errEl) errEl.style.display = 'none';
+        } else if (el.value.trim().length === 0) {
+           // If they clear the field, remove the error so it doesn't scream at them when empty, 
+           // UNLESS it already had an error from a submit attempt.
+           // Actually, let's just leave the error if it was there, or remove it.
+           // To be safe and less annoying:
+           el.classList.remove('has-error');
+           if (errEl) errEl.style.display = 'none';
         }
       }
       
@@ -4345,8 +4380,7 @@
       // Validate Text Fields
       [
         { el: delegationName, errId: 'dlg-delegation-name-error' },
-        { el: headName, errId: 'dlg-head-name-error' },
-        { el: phone, errId: 'dlg-phone-error' }
+        { el: headName, errId: 'dlg-head-name-error' }
       ].forEach(({ el, errId }) => {
         if (!el) return;
         const err = document.getElementById(errId);
@@ -4373,6 +4407,22 @@
           hasError = true;
         } else {
           count.classList.remove('has-error');
+          if (err) err.style.display = 'none';
+        }
+      }
+
+      // Validate Phone
+      if (phone) {
+        const err = document.getElementById('dlg-phone-error');
+        if (!phone.value.trim() || !/^\d{10,15}$/.test(phone.value.replace(/[\s\-\+]/g, ''))) {
+          phone.classList.add('has-error');
+          if (err) {
+            err.textContent = 'Please enter a valid 10-digit mobile number';
+            err.style.display = 'block';
+          }
+          hasError = true;
+        } else {
+          phone.classList.remove('has-error');
           if (err) err.style.display = 'none';
         }
       }
