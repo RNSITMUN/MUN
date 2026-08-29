@@ -256,64 +256,139 @@
     .direct-reg-banner {
       width: 840px;
       max-width: 100%;
-      background: #000000;
-      border: 3px solid var(--text-primary);
-      border-radius: 20px;
-      box-shadow: 6px 6px 0px var(--text-primary);
-      padding: 26px 34px;
+      background: var(--accent-color);
+      color: #FFF7EB;
+      border: 3px solid #111113;
+      border-radius: 18px;
+      box-shadow: 6px 6px 0px #111113;
+      padding: 28px 32px;
       box-sizing: border-box;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      margin-top: 10px;
+      gap: 24px;
+      margin-top: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .direct-reg-banner:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 8px 8px 0px #111113;
     }
 
     .banner-text-wrap {
       text-align: left;
+      flex: 1;
+    }
+
+    .banner-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .banner-pill-badge {
+      display: inline-block;
+      background: rgba(255, 247, 235, 0.15);
+      color: #FFF7EB;
+      border: 1.2px solid rgba(255, 247, 235, 0.35);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .banner-pill-award {
+      display: inline-block;
+      background: var(--gold-accent);
+      color: #111113;
+      border: 1.2px solid #111113;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .banner-title {
       color: #FFF7EB;
+      font-family: var(--font-sans);
       font-size: 1.35rem;
       font-weight: 800;
-      margin: 0 0 4px 0;
-      letter-spacing: -0.02em;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
     }
 
     .banner-desc {
-      color: rgba(255, 247, 235, 0.7);
-      font-size: 0.9rem;
+      color: rgba(255, 247, 235, 0.82);
+      font-size: 0.88rem;
       margin: 0;
-      line-height: 1.4;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    .banner-desc strong {
+      color: #FFF7EB;
+      font-weight: 700;
+    }
+
+    .banner-btns-container {
+      flex-shrink: 0;
     }
 
     .banner-btn {
       background: var(--gold-accent);
-      color: #000000;
-      border: 2px solid #000000;
+      color: #111113;
+      border: 2.5px solid #111113;
       border-radius: 12px;
-      padding: 12px 24px;
+      padding: 12px 20px;
       font-family: var(--font-sans);
-      font-size: 0.96rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
       cursor: pointer;
-      box-shadow: 3px 3px 0px #000000;
+      box-shadow: 4px 4px 0px #111113;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
-      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 3px;
     }
 
     .banner-btn:hover {
       background-color: var(--gold-hover);
       transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px #000000;
+      box-shadow: 6px 6px 0px #111113;
     }
 
     .banner-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 2px 2px 0px #000000;
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #111113;
+    }
+
+    .banner-btn-main {
+      font-size: 0.94rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+    }
+
+    .banner-btn-sub {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(17, 17, 19, 0.75);
+      line-height: 1;
     }
 
     /* ================================================= */
@@ -669,23 +744,29 @@
 
     .reg-form-header {
       text-align: center;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
       position: relative;
+      padding-left: 36px;
+      padding-right: 36px;
+      box-sizing: border-box;
     }
 
     .reg-form-title {
-      font-size: 1.75rem;
+      font-size: clamp(1.28rem, 3.8vw, 1.75rem);
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: -0.02em;
       margin: 0 0 4px 0;
       color: var(--text-primary);
+      line-height: 1.2;
+      word-break: break-word;
     }
 
     .reg-form-subtitle {
-      font-size: 0.9rem;
+      font-size: clamp(0.78rem, 2vw, 0.9rem);
       color: rgba(0, 0, 0, 0.6);
       margin: 0;
+      line-height: 1.35;
     }
 
     .form-row {
@@ -702,16 +783,118 @@
     .form-group {
       display: flex;
       flex-direction: column;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .form-label {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
       color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .form-label > span:first-child {
+      flex: 1;
+      min-width: 0;
+      line-height: 1.25;
+    }
+
+    /* Info Tooltip Icon & Popover */
+    .info-tooltip-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: normal;
+      flex-shrink: 0;
+    }
+
+    .info-tooltip-btn {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--gold-accent);
+      color: #111113;
+      border: 2px solid #111113;
+      box-shadow: 2px 2px 0px #111113;
+      font-family: 'Outfit', var(--font-sans), sans-serif;
+      font-size: 0.74rem;
+      font-weight: 900;
+      font-style: italic;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+
+    .info-tooltip-wrap:hover .info-tooltip-btn,
+    .info-tooltip-wrap:focus-within .info-tooltip-btn {
+      background: var(--accent-color);
+      color: #FFF7EB;
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 3px 3px 0px #111113;
+    }
+
+    .info-tooltip-wrap:active .info-tooltip-btn {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #111113;
+    }
+
+    .info-tooltip-popover {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: calc(100% + 9px);
+      right: 0;
+      transform: translateY(4px);
+      background: #111113;
+      color: #FFF7EB;
+      border: 2px solid #111113;
+      border-radius: 10px;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.45);
+      padding: 8px 12px;
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      font-weight: 600;
+      line-height: 1.4;
+      white-space: normal;
+      width: max-content;
+      max-width: min(250px, 78vw);
+      z-index: 1000;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      text-transform: none;
+      letter-spacing: normal;
+      text-align: left;
+    }
+
+    .info-tooltip-popover::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 5px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: #111113 transparent transparent transparent;
+    }
+
+    .info-tooltip-wrap:hover .info-tooltip-popover,
+    .info-tooltip-wrap:focus-within .info-tooltip-popover {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .form-input,
@@ -957,27 +1140,87 @@
       box-shadow: 2px 2px 0px var(--text-primary);
     }
 
+    .submit-btn:disabled,
+    .submit-btn[disabled] {
+      opacity: 0.45 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      transform: none !important;
+      box-shadow: 2px 2px 0px var(--text-primary) !important;
+    }
+
+    .file-upload-dropzone:hover {
+      border-color: var(--accent-color) !important;
+      background: rgba(108, 13, 44, 0.02) !important;
+    }
+
+    .ieee-toggle-btn {
+      flex: 1;
+      background: #FFFFFF;
+      color: var(--text-primary);
+      border: 2.5px solid var(--text-primary);
+      box-shadow: 3px 3px 0px var(--text-primary);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease, color 0.15s ease;
+      text-align: center;
+    }
+
+    .ieee-toggle-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px var(--text-primary);
+      background-color: #FFFDF9;
+    }
+
+    .ieee-toggle-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--text-primary);
+    }
+
+    .ieee-toggle-btn.is-active-yes,
+    .ieee-toggle-btn.is-active-no {
+      background: var(--accent-color) !important;
+      color: #FFF7EB !important;
+      border-color: var(--text-primary) !important;
+      box-shadow: 3px 3px 0px var(--text-primary) !important;
+    }
+
     /* Multi-step Wizard Indicator & Step Panels */
     .wizard-stepper {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin: 14px 0 22px 0;
+      flex-wrap: nowrap;
+      gap: clamp(3px, 1.2vw, 8px);
+      margin: 10px 0 16px 0;
       user-select: none;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .wizard-stepper::-webkit-scrollbar {
+      display: none;
     }
 
     .wizard-step {
       font-family: var(--font-sans);
-      font-size: 0.84rem;
+      font-size: clamp(0.68rem, 1.8vw, 0.82rem);
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       color: rgba(0, 0, 0, 0.4);
-      padding: 4px 10px;
+      padding: 3px clamp(5px, 1.4vw, 9px);
       border-radius: 6px;
       border: 1.5px solid transparent;
       transition: all 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .wizard-step.is-active {
@@ -994,8 +1237,9 @@
 
     .wizard-step-arrow {
       color: rgba(0, 0, 0, 0.3);
-      font-size: 0.85rem;
+      font-size: clamp(0.65rem, 1.6vw, 0.8rem);
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     .wizard-step-panel {
@@ -1062,16 +1306,29 @@
     /* DELEGATE TYPE SELECTION MODAL */
     /* ================================================= */
     .type-selection-card {
-      width: 480px;
-      max-width: 92vw;
-      padding: 34px 28px;
+      width: 540px;
+      max-width: 94vw;
+      padding: 38px 32px 34px 32px;
+      border: 3px solid var(--text-primary);
+      box-shadow: 8px 8px 0px var(--text-primary);
+      border-radius: 22px;
+    }
+
+    .type-modal-kicker {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-color);
+      display: inline-block;
+      margin-bottom: 6px;
     }
 
     .delegate-type-grid {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-top: 10px;
+      gap: 16px;
+      margin-top: 14px;
     }
 
     .delegate-type-btn {
@@ -1082,71 +1339,175 @@
       background: var(--bg-color);
       border: 2.5px solid var(--text-primary);
       box-shadow: 4px 4px 0px var(--text-primary);
-      border-radius: 14px;
-      padding: 16px 18px;
+      border-radius: 16px;
+      padding: 18px 20px;
       cursor: pointer;
       text-align: left;
       font-family: var(--font-sans);
       color: var(--text-primary);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.2s ease,
+        border-color 0.2s ease;
       outline: none;
+      box-sizing: border-box;
+      position: relative;
     }
 
     .delegate-type-btn:hover {
-      background: rgba(108, 13, 44, 0.05);
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0px var(--text-primary);
+    }
+
+    .delegate-type-internal-btn:hover {
+      background: #FFFFFF;
       border-color: var(--accent-color);
-      transform: translateY(-2px);
-      box-shadow: 6px 6px 0px var(--text-primary);
+    }
+
+    .delegate-type-external-btn:hover {
+      background: #FFFFFF;
+      border-color: #000000;
     }
 
     .delegate-type-btn:active {
-      transform: translate(2px, 2px);
+      transform: translate(1.5px, 1.5px);
       box-shadow: 2px 2px 0px var(--text-primary);
     }
 
     .type-btn-icon {
-      font-size: 1.5rem;
       flex-shrink: 0;
-      width: 46px;
-      height: 46px;
-      border-radius: 10px;
-      background: rgba(108, 13, 44, 0.08);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       border: 2px solid var(--text-primary);
+      box-shadow: 2.5px 2.5px 0px var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .type-btn-icon.icon-internal {
+      background: var(--accent-color);
+      color: var(--bg-color);
+    }
+
+    .type-btn-icon.icon-external {
+      background: var(--gold-accent);
+      color: #000000;
+    }
+
+    .delegate-type-btn:hover .type-btn-icon {
+      transform: scale(1.06) rotate(-2deg);
     }
 
     .type-btn-content {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .type-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 2px 8px;
+      width: max-content;
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+
+    .type-badge-internal {
+      background: rgba(108, 13, 44, 0.1);
+      color: var(--accent-color);
+      border: 1px solid rgba(108, 13, 44, 0.35);
+    }
+
+    .type-badge-external {
+      background: rgba(229, 169, 60, 0.18);
+      color: #7a4f00;
+      border: 1px solid rgba(229, 169, 60, 0.6);
     }
 
     .type-btn-title {
-      font-size: 1.05rem;
-      font-weight: 800;
+      font-size: 1.12rem;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin: 0 0 2px 0;
+      letter-spacing: -0.01em;
+      margin: 0;
       color: var(--text-primary);
+      line-height: 1.15;
     }
 
     .type-btn-desc {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.84rem;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.68);
       margin: 0;
+      line-height: 1.35;
     }
 
-    .type-btn-arrow {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent-color);
+    .type-btn-arrow-pill {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--text-primary);
+      box-shadow: 2px 2px 0px var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
       flex-shrink: 0;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.2s ease,
+        color 0.2s ease;
     }
 
-    .delegate-type-btn:hover .type-btn-arrow {
+    .delegate-type-internal-btn:hover .type-btn-arrow-pill {
+      background: var(--accent-color);
+      color: #FFFFFF;
       transform: translateX(4px);
+    }
+
+    .delegate-type-external-btn:hover .type-btn-arrow-pill {
+      background: var(--gold-accent);
+      color: #000000;
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 540px) {
+      .type-selection-card {
+        padding: 30px 18px 24px 18px;
+      }
+
+      .delegate-type-btn {
+        padding: 14px 14px;
+        gap: 12px;
+      }
+
+      .type-btn-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .type-btn-title {
+        font-size: 0.98rem;
+      }
+
+      .type-btn-desc {
+        font-size: 0.78rem;
+      }
+
+      .type-btn-arrow-pill {
+        width: 28px;
+        height: 28px;
+      }
     }
 
     .form-input[readonly] {
@@ -1913,54 +2274,91 @@
 
       /* Registration Form on Small Phones */
       .modal-registration-card {
-        width: calc(100vw - 12px);
-        padding: 20px 12px 60px 12px;
+        width: calc(100vw - 16px);
+        max-width: 480px;
+        padding: 22px 14px 24px 14px;
         border-radius: 16px;
         box-shadow: 4px 4px 0px var(--text-primary);
-        max-height: calc(100svh - 20px);
+        max-height: calc(100svh - 24px);
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
 
+      .reg-form-header {
+        padding-left: 28px;
+        padding-right: 28px;
+        margin-bottom: 10px;
+      }
+
       .reg-form-title {
         font-size: 1.25rem;
+        line-height: 1.2;
       }
 
       .reg-form-subtitle {
         font-size: 0.76rem;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
+        line-height: 1.35;
       }
 
       .form-group {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
       .form-label {
         font-size: 0.74rem;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
       }
 
       .form-input,
       .form-select,
       .custom-select-trigger {
         font-size: 16px !important;
-        padding: 9px 10px;
+        padding: 10px 11px;
         border-width: 2px;
-        border-radius: 7px;
+        border-radius: 8px;
       }
 
       .custom-select-option {
         font-size: 0.86rem;
-        padding: 8px 10px;
+        padding: 9px 11px;
       }
 
       .custom-select-menu {
-        max-height: 180px;
+        max-height: 190px;
       }
 
-      .submit-btn {
-        font-size: 0.88rem;
-        padding: 12px 12px;
+      .wizard-btn-row {
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .btn-wizard-back {
+        flex: 0 0 85px !important;
+        padding: 11px 10px !important;
+        font-size: 0.88rem !important;
+      }
+
+      .submit-btn,
+      .wizard-next-btn {
+        font-size: 0.88rem !important;
+        padding: 11px 12px !important;
+      }
+
+      .category-plan-cards {
+        gap: 8px;
+      }
+
+      .category-plan-card {
+        padding: 10px 8px;
+      }
+
+      .plan-price-main {
+        font-size: 1.25rem;
+      }
+
+      .file-upload-dropzone {
+        padding: 14px 10px;
       }
     }
 
@@ -2005,15 +2403,20 @@
       }
 
       .modal-registration-card {
-        width: calc(100vw - 8px);
-        padding: 16px 10px 56px 10px;
+        width: calc(100vw - 10px);
+        padding: 18px 10px 20px 10px;
         max-height: calc(100svh - 16px);
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
 
+      .reg-form-header {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
       .reg-form-title {
-        font-size: 1.15rem;
+        font-size: 1.12rem;
       }
 
       .form-label {
@@ -2031,6 +2434,18 @@
         font-size: 0.82rem;
         padding: 7px 8px;
       }
+
+      .btn-wizard-back {
+        flex: 0 0 75px !important;
+        font-size: 0.82rem !important;
+        padding: 10px 6px !important;
+      }
+
+      .submit-btn,
+      .wizard-next-btn {
+        font-size: 0.82rem !important;
+        padding: 10px 8px !important;
+      }
     }
   </style>
 </head>
@@ -2041,18 +2456,18 @@
     <a href="/" class="nav-item" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
     <a href="/registration" class="nav-item active" id="nav-registration">Registration</a>
-    <a href="/stay-connected" class="nav-item" id="nav-connected">Stay Connected</a>
+    <a href="/stay-connected" class="nav-item" id="nav-connected">Contact</a>
     <a href="/team" class="nav-item" id="nav-team">Team</a>
   </nav>
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-left-logo">
+    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-right-logo">
+    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo">
   </div>
 
   <!-- Main Content Viewport -->
@@ -2202,13 +2617,19 @@
     <!-- Direct Registration Banner -->
     <div class="direct-reg-banner">
       <div class="banner-text-wrap">
+        <div class="banner-tag-row">
+          <span class="banner-pill-award">★ ₹15,000 PRIZE POOL</span>
+        </div>
         <h3 class="banner-title">Ready to Represent Your Delegation?</h3>
-        <p class="banner-desc">Registrations are now open across all 6 councils. Secure individual or full institutional
-          delegation allocations today.</p>
+        <p class="banner-desc">
+          Groups of 10 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title with an exclusive <strong>₹15,000 cash prize pool</strong>.
+        </p>
       </div>
       <div class="banner-btns-container">
-        <button class="banner-btn" onclick="openDelegationRegistrationModal()">Register as
-          Delegation</button>
+        <button class="banner-btn" onclick="openDelegationRegistrationModal()" aria-label="Register as Delegation (Group Registration)">
+          <span class="banner-btn-main">Register as Delegation</span>
+          <span class="banner-btn-sub">GROUP REGISTRATION (10+ DELEGATES) →</span>
+        </button>
       </div>
     </div>
   </main>
@@ -2285,7 +2706,8 @@
         <p class="reg-form-subtitle">Register your institution's delegation and generate your delegate roster sheet</p>
       </div>
 
-      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)" oninput="toggleDelegationClearBtn(event)" onchange="toggleDelegationClearBtn(event)">
+      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)"
+        oninput="toggleDelegationClearBtn(event)" onchange="toggleDelegationClearBtn(event)">
 
         <!-- 1. Name of the Delegation -->
         <div class="form-group">
@@ -2305,19 +2727,23 @@
         <!-- 3. Phone Number of Head of Delegation -->
         <div class="form-group">
           <label class="form-label" for="dlg-phone">Phone Number of Head of Delegation *</label>
-          <input type="tel" id="dlg-phone" class="form-input" placeholder="+91 98765 43210" required>
-          <div id="dlg-phone-error" class="error-container">Valid phone number is required</div>
+          <input type="tel" id="dlg-phone" class="form-input" placeholder="e.g. 9876543210" maxlength="10" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
+          <div id="dlg-phone-error" class="error-container">Valid 10-digit phone number is required</div>
         </div>
 
         <!-- 4. Email ID of Head of Delegation -->
         <div class="form-group">
           <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
           <div style="display: flex; gap: 8px;">
-            <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com" oninput="checkEmailRegistration(this)" required style="flex: 1;">
-            <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()" style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear Data</button>
+            <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com"
+              oninput="checkEmailRegistration(this)" required style="flex: 1;">
+            <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()"
+              style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear
+              Data</button>
           </div>
           <div id="dlg-email-error" class="error-container">Valid email address is required</div>
-          <div id="dlg-email-exists-msg" class="error-container" style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
+          <div id="dlg-email-exists-msg" class="error-container"
+            style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
         </div>
 
         <!-- 5. Number of Delegates in Delegation (10 - 18 with direct typing & stepper arrows) -->
@@ -2401,8 +2827,10 @@
 
         <!-- Submit Buttons -->
         <div style="display: flex; gap: 12px; margin-top: 32px;">
-          <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()" style="display: none; flex: 1;">Exit</button>
-          <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1;">Submit Delegation Registration</button>
+          <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()"
+            style="display: none; flex: 1;">Exit</button>
+          <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1;">Submit Delegation
+            Registration</button>
         </div>
       </form>
 
@@ -2411,7 +2839,8 @@
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title">Delegation Registered!</h3>
         <p class="success-message">
-          Thank you for submitting <strong id="dlg-success-name">your delegation</strong>. Our team will shortly contact you via mail for payment and the delegation sheet.
+          Thank you for submitting <strong id="dlg-success-name">your delegation</strong>. Our team will shortly contact
+          you via mail for payment and the delegation sheet.
         </p>
         <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
           <a id="dlg-success-sheet-link" href="#" target="_blank" class="sheet-btn-action"
@@ -2445,27 +2874,64 @@
       </button>
 
       <div class="reg-form-header">
+        <div class="type-modal-kicker">APPLICATION PATH // CATEGORY</div>
         <h2 class="reg-form-title">Select Delegate Type</h2>
-        <p class="reg-form-subtitle">Choose your registration category to proceed</p>
+        <p class="reg-form-subtitle">Choose your registration category to proceed to application</p>
       </div>
 
       <div class="delegate-type-grid">
-        <button type="button" class="delegate-type-btn" onclick="selectDelegateType('internal')">
-          <div class="type-btn-icon">🏛️</div>
-          <div class="type-btn-content">
-            <h3 class="type-btn-title">Internal Delegate</h3>
-            <p class="type-btn-desc">RNS Institute of Technology students</p>
+        <!-- Option 1: Internal Delegate -->
+        <button type="button" class="delegate-type-btn delegate-type-internal-btn"
+          onclick="selectDelegateType('internal')" aria-label="Select Internal Delegate for RNSIT Students">
+          <div class="type-btn-icon icon-internal" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 22h16"></path>
+              <path d="M2 9l10-5 10 5v2H2z"></path>
+              <path d="M6 11v8"></path>
+              <path d="M10 11v8"></path>
+              <path d="M14 11v8"></path>
+              <path d="M18 11v8"></path>
+            </svg>
           </div>
-          <div class="type-btn-arrow">→</div>
+          <div class="type-btn-content">
+            <div class="type-badge type-badge-internal">RNSIT STUDENT</div>
+            <h3 class="type-btn-title">Internal Delegate</h3>
+            <p class="type-btn-desc">RNS Institute of Technology students & campus delegates</p>
+          </div>
+          <div class="type-btn-arrow-pill" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
         </button>
 
-        <button type="button" class="delegate-type-btn" onclick="selectDelegateType('external')">
-          <div class="type-btn-icon">🌐</div>
-          <div class="type-btn-content">
-            <h3 class="type-btn-title">External Delegate</h3>
-            <p class="type-btn-desc">Delegates from other colleges & institutions</p>
+        <!-- Option 2: External Delegate -->
+        <button type="button" class="delegate-type-btn delegate-type-external-btn"
+          onclick="selectDelegateType('external')" aria-label="Select External Delegate for other institutions">
+          <div class="type-btn-icon icon-external" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
+            </svg>
           </div>
-          <div class="type-btn-arrow">→</div>
+          <div class="type-btn-content">
+            <div class="type-badge type-badge-external">ALL INSTITUTIONS</div>
+            <h3 class="type-btn-title">External Delegate</h3>
+            <p class="type-btn-desc">Delegates from other schools, colleges & independent delegations</p>
+          </div>
+          <div class="type-btn-arrow-pill" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
         </button>
       </div>
     </div>
@@ -2500,6 +2966,8 @@
         <span class="wizard-step" id="step-indicator-3">Step 3</span>
         <span class="wizard-step-arrow step-arrow-4" id="step-arrow-4">→</span>
         <span class="wizard-step" id="step-indicator-4">Payment</span>
+        <span class="wizard-step-arrow" id="step-arrow-5" style="display: none;">→</span>
+        <span class="wizard-step" id="step-indicator-5" style="display: none;">Payment</span>
       </div>
 
       <form id="delegate-registration-form" novalidate onsubmit="handleRegistrationSubmit(event)">
@@ -2527,9 +2995,8 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-usn">USN / Roll No *</label>
-            <input type="text" id="reg-usn" class="form-input" placeholder="e.g. 1RN22CS001" required>
-            <div id="reg-usn-error" class="error-container">USN/Roll No is required</div>
+            <label class="form-label" for="reg-usn">USN / Roll No</label>
+            <input type="text" id="reg-usn" class="form-input" placeholder="e.g. 1RN22CS001 (Optional)">
           </div>
 
           <div class="form-group">
@@ -2540,8 +3007,8 @@
 
           <div class="form-group">
             <label class="form-label" for="reg-phone">WhatsApp Number *</label>
-            <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
-            <div id="reg-phone-error" class="error-container">WhatsApp number is required</div>
+            <input type="tel" id="reg-phone" class="form-input" placeholder="e.g. 9876543210" maxlength="10" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
+            <div id="reg-phone-error" class="error-container">Valid 10-digit WhatsApp number is required</div>
           </div>
 
           <div class="form-group">
@@ -2550,14 +3017,50 @@
             <div id="reg-email-error" class="error-container">Valid email is required</div>
           </div>
 
+          <!-- Prior MUN Experience (Yes / No Radio Group) -->
           <div class="form-group">
-            <label class="form-label" for="reg-experience">MUN Experience *</label>
-            <textarea id="reg-experience" class="form-input form-textarea"
-              placeholder="Mention past MUN conferences, committees, awards, or enter 'Fresher'" rows="3"
-              required></textarea>
-            <div id="reg-experience-error" class="error-container">Please describe your MUN experience (or enter
-              'Fresher')</div>
+            <label class="form-label">Prior MUN Experience? *</label>
+            <div class="radio-group" id="reg-has-exp-group">
+              <label class="radio-card-label" for="reg-exp-yes">
+                <input type="radio" id="reg-exp-yes" name="reg-has-experience" value="yes"
+                  onchange="handleExperienceToggle('yes')">
+                <span>Yes</span>
+              </label>
+              <label class="radio-card-label" for="reg-exp-no">
+                <input type="radio" id="reg-exp-no" name="reg-has-experience" value="no"
+                  onchange="handleExperienceToggle('no')">
+                <span>No</span>
+              </label>
+            </div>
+            <div id="reg-has-exp-error" class="error-container">Please select Yes or No for MUN experience</div>
           </div>
+
+          <!-- Conditional Sub-Box 1: Number of Conferences Participated -->
+          <div class="form-group" id="exp-count-section" style="display: none;">
+            <label class="form-label" for="reg-exp-count">Number of Conferences Participated *</label>
+            <select id="reg-exp-count" class="form-select" onchange="handleConferenceCountChange(this)">
+              <option value="" disabled selected>Select number of conferences</option>
+              <option value="1-5">1-5</option>
+              <option value="6-10">6-10</option>
+              <option value="11-20">11-20</option>
+              <option value="20+">20+</option>
+            </select>
+            <div id="reg-exp-count-error" class="error-container">Please select the number of conferences</div>
+          </div>
+
+          <!-- Conditional Sub-Box 2: Conferences and Accolades Details -->
+          <div class="form-group" id="exp-details-section" style="display: none;">
+            <label class="form-label" for="reg-experience-details">Which MUN conferences have you participated in? Also
+              mention accolades if any *</label>
+            <textarea id="reg-experience-details" class="form-input form-textarea"
+              placeholder="e.g. RNS MUN '24 (Best Delegate - UNSC), Harvard MUN (Special Mention - DISEC)"
+              rows="3"></textarea>
+            <div id="reg-experience-details-error" class="error-container">Please mention past conferences and accolades
+            </div>
+          </div>
+
+          <!-- Hidden Input for payload / backend submission -->
+          <input type="hidden" id="reg-experience" name="munExperience" value="">
 
           <button type="button" class="submit-btn" id="reg-step-1-next" onclick="goToStep(2)">Next</button>
         </div>
@@ -2565,7 +3068,13 @@
         <!-- STEP 2: Committee Preference 1 & Portfolios -->
         <div class="wizard-step-panel" id="wizard-step-2" style="display: none;">
           <div class="form-group">
-            <label class="form-label" for="reg-committee-1">Committee Preference 1 *</label>
+            <label class="form-label" for="reg-committee-1">
+              <span>Committee Preference 1 *</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select the committee you would most like to participate in.</span>
+              </span>
+            </label>
             <select id="reg-committee-1" class="form-select" required>
               <option value="unsc">UNSC — United Nations Security Council</option>
               <option value="loksabha">Lok Sabha — House of the People</option>
@@ -2578,15 +3087,34 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-portfolio-1">Portfolio Preference 1 (as per Portfolio Matrix) *</label>
-            <input type="text" id="reg-portfolio-1" class="form-input"
-              placeholder="e.g. United States / France / Home Minister" required>
+            <label class="form-label" for="reg-portfolio-1">
+              <span>Portfolio Preference 1 (as per Portfolio Matrix) *</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select the country/person/role you would most like to represent in your preferred committee</span>
+              </span>
+            </label>
+            <select id="reg-portfolio-1" class="form-select"
+              onchange="handlePortfolio1Change('reg-portfolio-1', 'reg-portfolio-2', document.getElementById('reg-committee-1')?.value)"
+              required>
+              <option value="" disabled selected>Select Portfolio Preference 1</option>
+            </select>
             <div id="reg-portfolio-1-error" class="error-container">Portfolio preference 1 is required</div>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-portfolio-2">Portfolio Preference 2 (as per Portfolio Matrix)</label>
-            <input type="text" id="reg-portfolio-2" class="form-input" placeholder="e.g. United Kingdom / Rahul Gandhi">
+            <label class="form-label" for="reg-portfolio-2">
+              <span>Portfolio Preference 2 (as per Portfolio Matrix) *</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select your second-choice country/person/role, in case your first portfolio preference is unavailable.</span>
+              </span>
+            </label>
+            <select id="reg-portfolio-2" class="form-select" onchange="handlePortfolio2Change('reg-portfolio-2')"
+              required>
+              <option value="" disabled selected>Select Portfolio Preference 2</option>
+            </select>
+            <div id="reg-portfolio-2-error" class="error-container">Portfolio preference 2 is required</div>
           </div>
 
 
@@ -2601,8 +3129,14 @@
         <!-- STEP 3: Committee Preference 2, Portfolios & Payment -->
         <div class="wizard-step-panel" id="wizard-step-3" style="display: none;">
           <div class="form-group">
-            <label class="form-label" for="reg-committee-2">Committee Preference 2 *</label>
-            <select id="reg-committee-2" class="form-select" required>
+            <label class="form-label" for="reg-committee-2">
+              <span>Committee Preference 2 *</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select your second-choice committee, in case your first preference is unavailable.</span>
+              </span>
+            </label>
+            <select id="reg-committee-2" class="form-select" onchange="handleCommittee2Change(this)" required>
               <option value="disec">DISEC — Disarmament & Int'l Security</option>
               <option value="unsc">UNSC — United Nations Security Council</option>
               <option value="loksabha">Lok Sabha — House of the People</option>
@@ -2614,133 +3148,415 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-comm2-portfolio-1">Portfolio Preference 1 (as per Portfolio
-              Matrix)</label>
-            <input type="text" id="reg-comm2-portfolio-1" class="form-input"
-              placeholder="e.g. Russian Federation / S. Jaishankar">
+            <label class="form-label" for="reg-comm2-portfolio-1">
+              <span>Portfolio Preference 1 (as per Portfolio Matrix)</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select the country/person/role you would most like to represent in your preferred committee</span>
+              </span>
+            </label>
+            <select id="reg-comm2-portfolio-1" class="form-select"
+              onchange="handlePortfolio1Change('reg-comm2-portfolio-1', 'reg-comm2-portfolio-2', document.getElementById('reg-committee-2')?.value)">
+              <option value="" selected>Select Portfolio Preference 1</option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-comm2-portfolio-2">Portfolio Preference 2 (as per Portfolio
-              Matrix)</label>
-            <input type="text" id="reg-comm2-portfolio-2" class="form-input"
-              placeholder="e.g. China / Germany / Opposition Leader">
-          </div>
-
-
-
-          <!-- External Payment Scheme Dropdown -->
-          <div class="form-group" id="reg-external-payment-group">
-            <label class="form-label" for="reg-payment-scheme">Payment Scheme *</label>
-            <select id="reg-payment-scheme" class="form-select" required>
-              <option value="standard-individual">Standard Individual Delegate Pass — ₹1,499</option>
-              <option value="early-bird">Early Bird Registration Pass — ₹1,299</option>
-              <option value="institutional-delegation">Institutional / College Delegation Scheme</option>
-              <option value="ip-journalist">International Press / Caricaturist Pass — ₹1,199</option>
+            <label class="form-label" for="reg-comm2-portfolio-2">
+              <span>Portfolio Preference 2 (as per Portfolio Matrix)</span>
+              <span class="info-tooltip-wrap" tabindex="0" aria-label="Information">
+                <span class="info-tooltip-btn">i</span>
+                <span class="info-tooltip-popover">Select your second-choice country/person/role, in case your first portfolio preference is unavailable.</span>
+              </span>
+            </label>
+            <select id="reg-comm2-portfolio-2" class="form-select">
+              <option value="" selected>Select Portfolio Preference 2</option>
             </select>
-            <div id="reg-payment-scheme-error" class="error-container">Payment scheme is required</div>
-          </div>
-
-          <!-- Internal Delegate Direct Payment Card (₹999) -->
-          <div class="form-group" id="reg-internal-payment-group" style="display: none;">
-            <label class="form-label">Internal Delegate Fee *</label>
-            <div class="internal-fee-card"
-              style="background: #111113; border: 2px solid #000000; border-radius: 14px; padding: 18px 20px; color: #FFF7EB; margin-bottom: 8px;">
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-                <span
-                  style="font-weight: 800; text-transform: uppercase; font-size: 0.95rem; color: var(--gold-accent);">RNSIT
-                  Exclusive Tier</span>
-                <span style="font-size: 1.4rem; font-weight: 900; color: #FFFFFF;">₹999</span>
-              </div>
-              <p style="margin: 0; font-size: 0.85rem; color: rgba(255, 247, 235, 0.75); line-height: 1.4;">
-                Exclusive subsidized delegate pass for RNS Institute of Technology students. Click below to proceed with
-                your payment.
-              </p>
-            </div>
           </div>
 
           <div class="wizard-btn-row" id="reg-step-3-btns">
             <button type="button" class="btn-wizard-back" id="reg-step-3-back" onclick="goToStep(2)">Back</button>
-            <button type="button" class="submit-btn wizard-next-btn" id="reg-submit-btn"
-              onclick="handleStep3Proceed()">Submit Internal Delegate Registration</button>
+            <button type="button" class="submit-btn wizard-next-btn" id="reg-step-3-next"
+              onclick="goToStep(4)">Next</button>
           </div>
         </div>
 
-        <!-- STEP 4: Payment (External Delegates Only) -->
+        <!-- STEP 4: Payment Panel -->
         <div class="wizard-step-panel" id="wizard-step-4" style="display: none;">
 
-          <!-- IEEE Info Banner -->
-          <div
-            style="background: linear-gradient(135deg,#1a1a2e,#16213e); border: 2px solid #0066CC; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px;">
-            <span style="font-size: 1.4rem; flex-shrink: 0;">⚡</span>
-            <div>
+          <!-- 1. INTERNAL DELEGATE PAYMENT PANEL -->
+          <div id="internal-payment-panel" style="display: none;">
+
+            <!-- Fee Badge & Header Card -->
+            <div class="neo-payment-tier-card"
+              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; position: relative; overflow: hidden;">
               <div
-                style="font-weight: 800; color: #4FC3F7; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-                IEEE Member Benefit</div>
-              <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8); line-height: 1.4;">IEEE members are eligible
-                for a special delegate rate of <strong style="color: #FFD54F;">₹1,199</strong>. Your membership will be
-                verified after registration.</div>
-            </div>
-          </div>
-
-          <!-- IEEE Yes/No Question -->
-          <div class="form-group">
-            <label class="form-label">Are you an IEEE member? *</label>
-            <div style="display: flex; gap: 10px; margin-top: 6px;">
-              <button type="button" id="ieee-yes-btn" class="ieee-toggle-btn" onclick="setIEEEMember(true)">Yes, I am an
-                IEEE Member</button>
-              <button type="button" id="ieee-no-btn" class="ieee-toggle-btn" onclick="setIEEEMember(false)">No</button>
-            </div>
-          </div>
-
-          <!-- IEEE Member: ID Field + Price -->
-          <div id="ieee-member-section" style="display: none;">
-            <div class="form-group">
-              <label class="form-label" for="reg-ieee-id">IEEE Membership ID *</label>
-              <input type="text" id="reg-ieee-id" class="form-input" placeholder="e.g. 12345678">
-              <div id="reg-ieee-id-error" class="error-container">IEEE Membership ID is required</div>
-            </div>
-            <div
-              style="background: #111113; border: 2px solid #0066CC; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-                <span style="font-weight: 800; text-transform: uppercase; font-size: 0.9rem; color: #4FC3F7;">IEEE
-                  Member Rate</span>
-                <span style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,199</span>
-              </div>
-              <p style="margin: 0; font-size: 0.83rem; color: rgba(255,247,235,0.7); line-height: 1.4;">Your IEEE
-                membership will be reviewed post-registration and the discounted amount shall be applied accordingly.
-              </p>
-            </div>
-          </div>
-
-          <!-- Non-IEEE: Pricing Info -->
-          <div id="non-ieee-section" style="display: none;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-              <div
-                style="background: #111113; border: 2px solid #C8A84B; border-radius: 12px; padding: 14px 16px; text-align: center;">
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
                 <div
-                  style="font-size: 0.75rem; font-weight: 800; color: #C8A84B; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">
-                  🕐 Early Bird</div>
-                <div style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,199</div>
-                <div style="font-size: 0.74rem; color: rgba(255,247,235,0.6); margin-top: 4px;">Valid till Sep 15, 2026
+                  style="display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: #FFF7EB; padding: 4px 10px; border-radius: 4px; border: 1.5px solid var(--text-primary); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
+                  [ RNSIT STUDENT EXCLUSIVE ]
+                </div>
+                <div style="display: flex; align-items: baseline; gap: 4px;">
+                  <span
+                    style="font-size: 0.8rem; font-weight: 800; color: rgba(0,0,0,0.5); text-transform: uppercase;">FEE:</span>
+                  <span
+                    style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹999</span>
                 </div>
               </div>
+              <p
+                style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
+                Subsidized delegate registration pass for RNS Institute of Technology students. Scan the QR code or copy
+                the UPI ID below to complete your payment.
+              </p>
+            </div>
+
+            <!-- QR Code & UPI ID Card -->
+            <div class="neo-qr-card"
+              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 20px 16px; text-align: center; margin-bottom: 18px;">
               <div
-                style="background: #111113; border: 2px solid #444; border-radius: 12px; padding: 14px 16px; text-align: center;">
-                <div
-                  style="font-size: 0.75rem; font-weight: 800; color: rgba(255,247,235,0.6); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">
-                  📅 Regular</div>
-                <div style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,349</div>
-                <div style="font-size: 0.74rem; color: rgba(255,247,235,0.6); margin-top: 4px;">After Sep 15, 2026</div>
+                style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;">
+                SCAN VIA GOOGLE PAY / PHONEPE / PAYTM / ANY UPI
               </div>
+
+              <!-- QR Code Display Box -->
+              <div
+                style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
+                <img id="internal-upi-qr"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D999%26cu%3DINR"
+                  alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
+              </div>
+
+              <!-- UPI ID Box with Tactile Copy Button -->
+              <div
+                style="display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 330px; margin: 0 auto; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; box-shadow: 2px 2px 0px var(--text-primary); padding: 6px 10px;">
+                <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
+                  <span
+                    style="font-size: 0.72rem; font-weight: 800; color: rgba(0,0,0,0.45); text-transform: uppercase;">UPI
+                    ID:</span>
+                  <span
+                    style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                    id="internal-upi-id-text">
+                    mun@rnsit.ac.in
+                  </span>
+                </div>
+                <button type="button" id="copy-upi-btn" onclick="copyInternalUPI()"
+                  style="background: var(--accent-color); color: #FFF7EB; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans); transition: all 0.15s ease; flex-shrink: 0;">
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <!-- Screenshot Upload Box -->
+            <div class="form-group" style="margin-bottom: 22px;">
+              <label class="form-label" for="reg-payment-screenshot"
+                style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Payment Screenshot
+                  *</span>
+                <span
+                  style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
+                  PROOF OF ₹999 TRANSFER ]</span>
+              </label>
+
+              <div class="file-upload-dropzone" id="payment-dropzone"
+                onclick="document.getElementById('reg-payment-screenshot').click()"
+                style="background: #FFFDF9; border: 2.5px dashed var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+
+                <input type="file" id="reg-payment-screenshot" accept="image/*" style="display: none;"
+                  onchange="handlePaymentScreenshotSelected(this)">
+
+                <div id="dropzone-empty-state">
+                  <div
+                    style="font-size: 0.92rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">
+                    Click or Drag to Upload Screenshot
+                  </div>
+                  <div style="font-size: 0.76rem; font-weight: 600; color: rgba(0,0,0,0.5);">
+                    Supports PNG, JPG, JPEG, WEBP (Max 10MB)
+                  </div>
+                </div>
+
+                <div id="dropzone-file-state"
+                  style="display: none; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; padding: 10px 14px;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <img id="screenshot-preview-thumb" src="" alt="Thumbnail"
+                      style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--text-primary); flex-shrink: 0;">
+                    <div style="text-align: left; min-width: 0;">
+                      <div id="screenshot-file-name"
+                        style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        screenshot.png
+                      </div>
+                      <div id="screenshot-file-size"
+                        style="font-size: 0.74rem; font-weight: 700; color: var(--accent-color);">
+                        Ready to Submit
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" onclick="event.stopPropagation(); removePaymentScreenshot();"
+                    style="background: #E63946; color: #FFFFFF; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans);">
+                    Remove
+                  </button>
+                </div>
+
+              </div>
+              <div id="reg-payment-screenshot-error" class="error-container">Payment screenshot is required to submit
+              </div>
+            </div>
+
+            <!-- Submit Button (Disabled until screenshot is uploaded) -->
+            <div class="wizard-btn-row">
+              <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
+              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn" disabled>
+                Submit Internal Delegate Registration
+              </button>
+            </div>
+
+          </div>
+
+          <!-- 2. EXTERNAL DELEGATE PAYMENT PANEL -->
+          <div id="external-payment-panel" style="display: none;">
+
+            <!-- NOTE: IEEE Discount Notice -->
+            <div class="neo-note-callout"
+              style="background: #FFFDF9; border: 2px solid var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+              <span
+                style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; background: var(--accent-color); color: #FFF7EB; padding: 3px 8px; border-radius: 4px; border: 1.2px solid var(--text-primary); flex-shrink: 0;">
+                NOTE
+              </span>
+              <span style="font-size: 0.83rem; font-weight: 600; color: var(--text-primary); line-height: 1.4;">
+                Existing IEEE members get a discounted price.
+              </span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label class="form-label"
+                style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; margin-bottom: 8px; display: block;">
+                Select Delegate Pass *
+              </label>
+
+              <!-- Two Interactive Plan Selector Cards -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+                <!-- Option 1: Standard Pass -->
+                <div class="category-plan-card" id="plan-card-standard" onclick="selectExternalCategory('standard')"
+                  style="background: #FFFFFF; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 14px 14px; cursor: pointer; transition: all 0.15s ease;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span
+                      style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
+                      Standard Pass
+                    </span>
+                    <span class="plan-radio-circle"
+                      style="width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-primary); background: var(--accent-color); display: inline-block;"></span>
+                  </div>
+                  <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 4px;">
+                    <span
+                      style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
+                    <span
+                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+                  </div>
+                  <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
+                    Early Bird Offer
+                  </div>
+                </div>
+
+                <!-- Option 2: IEEE Member Pass -->
+                <div class="category-plan-card" id="plan-card-ieee" onclick="selectExternalCategory('ieee')"
+                  style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 2px 2px 0px var(--text-primary); border-radius: 12px; padding: 14px 14px; cursor: pointer; transition: all 0.15s ease;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span
+                      style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
+                      IEEE Member
+                    </span>
+                    <span class="plan-radio-circle"
+                      style="width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-primary); background: transparent; display: inline-block;"></span>
+                  </div>
+                  <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 4px;">
+                    <span
+                      style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
+                    <span
+                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+                  </div>
+                  <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
+                    Affiliated Rate
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- IEEE Membership ID input (visible only when IEEE is selected) -->
+            <div id="ieee-member-section" style="display: none; margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="reg-ieee-id"
+                  style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.04em;">
+                  IEEE Membership ID *
+                </label>
+                <input type="text" id="reg-ieee-id" class="form-input" placeholder="e.g. 98765432">
+                <div id="reg-ieee-id-error" class="error-container">IEEE Membership ID is required</div>
+              </div>
+            </div>
+
+            <!-- Order Summary / Receipt Breakdown Card -->
+            <div class="neo-callout-card"
+              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 16px 18px; margin-bottom: 20px;">
+              <div
+                style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1.5px dashed rgba(17, 17, 19, 0.2); margin-bottom: 10px;">
+                <span id="external-order-desc"
+                  style="font-size: 0.86rem; font-weight: 700; color: var(--text-primary);">
+                  External Delegate Pass (Early Bird)
+                </span>
+                <div style="display: flex; align-items: baseline; gap: 6px;">
+                  <span
+                    style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
+                  <span
+                    style="font-size: 1.15rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans);">₹1,199</span>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span
+                  style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
+                  Total Payable
+                </span>
+                <span
+                  style="font-size: 1.55rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">
+                  ₹1,199
+                </span>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="wizard-btn-row" id="reg-step-4-btns">
+              <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
+              <button type="button" class="submit-btn wizard-next-btn" id="reg-proceed-to-pay-btn"
+                onclick="handleProceedToExternalPayment()">Proceed to Payment (₹1,199) →</button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- STEP 5: External Delegate Payment Gateway & Screenshot Verification -->
+        <div class="wizard-step-panel" id="wizard-step-5" style="display: none;">
+
+          <!-- Fee Badge & Header Card -->
+          <div class="neo-payment-tier-card"
+            style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; position: relative; overflow: hidden;">
+            <div
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+              <div
+                style="display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: #FFF7EB; padding: 4px 10px; border-radius: 4px; border: 1.5px solid var(--text-primary); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;"
+                id="step5-tier-badge">
+                [ EXTERNAL DELEGATE PASS ]
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 8px;">
+                <span
+                  style="font-size: 1.1rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
+                <span
+                  style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+              </div>
+            </div>
+            <p style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
+              Scan the QR code or use the UPI ID below to complete your payment of ₹1,199. Upload the transaction
+              screenshot below to complete your registration.
+            </p>
+          </div>
+
+          <!-- QR Code & UPI ID Card -->
+          <div class="neo-qr-card"
+            style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 20px 16px; text-align: center; margin-bottom: 18px;">
+            <div
+              style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;">
+              SCAN VIA GOOGLE PAY / PHONEPE / PAYTM / ANY UPI
+            </div>
+
+            <!-- QR Code Display Box -->
+            <div
+              style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
+              <img id="external-upi-qr"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D1199%26cu%3DINR"
+                alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
+            </div>
+
+            <!-- UPI ID Box with Tactile Copy Button -->
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 330px; margin: 0 auto; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; box-shadow: 2px 2px 0px var(--text-primary); padding: 6px 10px;">
+              <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <span
+                  style="font-size: 0.72rem; font-weight: 800; color: rgba(0,0,0,0.45); text-transform: uppercase;">UPI
+                  ID:</span>
+                <span
+                  style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                  id="external-upi-id-text">
+                  mun@rnsit.ac.in
+                </span>
+              </div>
+              <button type="button" id="copy-external-upi-btn" onclick="copyExternalUPI()"
+                style="background: var(--accent-color); color: #FFF7EB; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans); transition: all 0.15s ease; flex-shrink: 0;">
+                Copy
+              </button>
             </div>
           </div>
 
-          <div class="wizard-btn-row" id="reg-step-4-btns" style="display: none;">
-            <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
-            <button type="button" class="submit-btn wizard-next-btn" id="reg-pay-now-btn"
-              onclick="handleExternalPayment()">Pay Now</button>
+          <!-- Screenshot Upload Box -->
+          <div class="form-group" style="margin-bottom: 22px;">
+            <label class="form-label" for="reg-external-payment-screenshot"
+              style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Please upload the
+                screenshot of your payment *</span>
+              <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
+                PROOF OF ₹1,199 TRANSFER ]</span>
+            </label>
+
+            <div class="file-upload-dropzone" id="external-payment-dropzone"
+              onclick="document.getElementById('reg-external-payment-screenshot').click()"
+              style="background: #FFFDF9; border: 2.5px dashed var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+
+              <input type="file" id="reg-external-payment-screenshot" accept="image/*" style="display: none;"
+                onchange="handleExternalPaymentScreenshotSelected(this)">
+
+              <div id="external-dropzone-empty-state">
+                <div
+                  style="font-size: 0.92rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">
+                  Click or Drag to Upload Payment Screenshot
+                </div>
+                <div style="font-size: 0.76rem; font-weight: 600; color: rgba(0,0,0,0.5);">
+                  Supports PNG, JPG, JPEG, WEBP (Max 10MB)
+                </div>
+              </div>
+
+              <div id="external-dropzone-file-state"
+                style="display: none; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; padding: 10px 14px;">
+                <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                  <img id="external-screenshot-preview-thumb" src="" alt="Thumbnail"
+                    style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--text-primary); flex-shrink: 0;">
+                  <div style="text-align: left; min-width: 0;">
+                    <div id="external-screenshot-file-name"
+                      style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      screenshot.png
+                    </div>
+                    <div id="external-screenshot-file-size"
+                      style="font-size: 0.74rem; font-weight: 700; color: var(--accent-color);">
+                      Ready to Submit
+                    </div>
+                  </div>
+                </div>
+                <button type="button" onclick="event.stopPropagation(); removeExternalPaymentScreenshot();"
+                  style="background: #E63946; color: #FFFFFF; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans);">
+                  Remove
+                </button>
+              </div>
+
+            </div>
+            <div id="reg-external-payment-screenshot-error" class="error-container">Payment screenshot is required to
+              submit</div>
           </div>
+
+          <!-- Submit Button (Disabled until screenshot is uploaded) -->
+          <div class="wizard-btn-row">
+            <button type="button" class="btn-wizard-back" onclick="goToStep(4)">Back</button>
+            <button type="submit" class="submit-btn wizard-next-btn" id="external-submit-btn" disabled>
+              Submit External Delegate Registration
+            </button>
+          </div>
+
         </div>
 
       </form>
@@ -3259,6 +4075,358 @@
       { value: 'ip', label: 'IP — International Press Corps' }
     ];
 
+    const COMMITTEE_PORTFOLIOS = {
+      unsc: [
+        "United States of America",
+        "Russian Federation",
+        "French Republic",
+        "United Kingdom of Great Britain and Northern Ireland",
+        "People’s Republic of China",
+        "Kingdom of Bahrain",
+        "Republic of Colombia",
+        "Democratic Republic of the Congo",
+        "Kingdom of Denmark",
+        "Hellenic Republic",
+        "Republic of Latvia",
+        "Republic of Liberia",
+        "Islamic Republic of Pakistan",
+        "Republic of Panama",
+        "Federal Republic of Somalia",
+        "Republic of the Sudan",
+        "State of Libya",
+        "Republic of Yemen",
+        "Syrian Arab Republic",
+        "Republic of the Union of Myanmar",
+        "Lebanese Republic",
+        "State of Palestine",
+        "State of Israel",
+        "Ukraine",
+        "Republic of India",
+        "Islamic Republic of Iran",
+        "Republic of Türkiye",
+        "Arab Republic of Egypt",
+        "Kingdom of Saudi Arabia",
+        "United Arab Emirates",
+        "State of Qatar",
+        "Federal Democratic Republic of Ethiopia",
+        "Republic of Iraq",
+        "Hashemite Kingdom of Jordan",
+        "Republic of Rwanda"
+      ],
+      loksabha: [
+        "Narendra Modi (BJP)",
+        "Amit Shah (BJP)",
+        "Rajnath Singh (BJP)",
+        "Kiren Rijiju (BJP)",
+        "Piyush Goyal (BJP)",
+        "Nitin Gadkari (BJP)",
+        "Pralhad Joshi (BJP)",
+        "Basavaraj Bommai (BJP)",
+        "G. Kishan Reddy (BJP)",
+        "Dharmendra Pradhan (BJP)",
+        "Sarbananda Sonowal (BJP)",
+        "Nishikant Dubey (BJP)",
+        "Bandi Sanjay Kumar (BJP)",
+        "Bhartruhari Mahtab (BJP)",
+        "Anurag Thakur (BJP)",
+        "Tejasvi Surya (BJP)",
+        "Brijmohan Agrawal (BJP)",
+        "Rahul Gandhi (INC)",
+        "Priyanka Gandhi Vadra (INC)",
+        "K. C. Venugopal (INC)",
+        "Shashi Tharoor (INC)",
+        "Karti Chidambaram (INC)",
+        "Gaurav Gogoi (INC)",
+        "Manickam Tagore (INC)",
+        "Kodikunnil Suresh (INC)",
+        "Manish Tewari (INC)",
+        "Tariq Anwar (INC)",
+        "A. Raja (DMK)",
+        "T. R. Baalu (DMK)",
+        "Kanimozhi Karunanidhi (DMK)",
+        "Dayanidhi Maran (DMK)",
+        "Abhishek Banerjee (TMC)",
+        "Kalyan Banerjee (TMC)",
+        "Mahua Moitra (TMC)",
+        "Saugata Roy (TMC)",
+        "Akhilesh Yadav (SP)",
+        "Dimple Yadav (SP)",
+        "K. Ram Mohan Naidu (TDP)",
+        "G. M. Harish Balayogi (TDP)",
+        "Rajiv Ranjan Singh (JD(U))",
+        "Supriya Sule (NCP(SP))",
+        "Arvind Sawant (SHIV SENA (UBT))",
+        "Gurmeet Singh Meet Hayer (AAP)",
+        "Mian Altaf Ahmad (J&KNC)",
+        "Asaduddin Owaisi (AIMIM)",
+        "Chirag Paswan (L J P (R V))",
+        "Harsimrat Kaur Badal (SAD)",
+        "Surendra Prasad Yadav (RJD)"
+      ],
+      disec: [
+        "United States of America",
+        "Russian Federation",
+        "People’s Republic of China",
+        "Republic of India",
+        "French Republic",
+        "United Kingdom of Great Britain and Northern Ireland",
+        "Japan",
+        "Commonwealth of Australia",
+        "Federal Republic of Germany",
+        "State of Israel",
+        "Republic of Korea",
+        "Islamic Republic of Iran",
+        "Democratic People’s Republic of Korea",
+        "Islamic Republic of Pakistan",
+        "Canada",
+        "Italian Republic",
+        "Kingdom of Spain",
+        "Kingdom of the Netherlands",
+        "Kingdom of Belgium",
+        "Republic of Poland",
+        "Republic of Türkiye",
+        "Federative Republic of Brazil",
+        "Argentine Republic",
+        "United Arab Emirates",
+        "Kingdom of Saudi Arabia",
+        "Republic of Kazakhstan",
+        "Republic of South Africa",
+        "Republic of Indonesia",
+        "Malaysia",
+        "Republic of Singapore",
+        "Kingdom of Thailand",
+        "Socialist Republic of Viet Nam",
+        "Republic of the Philippines",
+        "United Mexican States",
+        "Republic of Colombia",
+        "Republic of Chile",
+        "Arab Republic of Egypt",
+        "Kingdom of Morocco",
+        "Federal Republic of Nigeria",
+        "Swiss Confederation",
+        "Republic of Austria",
+        "Ireland",
+        "Kingdom of Norway",
+        "Kingdom of Sweden",
+        "Republic of Finland",
+        "New Zealand",
+        "Mongolia",
+        "Portuguese Republic",
+        "Czech Republic",
+        "Ukraine"
+      ],
+      unhrc: [
+        "Democratic Republic of the Congo",
+        "Federal Democratic Republic of Ethiopia",
+        "Arab Republic of Egypt",
+        "Republic of Iraq",
+        "Republic of India",
+        "Islamic Republic of Pakistan",
+        "Republic of Colombia",
+        "United Mexican States",
+        "People’s Republic of China",
+        "Republic of Indonesia",
+        "Kingdom of Thailand",
+        "Socialist Republic of Viet Nam",
+        "Republic of Cuba",
+        "State of Kuwait",
+        "State of Qatar",
+        "Republic of Korea",
+        "Japan",
+        "Republic of Ghana",
+        "Republic of Kenya",
+        "Republic of South Africa",
+        "Federative Republic of Brazil",
+        "Republic of Ecuador",
+        "Republic of Chile",
+        "Plurinational State of Bolivia",
+        "French Republic",
+        "United Kingdom of Great Britain and Northern Ireland",
+        "Kingdom of the Netherlands",
+        "Swiss Confederation",
+        "Kingdom of Spain",
+        "Italian Republic",
+        "Republic of Iceland",
+        "Republic of Estonia",
+        "Czech Republic",
+        "Republic of Slovenia",
+        "Republic of Albania",
+        "Republic of The Gambia",
+        "Dominican Republic",
+        "Republic of Cyprus",
+        "State of Palestine",
+        "State of Israel",
+        "Ukraine",
+        "Russian Federation",
+        "Republic of the Sudan",
+        "Republic of the Union of Myanmar",
+        "Syrian Arab Republic",
+        "Republic of Yemen",
+        "Islamic Republic of Iran",
+        "Islamic Emirate of Afghanistan",
+        "Republic of Türkiye",
+        "United States of America"
+      ],
+      unodc: [
+        "Republic of the Union of Myanmar",
+        "Kingdom of Cambodia",
+        "Lao People’s Democratic Republic",
+        "Republic of the Philippines",
+        "Malaysia",
+        "Socialist Republic of Viet Nam",
+        "Kingdom of Thailand",
+        "Republic of Indonesia",
+        "Republic of Singapore",
+        "People’s Republic of China",
+        "Republic of India",
+        "People’s Republic of Bangladesh",
+        "Federal Democratic Republic of Nepal",
+        "Islamic Republic of Pakistan",
+        "Democratic Socialist Republic of Sri Lanka",
+        "Islamic Emirate of Afghanistan",
+        "Kingdom of Bhutan",
+        "Mongolia",
+        "Republic of Kenya",
+        "Federal Republic of Nigeria",
+        "United States of America",
+        "United Kingdom of Great Britain and Northern Ireland",
+        "United Arab Emirates",
+        "Swiss Confederation",
+        "Kingdom of the Netherlands",
+        "Grand Duchy of Luxembourg",
+        "Japan",
+        "Republic of Korea",
+        "Commonwealth of Australia",
+        "Canada",
+        "Federal Republic of Germany",
+        "French Republic",
+        "Italian Republic",
+        "Kingdom of Spain",
+        "Kingdom of Belgium",
+        "Republic of Austria",
+        "Republic of Finland",
+        "Portuguese Republic",
+        "Republic of Poland",
+        "Republic of Malta",
+        "State of Qatar",
+        "Kingdom of Saudi Arabia",
+        "Republic of Türkiye",
+        "State of Kuwait",
+        "Kingdom of Bahrain",
+        "Republic of South Africa",
+        "Republic of Ghana",
+        "United Republic of Tanzania",
+        "United Mexican States",
+        "Federative Republic of Brazil"
+      ],
+      ip: [
+        "Reuters",
+        "Associated Press (AP)",
+        "The Straits Times",
+        "Al-Jazeera",
+        "BBC",
+        "Deutsche Welle (DW)",
+        "Russia Today (RT)",
+        "Xinhua News Agency",
+        "TRT World",
+        "The New York Times",
+        "WIRED",
+        "The Wall Street Journal",
+        "The Diplomat",
+        "NHK World-Japan",
+        "South China Morning Post",
+        "The Hindu",
+        "Financial Times",
+        "France 24",
+        "The Africa Report",
+        "Asia News International (ANI)",
+        "Press Trust of India (PTI)",
+        "Times of India (TOI)"
+      ]
+    };
+
+    function updatePortfoliosForCommittee(commId, port1SelectId, port2SelectId) {
+      const p1Select = document.getElementById(port1SelectId);
+      const p2Select = document.getElementById(port2SelectId);
+      if (!p1Select || !p2Select) return;
+
+      const list = (commId && COMMITTEE_PORTFOLIOS[commId.toLowerCase()]) ? COMMITTEE_PORTFOLIOS[commId.toLowerCase()] : [];
+
+      // Save previous selections if still present in new list
+      const prevP1 = p1Select.value;
+      const prevP2 = p2Select.value;
+
+      // Populate Portfolio 1
+      p1Select.innerHTML = '<option value="" disabled selected>Select Portfolio Preference 1</option>';
+      list.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        p1Select.appendChild(opt);
+      });
+
+      if (prevP1 && list.includes(prevP1)) {
+        p1Select.value = prevP1;
+      }
+
+      // Populate Portfolio 2 (filtering out selected Portfolio 1)
+      updatePortfolio2Options(commId, port1SelectId, port2SelectId, prevP2);
+
+      rebuildCustomSelect(port1SelectId);
+    }
+
+    function updatePortfolio2Options(commId, port1SelectId, port2SelectId, desiredValue) {
+      const p1Select = document.getElementById(port1SelectId);
+      const p2Select = document.getElementById(port2SelectId);
+      if (!p2Select) return;
+
+      const list = (commId && COMMITTEE_PORTFOLIOS[commId.toLowerCase()]) ? COMMITTEE_PORTFOLIOS[commId.toLowerCase()] : [];
+      const selectedP1 = p1Select ? p1Select.value : '';
+
+      // Exclude chosen Portfolio Preference 1 from Portfolio Preference 2 options
+      const availableForP2 = list.filter(item => item !== selectedP1);
+
+      p2Select.innerHTML = '<option value="" disabled selected>Select Portfolio Preference 2</option>';
+      availableForP2.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        p2Select.appendChild(opt);
+      });
+
+      const valToSet = desiredValue !== undefined ? desiredValue : p2Select.value;
+      if (valToSet && valToSet !== selectedP1 && availableForP2.includes(valToSet)) {
+        p2Select.value = valToSet;
+      } else {
+        p2Select.value = '';
+      }
+
+      rebuildCustomSelect(port2SelectId);
+    }
+
+    function handlePortfolio1Change(port1SelectId, port2SelectId, commId) {
+      const p1Select = document.getElementById(port1SelectId);
+      if (p1Select) {
+        p1Select.classList.remove('has-error');
+        const trigger = p1Select.parentElement?.querySelector('.custom-select-trigger');
+        if (trigger) trigger.classList.remove('has-error');
+        const err = document.getElementById(`${port1SelectId}-error`);
+        if (err) err.style.display = 'none';
+      }
+      updatePortfolio2Options(commId, port1SelectId, port2SelectId);
+    }
+
+    function handlePortfolio2Change(port2SelectId) {
+      const p2Select = document.getElementById(port2SelectId);
+      if (p2Select) {
+        p2Select.classList.remove('has-error');
+        const trigger = p2Select.parentElement?.querySelector('.custom-select-trigger');
+        if (trigger) trigger.classList.remove('has-error');
+        const err = document.getElementById(`${port2SelectId}-error`);
+        if (err) err.style.display = 'none';
+      }
+    }
+
     function setCommittee1Selection(preferredCommId) {
       const comm1Select = document.getElementById('reg-committee-1');
       if (!comm1Select) return;
@@ -3275,7 +4443,13 @@
       comm1Select.value = matchedComm.value;
 
       rebuildCustomSelect('reg-committee-1');
+      updatePortfoliosForCommittee(matchedComm.value, 'reg-portfolio-1', 'reg-portfolio-2');
       updateCommittee2Options();
+    }
+
+    function handleCommittee2Change(selectEl) {
+      if (!selectEl) return;
+      updatePortfoliosForCommittee(selectEl.value, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2');
     }
 
     function updateCommittee2Options() {
@@ -3307,8 +4481,8 @@
 
       // Rebuild custom dropdown UI for Committee 2
       rebuildCustomSelect('reg-committee-2');
-      // Also refresh payment options based on committee 1 selection
-      updateExternalPaymentOptions();
+      // Populate portfolios for Committee 2
+      updatePortfoliosForCommittee(comm2Select.value, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2');
     }
 
     function closeAllCustomSelects() {
@@ -3389,25 +4563,6 @@
         titleEl.textContent = type === 'internal' ? 'Internal Delegate Registration' : 'External Delegate Registration';
       }
 
-      const submitBtn = document.getElementById('reg-submit-btn');
-      if (submitBtn) {
-        submitBtn.textContent = type === 'internal' ? 'Pay Now — ₹999' : 'Proceed to Payment →';
-      }
-
-      // Add/remove class on modal card for CSS targeting (hides Step 4 stepper for internal)
-      const regCard = document.getElementById('registration-modal-card');
-      if (regCard) regCard.classList.toggle('internal-reg', type === 'internal');
-
-      const extPaymentGroup = document.getElementById('reg-external-payment-group');
-      const intPaymentGroup = document.getElementById('reg-internal-payment-group');
-      if (type === 'internal') {
-        if (extPaymentGroup) extPaymentGroup.style.display = 'none';
-        if (intPaymentGroup) intPaymentGroup.style.display = 'block';
-      } else {
-        if (extPaymentGroup) extPaymentGroup.style.display = 'block';
-        if (intPaymentGroup) intPaymentGroup.style.display = 'none';
-      }
-
       const institution = document.getElementById('reg-institution');
       if (institution) {
         if (type === 'internal') {
@@ -3416,19 +4571,32 @@
           institution.classList.remove('has-error');
           const errEl = document.getElementById('reg-institution-error');
           if (errEl) errEl.style.display = 'none';
+
+          // Update stepper labels for internal (4 steps)
+          const step4Ind = document.getElementById('step-indicator-4');
+          const step5Arrow = document.getElementById('step-arrow-5');
+          const step5Ind = document.getElementById('step-indicator-5');
+          if (step4Ind) step4Ind.textContent = 'Payment';
+          if (step5Arrow) step5Arrow.style.display = 'none';
+          if (step5Ind) step5Ind.style.display = 'none';
         } else {
           if (institution.value === 'RNS Institute of Technology') {
             institution.value = '';
           }
           institution.readOnly = false;
           institution.placeholder = 'e.g. RV College / BMS College';
-        }
-      }
 
-      // Toggle button row mode so Pay Now button sizes match Back button for internal
-      const step3BtnRow = document.getElementById('reg-step-3-btns');
-      if (step3BtnRow) {
-        step3BtnRow.classList.toggle('internal-mode', type === 'internal');
+          // Update stepper labels for external (5 steps)
+          const step4Ind = document.getElementById('step-indicator-4');
+          const step5Arrow = document.getElementById('step-arrow-5');
+          const step5Ind = document.getElementById('step-indicator-5');
+          if (step4Ind) step4Ind.textContent = 'Pass';
+          if (step5Arrow) step5Arrow.style.display = 'inline';
+          if (step5Ind) {
+            step5Ind.style.display = 'inline-block';
+            step5Ind.textContent = 'Payment';
+          }
+        }
       }
 
       closeDelegateTypeModal(() => {
@@ -3440,8 +4608,6 @@
     // MULTI-STEP DELEGATE REGISTRATION WIZARD
     // ==========================================
     let currentStep = 1;
-
-
 
     function goToStep(targetStep) {
       closeAllCustomSelects();
@@ -3457,9 +4623,8 @@
         }
       }
 
-      // Update Step Panels and Indicator (supports up to step 4)
-      const totalSteps = currentDelegateType === 'internal' ? 3 : 4;
-      for (let s = 1; s <= 4; s++) {
+      // Update Step Panels and Indicator (supports up to step 5)
+      for (let s = 1; s <= 5; s++) {
         const panel = document.getElementById(`wizard-step-${s}`);
         const indicator = document.getElementById(`step-indicator-${s}`);
         if (panel) {
@@ -3485,11 +4650,228 @@
         }
       }
 
+      // If entering Step 4, show corresponding panel
+      if (targetStep === 4) {
+        const internalPanel = document.getElementById('internal-payment-panel');
+        const externalPanel = document.getElementById('external-payment-panel');
+        if (currentDelegateType === 'internal') {
+          if (internalPanel) internalPanel.style.display = 'block';
+          if (externalPanel) externalPanel.style.display = 'none';
+        } else {
+          if (internalPanel) internalPanel.style.display = 'none';
+          if (externalPanel) externalPanel.style.display = 'block';
+        }
+      }
+
       currentStep = targetStep;
 
       // Scroll modal to top on step transition
       const regCard = document.getElementById('registration-modal-card');
       if (regCard) regCard.scrollTop = 0;
+    }
+
+    function handlePaymentScreenshotSelected(input) {
+      const file = input.files && input.files[0];
+      const submitBtn = document.getElementById('internal-submit-btn');
+      const emptyState = document.getElementById('dropzone-empty-state');
+      const fileState = document.getElementById('dropzone-file-state');
+      const fileNameEl = document.getElementById('screenshot-file-name');
+      const fileSizeEl = document.getElementById('screenshot-file-size');
+      const previewThumb = document.getElementById('screenshot-preview-thumb');
+      const err = document.getElementById('reg-payment-screenshot-error');
+
+      if (file) {
+        if (fileNameEl) fileNameEl.textContent = file.name;
+        if (fileSizeEl) fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (previewThumb) previewThumb.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (fileState) fileState.style.display = 'flex';
+        if (err) err.style.display = 'none';
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('disabled');
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+        }
+      } else {
+        removePaymentScreenshot();
+      }
+    }
+
+    function removePaymentScreenshot() {
+      const input = document.getElementById('reg-payment-screenshot');
+      const submitBtn = document.getElementById('internal-submit-btn');
+      const emptyState = document.getElementById('dropzone-empty-state');
+      const fileState = document.getElementById('dropzone-file-state');
+      const previewThumb = document.getElementById('screenshot-preview-thumb');
+
+      if (input) input.value = '';
+      if (emptyState) emptyState.style.display = 'block';
+      if (fileState) fileState.style.display = 'none';
+      if (previewThumb) previewThumb.src = '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.style.opacity = '0.45';
+        submitBtn.style.cursor = 'not-allowed';
+      }
+    }
+
+    function copyInternalUPI() {
+      const upiText = 'mun@rnsit.ac.in';
+      const copyBtn = document.getElementById('copy-upi-btn');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upiText).then(() => {
+          if (copyBtn) {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✓ Copied!';
+            copyBtn.style.background = '#0F9D58';
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.style.background = 'var(--accent-color)';
+            }, 2000);
+          }
+        });
+      }
+    }
+
+    // External Delegate Payment Screenshot & Copy Handlers
+    function handleExternalPaymentScreenshotSelected(input) {
+      const file = input.files && input.files[0];
+      const submitBtn = document.getElementById('external-submit-btn');
+      const emptyState = document.getElementById('external-dropzone-empty-state');
+      const fileState = document.getElementById('external-dropzone-file-state');
+      const fileNameEl = document.getElementById('external-screenshot-file-name');
+      const fileSizeEl = document.getElementById('external-screenshot-file-size');
+      const previewThumb = document.getElementById('external-screenshot-preview-thumb');
+      const err = document.getElementById('reg-external-payment-screenshot-error');
+
+      if (file) {
+        if (fileNameEl) fileNameEl.textContent = file.name;
+        if (fileSizeEl) fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (previewThumb) previewThumb.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (fileState) fileState.style.display = 'flex';
+        if (err) err.style.display = 'none';
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('disabled');
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+        }
+      } else {
+        removeExternalPaymentScreenshot();
+      }
+    }
+
+    function removeExternalPaymentScreenshot() {
+      const input = document.getElementById('reg-external-payment-screenshot');
+      const submitBtn = document.getElementById('external-submit-btn');
+      const emptyState = document.getElementById('external-dropzone-empty-state');
+      const fileState = document.getElementById('external-dropzone-file-state');
+      const previewThumb = document.getElementById('external-screenshot-preview-thumb');
+
+      if (input) input.value = '';
+      if (emptyState) emptyState.style.display = 'block';
+      if (fileState) fileState.style.display = 'none';
+      if (previewThumb) previewThumb.src = '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.style.opacity = '0.45';
+        submitBtn.style.cursor = 'not-allowed';
+      }
+    }
+
+    function copyExternalUPI() {
+      const upiText = 'mun@rnsit.ac.in';
+      const copyBtn = document.getElementById('copy-external-upi-btn');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upiText).then(() => {
+          if (copyBtn) {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✓ Copied!';
+            copyBtn.style.background = '#0F9D58';
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.style.background = 'var(--accent-color)';
+            }, 2000);
+          }
+        });
+      }
+    }
+
+    function handleExperienceToggle(value) {
+      const countSection = document.getElementById('exp-count-section');
+      const detailsSection = document.getElementById('exp-details-section');
+      const expCountSelect = document.getElementById('reg-exp-count');
+      const expDetailsInput = document.getElementById('reg-experience-details');
+      const hiddenExp = document.getElementById('reg-experience');
+      const hasExpErr = document.getElementById('reg-has-exp-error');
+
+      if (hasExpErr) hasExpErr.style.display = 'none';
+
+      if (value === 'no') {
+        if (countSection) countSection.style.display = 'none';
+        if (detailsSection) detailsSection.style.display = 'none';
+        if (expCountSelect) {
+          expCountSelect.value = '';
+          const customWrap = document.getElementById('custom-select-wrap-reg-exp-count');
+          if (customWrap) {
+            const textSpan = customWrap.querySelector('.custom-select-text');
+            if (textSpan) textSpan.textContent = 'Select number of conferences';
+            customWrap.querySelectorAll('.custom-select-option').forEach(o => o.classList.remove('is-selected'));
+            customWrap.classList.remove('has-error');
+          }
+        }
+        if (expDetailsInput) {
+          expDetailsInput.value = '';
+          expDetailsInput.classList.remove('has-error');
+        }
+        if (hiddenExp) hiddenExp.value = '0';
+        const countErr = document.getElementById('reg-exp-count-error');
+        const detailsErr = document.getElementById('reg-experience-details-error');
+        if (countErr) countErr.style.display = 'none';
+        if (detailsErr) detailsErr.style.display = 'none';
+      } else if (value === 'yes') {
+        if (countSection) countSection.style.display = 'block';
+        if (hiddenExp) hiddenExp.value = '';
+        if (expCountSelect && expCountSelect.value) {
+          if (detailsSection) detailsSection.style.display = 'block';
+        } else {
+          if (detailsSection) detailsSection.style.display = 'none';
+        }
+      }
+    }
+
+    function handleConferenceCountChange(selectEl) {
+      const detailsSection = document.getElementById('exp-details-section');
+      const countErr = document.getElementById('reg-exp-count-error');
+      const countWrap = document.getElementById('custom-select-wrap-reg-exp-count') || selectEl;
+      if (countErr) countErr.style.display = 'none';
+      if (countWrap) countWrap.classList.remove('has-error');
+
+      if (selectEl && selectEl.value) {
+        if (detailsSection) detailsSection.style.display = 'block';
+      } else {
+        if (detailsSection) detailsSection.style.display = 'none';
+      }
     }
 
     function validateStep(step) {
@@ -3503,14 +4885,11 @@
         const city = document.getElementById('reg-city');
         const phone = document.getElementById('reg-phone');
         const email = document.getElementById('reg-email');
-        const experience = document.getElementById('reg-experience');
 
         const simpleRequired = [
           { el: name, errId: 'reg-name-error' },
           { el: institution, errId: 'reg-institution-error' },
-          { el: usn, errId: 'reg-usn-error' },
-          { el: city, errId: 'reg-city-error' },
-          { el: phone, errId: 'reg-phone-error' }
+          { el: city, errId: 'reg-city-error' }
         ];
 
         simpleRequired.forEach(({ el, errId }) => {
@@ -3525,6 +4904,23 @@
             if (errorEl) errorEl.style.display = 'none';
           }
         });
+
+        // Phone validation (strictly 10 digits)
+        if (phone) {
+          const errorEl = document.getElementById('reg-phone-error');
+          const digits = phone.value.replace(/[^0-9]/g, '');
+          if (!phone.value.trim() || digits.length !== 10) {
+            phone.classList.add('has-error');
+            if (errorEl) {
+              errorEl.textContent = 'Please enter a valid 10-digit WhatsApp number';
+              errorEl.style.display = 'block';
+            }
+            isValid = false;
+          } else {
+            phone.classList.remove('has-error');
+            if (errorEl) errorEl.style.display = 'none';
+          }
+        }
 
         // Age validation
         if (age) {
@@ -3560,18 +4956,44 @@
         }
 
         // MUN Experience validation
-        if (experience) {
-          const errorEl = document.getElementById('reg-experience-error');
-          if (!experience.value.trim()) {
-            experience.classList.add('has-error');
-            if (errorEl) {
-              errorEl.textContent = 'Please describe your MUN experience (or enter \'Fresher\')';
-              errorEl.style.display = 'block';
-            }
+        const expYes = document.getElementById('reg-exp-yes');
+        const expNo = document.getElementById('reg-exp-no');
+        const hasExpErr = document.getElementById('reg-has-exp-error');
+        const hiddenExp = document.getElementById('reg-experience');
+
+        if (!expYes || !expNo || (!expYes.checked && !expNo.checked)) {
+          if (hasExpErr) hasExpErr.style.display = 'block';
+          isValid = false;
+        } else if (expNo.checked) {
+          if (hasExpErr) hasExpErr.style.display = 'none';
+          if (hiddenExp) hiddenExp.value = '0';
+        } else if (expYes.checked) {
+          if (hasExpErr) hasExpErr.style.display = 'none';
+          const expCount = document.getElementById('reg-exp-count');
+          const countErr = document.getElementById('reg-exp-count-error');
+          const expDetails = document.getElementById('reg-experience-details');
+          const detailsErr = document.getElementById('reg-experience-details-error');
+          const countWrap = document.getElementById('custom-select-wrap-reg-exp-count') || expCount;
+
+          if (!expCount || !expCount.value) {
+            if (countErr) countErr.style.display = 'block';
+            if (countWrap) countWrap.classList.add('has-error');
             isValid = false;
           } else {
-            experience.classList.remove('has-error');
-            if (errorEl) errorEl.style.display = 'none';
+            if (countErr) countErr.style.display = 'none';
+            if (countWrap) countWrap.classList.remove('has-error');
+
+            if (!expDetails || !expDetails.value.trim()) {
+              if (detailsErr) detailsErr.style.display = 'block';
+              if (expDetails) expDetails.classList.add('has-error');
+              isValid = false;
+            } else {
+              if (detailsErr) detailsErr.style.display = 'none';
+              if (expDetails) expDetails.classList.remove('has-error');
+              if (hiddenExp) {
+                hiddenExp.value = `${expCount.value} Conferences | ${expDetails.value.trim()}`;
+              }
+            }
           }
         }
       } else if (step === 2) {
@@ -3595,18 +5017,36 @@
 
         if (portfolio1) {
           const errorEl = document.getElementById('reg-portfolio-1-error');
+          const trigger = portfolio1.parentElement?.querySelector('.custom-select-trigger');
           if (!portfolio1.value.trim()) {
             portfolio1.classList.add('has-error');
+            if (trigger) trigger.classList.add('has-error');
             if (errorEl) errorEl.style.display = 'block';
             isValid = false;
           } else {
             portfolio1.classList.remove('has-error');
+            if (trigger) trigger.classList.remove('has-error');
+            if (errorEl) errorEl.style.display = 'none';
+          }
+        }
+
+        const portfolio2 = document.getElementById('reg-portfolio-2');
+        if (portfolio2) {
+          const errorEl = document.getElementById('reg-portfolio-2-error');
+          const trigger = portfolio2.parentElement?.querySelector('.custom-select-trigger');
+          if (!portfolio2.value.trim()) {
+            portfolio2.classList.add('has-error');
+            if (trigger) trigger.classList.add('has-error');
+            if (errorEl) errorEl.style.display = 'block';
+            isValid = false;
+          } else {
+            portfolio2.classList.remove('has-error');
+            if (trigger) trigger.classList.remove('has-error');
             if (errorEl) errorEl.style.display = 'none';
           }
         }
       } else if (step === 3) {
         const committee2 = document.getElementById('reg-committee-2');
-        const paymentScheme = document.getElementById('reg-payment-scheme');
 
         if (committee2) {
           const errorEl = document.getElementById('reg-committee-2-error');
@@ -3622,54 +5062,9 @@
             if (errorEl) errorEl.style.display = 'none';
           }
         }
-
-        if (currentDelegateType !== 'internal' && paymentScheme) {
-          const errorEl = document.getElementById('reg-payment-scheme-error');
-          const trigger = paymentScheme.parentElement?.querySelector('.custom-select-trigger');
-          if (!paymentScheme.value.trim()) {
-            paymentScheme.classList.add('has-error');
-            if (trigger) trigger.classList.add('has-error');
-            if (errorEl) errorEl.style.display = 'block';
-            isValid = false;
-          } else {
-            paymentScheme.classList.remove('has-error');
-            if (trigger) trigger.classList.remove('has-error');
-            if (errorEl) errorEl.style.display = 'none';
-          }
-        }
       }
 
       return isValid;
-    }
-
-    // ==========================================
-    // PAYMENT DROPDOWN: Dynamic per Committee
-    // ==========================================
-    function updateExternalPaymentOptions() {
-      const comm1 = document.getElementById('reg-committee-1');
-      const paySelect = document.getElementById('reg-payment-scheme');
-      if (!comm1 || !paySelect) return;
-
-      const isIP = comm1.value === 'ip';
-      paySelect.innerHTML = '';
-
-      if (isIP) {
-        const opt = document.createElement('option');
-        opt.value = 'ip-journalist';
-        opt.textContent = 'International Press / Caricaturist Pass';
-        paySelect.appendChild(opt);
-      } else {
-        [
-          { value: 'early-bird', label: 'Early Bird Registration Pass' },
-          { value: 'standard-individual', label: 'Standard Individual Delegate Pass' }
-        ].forEach(({ value, label }) => {
-          const opt = document.createElement('option');
-          opt.value = value;
-          opt.textContent = label;
-          paySelect.appendChild(opt);
-        });
-      }
-      rebuildCustomSelect('reg-payment-scheme');
     }
 
     // ==========================================
@@ -3683,55 +5078,64 @@
       } else {
         // External: go to Step 4 (payment)
         goToStep(4);
-        // Reset IEEE state when entering Step 4
-        setIEEEMember(null);
+        selectExternalCategory('standard');
       }
     }
 
     // ==========================================
-    // IEEE MEMBER TOGGLE (Step 4)
+    // EXTERNAL DELEGATE CATEGORY SELECTOR (Step 4)
     // ==========================================
-    let isIEEEMember = null;
+    let isIEEEMember = false;
+    let externalCategory = 'standard';
 
-    function setIEEEMember(value) {
-      isIEEEMember = value;
-      const yesBtn = document.getElementById('ieee-yes-btn');
-      const noBtn = document.getElementById('ieee-no-btn');
-      const memberSection = document.getElementById('ieee-member-section');
-      const nonMemberSection = document.getElementById('non-ieee-section');
-      const step4Btns = document.getElementById('reg-step-4-btns');
+    function selectExternalCategory(category) {
+      externalCategory = category;
+      isIEEEMember = (category === 'ieee');
+
+      const standardCard = document.getElementById('plan-card-standard');
+      const ieeeCard = document.getElementById('plan-card-ieee');
+      const ieeeSection = document.getElementById('ieee-member-section');
+      const orderDesc = document.getElementById('external-order-desc');
       const payBtn = document.getElementById('reg-pay-now-btn');
 
-      // Reset button styles
-      if (yesBtn) { yesBtn.classList.remove('is-active-yes', 'is-active-no'); }
-      if (noBtn) { noBtn.classList.remove('is-active-yes', 'is-active-no'); }
+      const standardCircle = standardCard ? standardCard.querySelector('.plan-radio-circle') : null;
+      const ieeeCircle = ieeeCard ? ieeeCard.querySelector('.plan-radio-circle') : null;
 
-      if (value === null) {
-        if (memberSection) memberSection.style.display = 'none';
-        if (nonMemberSection) nonMemberSection.style.display = 'none';
-        if (step4Btns) step4Btns.style.display = 'none';
-        return;
-      }
-
-      if (value === true) {
-        if (yesBtn) yesBtn.classList.add('is-active-yes');
-        if (memberSection) memberSection.style.display = 'block';
-        if (nonMemberSection) nonMemberSection.style.display = 'none';
-        if (payBtn) payBtn.textContent = 'Pay Now — ₹1,199';
+      if (category === 'ieee') {
+        if (standardCard) {
+          standardCard.style.background = '#FFFDF9';
+          standardCard.style.boxShadow = '2px 2px 0px var(--text-primary)';
+          if (standardCircle) standardCircle.style.background = 'transparent';
+        }
+        if (ieeeCard) {
+          ieeeCard.style.background = '#FFFFFF';
+          ieeeCard.style.boxShadow = '4px 4px 0px var(--text-primary)';
+          if (ieeeCircle) ieeeCircle.style.background = 'var(--accent-color)';
+        }
+        if (ieeeSection) ieeeSection.style.display = 'block';
+        if (orderDesc) orderDesc.textContent = 'IEEE Affiliated Delegate Pass';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,199) →';
       } else {
-        if (noBtn) noBtn.classList.add('is-active-no');
-        if (memberSection) memberSection.style.display = 'none';
-        if (nonMemberSection) nonMemberSection.style.display = 'block';
-        if (payBtn) payBtn.textContent = 'Pay Now';
+        if (standardCard) {
+          standardCard.style.background = '#FFFFFF';
+          standardCard.style.boxShadow = '4px 4px 0px var(--text-primary)';
+          if (standardCircle) standardCircle.style.background = 'var(--accent-color)';
+        }
+        if (ieeeCard) {
+          ieeeCard.style.background = '#FFFDF9';
+          ieeeCard.style.boxShadow = '2px 2px 0px var(--text-primary)';
+          if (ieeeCircle) ieeeCircle.style.background = 'transparent';
+        }
+        if (ieeeSection) ieeeSection.style.display = 'none';
+        if (orderDesc) orderDesc.textContent = 'External Delegate Pass (Early Bird)';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,199) →';
       }
-
-      if (step4Btns) step4Btns.style.display = 'flex';
     }
 
     // ==========================================
-    // EXTERNAL DELEGATE PAY NOW (Step 4)
+    // EXTERNAL DELEGATE PROCEED TO PAYMENT (Step 4 → Step 5)
     // ==========================================
-    function handleExternalPayment() {
+    function handleProceedToExternalPayment() {
       // Validate IEEE ID if member
       if (isIEEEMember === true) {
         const ieeeId = document.getElementById('reg-ieee-id');
@@ -3745,45 +5149,13 @@
         if (ieeeErr) ieeeErr.style.display = 'none';
       }
 
-      const committee1 = document.getElementById('reg-committee-1');
-      const selectedCommName = committee1 ? committee1.options[committee1.selectedIndex]?.text : 'Selected Committee';
-      const nameInput = document.getElementById('reg-name');
-      const delegateName = nameInput ? nameInput.value.trim() : 'Delegate';
-
-      const paymentState = {
-        isInternal: false,
-        isIEEE: isIEEEMember === true,
-        delegateName,
-        committeeName: selectedCommName,
-        timestamp: Date.now()
-      };
-      sessionStorage.setItem('pending_external_payment', JSON.stringify(paymentState));
-
-      // External payment portal URL (update when available)
-      const paymentGatewayUrl = 'https://rzp.io/l/rnsmun-external';
-      window.open(paymentGatewayUrl, '_blank', 'noopener,noreferrer');
-
-      // Show success/confirmation overlay immediately (no reload needed for external)
-      const successTitle = document.getElementById('success-title');
-      const successMsg = document.getElementById('success-message-text');
-
-      if (isIEEEMember === true) {
-        if (successTitle) successTitle.textContent = 'Registration Received!';
-        if (successMsg) successMsg.innerHTML = `
-          Thank you for registering, <strong>${delegateName}</strong>!<br><br>
-          Your IEEE membership ID has been noted. Our team will review your IEEE subscription and the applicable delegate fee of <strong style="color: var(--gold-accent);">₹1,199</strong> shall be confirmed accordingly.<br><br>
-          <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">You will receive your official registration confirmation on your registered email address. Thank you for registering with RNS MUN '26.</em>
-        `;
-      } else {
-        if (successTitle) successTitle.textContent = 'Complete Your Payment!';
-        if (successMsg) successMsg.innerHTML = `
-          Thank you for registering, <strong>${delegateName}</strong>!<br><br>
-          Please complete your delegate fee payment on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.<br><br>
-          <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">Thank you for registering with RNS MUN '26.</em>
-        `;
+      // Update Step 5 Tier Badge
+      const tierBadge = document.getElementById('step5-tier-badge');
+      if (tierBadge) {
+        tierBadge.textContent = (isIEEEMember ? '[ IEEE AFFILIATED PASS ]' : '[ EXTERNAL DELEGATE PASS ]');
       }
 
-      showSuccessOverlay();
+      goToStep(5);
     }
 
 
@@ -3893,11 +5265,11 @@
       const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
       const submitBtn = document.getElementById('dlg-submit-btn');
       const exitBtn = document.getElementById('dlg-exit-btn');
-      
+
       const sheetResult = document.getElementById('dlg-sheet-result');
       const hiddenLinkInput = document.getElementById('dlg-sheet-link');
       const sheetAnchor = document.getElementById('dlg-sheet-anchor');
-      
+
       const hasRegisteredUrl = email ? localStorage.getItem(`submitted_dlg_email_${email}`) : null;
 
       if (hasRegisteredUrl) {
@@ -3905,7 +5277,7 @@
         if (createSheetBtn) createSheetBtn.style.display = 'none';
         if (submitBtn) submitBtn.style.display = 'none';
         if (exitBtn) exitBtn.style.display = 'block';
-        
+
         // Display previously generated sheet
         if (hiddenLinkInput) {
           hiddenLinkInput.value = hasRegisteredUrl;
@@ -3913,13 +5285,13 @@
         }
         if (sheetAnchor) sheetAnchor.href = hasRegisteredUrl;
         if (sheetResult) sheetResult.classList.add('is-generated');
-        
+
       } else {
         if (existsMsg) existsMsg.style.display = 'none';
         if (createSheetBtn) createSheetBtn.style.display = 'inline-flex';
         if (submitBtn) submitBtn.style.display = 'block';
         if (exitBtn) exitBtn.style.display = 'none';
-        
+
         // Hide sheet if it was populated by a historic registered email match
         if (hiddenLinkInput && hiddenLinkInput.dataset.fromHistory === 'true') {
           hiddenLinkInput.value = '';
@@ -3933,7 +5305,7 @@
     function toggleDelegationClearBtn(e) {
       const form = document.getElementById('delegation-registration-form');
       const clearBtn = document.getElementById('dlg-clear-data-btn');
-      
+
       // Clear error message dynamically as the user types & validate real-time
       if (e && e.target) {
         const el = e.target;
@@ -3948,7 +5320,8 @@
           isValid = !isNaN(val) && val >= 10 && val <= 18;
           errMsg = 'Number of delegates must be between 10 and 18';
         } else if (el.type === 'tel' || el.id === 'dlg-phone') {
-          isValid = /^\d{10,15}$/.test(el.value.replace(/[\s\-\+]/g, ''));
+          const digits = el.value.replace(/[^0-9]/g, '');
+          isValid = digits.length === 10;
           errMsg = 'Please enter a valid 10-digit mobile number';
         } else if (el.type === 'text') {
           isValid = el.value.trim().length > 0;
@@ -3960,33 +5333,33 @@
         // Only show real-time error if they are typing an invalid value AND it already had an error (to not annoy them while typing a fresh valid email)
         // BUT wait, the user requested: "validated as its being entered...if wrong..show error meesage and it shd disappear immedaitely as soon its corrected"
         if (!isValid && el.value.trim().length > 0) {
-           // We show error if they typed something invalid
-           el.classList.add('has-error');
-           if (errEl) {
-             errEl.textContent = errMsg;
-             errEl.style.display = 'block';
-           }
+          // We show error if they typed something invalid
+          el.classList.add('has-error');
+          if (errEl) {
+            errEl.textContent = errMsg;
+            errEl.style.display = 'block';
+          }
         } else if (isValid) {
-           el.classList.remove('has-error');
-           if (errEl) errEl.style.display = 'none';
+          el.classList.remove('has-error');
+          if (errEl) errEl.style.display = 'none';
         } else if (el.value.trim().length === 0) {
-           // If they clear the field, remove the error so it doesn't scream at them when empty, 
-           // UNLESS it already had an error from a submit attempt.
-           // Actually, let's just leave the error if it was there, or remove it.
-           // To be safe and less annoying:
-           el.classList.remove('has-error');
-           if (errEl) errEl.style.display = 'none';
+          // If they clear the field, remove the error so it doesn't scream at them when empty, 
+          // UNLESS it already had an error from a submit attempt.
+          // Actually, let's just leave the error if it was there, or remove it.
+          // To be safe and less annoying:
+          el.classList.remove('has-error');
+          if (errEl) errEl.style.display = 'none';
         }
       }
-      
+
       if (!form || !clearBtn) return;
-      
+
       const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
       let hasData = false;
       inputs.forEach(input => {
         if (input.value.trim() !== '') hasData = true;
       });
-      
+
       clearBtn.style.display = hasData ? 'block' : 'none';
     }
 
@@ -4000,7 +5373,7 @@
         errContainers.forEach(el => {
           el.style.display = 'none';
         });
-        
+
         // Reset sheet generator UI
         const sheetResult = document.getElementById('dlg-sheet-result');
         if (sheetResult) sheetResult.classList.remove('is-generated');
@@ -4016,7 +5389,7 @@
         if (emailInput) {
           checkEmailRegistration(emailInput);
         }
-        
+
         toggleDelegationClearBtn();
       }
     }
@@ -4512,7 +5885,7 @@
         dlgCard.style.overflow = 'hidden';
         dlgCard.style.maxHeight = '500px'; // Compact - no full-screen on mobile
       }
-      
+
       const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) {
         successOverlay.classList.add('show');
@@ -4563,41 +5936,54 @@
       const nameInput = document.getElementById('reg-name');
       const delegateName = nameInput ? nameInput.value.trim() : 'Delegate';
 
-      // If internal delegate, handle payment redirect flow and reload
       if (currentDelegateType === 'internal') {
-        const paymentState = {
-          isInternal: true,
-          delegateName: delegateName,
-          committeeName: selectedCommName,
-          timestamp: Date.now()
-        };
-        sessionStorage.setItem('pending_internal_payment', JSON.stringify(paymentState));
+        const screenshotInput = document.getElementById('reg-payment-screenshot');
+        const screenshotErr = document.getElementById('reg-payment-screenshot-error');
+        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0) {
+          if (screenshotErr) screenshotErr.style.display = 'block';
+          return;
+        }
+        if (screenshotErr) screenshotErr.style.display = 'none';
 
-        // External Payment Gateway URL (can be updated with direct payment portal link)
-        const paymentGatewayUrl = "https://rzp.io/l/rnsmun-internal";
+        // Show internal success confirmation overlay
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) {
+          const successTitle = document.getElementById('success-title');
+          if (successTitle) successTitle.textContent = 'Registration Submitted!';
 
-        // Open external payment in new tab
-        window.open(paymentGatewayUrl, '_blank', 'noopener,noreferrer');
+          const successMsg = document.getElementById('success-message-text');
+          if (successMsg) {
+            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br><br>Your internal delegate registration and payment screenshot for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> have been successfully submitted.<br><br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+          }
 
-        // Reload current page to reveal professional payment instruction confirmation state
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
+          showSuccessOverlay();
+        }
         return;
       }
 
-      // External Delegate Success Screen
-      const successOverlay = document.getElementById('success-overlay');
-      if (successOverlay) {
-        const successTitle = document.getElementById('success-title');
-        if (successTitle) successTitle.textContent = 'Registration Submitted!';
-
-        const successMsg = document.getElementById('success-message-text');
-        if (successMsg) {
-          successMsg.innerHTML = `Thank you for registering. Your external delegate application for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> has been recorded. Our delegate affairs team will reach out to your WhatsApp/email with payment verification and portfolio allotment.`;
+      if (currentDelegateType === 'external') {
+        const screenshotInput = document.getElementById('reg-external-payment-screenshot');
+        const screenshotErr = document.getElementById('reg-external-payment-screenshot-error');
+        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0) {
+          if (screenshotErr) screenshotErr.style.display = 'block';
+          return;
         }
+        if (screenshotErr) screenshotErr.style.display = 'none';
 
-        showSuccessOverlay();
+        // External Delegate Success Screen
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) {
+          const successTitle = document.getElementById('success-title');
+          if (successTitle) successTitle.textContent = 'Registration Submitted!';
+
+          const successMsg = document.getElementById('success-message-text');
+          if (successMsg) {
+            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br><br>Your external delegate registration and payment screenshot for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> have been successfully submitted.<br><br>Our delegate affairs team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+          }
+
+          showSuccessOverlay();
+        }
+        return;
       }
     }
 

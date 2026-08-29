@@ -70,28 +70,28 @@ function getGlobeDimensions() {
   if (isMobileLandscape) {
     return {
       count: 55,
-      radius: 170,
+      radius: 130,
       distance: 420,
-      tileWidth: 64,
-      tileHeight: 80
+      tileWidth: 52,
+      tileHeight: 65
     };
   } else if (isMobilePortrait) {
-    // Mobile portrait (< 768px portrait) - exact original values
+    // Mobile portrait (< 768px portrait)
     return {
       count: 55,
-      radius: 190,
+      radius: 175,
       distance: 445,
-      tileWidth: 72,
-      tileHeight: 90
+      tileWidth: 66,
+      tileHeight: 82
     };
   } else {
-    // Desktop - exact original values
+    // Desktop PC - compact inward globe
     return {
       count: 55,
-      radius: 190,
-      distance: 445,
-      tileWidth: 72,
-      tileHeight: 90
+      radius: 135,
+      distance: 430,
+      tileWidth: 54,
+      tileHeight: 68
     };
   }
 }

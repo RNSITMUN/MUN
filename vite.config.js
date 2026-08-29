@@ -46,6 +46,8 @@ const cleanUrlsPlugin = () => ({
           req.url = '/team.html' + req.url.substring(5);
         } else if (url === '/stay-connected') {
           req.url = '/stay-connected.html' + req.url.substring(15);
+        } else if (url === '/contact') {
+          req.url = '/stay-connected.html' + req.url.substring(8);
         } else if (url === '/past-events') {
           req.url = '/past-events.html' + req.url.substring(12);
         } else if (url === '/registration') {

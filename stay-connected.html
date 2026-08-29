@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stay Connected | MUNSoc RNSIT</title>
+  <title>Contact | MUNSoc RNSIT</title>
   <meta name="description" content="Get in touch with MUNSoc RNSIT. Connect with our delegation and stay updated with assemblies.">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mun-rnsit.vercel.app/stay-connected">
-  <meta property="og:title" content="Stay Connected | MUNSoc RNSIT">
+  <meta property="og:title" content="Contact | MUNSoc RNSIT">
   <meta property="og:description" content="Get in touch with MUNSoc RNSIT. Connect with our delegation and stay updated with assemblies.">
   <meta property="og:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://mun-rnsit.vercel.app/stay-connected">
-  <meta property="twitter:title" content="Stay Connected | MUNSoc RNSIT">
+  <meta property="twitter:title" content="Contact | MUNSoc RNSIT">
   <meta property="twitter:description" content="Get in touch with MUNSoc RNSIT. Connect with our delegation and stay updated with assemblies.">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/Karthikprasadm/MUN/main/assets/Logos/MUN_logo.png">
   <!-- Typography -->
@@ -66,147 +66,416 @@
       line-height: 1.1;
     }
     
-    /* Minimalist Single-Line Subscription Form */
-    .subscribe-form {
+    /* Contact Card and Header Styling */
+    .contact-header-wrap {
+      position: relative;
+      margin-top: clamp(105px, 14vh, 135px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      z-index: 50;
+      padding: 0 20px;
+      width: 100%;
+      max-width: 900px;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .contact-meta-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      border-radius: 999px;
+      padding: 3px 12px;
+    }
+
+    .contact-title {
+      font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+      font-weight: 900;
+      color: #000;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .contact-desc {
+      font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+      color: rgba(0, 0, 0, 0.68);
+      max-width: 540px;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Neo-brutalist Contact Card (Email) */
+    .contact-card {
+      margin-top: 2px;
+      width: 100%;
+      max-width: 480px;
+      background: #FFF7EB;
+      border: 2.5px solid #000;
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #000;
+      padding: 10px 16px;
+      box-sizing: border-box;
+      text-decoration: none;
+      color: #000;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .contact-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 #000;
+    }
+
+    .contact-card-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0 0 6px 0;
-      width: 440px;
-      max-width: 100%;
-      margin: clamp(14px, 3vh, 32px) auto 0 auto;
-      border-bottom: 2.5px solid rgba(0, 0, 0, 0.2);
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-      position: relative;
-      z-index: 60;
+      gap: 12px;
     }
 
-    .subscribe-form:focus-within {
-      border-bottom-color: #000000;
-    }
-
-    .subscribe-input {
-      width: 100%;
-      flex: 1;
-      min-width: 0;
-      border: none;
-      background: transparent;
-      padding: 6px 12px 6px 2px;
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
-      font-weight: 400;
-      color: var(--text-primary);
-      outline: none;
-      letter-spacing: -0.02em;
-    }
-
-    .subscribe-input::placeholder {
-      color: rgba(0, 0, 0, 0.28);
-    }
-
-    .subscribe-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-primary);
-      padding: 0 4px;
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      line-height: 1;
-      font-weight: 400;
-      cursor: pointer;
-      display: inline-flex;
+    .contact-icon-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: #6C0D2C;
+      color: #FFF7EB;
+      display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      flex-shrink: 0;
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .contact-icon-wrap svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .contact-email-link {
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      font-weight: 800;
+      color: #000;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.18s ease;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      text-align: left;
+    }
+
+    .contact-email-link:hover {
+      color: #6C0D2C;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #E5A93C;
+      color: #000;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 2.5px 2.5px 0 #000;
+      transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
       flex-shrink: 0;
     }
 
-    .subscribe-btn:hover {
-      transform: translateX(5px);
-      opacity: 0.75;
+    .copy-btn:hover {
+      background: #F5B94C;
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0 #000;
     }
 
-    .subscribe-btn:active {
-      transform: translateX(2px);
+    .copy-btn:active {
+      transform: translateY(1px);
+      box-shadow: 1px 1px 0 #000;
     }
-    
+
+    .copy-btn.copied {
+      background: #22c55e;
+      color: #FFF7EB;
+    }
+
+    /* 3 Side-by-side Contact Cards Grid */
+    .contact-people-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 6px;
+      box-sizing: border-box;
+    }
+
+    .person-contact-card {
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #000;
+      padding: 16px 16px 14px 16px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      min-height: 140px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .person-contact-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 #000;
+    }
+
+    .person-role-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FFF7EB;
+      background: #6C0D2C;
+      border: 1.5px solid #000;
+      border-radius: 5px;
+      padding: 3px 8px;
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .person-name {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #000;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.15;
+    }
+
+    .person-phone-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 6px;
+      margin-top: auto;
+      background: #FFF7EB;
+      border: 1.5px solid #000;
+      border-radius: 8px;
+      padding: 6px 10px;
+      box-sizing: border-box;
+    }
+
+    .person-phone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #000;
+      text-decoration: none;
+      font-family: monospace;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .person-phone-link:hover {
+      color: #6C0D2C;
+    }
+
+    .person-phone-link svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .person-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      background: #E5A93C;
+      color: #000;
+      border: 1.5px solid #000;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 1.5px 1.5px 0 #000;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .person-copy-btn:hover {
+      background: #F5B94C;
+      transform: translateY(-1px);
+      box-shadow: 2.5px 2.5px 0 #000;
+    }
+
+    .person-copy-btn:active {
+      transform: translateY(1px);
+      box-shadow: 1px 1px 0 #000;
+    }
+
+    .person-copy-btn.copied {
+      background: #22c55e;
+      color: #FFF7EB;
+    }
+
     /* Clean canvas walking area anchored at bottom of viewport */
     #crowd-canvas {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: clamp(190px, 39vh, 340px);
+      height: clamp(190px, 36vh, 320px);
       z-index: 5;
       pointer-events: none;
       filter: none;
     }
 
-    .subscribe-form.has-error {
-      border-bottom-color: #6C0D2C !important;
+    /* Responsive Optimizations (Mobile remains compact) */
+    @media (max-width: 860px) {
+      .contact-header-wrap {
+        max-width: 580px;
+        margin-top: clamp(75px, 12vh, 120px);
+        gap: 12px;
+      }
+      .contact-title {
+        font-size: 2.4rem;
+      }
+      .contact-desc {
+        font-size: 0.95rem;
+        max-width: 440px;
+      }
+      .contact-card {
+        max-width: 460px;
+        padding: 12px 16px;
+        border: 2.5px solid #000;
+        box-shadow: 4px 4px 0 #000;
+        border-radius: 14px;
+      }
+      .contact-icon-wrap {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+      }
+      .contact-email-link {
+        font-size: 1.05rem;
+      }
+      .copy-btn {
+        padding: 7px 12px;
+        font-size: 0.76rem;
+        border-radius: 8px;
+      }
+      .contact-people-grid {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        gap: 12px;
+      }
+      .person-contact-card {
+        padding: 14px 14px 12px 14px;
+        border: 2.5px solid #000;
+        box-shadow: 4px 4px 0 #000;
+        border-radius: 14px;
+        min-height: unset;
+      }
+      .person-role-badge {
+        font-size: 0.65rem;
+        padding: 2px 7px;
+      }
+      .person-name {
+        font-size: 1.18rem;
+        margin-bottom: 8px;
+      }
+      .person-phone-row {
+        padding: 5px 8px;
+        border: 1.5px solid #000;
+        border-radius: 8px;
+      }
+      .person-phone-link {
+        font-size: 0.84rem;
+      }
+      .person-copy-btn {
+        padding: 3px 8px;
+        font-size: 0.68rem;
+      }
     }
 
-    .error-msg-container {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: #6C0D2C;
-      margin-top: 10px;
-      height: 20px;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: opacity 0.3s cubic-bezier(0.25, 1, 0.3, 1),
-                  transform 0.3s cubic-bezier(0.25, 1, 0.3, 1);
-      pointer-events: none;
-      text-align: center;
-      width: 100%;
-      letter-spacing: -0.01em;
-    }
-
-    .error-msg-container.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Mobile Responsive Optimizations (< 768px) */
     @media (max-width: 768px) {
-      .connected-header {
-        margin-top: clamp(80px, 18vh, 140px);
+      .contact-header-wrap {
+        margin-top: clamp(75px, 12vh, 110px);
+        gap: 10px;
       }
-      .connected-title {
+      .contact-title {
         font-size: 2.2rem;
-        letter-spacing: -0.02em;
       }
-      .subscribe-form {
-        width: 300px;
-        margin-top: 20px;
+      .contact-card {
+        padding: 12px 14px;
       }
-      .subscribe-input {
-        font-size: 1.15rem;
-        padding: 6px 8px 6px 0;
+      .contact-email-link {
+        font-size: 0.98rem;
       }
-      .subscribe-btn {
-        font-size: 1.5rem;
+      .copy-btn {
+        padding: 6px 10px;
+        font-size: 0.72rem;
       }
       #crowd-canvas {
         height: clamp(160px, 32vh, 260px);
       }
     }
 
+    @media (max-width: 420px) {
+      .contact-icon-wrap {
+        width: 34px;
+        height: 34px;
+      }
+      .contact-email-link {
+        font-size: 0.9rem;
+      }
+      .copy-btn span {
+        display: none;
+      }
+      .copy-btn {
+        padding: 6px 8px;
+      }
+    }
   </style>
 </head>
 <body>
-
 
   <!-- Navigation Pill -->
   <nav class="nav-pill">
     <a href="/" class="nav-item" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
     <a href="/registration" class="nav-item" id="nav-registration">Registration</a>
-    <a href="/stay-connected" class="nav-item active" id="nav-connected">Stay Connected</a>
+    <a href="/stay-connected" class="nav-item active" id="nav-connected">Contact</a>
     <a href="/team" class="nav-item" id="nav-team">Team</a>
   </nav>
 
@@ -236,29 +505,200 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-left-logo">
+    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-right-logo">
+    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo">
   </div>
 
   <!-- Main Viewport -->
   <main class="connected-viewport">
-    <div class="connected-header">
-      <h1 class="connected-title">Stay Connected</h1>
-      
-      <!-- Subscription Form -->
-      <form class="subscribe-form" id="subscribe-form" novalidate>
-        <input type="email" class="subscribe-input" placeholder="sup@gmail.com" required />
-        <button type="submit" class="subscribe-btn">→</button>
-      </form>
-      <div class="error-msg-container" id="error-msg">Please enter a valid email address.</div>
+    <div class="contact-header-wrap">
+      <h1 class="contact-title">Contact Us</h1>
+      <p class="contact-desc">For delegate queries, committee inquiries, and delegation partnerships.</p>
+
+      <!-- Contact Email Box (Opens default mail app/client directly) -->
+      <a href="mailto:mun@rnsit.ac.in?subject=Inquiry%20-%20RNS%20MUN%20'26" class="contact-card" id="email-card" aria-label="Send email to mun@rnsit.ac.in">
+        <div class="contact-card-inner">
+          <div class="contact-icon-wrap" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </div>
+          <span class="contact-email-link">
+            mun@rnsit.ac.in
+          </span>
+          <button type="button" class="copy-btn" id="copy-email-btn" aria-label="Copy email address" title="Copy to clipboard">
+            <span>Copy</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+      </a>
+
+      <!-- 3 Side-by-Side Contact Person Cards -->
+      <div class="contact-people-grid">
+        
+        <!-- 1. Zeyan -->
+        <div class="person-contact-card">
+          <div class="person-role-badge">Head - Delegate Affairs</div>
+          <h3 class="person-name">Zeyan</h3>
+          <div class="person-phone-row">
+            <a href="tel:+919155973955" class="person-phone-link" aria-label="Call Zeyan (+91 91559 73955)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>+91 91559 73955</span>
+            </a>
+            <button type="button" class="person-copy-btn" onclick="copyPhone(this, '+919155973955')" aria-label="Copy phone number">
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Adith -->
+        <div class="person-contact-card">
+          <div class="person-role-badge">Head - Delegate Affairs</div>
+          <h3 class="person-name">Adith</h3>
+          <div class="person-phone-row">
+            <a href="tel:+918970262490" class="person-phone-link" aria-label="Call Adith (+91 89702 62490)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>+91 89702 62490</span>
+            </a>
+            <button type="button" class="person-copy-btn" onclick="copyPhone(this, '+918970262490')" aria-label="Copy phone number">
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Aditi -->
+        <div class="person-contact-card">
+          <div class="person-role-badge">Charge D'Affaires</div>
+          <h3 class="person-name">Aditi</h3>
+          <div class="person-phone-row">
+            <a href="tel:+919108080956" class="person-phone-link" aria-label="Call Aditi (+91 91080 80956)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>+91 91080 80956</span>
+            </a>
+            <button type="button" class="person-copy-btn" onclick="copyPhone(this, '+919108080956')" aria-label="Copy phone number">
+              Copy
+            </button>
+          </div>
+        </div>
+
+      </div>
     </div>
     
     <canvas id="crowd-canvas"></canvas>
   </main>
+
+  <script>
+    (function() {
+      const emailCard = document.getElementById('email-card');
+      const copyBtn = document.getElementById('copy-email-btn');
+      const email = 'mun@rnsit.ac.in';
+      const subject = encodeURIComponent("Inquiry - RNS MUN '26");
+
+      // Smart Cross-Device Email Dispatch
+      if (emailCard) {
+        emailCard.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+                           (window.innerWidth <= 768 && window.matchMedia('(pointer: coarse)').matches);
+
+          if (isMobile) {
+            // Mobile: Launch native mail app with To and Subject filled
+            window.location.href = `mailto:${email}?subject=${subject}`;
+          } else {
+            // Desktop: Open Gmail compose tab with To and Subject pre-filled
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}`;
+            window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+
+            // Also trigger mailto in background for desktop client users (Outlook, Apple Mail)
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `mailto:${email}?subject=${subject}`;
+            document.body.appendChild(iframe);
+            setTimeout(() => {
+              if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+            }, 1500);
+          }
+        });
+      }
+
+      // Clipboard Copy Action
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          try {
+            await navigator.clipboard.writeText(email);
+            const textSpan = copyBtn.querySelector('span');
+            const originalText = textSpan ? textSpan.textContent : 'Copy';
+            copyBtn.classList.add('copied');
+            if (textSpan) textSpan.textContent = 'Copied!';
+            
+            setTimeout(() => {
+              copyBtn.classList.remove('copied');
+              if (textSpan) textSpan.textContent = originalText;
+            }, 2000);
+          } catch (err) {
+            // Fallback copy using execCommand
+            const temp = document.createElement('input');
+            temp.value = email;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+          }
+        });
+      }
+
+      // Phone Number Copy Handler
+      window.copyPhone = function(btn, phoneNum) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(phoneNum).then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Copied';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.classList.remove('copied');
+            }, 2000);
+          }).catch(() => {
+            fallbackCopy(btn, phoneNum);
+          });
+        } else {
+          fallbackCopy(btn, phoneNum);
+        }
+      };
+
+      function fallbackCopy(btn, text) {
+        const temp = document.createElement('input');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    })();
+  </script>
 
   <!-- Crowd Logic Script -->
   <script type="module" src="./topology-background.js"></script>

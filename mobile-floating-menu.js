@@ -3,7 +3,7 @@
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Registration", href: "/registration" },
-    { label: "Stay Connected", href: "/stay-connected" },
+    { label: "Contact", href: "/stay-connected" },
     { label: "Team", href: "/team" },
   ];
 

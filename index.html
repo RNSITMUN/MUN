@@ -67,6 +67,80 @@
       position: relative;
     }
 
+    html.home-page .carousel-container {
+      transform: translateY(68px);
+    }
+
+    /* Floating Globe Hero Title Lockup */
+    .globe-hero-header {
+      position: absolute;
+      top: clamp(84px, 12vh, 108px);
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 4;
+      pointer-events: none;
+      width: max-content;
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .globe-hero-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.64rem, 0.95vw, 0.74rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      margin-bottom: 2px;
+    }
+
+    .globe-hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.1rem, 4.8vw, 3.8rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+      color: #000;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .globe-hero-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.74rem, 1.1vw, 0.88rem);
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.6);
+      letter-spacing: 0.04em;
+      margin: 2px 0 0 0;
+    }
+
+    .globe-scroll-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      z-index: 4;
+      animation: floatHint 2s ease-in-out infinite;
+    }
+
+    @keyframes floatHint {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 5px); }
+    }
+
     /* ===== HIGH-END EDITORIAL SECTION ===== */
     .mun26-editorial-section {
       position: relative;
@@ -119,7 +193,7 @@
 
     .editorial-main-title {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(4.5rem, 11vw, 8.8rem);
+      font-size: clamp(3.5rem, 9.5vw, 8.5rem);
       font-weight: 900;
       line-height: 0.88;
       letter-spacing: -0.055em;
@@ -145,22 +219,18 @@
     /* 3-Column Swiss Grid */
     .editorial-grid {
       display: grid;
-      grid-template-columns: 0.9fr 1.5fr 1fr;
-      column-gap: 35px;
-      row-gap: 32px;
+      grid-template-columns: 0.9fr 1.3fr 1.1fr;
+      column-gap: 32px;
+      row-gap: 24px;
       padding-bottom: 24px;
-      border-bottom: 1.5px solid rgba(0, 0, 0, 0.15);
+      border-bottom: 2px solid #000;
       align-items: start;
     }
 
     .editorial-col {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    .editorial-col:first-child {
-      min-width: max-content;
+      gap: 10px;
     }
 
     .editorial-col:nth-child(2) {
@@ -182,7 +252,7 @@
 
     .col-main-heading {
       font-family: 'Outfit', sans-serif;
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
@@ -193,47 +263,26 @@
     /* Councils 3x2 Grid */
     .councils-list {
       display: grid;
-      grid-template-columns: repeat(3, 95px);
-      gap: 7px;
-      margin: 4px 0 6px 0;
-      padding: 2px 4px 4px 2px;
+      grid-template-columns: repeat(3, 92px);
+      gap: 6px;
+      margin-top: 2px;
     }
 
     .council-item {
-      position: relative;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       color: #000;
       background: #FFF7EB;
       border: 1.5px solid #000;
-      border-radius: 8px;
-      padding: 6px 4px;
-      box-shadow: 3px 3px 0 #000;
+      border-radius: 6px;
+      padding: 5px 3px;
+      box-shadow: 2px 2px 0 #000;
       text-align: center;
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      overflow: visible;
-      isolation: isolate;
-      transform: translateZ(0);
-      will-change: transform;
-      transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease,
-        background-color 0.18s ease,
-        color 0.18s ease;
+      transition: all 0.15s ease;
       cursor: pointer;
-    }
-
-    .council-item::after {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      pointer-events: none;
     }
 
     .council-item:hover {
@@ -243,107 +292,225 @@
       color: #FFF7EB;
     }
 
-    .council-item:active {
-      transform: translateY(0);
-      box-shadow: 1.5px 1.5px 0 #000;
+    /* Fees Box in Grid */
+    .fee-compact-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
     }
 
-    /* VIP Delegate Pass Card */
-    .editorial-pass-card {
-      background: #6C0D2C;
-      color: #FFF7EB;
-      border: 3px solid #000;
-      border-radius: 20px;
-      padding: 32px 32px 28px 32px;
-      text-decoration: none;
-      box-shadow: 6px 6px 0 #000;
+    .fee-unit {
       display: flex;
       flex-direction: column;
+      gap: 1px;
+    }
+
+    .fee-unit-lbl {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(0, 0, 0, 0.55);
+    }
+
+    .fee-unit-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: -0.02em;
+    }
+
+    .fee-unit-val del {
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.38);
+      margin-right: 3px;
+      text-decoration: line-through;
+      text-decoration-color: #6C0D2C;
+      font-weight: 700;
+    }
+
+    .fee-unit-note {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #6C0D2C;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* 2 Info Boxes Grid (Row 1) */
+    .summit-dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
+      margin-top: 24px;
     }
 
-    .editorial-pass-card:hover {
-      transform: translate(-4px, -4px);
-      box-shadow: 10px 10px 0 #000;
+    .summit-card-box {
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 5px 5px 0 #000;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
-    .editorial-pass-card:active {
-      transform: translate(1px, 1px);
-      box-shadow: 3px 3px 0 #000;
-    }
-
-    .pass-card-header {
+    .card-box-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 247, 235, 0.18);
-      padding-bottom: 14px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
     }
 
-    .pass-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(229, 169, 60, 0.18);
-      border: 1.5px solid #E5A93C;
-      border-radius: 999px;
-      padding: 4px 12px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      color: #E5A93C;
-      text-transform: uppercase;
-    }
-
-    .status-live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #E5A93C;
-      box-shadow: 0 0 6px #E5A93C;
-      animation: pulseDot 1.8s infinite;
-    }
-
-    @keyframes pulseDot {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.85);
-      }
-    }
-
-    .pass-id {
+    .card-box-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: rgba(255, 247, 235, 0.5);
+      font-size: 1.22rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #000;
+      margin: 0;
     }
 
-    .pass-card-body {
+    .card-box-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* Registration Includes List */
+    .inclusions-vertical-list {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .pass-card-text {
+    .inc-list-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .inc-check-icon {
+      color: #6C0D2C;
+      font-weight: 900;
+      font-size: 0.92rem;
+    }
+
+    /* Prize Pool Content */
+    .prizes-vertical-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .prize-category-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-bottom: 7px;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.16);
+    }
+
+    .prize-category-block:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .prize-category-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .prize-tiers-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #6C0D2C;
+    }
+
+    .prize-category-block.best-delegation-card {
+      background: rgba(229, 169, 60, 0.16);
+      border: 1.5px solid #E5A93C;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-top: 2px;
+    }
+
+    .prize-category-block.best-delegation-card .prize-category-title {
+      color: #6C0D2C;
+      font-weight: 800;
+    }
+
+    .prize-category-block.best-delegation-card .prize-tiers-text {
+      color: #6C0D2C;
+      font-size: 0.96rem;
+      font-weight: 900;
+    }
+
+    /* Full-Width Registration Box (Row 2) */
+    .summit-registration-box {
+      background: #6C0D2C;
+      color: #FFF7EB;
+      border: 2.5px solid #000;
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: 5px 5px 0 #000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .reg-box-left {
       display: flex;
       flex-direction: column;
       gap: 8px;
+      max-width: 580px;
     }
 
-    .pass-headline {
+    .reg-box-tag {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(229, 169, 60, 0.18);
+      border: 1.5px solid #E5A93C;
+      color: #E5A93C;
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .reg-box-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.35rem, 2.4vw, 1.8rem);
       font-weight: 900;
       letter-spacing: -0.03em;
       color: #FFF7EB;
@@ -351,39 +518,76 @@
       line-height: 1.15;
     }
 
-    .pass-sub {
-      font-size: 0.94rem;
-      line-height: 1.45;
-      color: rgba(255, 247, 235, 0.82);
+    .reg-box-desc {
+      font-size: 0.88rem;
+      color: rgba(255, 247, 235, 0.85);
       margin: 0;
-      font-weight: 400;
+      line-height: 1.4;
     }
 
-    .pass-action-btn {
+    .reg-box-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 320px;
+    }
+
+    .btn-reg-gold {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
+      justify-content: space-between;
       background: #E5A93C;
       color: #000;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
       border: 2.5px solid #000;
       border-radius: 12px;
-      padding: 14px 24px;
-      box-shadow: 3.5px 3.5px 0 #000;
-      width: 100%;
-      box-sizing: border-box;
-      transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      padding: 12px 16px;
+      text-decoration: none;
+      box-shadow: 3px 3px 0 #000;
+      transition: all 0.15s ease;
+      cursor: pointer;
     }
 
-    .editorial-pass-card:hover .pass-action-btn {
+    .btn-reg-gold:hover {
       background: #F5B94C;
       transform: translateY(-2px);
-      box-shadow: 5px 5px 0 #000;
+      box-shadow: 4.5px 4.5px 0 #000;
+    }
+
+    .btn-reg-white {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFF7EB;
+      color: #000;
+      border: 2.5px solid #000;
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-decoration: none;
+      box-shadow: 3px 3px 0 #000;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-reg-white:hover {
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 4.5px 4.5px 0 #000;
+    }
+
+    .btn-main-txt {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-sub-txt {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      opacity: 0.85;
+      text-transform: uppercase;
     }
 
     /* Landscape & Compact Screen Adjustments for Globe Positioning */
@@ -397,31 +601,23 @@
       .top-right-logo {
         height: 58px !important;
       }
-
-      .top-left-logo-container,
-      .top-right-logo-container {
-        top: 10px !important;
-      }
-
-      .globe-viewport {
-        min-height: max(100svh, 480px) !important;
-        padding-top: 10px !important;
-      }
-
-      .carousel-container {
-        transform: translateY(-8px) !important;
-      }
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
+    /* Mobile & Tablet Responsive Optimizations */
+    @media (max-width: 960px) {
       .mun26-editorial-section {
-        padding: 55px 20px 40px 20px;
+        padding: 48px 20px 40px 20px;
+      }
+
+      .editorial-headline-block {
+        padding-bottom: 28px;
+        gap: 12px;
       }
 
       .editorial-grid {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 24px;
+        padding-bottom: 20px;
       }
 
       .editorial-col:first-child,
@@ -429,33 +625,135 @@
       .editorial-col:last-child {
         justify-self: start;
         min-width: 0;
+        width: 100%;
       }
 
-      .pass-card-body {
+      .councils-list {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 360px;
+        width: 100%;
+      }
+
+      .summit-dual-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .summit-registration-box {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 20px;
+        padding: 22px 20px;
+        margin-top: 16px;
       }
 
-      .pass-actions-group {
+      .reg-box-actions {
+        min-width: 0;
         width: 100%;
-        flex-direction: column;
-      }
-
-      .pass-action-btn {
-        width: 100%;
-        justify-content: center;
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 580px) {
       .mun26-editorial-section {
-        padding: 45px 14px 40px 14px;
+        padding: 38px 14px 34px 14px;
       }
 
-      .editorial-pass-card {
-        padding: 22px 18px;
-        margin-bottom: 0;
+      .editorial-meta-bar {
+        gap: 8px;
+      }
+
+      .meta-tag {
+        font-size: 0.65rem;
+      }
+
+      .editorial-main-title {
+        font-size: clamp(2.6rem, 12vw, 4.2rem);
+        line-height: 0.95;
+      }
+
+      .editorial-tagline {
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+
+      .col-main-heading {
+        font-size: 1.75rem;
+      }
+
+      .councils-list {
+        max-width: 100%;
+        gap: 5px;
+      }
+
+      .council-item {
+        padding: 7px 4px;
+        font-size: 0.72rem;
+      }
+
+      .fee-unit-val {
+        font-size: 1.25rem;
+      }
+
+      .summit-card-box {
+        padding: 18px 16px;
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 #000;
+      }
+
+      .card-box-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card-box-title {
+        font-size: 1.1rem;
+      }
+
+      .inc-list-item {
+        font-size: 0.82rem;
+        gap: 6px;
+      }
+
+      .prize-category-title {
+        font-size: 0.7rem;
+      }
+
+      .prize-tiers-text {
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+
+      .summit-registration-box {
+        padding: 20px 16px;
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 #000;
+        gap: 16px;
+      }
+
+      .reg-box-heading {
+        font-size: 1.25rem;
+      }
+
+      .reg-box-desc {
+        font-size: 0.84rem;
+        line-height: 1.4;
+      }
+
+      .btn-reg-gold,
+      .btn-reg-white {
+        padding: 11px 14px;
+        border-radius: 10px;
+        box-shadow: 2.5px 2.5px 0 #000;
+      }
+
+      .btn-main-txt {
+        font-size: 0.82rem;
+      }
+
+      .btn-sub-txt {
+        font-size: 0.68rem;
       }
     }
 
@@ -580,7 +878,7 @@
     <a href="/" class="nav-item active" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
     <a href="/registration" class="nav-item" id="nav-registration">Registration</a>
-    <a href="/stay-connected" class="nav-item" id="nav-connected">Stay Connected</a>
+    <a href="/stay-connected" class="nav-item" id="nav-connected">Contact</a>
     <a href="/team" class="nav-item" id="nav-team">Team</a>
   </nav>
 
@@ -608,46 +906,48 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-left-logo">
+    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-right-logo">
+    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo">
   </div>
 
   <!-- Main Globe Container -->
   <main class="globe-viewport">
+    <!-- Floating Globe Hero Title -->
+    <div class="globe-hero-header">
+      <span class="globe-hero-tag">FLAGSHIP EDITION // BENGALURU</span>
+      <h1 class="globe-hero-title">RNS MUN<span class="title-apostrophe">'26</span></h1>
+      <p class="globe-hero-subtitle">Model United Nations Conference • Oct 06 — 07</p>
+    </div>
+
     <div id="carousel-root" class="carousel-container"></div>
+
+    <!-- Scroll Hint -->
+    <div class="globe-scroll-hint">
+      <span>SCROLL TO EXPLORE</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
   </main>
 
   <!-- RNS MUN'26 EDITORIAL SUMMIT SECTION -->
   <section class="mun26-editorial-section" id="mun26">
     <div class="mun26-editorial-wrap">
 
-      <!-- Top Meta Bar -->
-      <div class="editorial-meta-bar">
-        <span class="meta-tag">FLAGSHIP EDITION // 2026</span>
-        <span class="meta-dot"></span>
-        <span class="meta-tag">BENGALURU, INDIA</span>
-        <span class="meta-dot"></span>
-        <span class="meta-tag">RNSIT</span>
-      </div>
-
-      <!-- Main Headline Lockup -->
-      <div class="editorial-headline-block">
-        <h2 class="editorial-main-title">RNS MUN<span class="title-apostrophe">'</span>26</h2>
-        <p class="editorial-tagline">The annual intercollegiate Model United Nations conference at RNS Institute of
-          Technology.</p>
-      </div>
-
       <!-- 3-Column Swiss Information Grid -->
       <div class="editorial-grid">
 
-        <!-- Column 1: Dates -->
+        <!-- Column 1: Dates & Venue -->
         <div class="editorial-col">
-          <span class="col-index">[ 01 ] SCHEDULE</span>
+          <span class="col-index">[ 01 ] SCHEDULE & VENUE</span>
           <h3 class="col-main-heading">OCT 06 — 07</h3>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.06em;">
+            📍 RNSIT BENGALURU
+          </span>
         </div>
 
         <!-- Column 2: 6 Councils -->
@@ -655,8 +955,7 @@
           <span class="col-index">[ 02 ] 06 COMMITTEES</span>
           <div class="councils-list">
             <a href="/registration?committee=unsc" class="council-item" aria-label="Explore UNSC Committee">UNSC</a>
-            <a href="/registration?committee=loksabha" class="council-item" aria-label="Explore Lok Sabha Committee">LOK
-              SABHA</a>
+            <a href="/registration?committee=loksabha" class="council-item" aria-label="Explore Lok Sabha Committee">LOK SABHA</a>
             <a href="/registration?committee=disec" class="council-item" aria-label="Explore DISEC Committee">DISEC</a>
             <a href="/registration?committee=unhrc" class="council-item" aria-label="Explore UNHRC Committee">UNHRC</a>
             <a href="/registration?committee=unodc" class="council-item" aria-label="Explore UNODC Committee">UNODC</a>
@@ -664,33 +963,119 @@
           </div>
         </div>
 
-        <!-- Column 3: Venue & Delegation -->
+        <!-- Column 3: Registration Fees -->
         <div class="editorial-col">
-          <span class="col-index">[ 03 ] CONVOCATION</span>
-          <h3 class="col-main-heading">RNSIT BENGALURU</h3>
+          <span class="col-index">[ 03 ] REGISTRATION FEES</span>
+          <div class="fee-compact-row">
+            <div class="fee-unit">
+              <span class="fee-unit-lbl">RNSIT INTERNAL</span>
+              <span class="fee-unit-val">₹999</span>
+            </div>
+            <div style="font-size: 1.2rem; font-weight: 300; opacity: 0.35;">/</div>
+            <div class="fee-unit">
+              <span class="fee-unit-lbl">EXTERNAL DELEGATE</span>
+              <span class="fee-unit-val"><del>₹1,349</del> <span style="color: #6C0D2C;">₹1,199</span></span>
+            </div>
+          </div>
+          <span class="fee-unit-note">⏳ Early Bird Discount Valid Till Sept 15</span>
         </div>
 
       </div>
 
-      <!-- Delegate Invitation Card -->
-      <a href="/registration?type=delegation" class="editorial-pass-card" id="homeDelegateCard"
-        aria-label="Open delegation registration">
-        <div class="pass-card-body">
-          <div class="pass-card-text">
-            <h3 class="pass-headline">Represent Your Delegation</h3>
-            <p class="pass-sub">Choose from 6 councils and apply for your preferred country or portfolio allocation.</p>
+      <!-- 2 Boxes Row: Registration Includes & Prize Pool -->
+      <div class="summit-dual-grid">
+
+        <!-- Box 1: Registration Includes -->
+        <div class="summit-card-box">
+          <div class="card-box-header">
+            <h3 class="card-box-title">Registration Includes</h3>
+            <span class="card-box-tag">[ ALL-INCLUSIVE ]</span>
           </div>
 
-          <div class="pass-action-btn">
-            <span>REGISTER AS DELEGATION</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
+          <ul class="inclusions-vertical-list">
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Full conference access</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Delegate kit</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Meals & refreshments on both days</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Background guides & training sessions</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Physical certificate of participation</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Eligibility for awards & cash prizes</span>
+            </li>
+            <li class="inc-list-item">
+              <span class="inc-check-icon">✓</span>
+              <span>Networking opportunities with other delegates</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Box 2: Prize Pool -->
+        <div class="summit-card-box">
+          <div class="card-box-header">
+            <h3 class="card-box-title">Prize Pool</h3>
+            <span class="card-box-tag">★ ₹15,000 DELEGATION POOL</span>
+          </div>
+
+          <div class="prizes-vertical-list">
+            <!-- Councils -->
+            <div class="prize-category-block">
+              <span class="prize-category-title">UNSC • LOK SABHA • UNHRC • DISEC • UNODC</span>
+              <span class="prize-tiers-text">Best: <strong>₹8,000</strong> &nbsp;|&nbsp; High Comm: <strong>₹5,000</strong> &nbsp;|&nbsp; Special Mention: <strong>₹3,000</strong></span>
+            </div>
+
+            <!-- IP -->
+            <div class="prize-category-block">
+              <span class="prize-category-title">IP (International Press Corps)</span>
+              <span class="prize-tiers-text">Best Delegate: <strong>₹6,000</strong> &nbsp;|&nbsp; High Commendation: <strong>₹5,000</strong></span>
+            </div>
+
+            <!-- Best Delegation -->
+            <div class="prize-category-block best-delegation-card">
+              <span class="prize-category-title">🏆 Best Delegation Award (10+ Delegates)</span>
+              <span class="prize-tiers-text">₹15,000 Cash Prize Pool</span>
+            </div>
           </div>
         </div>
-      </a>
+
+      </div>
+
+      <!-- Below Box: Registration Box -->
+      <div class="summit-registration-box">
+        <div class="reg-box-left">
+          <span class="reg-box-tag">★ REGISTRATIONS OPEN</span>
+          <h4 class="reg-box-heading">Represent at RNS MUN 2026</h4>
+          <p class="reg-box-desc">
+            Direct entry allocations open for individual delegates and 10+ member institutional delegations across all 6 committees on October 6 & 7.
+          </p>
+        </div>
+
+        <div class="reg-box-actions">
+          <a href="/registration" class="btn-reg-gold" aria-label="Register as Individual Delegate">
+            <span class="btn-main-txt">Register as Delegate</span>
+            <span class="btn-sub-txt">RNSIT ₹999 &bull; EXT ₹1,199 &rarr;</span>
+          </a>
+
+          <a href="/registration?type=delegation" class="btn-reg-white" aria-label="Register as Delegation">
+            <span class="btn-main-txt">Register as Delegation</span>
+            <span class="btn-sub-txt">10+ GROUP &bull; ₹15K PRIZE &rarr;</span>
+          </a>
+        </div>
+      </div>
 
     </div>
   </section>
@@ -699,7 +1084,7 @@
     document.documentElement.classList.add('home-page');
 
     // Staggered reveal
-    const reveals = document.querySelectorAll('.editorial-meta-bar, .editorial-headline-block, .editorial-grid, .editorial-pass-card');
+    const reveals = document.querySelectorAll('.editorial-grid, .summit-dual-grid, .summit-registration-box');
     reveals.forEach(el => el.classList.add('mun26-reveal'));
 
     const obs = new IntersectionObserver((entries) => {
