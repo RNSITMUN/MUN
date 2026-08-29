@@ -31,21 +31,10 @@
             const isActive =
               currentPath === item.href ||
               (item.href !== "/" && currentPath.startsWith(item.href));
-            const chars = item.label
-              .split("")
-              .map(
-                (c, i) => `
-                <span class="char-wrap" style="transition-delay: ${i * 22}ms">
-                  <span class="char-cell">${c === " " ? "&nbsp;" : c}</span>
-                  <span class="char-cell" aria-hidden="true">${c === " " ? "&nbsp;" : c}</span>
-                </span>
-              `
-              )
-              .join("");
 
             return `
               <a href="${item.href}" class="floating-menu-item ${isActive ? "is-active" : ""}" style="transition-delay: ${0.12 + idx * 0.04}s" data-index="${idx}">
-                <div class="rolling-chars">${chars}</div>
+                <span>${item.label}</span>
               </a>
             `;
           })
@@ -106,15 +95,9 @@
     }
   });
 
-  // Rolling letter animations on touch/hover
+  // Close menu upon item click
   const items = container.querySelectorAll(".floating-menu-item");
   items.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      item.classList.add("is-hovered");
-    });
-    item.addEventListener("mouseleave", () => {
-      item.classList.remove("is-hovered");
-    });
     item.addEventListener("click", () => {
       setTimeout(() => toggleMenu(false), 120);
     });
