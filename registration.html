@@ -2399,15 +2399,10 @@
             delegation sheet</div>
         </div>
 
-        <!-- Payment Scheme -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-payment-scheme">Payment Scheme *</label>
-          <select id="dlg-payment-scheme" class="form-select" required>
-            <option value="institutional-delegation">Institutional / College Delegation Scheme (Discounted Tier)
-            </option>
-            <option value="standard-delegation">Standard Delegation Scheme</option>
-          </select>
-          <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
+        <!-- Submit Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 32px;">
+          <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()" style="display: none; flex: 1;">Exit</button>
+          <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1;">Submit Delegation Registration</button>
         </div>
       </form>
 
@@ -2416,10 +2411,7 @@
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title">Delegation Registered!</h3>
         <p class="success-message">
-          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Your delegation application
-          has been
-          recorded and connected with the organizing committee (<span
-            style="color: var(--accent-color); font-weight: 700;">mun@rnsit.ac.in</span>).
+          Thank you for submitting <strong id="dlg-success-name">your delegation</strong>. Our team will shortly contact you via mail for payment and the delegation sheet.
         </p>
         <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
           <a id="dlg-success-sheet-link" href="#" target="_blank" class="sheet-btn-action"
