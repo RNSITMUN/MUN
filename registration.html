@@ -2285,7 +2285,7 @@
         <p class="reg-form-subtitle">Register your institution's delegation and generate your delegate roster sheet</p>
       </div>
 
-      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)" oninput="toggleDelegationClearBtn()" onchange="toggleDelegationClearBtn()">
+      <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)" oninput="toggleDelegationClearBtn(event)" onchange="toggleDelegationClearBtn(event)">
 
         <!-- 1. Name of the Delegation -->
         <div class="form-group">
@@ -3930,9 +3930,20 @@
       }
     }
 
-    function toggleDelegationClearBtn() {
+    function toggleDelegationClearBtn(e) {
       const form = document.getElementById('delegation-registration-form');
       const clearBtn = document.getElementById('dlg-clear-data-btn');
+      
+      // Clear error message dynamically as the user types
+      if (e && e.target) {
+        const el = e.target;
+        if (el.classList.contains('has-error')) {
+          el.classList.remove('has-error');
+          const err = document.getElementById(el.id + '-error');
+          if (err) err.style.display = 'none';
+        }
+      }
+      
       if (!form || !clearBtn) return;
       
       const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
