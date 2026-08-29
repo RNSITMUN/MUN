@@ -1478,6 +1478,44 @@
       flex: 1;
     }
 
+    /* Hide Step 4 stepper elements for internal delegates */
+    .internal-reg #step-arrow-4,
+    .internal-reg #step-indicator-4 {
+      display: none;
+    }
+
+    /* IEEE Yes/No Toggle Buttons */
+    .ieee-toggle-btn {
+      flex: 1;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 2.5px solid var(--text-primary);
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 3px 3px 0px var(--text-primary);
+      color: var(--text-primary);
+    }
+
+    .ieee-toggle-btn:hover {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .ieee-toggle-btn.is-active-yes {
+      background: #0066CC;
+      color: #FFFFFF;
+      border-color: #0066CC;
+      box-shadow: 3px 3px 0px #003d7a;
+    }
+
+    .ieee-toggle-btn.is-active-no {
+      background: var(--text-primary);
+      color: var(--bg-color);
+    }
+
     .success-icon-badge {
       width: 68px;
       height: 68px;
@@ -2454,6 +2492,8 @@
         <span class="wizard-step" id="step-indicator-2">Step 2</span>
         <span class="wizard-step-arrow">→</span>
         <span class="wizard-step" id="step-indicator-3">Step 3</span>
+        <span class="wizard-step-arrow step-arrow-4" id="step-arrow-4">→</span>
+        <span class="wizard-step" id="step-indicator-4">Payment</span>
       </div>
 
       <form id="delegate-registration-form" novalidate onsubmit="handleRegistrationSubmit(event)">
@@ -2618,7 +2658,66 @@
 
           <div class="wizard-btn-row" id="reg-step-3-btns">
             <button type="button" class="btn-wizard-back" id="reg-step-3-back" onclick="goToStep(2)">Back</button>
-            <button type="submit" class="submit-btn wizard-next-btn" id="reg-submit-btn">Submit External Delegate Registration</button>
+            <button type="button" class="submit-btn wizard-next-btn" id="reg-submit-btn" onclick="handleStep3Proceed()">Submit Internal Delegate Registration</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Payment (External Delegates Only) -->
+        <div class="wizard-step-panel" id="wizard-step-4" style="display: none;">
+
+          <!-- IEEE Info Banner -->
+          <div style="background: linear-gradient(135deg,#1a1a2e,#16213e); border: 2px solid #0066CC; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px;">
+            <span style="font-size: 1.4rem; flex-shrink: 0;">⚡</span>
+            <div>
+              <div style="font-weight: 800; color: #4FC3F7; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">IEEE Member Benefit</div>
+              <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8); line-height: 1.4;">IEEE members are eligible for a special delegate rate of <strong style="color: #FFD54F;">₹1,199</strong>. Your membership will be verified after registration.</div>
+            </div>
+          </div>
+
+          <!-- IEEE Yes/No Question -->
+          <div class="form-group">
+            <label class="form-label">Are you an IEEE member? *</label>
+            <div style="display: flex; gap: 10px; margin-top: 6px;">
+              <button type="button" id="ieee-yes-btn" class="ieee-toggle-btn" onclick="setIEEEMember(true)">Yes, I am an IEEE Member</button>
+              <button type="button" id="ieee-no-btn" class="ieee-toggle-btn" onclick="setIEEEMember(false)">No</button>
+            </div>
+          </div>
+
+          <!-- IEEE Member: ID Field + Price -->
+          <div id="ieee-member-section" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="reg-ieee-id">IEEE Membership ID *</label>
+              <input type="text" id="reg-ieee-id" class="form-input" placeholder="e.g. 12345678">
+              <div id="reg-ieee-id-error" class="error-container">IEEE Membership ID is required</div>
+            </div>
+            <div style="background: #111113; border: 2px solid #0066CC; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <span style="font-weight: 800; text-transform: uppercase; font-size: 0.9rem; color: #4FC3F7;">IEEE Member Rate</span>
+                <span style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,199</span>
+              </div>
+              <p style="margin: 0; font-size: 0.83rem; color: rgba(255,247,235,0.7); line-height: 1.4;">Your IEEE membership will be reviewed post-registration and the discounted amount shall be applied accordingly.</p>
+            </div>
+          </div>
+
+          <!-- Non-IEEE: Pricing Info -->
+          <div id="non-ieee-section" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+              <div style="background: #111113; border: 2px solid #C8A84B; border-radius: 12px; padding: 14px 16px; text-align: center;">
+                <div style="font-size: 0.75rem; font-weight: 800; color: #C8A84B; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">🕐 Early Bird</div>
+                <div style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,199</div>
+                <div style="font-size: 0.74rem; color: rgba(255,247,235,0.6); margin-top: 4px;">Valid till Sep 15, 2026</div>
+              </div>
+              <div style="background: #111113; border: 2px solid #444; border-radius: 12px; padding: 14px 16px; text-align: center;">
+                <div style="font-size: 0.75rem; font-weight: 800; color: rgba(255,247,235,0.6); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">📅 Regular</div>
+                <div style="font-size: 1.5rem; font-weight: 900; color: #FFFFFF;">₹1,349</div>
+                <div style="font-size: 0.74rem; color: rgba(255,247,235,0.6); margin-top: 4px;">After Sep 15, 2026</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-btn-row" id="reg-step-4-btns" style="display: none;">
+            <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
+            <button type="button" class="submit-btn wizard-next-btn" id="reg-pay-now-btn" onclick="handleExternalPayment()">Pay Now</button>
           </div>
         </div>
 
@@ -3171,6 +3270,8 @@
 
       // Rebuild custom dropdown UI for Committee 2
       rebuildCustomSelect('reg-committee-2');
+      // Also refresh payment options based on committee 1 selection
+      updateExternalPaymentOptions();
     }
 
     function closeAllCustomSelects() {
@@ -3253,8 +3354,12 @@
 
       const submitBtn = document.getElementById('reg-submit-btn');
       if (submitBtn) {
-        submitBtn.textContent = type === 'internal' ? 'Pay Now — ₹999' : 'Submit External Delegate Registration';
+        submitBtn.textContent = type === 'internal' ? 'Pay Now — ₹999' : 'Proceed to Payment →';
       }
+
+      // Add/remove class on modal card for CSS targeting (hides Step 4 stepper for internal)
+      const regCard = document.getElementById('registration-modal-card');
+      if (regCard) regCard.classList.toggle('internal-reg', type === 'internal');
 
       const extPaymentGroup = document.getElementById('reg-external-payment-group');
       const intPaymentGroup = document.getElementById('reg-internal-payment-group');
@@ -3315,8 +3420,9 @@
         }
       }
 
-      // Update Step Panels and Indicator
-      for (let s = 1; s <= 3; s++) {
+      // Update Step Panels and Indicator (supports up to step 4)
+      const totalSteps = currentDelegateType === 'internal' ? 3 : 4;
+      for (let s = 1; s <= 4; s++) {
         const panel = document.getElementById(`wizard-step-${s}`);
         const indicator = document.getElementById(`step-indicator-${s}`);
         if (panel) {
@@ -3499,7 +3605,151 @@
       return isValid;
     }
 
-    // Open Registration Modal
+    // ==========================================
+    // PAYMENT DROPDOWN: Dynamic per Committee
+    // ==========================================
+    function updateExternalPaymentOptions() {
+      const comm1 = document.getElementById('reg-committee-1');
+      const paySelect = document.getElementById('reg-payment-scheme');
+      if (!comm1 || !paySelect) return;
+
+      const isIP = comm1.value === 'ip';
+      paySelect.innerHTML = '';
+
+      if (isIP) {
+        const opt = document.createElement('option');
+        opt.value = 'ip-journalist';
+        opt.textContent = 'International Press / Caricaturist Pass';
+        paySelect.appendChild(opt);
+      } else {
+        [
+          { value: 'early-bird', label: 'Early Bird Registration Pass' },
+          { value: 'standard-individual', label: 'Standard Individual Delegate Pass' }
+        ].forEach(({ value, label }) => {
+          const opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = label;
+          paySelect.appendChild(opt);
+        });
+      }
+      rebuildCustomSelect('reg-payment-scheme');
+    }
+
+    // ==========================================
+    // STEP 3 → STEP 4 PROCEED (External) or SUBMIT (Internal)
+    // ==========================================
+    function handleStep3Proceed() {
+      if (currentDelegateType === 'internal') {
+        // Trigger form submit for internal delegate
+        const form = document.getElementById('delegate-registration-form');
+        if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      } else {
+        // External: go to Step 4 (payment)
+        goToStep(4);
+        // Reset IEEE state when entering Step 4
+        setIEEEMember(null);
+      }
+    }
+
+    // ==========================================
+    // IEEE MEMBER TOGGLE (Step 4)
+    // ==========================================
+    let isIEEEMember = null;
+
+    function setIEEEMember(value) {
+      isIEEEMember = value;
+      const yesBtn = document.getElementById('ieee-yes-btn');
+      const noBtn = document.getElementById('ieee-no-btn');
+      const memberSection = document.getElementById('ieee-member-section');
+      const nonMemberSection = document.getElementById('non-ieee-section');
+      const step4Btns = document.getElementById('reg-step-4-btns');
+      const payBtn = document.getElementById('reg-pay-now-btn');
+
+      // Reset button styles
+      if (yesBtn) { yesBtn.classList.remove('is-active-yes', 'is-active-no'); }
+      if (noBtn) { noBtn.classList.remove('is-active-yes', 'is-active-no'); }
+
+      if (value === null) {
+        if (memberSection) memberSection.style.display = 'none';
+        if (nonMemberSection) nonMemberSection.style.display = 'none';
+        if (step4Btns) step4Btns.style.display = 'none';
+        return;
+      }
+
+      if (value === true) {
+        if (yesBtn) yesBtn.classList.add('is-active-yes');
+        if (memberSection) memberSection.style.display = 'block';
+        if (nonMemberSection) nonMemberSection.style.display = 'none';
+        if (payBtn) payBtn.textContent = 'Pay Now — ₹1,199';
+      } else {
+        if (noBtn) noBtn.classList.add('is-active-no');
+        if (memberSection) memberSection.style.display = 'none';
+        if (nonMemberSection) nonMemberSection.style.display = 'block';
+        if (payBtn) payBtn.textContent = 'Pay Now';
+      }
+
+      if (step4Btns) step4Btns.style.display = 'flex';
+    }
+
+    // ==========================================
+    // EXTERNAL DELEGATE PAY NOW (Step 4)
+    // ==========================================
+    function handleExternalPayment() {
+      // Validate IEEE ID if member
+      if (isIEEEMember === true) {
+        const ieeeId = document.getElementById('reg-ieee-id');
+        const ieeeErr = document.getElementById('reg-ieee-id-error');
+        if (!ieeeId || !ieeeId.value.trim()) {
+          if (ieeeId) ieeeId.classList.add('has-error');
+          if (ieeeErr) ieeeErr.style.display = 'block';
+          return;
+        }
+        if (ieeeId) ieeeId.classList.remove('has-error');
+        if (ieeeErr) ieeeErr.style.display = 'none';
+      }
+
+      const committee1 = document.getElementById('reg-committee-1');
+      const selectedCommName = committee1 ? committee1.options[committee1.selectedIndex]?.text : 'Selected Committee';
+      const nameInput = document.getElementById('reg-name');
+      const delegateName = nameInput ? nameInput.value.trim() : 'Delegate';
+
+      const paymentState = {
+        isInternal: false,
+        isIEEE: isIEEEMember === true,
+        delegateName,
+        committeeName: selectedCommName,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem('pending_external_payment', JSON.stringify(paymentState));
+
+      // External payment portal URL (update when available)
+      const paymentGatewayUrl = 'https://rzp.io/l/rnsmun-external';
+      window.open(paymentGatewayUrl, '_blank', 'noopener,noreferrer');
+
+      // Show success/confirmation overlay immediately (no reload needed for external)
+      const successTitle = document.getElementById('success-title');
+      const successMsg = document.getElementById('success-message-text');
+
+      if (isIEEEMember === true) {
+        if (successTitle) successTitle.textContent = 'Registration Received!';
+        if (successMsg) successMsg.innerHTML = `
+          Thank you for registering, <strong>${delegateName}</strong>!<br><br>
+          Your IEEE membership ID has been noted. Our team will review your IEEE subscription and the applicable delegate fee of <strong style="color: var(--gold-accent);">₹1,199</strong> shall be confirmed accordingly.<br><br>
+          <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">You will receive your official registration confirmation on your registered email address. Thank you for registering with RNS MUN '26.</em>
+        `;
+      } else {
+        if (successTitle) successTitle.textContent = 'Complete Your Payment!';
+        if (successMsg) successMsg.innerHTML = `
+          Thank you for registering, <strong>${delegateName}</strong>!<br><br>
+          Please complete your delegate fee payment on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.<br><br>
+          <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">Thank you for registering with RNS MUN '26.</em>
+        `;
+      }
+
+      showSuccessOverlay();
+    }
+
+
     function openRegistrationModal(preferredCommitteeId = 'unsc') {
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
