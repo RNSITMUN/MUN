@@ -2312,8 +2312,12 @@
         <!-- 4. Email ID of Head of Delegation -->
         <div class="form-group">
           <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
-          <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com" required>
+          <div style="display: flex; gap: 8px;">
+            <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com" oninput="checkEmailRegistration(this)" required style="flex: 1;">
+            <button type="button" class="btn-wizard-back" onclick="clearDelegationForm()" style="padding: 0 16px; min-height: 48px; border-radius: 12px;" title="Clear Data">Clear Data</button>
+          </div>
           <div id="dlg-email-error" class="error-container">Valid email address is required</div>
+          <div id="dlg-email-exists-msg" class="error-container" style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
         </div>
 
         <!-- 5. Number of Delegates in Delegation (10 - 18 with direct typing & stepper arrows) -->
@@ -2405,8 +2409,6 @@
           </select>
           <div id="dlg-payment-scheme-error" class="error-container">Payment scheme is required</div>
         </div>
-
-        <button type="submit" class="submit-btn" id="dlg-submit-btn">Submit Delegation Registration</button>
       </form>
 
       <!-- Delegation Success Screen Overlay -->
@@ -3881,6 +3883,8 @@
             dlgBackdrop.classList.remove('active');
             dlgBackdrop.style.display = 'none';
             unlockBackgroundScroll();
+            // User requested: clicking X mark should erase data
+            clearDelegationForm();
             gsap.set(dlgCard, { clearProps: 'all' });
           }
         });
@@ -3889,6 +3893,83 @@
         dlgBackdrop.style.display = 'none';
         unlockBackgroundScroll();
       }
+    }
+
+    function checkEmailRegistration(inputEl) {
+      const email = inputEl.value.trim().toLowerCase();
+      const existsMsg = document.getElementById('dlg-email-exists-msg');
+      const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
+      const submitBtn = document.getElementById('dlg-submit-btn');
+      const exitBtn = document.getElementById('dlg-exit-btn');
+      
+      const sheetResult = document.getElementById('dlg-sheet-result');
+      const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+      const sheetAnchor = document.getElementById('dlg-sheet-anchor');
+      
+      const hasRegisteredUrl = email ? localStorage.getItem(`submitted_dlg_email_${email}`) : null;
+
+      if (hasRegisteredUrl) {
+        if (existsMsg) existsMsg.style.display = 'block';
+        if (createSheetBtn) createSheetBtn.style.display = 'none';
+        if (submitBtn) submitBtn.style.display = 'none';
+        if (exitBtn) exitBtn.style.display = 'block';
+        
+        // Display previously generated sheet
+        if (hiddenLinkInput) {
+          hiddenLinkInput.value = hasRegisteredUrl;
+          hiddenLinkInput.dataset.fromHistory = 'true';
+        }
+        if (sheetAnchor) sheetAnchor.href = hasRegisteredUrl;
+        if (sheetResult) sheetResult.classList.add('is-generated');
+        
+      } else {
+        if (existsMsg) existsMsg.style.display = 'none';
+        if (createSheetBtn) createSheetBtn.style.display = 'inline-flex';
+        if (submitBtn) submitBtn.style.display = 'block';
+        if (exitBtn) exitBtn.style.display = 'none';
+        
+        // Hide sheet if it was populated by a historic registered email match
+        if (hiddenLinkInput && hiddenLinkInput.dataset.fromHistory === 'true') {
+          hiddenLinkInput.value = '';
+          hiddenLinkInput.dataset.fromHistory = 'false';
+          if (sheetAnchor) sheetAnchor.href = '#';
+          if (sheetResult) sheetResult.classList.remove('is-generated');
+        }
+      }
+    }
+
+    function clearDelegationForm() {
+      const form = document.getElementById('delegation-registration-form');
+      if (form) {
+        form.reset();
+        const errClasses = form.querySelectorAll('.has-error');
+        errClasses.forEach(el => el.classList.remove('has-error'));
+        const errContainers = form.querySelectorAll('.error-container');
+        errContainers.forEach(el => {
+          el.style.display = 'none';
+        });
+        
+        // Reset sheet generator UI
+        const sheetResult = document.getElementById('dlg-sheet-result');
+        if (sheetResult) sheetResult.classList.remove('is-generated');
+        const sheetLink = document.getElementById('dlg-sheet-link');
+        if (sheetLink) sheetLink.value = '';
+        const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
+        if (createSheetBtn) {
+          createSheetBtn.disabled = false;
+          createSheetBtn.innerHTML = '<span>Create Delegation Sheet</span>';
+        }
+
+        const emailInput = document.getElementById('dlg-email');
+        if (emailInput) {
+          checkEmailRegistration(emailInput);
+        }
+      }
+    }
+
+    function exitDelegationForm() {
+      clearDelegationForm();
+      closeDelegationRegistrationModal();
     }
 
     function stepDelegateCount(delta) {
