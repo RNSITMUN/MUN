@@ -2177,8 +2177,19 @@
     /* COMPREHENSIVE RESPONSIVE DESIGN FOR ALL DEVICES */
     /* ================================================= */
 
-    @media (max-width: 900px) {
+    /* ================================================= */
+    /* COMPREHENSIVE RESPONSIVE DESIGN FOR ALL DEVICES */
+    /* ================================================= */
 
+    /* Hide floating menu while any modal is open to eliminate scroll/tap conflicts */
+    body.modal-open .mobile-floating-menu-root,
+    html.modal-open .mobile-floating-menu-root {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+
+    @media (max-width: 900px) {
       .committees-section,
       .direct-reg-banner {
         width: 100%;
@@ -2186,19 +2197,19 @@
 
       .committees-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        gap: 14px;
       }
     }
 
     @media (max-width: 768px) {
       .top-left-logo-container {
-        top: 12px;
-        left: 12px;
+        top: max(12px, env(safe-area-inset-top, 12px));
+        left: max(12px, env(safe-area-inset-left, 12px));
       }
 
       .top-right-logo-container {
-        top: 12px;
-        right: 12px;
+        top: max(12px, env(safe-area-inset-top, 12px));
+        right: max(12px, env(safe-area-inset-right, 12px));
       }
 
       .top-left-logo,
@@ -2208,11 +2219,11 @@
       }
 
       .registration-viewport {
-        padding: 75px 16px 40px 16px;
+        padding: clamp(68px, 10vh, 88px) max(14px, env(safe-area-inset-right, 14px)) max(50px, calc(30px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
       }
 
       .registration-header {
-        margin-bottom: 24px;
+        margin-bottom: 20px;
         transform: none;
         max-width: 100%;
       }
@@ -2227,6 +2238,16 @@
         line-height: 1.45;
       }
 
+      .btn-master-matrix-header {
+        font-size: clamp(0.74rem, 2.2vw, 0.84rem);
+        padding: 8px 14px;
+        max-width: 100%;
+        box-sizing: border-box;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.25;
+      }
+
       .committees-title {
         font-size: 1.4rem;
       }
@@ -2237,20 +2258,20 @@
       }
 
       .committee-card {
-        padding: 18px 12px;
+        padding: 16px 10px;
         border-width: 2px;
         box-shadow: 3px 3px 0px var(--text-primary);
-        min-height: 185px;
-        border-radius: 16px;
+        min-height: 175px;
+        border-radius: 14px;
       }
 
       .logo-wrapper {
-        height: 72px;
+        height: 64px;
         margin-bottom: 8px;
       }
 
       .committee-name {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
       }
 
       .committee-fullname {
@@ -2275,16 +2296,16 @@
 
       /* Modal Cards on Tablet/Mobile */
       .committee-modal-card {
-        width: calc(100vw - 28px);
-        max-width: 500px;
+        width: min(520px, calc(100vw - 20px));
         padding: 28px 18px 22px 18px;
-        border-radius: 22px;
+        border-radius: 20px;
         box-shadow: 6px 6px 0px var(--accent-color);
-        max-height: 86vh;
+        max-height: min(90dvh, calc(100dvh - 24px));
+        max-height: min(90svh, calc(100svh - 24px));
       }
 
       .profile-emblem-wrap {
-        height: 78px;
+        height: 72px;
         margin-bottom: 10px;
       }
 
@@ -2322,22 +2343,22 @@
 
       /* Registration Form on Tablet/Mobile */
       .modal-registration-card {
-        width: calc(100vw - 20px);
-        max-width: 520px;
-        padding: 24px 16px 64px 16px;
+        width: min(520px, calc(100vw - 20px));
+        padding: 24px 16px 40px 16px;
         border-radius: 20px;
-        max-height: calc(100svh - 30px);
+        max-height: min(92dvh, calc(100dvh - 20px));
+        max-height: min(92svh, calc(100svh - 20px));
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
 
       .reg-form-title {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
       }
 
       .reg-form-subtitle {
         font-size: 0.82rem;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
 
       .form-group {
@@ -2351,27 +2372,31 @@
         padding: 10px 12px;
       }
 
-      /* All two-col rows become single column on tablet */
+      /* All two-col rows become single column on mobile */
       .form-row {
         grid-template-columns: 1fr !important;
         gap: 0;
       }
 
-      /* Override age column inline style */
       .form-row .form-group[style*="flex: 0.6"] {
         flex: 1 !important;
+      }
+
+      .custom-select-menu {
+        max-height: min(200px, 35dvh);
+        max-height: min(200px, 35svh);
       }
     }
 
     @media (max-width: 520px) {
       .top-left-logo-container {
-        top: 10px;
-        left: 10px;
+        top: max(10px, env(safe-area-inset-top, 10px));
+        left: max(10px, env(safe-area-inset-left, 10px));
       }
 
       .top-right-logo-container {
-        top: 10px;
-        right: 10px;
+        top: max(10px, env(safe-area-inset-top, 10px));
+        right: max(10px, env(safe-area-inset-right, 10px));
       }
 
       .top-left-logo,
@@ -2381,7 +2406,7 @@
       }
 
       .registration-viewport {
-        padding: 68px 10px 40px 10px;
+        padding: 65px 12px 40px 12px;
       }
 
       .registration-title {
@@ -2400,24 +2425,30 @@
       .committee-card {
         padding: 12px 8px;
         border-width: 2px;
-        box-shadow: 2px 2px 0px var(--text-primary);
-        min-height: 165px;
+        box-shadow: 2.5px 2.5px 0px var(--text-primary);
+        min-height: 160px;
         border-radius: 12px;
       }
 
       .logo-wrapper {
-        height: 56px;
+        width: 54px;
+        height: 54px;
         margin-bottom: 6px;
       }
 
+      .committee-logo {
+        width: 32px;
+        height: 32px;
+      }
+
       .committee-name {
-        font-size: 0.98rem;
+        font-size: 0.95rem;
         margin-bottom: 2px;
       }
 
       .committee-fullname {
         font-size: 0.68rem;
-        line-height: 1.2;
+        line-height: 1.25;
         margin-bottom: 6px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -2427,8 +2458,8 @@
 
       .card-badge-preview {
         font-size: 0.62rem;
-        padding: 2.5px 6px;
-        gap: 2px;
+        padding: 3px 7px;
+        gap: 3px;
       }
 
       .card-badge-preview svg {
@@ -2453,22 +2484,29 @@
       .committee-modal-card {
         width: calc(100vw - 16px);
         padding: 22px 14px 18px 14px;
-        border-radius: 18px;
-        max-height: 88vh;
+        border-radius: 16px;
+        max-height: min(92dvh, calc(100dvh - 16px));
+        max-height: min(92svh, calc(100svh - 16px));
         box-shadow: 4px 4px 0px var(--accent-color);
       }
 
       .modal-close-btn {
         top: 10px;
         right: 10px;
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         font-size: 0.85rem;
       }
 
       .profile-emblem-wrap {
-        height: 64px;
+        width: 62px;
+        height: 62px;
         margin-bottom: 8px;
+      }
+
+      .profile-emblem {
+        width: 38px;
+        height: 38px;
       }
 
       .profile-kicker {
@@ -2478,12 +2516,12 @@
       }
 
       .profile-title {
-        font-size: 1.95rem;
+        font-size: 1.85rem;
         margin-bottom: 2px;
       }
 
       .profile-subtitle {
-        font-size: 0.86rem;
+        font-size: 0.84rem;
         margin-bottom: 8px;
       }
 
@@ -2519,10 +2557,11 @@
       .modal-registration-card {
         width: calc(100vw - 16px);
         max-width: 480px;
-        padding: 22px 14px 24px 14px;
+        padding: 22px 14px 26px 14px;
         border-radius: 16px;
         box-shadow: 4px 4px 0px var(--text-primary);
-        max-height: calc(100svh - 24px);
+        max-height: min(92dvh, calc(100dvh - 16px));
+        max-height: min(92svh, calc(100svh - 16px));
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
@@ -2530,11 +2569,11 @@
       .reg-form-header {
         padding-left: 28px;
         padding-right: 28px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .reg-form-title {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         line-height: 1.2;
       }
 
@@ -2545,47 +2584,47 @@
       }
 
       .form-group {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
 
       .form-label {
-        font-size: 0.74rem;
-        margin-bottom: 4px;
+        font-size: 0.72rem;
+        margin-bottom: 3px;
       }
 
       .form-input,
       .form-select,
       .custom-select-trigger {
         font-size: 16px !important;
-        padding: 10px 11px;
+        padding: 9px 10px;
         border-width: 2px;
         border-radius: 8px;
       }
 
       .custom-select-option {
         font-size: 0.86rem;
-        padding: 9px 11px;
+        padding: 8px 10px;
       }
 
       .custom-select-menu {
-        max-height: 190px;
+        max-height: 180px;
       }
 
       .wizard-btn-row {
         gap: 8px;
-        margin-top: 12px;
+        margin-top: 10px;
       }
 
       .btn-wizard-back {
-        flex: 0 0 85px !important;
-        padding: 11px 10px !important;
-        font-size: 0.88rem !important;
+        flex: 0 0 80px !important;
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
       }
 
       .submit-btn,
       .wizard-next-btn {
-        font-size: 0.88rem !important;
-        padding: 11px 12px !important;
+        font-size: 0.85rem !important;
+        padding: 10px 10px !important;
       }
 
       .category-plan-cards {
@@ -2610,7 +2649,7 @@
     /* ================================================= */
     @media (max-width: 380px) {
       .registration-viewport {
-        padding: 62px 8px 40px 8px;
+        padding: 60px 8px 40px 8px;
       }
 
       .registration-title {
@@ -2622,80 +2661,122 @@
       }
 
       .committee-card {
-        padding: 10px 6px;
-        min-height: 148px;
+        padding: 10px 5px;
+        min-height: 145px;
         border-radius: 10px;
         box-shadow: 2px 2px 0 var(--text-primary);
       }
 
       .logo-wrapper {
-        width: 46px;
-        height: 46px;
-        border-radius: 10px;
-        margin-bottom: 6px;
+        width: 44px;
+        height: 44px;
+        border-radius: 9px;
+        margin-bottom: 5px;
       }
 
       .committee-logo {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
       }
 
       .committee-name {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
       }
 
       .committee-fullname {
-        font-size: 0.64rem;
+        font-size: 0.62rem;
+        line-height: 1.2;
       }
 
       .card-badge-preview {
-        font-size: 0.58rem;
-        padding: 2px 5px;
+        font-size: 0.56rem;
+        padding: 2px 4px;
       }
 
       .modal-registration-card {
         width: calc(100vw - 10px);
         padding: 18px 10px 20px 10px;
-        max-height: calc(100svh - 16px);
+        max-height: min(94dvh, calc(100dvh - 12px));
+        max-height: min(94svh, calc(100svh - 12px));
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
 
       .reg-form-header {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 22px;
+        padding-right: 22px;
       }
 
       .reg-form-title {
-        font-size: 1.12rem;
+        font-size: 1.08rem;
       }
 
       .form-label {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
       }
 
       .form-input,
       .form-select,
       .custom-select-trigger {
         font-size: 16px !important;
-        padding: 8px 9px;
+        padding: 8px 8px;
       }
 
       .custom-select-option {
-        font-size: 0.82rem;
-        padding: 7px 8px;
+        font-size: 0.8rem;
+        padding: 7px 7px;
       }
 
       .btn-wizard-back {
-        flex: 0 0 75px !important;
-        font-size: 0.82rem !important;
-        padding: 10px 6px !important;
+        flex: 0 0 70px !important;
+        font-size: 0.8rem !important;
+        padding: 9px 5px !important;
       }
 
       .submit-btn,
       .wizard-next-btn {
-        font-size: 0.82rem !important;
-        padding: 10px 8px !important;
+        font-size: 0.8rem !important;
+        padding: 9px 6px !important;
+      }
+    }
+
+    /* Height-Aware Rules for Modals on Short Screens (< 650px height) & Landscape */
+    @media (max-height: 650px) {
+      .committee-modal-card,
+      .type-selection-card,
+      .modal-registration-card {
+        padding-top: 18px;
+        padding-bottom: 18px;
+      }
+      .profile-emblem-wrap {
+        height: 52px;
+        width: 52px;
+        margin-bottom: 6px;
+      }
+      .profile-emblem {
+        width: 32px;
+        height: 32px;
+      }
+      .profile-title {
+        font-size: 1.6rem;
+      }
+      .profile-subtitle {
+        font-size: 0.78rem;
+        margin-bottom: 6px;
+      }
+      .profile-tagline {
+        font-size: 0.76rem;
+        margin-bottom: 8px;
+      }
+      .profile-agenda-card {
+        padding: 8px 10px;
+        margin-bottom: 10px;
+      }
+      .reg-form-header {
+        margin-bottom: 6px;
+      }
+      .form-group {
+        margin-bottom: 8px;
       }
     }
   </style>

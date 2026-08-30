@@ -33,6 +33,13 @@
   <meta name="theme-color" content="#6C0D2C">
   <style>
     /* Specific styles for the Stay Connected page */
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100svh;
+      min-height: 100dvh;
+    }
+
     .connected-viewport {
       position: relative;
       width: 100%;
@@ -362,110 +369,241 @@
       filter: none;
     }
 
-    /* Responsive Optimizations (Mobile remains compact) */
-    @media (max-width: 860px) {
+    /* =========================================================
+       RESPONSIVE DESIGN (Single-screen on Mobile Portrait)
+       ========================================================= */
+
+    /* Tablet (769px to 860px) */
+    @media (max-width: 860px) and (min-width: 769px) {
       .contact-header-wrap {
-        max-width: 580px;
-        margin-top: clamp(75px, 12vh, 120px);
+        max-width: 720px;
+        margin-top: clamp(80px, 12vh, 110px);
         gap: 12px;
       }
       .contact-title {
-        font-size: 2.4rem;
-      }
-      .contact-desc {
-        font-size: 0.95rem;
-        max-width: 440px;
-      }
-      .contact-card {
-        max-width: 460px;
-        padding: 12px 16px;
-        border: 2.5px solid #000;
-        box-shadow: 4px 4px 0 #000;
-        border-radius: 14px;
-      }
-      .contact-icon-wrap {
-        width: 38px;
-        height: 38px;
-        border-radius: 8px;
-      }
-      .contact-email-link {
-        font-size: 1.05rem;
-      }
-      .copy-btn {
-        padding: 7px 12px;
-        font-size: 0.76rem;
-        border-radius: 8px;
+        font-size: 2.5rem;
       }
       .contact-people-grid {
-        grid-template-columns: 1fr;
-        max-width: 460px;
         gap: 12px;
       }
+    }
+
+    /* Mobile Phones (≤ 768px) — Single-Screen Composition */
+    @media (max-width: 768px) {
+      .connected-viewport {
+        height: 100dvh;
+        height: 100svh;
+        min-height: 100svh;
+        overflow: hidden;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .contact-header-wrap {
+        position: relative;
+        margin-top: clamp(48px, 7.5vh, 64px);
+        gap: clamp(6px, 1.1vh, 10px);
+        padding: 0 max(16px, env(safe-area-inset-right, 16px)) 0 max(16px, env(safe-area-inset-left, 16px));
+        max-width: 440px;
+        z-index: 10;
+      }
+
+      .contact-title {
+        font-size: clamp(1.85rem, 5.5vw, 2.15rem);
+        line-height: 1;
+        margin: 0;
+      }
+
+      .contact-desc {
+        font-size: clamp(0.78rem, 2.2vw, 0.86rem);
+        line-height: 1.35;
+        max-width: 360px;
+        margin: 0;
+      }
+
+      .contact-card {
+        position: relative;
+        z-index: 12;
+        max-width: 380px;
+        padding: clamp(6px, 1vh, 9px) 12px;
+        margin: 0;
+        border: 2px solid #000;
+        border-radius: 12px;
+        box-shadow: 3px 3px 0 #000;
+      }
+
+      .contact-icon-wrap {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+      }
+
+      .contact-icon-wrap svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .contact-email-link {
+        font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+      }
+
+      .copy-btn {
+        padding: 5px 10px;
+        font-size: 0.72rem;
+        border-radius: 7px;
+      }
+
+      .contact-people-grid {
+        position: relative;
+        z-index: 12;
+        grid-template-columns: 1fr;
+        max-width: 380px;
+        gap: clamp(6px, 1vh, 8px);
+        margin-top: 2px;
+      }
+
       .person-contact-card {
-        padding: 14px 14px 12px 14px;
-        border: 2.5px solid #000;
-        box-shadow: 4px 4px 0 #000;
-        border-radius: 14px;
+        position: relative;
+        z-index: 12;
+        padding: clamp(7px, 1vh, 10px) 12px;
+        border: 2px solid #000;
+        border-radius: 12px;
+        box-shadow: 3px 3px 0 #000;
         min-height: unset;
       }
+
       .person-role-badge {
-        font-size: 0.65rem;
-        padding: 2px 7px;
+        font-size: 0.6rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-bottom: 2px;
       }
+
       .person-name {
-        font-size: 1.18rem;
-        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.12rem);
+        margin: 0 0 4px 0;
+        line-height: 1;
       }
+
       .person-phone-row {
-        padding: 5px 8px;
+        padding: 4px 8px;
         border: 1.5px solid #000;
-        border-radius: 8px;
+        border-radius: 7px;
       }
+
       .person-phone-link {
-        font-size: 0.84rem;
+        font-size: 0.78rem;
       }
+
+      .person-phone-link svg {
+        width: 12px;
+        height: 12px;
+      }
+
       .person-copy-btn {
         padding: 3px 8px;
         font-size: 0.68rem;
+        border-radius: 5px;
       }
-    }
 
-    @media (max-width: 768px) {
-      .contact-header-wrap {
-        margin-top: clamp(75px, 12vh, 110px);
-        gap: 10px;
-      }
-      .contact-title {
-        font-size: 2.2rem;
-      }
-      .contact-card {
-        padding: 12px 14px;
-      }
-      .contact-email-link {
-        font-size: 0.98rem;
-      }
-      .copy-btn {
-        padding: 6px 10px;
-        font-size: 0.72rem;
-      }
       #crowd-canvas {
-        height: clamp(160px, 32vh, 260px);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: clamp(190px, 30vh, 260px);
+        z-index: 1;
+        pointer-events: none;
       }
     }
 
-    @media (max-width: 420px) {
-      .contact-icon-wrap {
-        width: 34px;
-        height: 34px;
+    /* Extra Small Width Devices (≤ 360px) */
+    @media (max-width: 360px) {
+      .contact-header-wrap {
+        margin-top: 42px;
+        gap: 5px;
+        padding: 0 10px;
       }
+
+      .contact-title {
+        font-size: 1.7rem;
+      }
+
+      .contact-card {
+        padding: 6px 10px;
+      }
+
       .contact-email-link {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
       }
+
       .copy-btn span {
         display: none;
       }
+
       .copy-btn {
-        padding: 6px 8px;
+        padding: 4px 8px;
+      }
+
+      .person-contact-card {
+        padding: 6px 10px;
+      }
+
+      .person-name {
+        font-size: 0.96rem;
+        margin-bottom: 2px;
+      }
+    }
+
+    /* Landscape Mode on Phones (height ≤ 540px) */
+    @media (max-height: 540px) and (orientation: landscape) {
+      .connected-viewport {
+        min-height: 100dvh;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      .contact-header-wrap {
+        margin-top: 42px;
+        padding-bottom: max(60px, calc(30px + env(safe-area-inset-bottom, 0px)));
+        gap: 6px;
+        max-width: 96%;
+      }
+
+      .contact-title {
+        font-size: 1.6rem;
+      }
+
+      .contact-desc {
+        font-size: 0.78rem;
+      }
+
+      .contact-people-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        max-width: 100% !important;
+        gap: 8px !important;
+      }
+
+      .person-contact-card {
+        padding: 8px;
+      }
+
+      .person-name {
+        font-size: 0.92rem;
+        margin-bottom: 2px;
+      }
+
+      .person-phone-row {
+        padding: 3px 6px;
+      }
+
+      .person-phone-link {
+        font-size: 0.7rem;
+      }
+
+      #crowd-canvas {
+        height: clamp(110px, 26vh, 150px);
       }
     }
   </style>

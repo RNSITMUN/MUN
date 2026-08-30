@@ -157,7 +157,9 @@
     let height = 0;
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const isMobile = window.innerWidth < 768;
+      const maxDpr = isMobile ? 1.0 : 1.5;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       const newWidth = Math.floor(window.innerWidth * dpr);
       const newHeight = Math.floor(window.innerHeight * dpr);
 
@@ -176,16 +178,45 @@
 
     let startTime = performance.now();
     let isVisible = true;
+    let isScrolling = false;
+    let scrollTimer = null;
+    let isCanvasInView = true; // Track if canvas is in viewport (mobile optimization)
+    const isMobileDevice = window.innerWidth < 768;
 
     document.addEventListener('visibilitychange', () => {
       isVisible = document.visibilityState === 'visible';
     });
 
+    window.addEventListener('scroll', () => {
+      isScrolling = true;
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        isScrolling = false;
+      }, 120);
+    }, { passive: true });
+
+    // On mobile, use IntersectionObserver to completely pause rendering when scrolled away
+    if (isMobileDevice && typeof IntersectionObserver !== 'undefined') {
+      const topoObserver = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          isCanvasInView = entry.isIntersecting;
+        }
+      }, { rootMargin: '50px' });
+      topoObserver.observe(canvas);
+    }
+
+    let frameCount = 0;
     function render() {
-      if (isVisible) {
-        const currentTime = (performance.now() - startTime) * 0.001;
-        gl.uniform1f(uTimeLoc, currentTime);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      frameCount++;
+      if (isVisible && isCanvasInView) {
+        // Mobile: during active scroll, draw every 4th frame to free GPU for compositor
+        // Desktop: during active scroll, draw every 2nd frame
+        const skipRatio = isMobileDevice ? 4 : 2;
+        if (!isScrolling || frameCount % skipRatio === 0) {
+          const currentTime = (performance.now() - startTime) * 0.001;
+          gl.uniform1f(uTimeLoc, currentTime);
+          gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
       }
       requestAnimationFrame(render);
     }
