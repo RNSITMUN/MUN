@@ -98,11 +98,27 @@ function getGlobeDimensions() {
 
 const initialDims = getGlobeDimensions();
 
+// Warm up globe images in idle time for instant decoding on refresh
+if (typeof window !== "undefined") {
+  const warmImages = () => {
+    galleryData.forEach(item => {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = item.src;
+    });
+  };
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(warmImages);
+  } else {
+    setTimeout(warmImages, 150);
+  }
+}
+
 // Standard configuration matching the Framer default properties
 const config = {
   images: images,
   autoRotate: true,
-  speed: 14,
+  speed: 12,
   axis: 'y',
   direction: 1,
   count: initialDims.count,
