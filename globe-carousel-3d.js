@@ -673,8 +673,28 @@ export function createSphereOrbit(root, userOptions = {}) {
     }
   }
 
+  let isGlobeVisible = true;
+  let globeObserver = null;
+  if (typeof IntersectionObserver !== "undefined") {
+    globeObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        isGlobeVisible = entry.isIntersecting;
+        if (isGlobeVisible && !raf && !destroyed) {
+          lastFrame = performance.now();
+          raf = requestAnimationFrame(frame);
+        }
+      }
+    }, { rootMargin: "100px" });
+    globeObserver.observe(root);
+  }
+
   function frame(now) {
     if (destroyed) return;
+    if (!isGlobeVisible) {
+      raf = 0;
+      return;
+    }
+
     // Cap dt to 0.033s to eliminate large jumps or hitches on page refresh / tab wakeup
     const dt = lastFrame ? Math.min(0.033, (now - lastFrame) / 1e3) : 0.016;
     lastFrame = now;
@@ -708,7 +728,9 @@ export function createSphereOrbit(root, userOptions = {}) {
     }
 
     layout();
-    markFocus();
+    if (o.keyboard && document.activeElement === root) {
+      markFocus();
+    }
     raf = requestAnimationFrame(frame);
   }
 
@@ -771,7 +793,7 @@ export function createSphereOrbit(root, userOptions = {}) {
     const tile = tap.up();
     if (!tile || !o.openable || lightbox?.openElement) return;
     if (tile.index < 0 || !pics[tile.index]) return;
-    if (parseFloat(tile.el.style.opacity || "0") < 0.35) return;
+    if (tile.lastOp < 0.35) return;
 
     velYaw = 0;
     velPitch = 0;
@@ -781,11 +803,11 @@ export function createSphereOrbit(root, userOptions = {}) {
   function frontTile() {
     let beste = null;
     let besteZ = -Infinity;
-    for (const t of tiles) {
+    for (let i = 0; i < tiles.length; i++) {
+      const t = tiles[i];
       if (t.index < 0) continue;
-      const z = +(t.el.style.zIndex || 0);
-      if (z > besteZ) {
-        besteZ = z;
+      if (t.lastZi > besteZ) {
+        besteZ = t.lastZi;
         beste = t;
       }
     }

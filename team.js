@@ -91,7 +91,8 @@ const isTouchOrMobile = () => {
 // Function to update the magnetic ripple sizes and positions
 function updateMagneticRipple(activeIndex) {
   const isMobile = window.innerWidth < 768;
-  const isPhone = window.innerWidth < 600;
+  const isPhone = window.innerWidth < 480;
+  const isSmallPhone = window.innerWidth <= 360;
   
   if (activeIndex === null) {
     profileContainers.forEach(container => {
@@ -102,18 +103,18 @@ function updateMagneticRipple(activeIndex) {
     return;
   }
   
-  const baseSize = isMobile ? (isPhone ? 17 : 15) : 95;
+  const baseSize = isMobile ? (isSmallPhone ? 15 : (isPhone ? 15.5 : 16)) : 95;
   
   // 1. Calculate the scale for each profile container
   const scales = [];
   profileContainers.forEach((container, i) => {
     const distance = Math.abs(i - activeIndex);
     if (distance === 0) {
-      const activeSize = isMobile ? (isPhone ? 27 : 25) : 150;
+      const activeSize = isMobile ? (isSmallPhone ? 21 : (isPhone ? 23 : 24.5)) : 150;
       scales.push(activeSize / baseSize);
     } else {
       if (isMobile) {
-        const size = baseSize - (distance * 1.5);
+        const size = Math.max(11, baseSize - (distance * 1.3));
         scales.push(size / baseSize);
       } else {
         const size = 95 - (distance * 5);
@@ -124,7 +125,7 @@ function updateMagneticRipple(activeIndex) {
 
   // 2. Compute translation offsets recursively to guarantee 100% equal visual spacing
   const txs = new Array(profileContainers.length).fill(0);
-  const buffer = isMobile ? (isPhone ? 2.8 : 3.0) : 24; // Extra spacing buffer around focused image
+  const buffer = isMobile ? (isSmallPhone ? 1.6 : (isPhone ? 2.0 : 2.4)) : 24; // Extra spacing buffer around focused image
   
   // Right side of active card
   for (let k = activeIndex + 1; k < profileContainers.length; k++) {

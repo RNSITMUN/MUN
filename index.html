@@ -131,8 +131,6 @@
       transform: translateX(-50%) translateY(-14px) !important;
     }
 
-
-
     .globe-hero-tag {
       font-family: 'Outfit', sans-serif;
       font-size: clamp(0.64rem, 0.95vw, 0.74rem);
@@ -251,7 +249,7 @@
     .globe-hero-title.media-text-hover:hover .mth-capsule-wrapper,
     .globe-hero-title.media-text-hover.is-active .mth-capsule-wrapper {
       width: clamp(130px, 17vw, 210px);
-      margin-inline: clamp(10px, 1.3vw, 16px);
+      margin-inline: clamp(8px, 1.3vw, 16px);
       opacity: 1;
       filter: blur(0px);
       pointer-events: auto;
@@ -264,7 +262,7 @@
 
     .globe-hero-subtitle {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(0.78rem, 1.15vw, 0.92rem);
+      font-size: clamp(0.76rem, 1.15vw, 0.92rem);
       font-weight: 500;
       color: rgba(0, 0, 0, 0.65);
       letter-spacing: 0.03em;
@@ -291,6 +289,7 @@
       margin-top: 10px;
       pointer-events: auto;
       flex-wrap: wrap;
+      max-width: 94vw;
     }
 
     .hero-price-card {
@@ -355,6 +354,16 @@
     }
 
     @media (max-width: 580px) {
+      .globe-hero-title.media-text-hover:hover .mth-capsule-wrapper,
+      .globe-hero-title.media-text-hover.is-active .mth-capsule-wrapper {
+        width: clamp(96px, 24vw, 140px);
+        margin-inline: 6px;
+      }
+
+      .mth-inner-media {
+        width: clamp(96px, 24vw, 140px);
+      }
+
       .hero-pricing-duo {
         gap: 8px;
       }
@@ -916,14 +925,14 @@
 
       .top-left-logo,
       .top-right-logo {
-        height: 58px !important;
+        height: 45px !important;
       }
     }
 
     /* Mobile & Tablet Responsive Optimizations */
     @media (max-width: 960px) {
       .mun26-editorial-section {
-        padding: 48px 20px 40px 20px;
+        padding: 48px max(20px, env(safe-area-inset-right, 20px)) max(50px, calc(30px + env(safe-area-inset-bottom, 0px))) max(20px, env(safe-area-inset-left, 20px));
       }
 
       .editorial-headline-block {
@@ -973,7 +982,7 @@
 
     @media (max-width: 580px) {
       .mun26-editorial-section {
-        padding: 38px 14px 34px 14px;
+        padding: 38px max(14px, env(safe-area-inset-right, 14px)) max(40px, calc(24px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
       }
 
       .editorial-meta-bar {
@@ -1075,6 +1084,107 @@
 
       .btn-sub-txt {
         font-size: 0.68rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .mun26-editorial-section {
+        padding: 32px 10px 30px 10px;
+      }
+      .editorial-main-title {
+        font-size: 2.3rem;
+      }
+      .col-main-heading {
+        font-size: 1.5rem;
+      }
+      .councils-list {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .council-item {
+        font-size: 0.65rem;
+        padding: 5px 2px;
+      }
+      .prize-tier-strip {
+        gap: 4px;
+        padding: 6px 4px;
+      }
+      .prize-tier-amount {
+        font-size: 0.95rem;
+      }
+      .prize-tier-lbl {
+        font-size: 0.56rem;
+      }
+      .prize-ip-bar {
+        font-size: 0.7rem;
+        padding: 5px 8px;
+      }
+      .flagship-box-title {
+        font-size: 0.8rem;
+      }
+      .flagship-box-amount {
+        font-size: 1.02rem;
+      }
+      .summit-registration-box {
+        padding: 16px 12px;
+      }
+      .reg-box-heading {
+        font-size: 1.12rem;
+      }
+      .btn-main-txt {
+        font-size: 0.76rem;
+      }
+      .btn-sub-txt {
+        font-size: 0.64rem;
+      }
+    }
+
+    /* Height-Aware Rules for Home Hero */
+    @media (max-height: 720px) and (max-width: 768px) {
+      .globe-hero-header {
+        top: clamp(48px, 7vh, 65px);
+        gap: 1px;
+      }
+      .globe-hero-title {
+        font-size: clamp(1.6rem, 5vw, 2.1rem);
+      }
+      .globe-hero-subtitle {
+        font-size: 0.74rem;
+        margin: 2px 0 0 0;
+      }
+      .hero-pricing-duo {
+        margin-top: 6px;
+        gap: 6px;
+      }
+      .hero-price-card {
+        padding: 4px 8px;
+      }
+      .price-card-val {
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      .globe-hero-header {
+        top: 38px;
+        gap: 1px;
+      }
+      .globe-hero-title {
+        font-size: 1.55rem;
+      }
+      .globe-hero-subtitle {
+        font-size: 0.7rem;
+        margin: 1px 0 0 0;
+      }
+      .hero-pricing-duo {
+        margin-top: 4px;
+        gap: 6px;
+      }
+      .hero-price-card {
+        padding: 3px 8px;
+      }
+      .price-card-val {
+        font-size: 0.84rem;
       }
     }
 
@@ -1425,6 +1535,20 @@
         const playPromise = video.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {});
+        }
+
+        // Pause video automatically when scrolled away using IntersectionObserver (zero scroll lag)
+        if (typeof IntersectionObserver !== "undefined") {
+          const videoObs = new IntersectionObserver((entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                if (video.paused) video.play().catch(() => {});
+              } else {
+                if (!video.paused) video.pause();
+              }
+            }
+          }, { threshold: 0 });
+          videoObs.observe(title);
         }
       }
 
