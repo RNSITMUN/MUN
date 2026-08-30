@@ -6,3 +6,5 @@ dist
 !.env.example
 .vercel
 *.timestamp-*.mjs
+*.report.html
+lighthouse-report*

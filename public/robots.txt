@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mun-rnsit.vercel.app/sitemap.xml

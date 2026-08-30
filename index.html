@@ -26,10 +26,12 @@
   <meta property="twitter:image"
     content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
 
-  <!-- Typography -->
+  <!-- Typography: non-blocking font load to eliminate render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap"></noscript>
 
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
@@ -325,7 +327,7 @@
 
     .price-card-val del {
       font-size: 0.8rem;
-      color: rgba(0, 0, 0, 0.38);
+      color: rgba(0, 0, 0, 0.55);
       font-weight: 700;
       text-decoration: line-through;
       text-decoration-color: #6C0D2C;
@@ -1225,12 +1227,12 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo">
+    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo" width="32" height="32" fetchpriority="high">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo">
+    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo" width="30" height="32">
   </div>
 
   <!-- Main Globe Container -->
@@ -1241,7 +1243,7 @@
         <span class="mth-text-left">RNS</span>
         <div class="mth-capsule-wrapper" aria-hidden="true">
           <div class="mth-inner-media">
-            <video src="./assets/video/logo_video.mp4" loop muted playsinline autoplay class="mth-video-element"></video>
+            <video src="./assets/video/logo_video.mp4" loop muted playsinline autoplay preload="none" class="mth-video-element" loading="lazy"></video>
             <span class="mth-media-gloss"></span>
           </div>
         </div>
@@ -1274,8 +1276,9 @@
   </main>
 
   <!-- RNS MUN'26 EDITORIAL SUMMIT SECTION -->
-  <section class="mun26-editorial-section" id="mun26">
+  <section class="mun26-editorial-section" id="mun26" aria-labelledby="summit-heading">
     <div class="mun26-editorial-wrap">
+      <h2 id="summit-heading" class="sr-only">Summit Details</h2>
 
       <!-- 2 Boxes Row: Registration Includes & Prize Pool -->
       <div class="summit-dual-grid">
