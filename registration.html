@@ -1142,6 +1142,156 @@
       display: none;
     }
 
+    /* ── Matrix Links & Helper Badges ── */
+    .btn-master-matrix-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 9px 20px;
+      background: var(--gold-accent);
+      border: 2px solid var(--text-primary);
+      border-radius: 999px;
+      box-shadow: 3px 3px 0px var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-master-matrix-header:hover {
+      background: #ffd54f;
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4.5px 4.5px 0px var(--text-primary);
+    }
+
+    .matrix-helper-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: rgba(108, 13, 44, 0.04);
+      border: 1.5px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 0px var(--text-primary);
+    }
+
+    .matrix-helper-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-color);
+    }
+
+    .matrix-helper-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .matrix-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1.5px solid var(--text-primary);
+      border-radius: 6px;
+      box-shadow: 2px 2px 0px var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .matrix-pill-primary {
+      background: var(--gold-accent);
+      color: #000000;
+    }
+
+    .matrix-pill-primary:hover {
+      background: #ffd54f;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--text-primary);
+    }
+
+    .matrix-pill-all {
+      background: #FFFFFF;
+      color: var(--text-primary);
+    }
+
+    .matrix-pill-all:hover {
+      background: var(--accent-color);
+      color: #FFF7EB;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--text-primary);
+    }
+
+    .matrix-ext-icon {
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+    }
+
+    .matrix-pill-btn:hover .matrix-ext-icon {
+      transform: translate(1px, -1px);
+    }
+
+    .btn-matrix-action {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      background: #FFE8A3;
+      color: #000;
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 2.5px 2.5px 0 #000;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-matrix-action:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 #000;
+      background: #ffd54f;
+    }
+
+    .delegation-matrix-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(108, 13, 44, 0.04);
+      border: 1.5px dashed var(--text-primary);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      font-size: 0.82rem;
+    }
+
     .custom-select-option {
       display: flex;
       align-items: center;
@@ -2576,6 +2726,20 @@
       <h1 class="registration-title">Committees & Registration</h1>
       <p class="registration-subtitle">Join the debate. Select your preferred committee below to explore its official
         agenda and register as a delegate.</p>
+      <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
+        target="_blank" rel="noopener noreferrer" class="btn-master-matrix-header"
+        aria-label="Open Master Portfolio Matrix Google Sheet">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="9" y1="21" x2="9" y2="9"></line>
+        </svg>
+        <span>View Master Portfolio Matrix (All Committees)</span>
+        <svg class="matrix-ext-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
     </div>
 
     <!-- Committees Section -->
@@ -2780,7 +2944,8 @@
         <div class="profile-actions-row">
           <button id="modal-register-btn" class="btn-register-action" onclick="handleRegisterFromModal()">REGISTER AS A
             DELEGATE</button>
-          <button class="btn-close-action" onclick="closeCommitteeModal()">BACK TO COMMITTEES</button>
+          <a id="modal-matrix-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-matrix-action">VIEW
+            MATRIX ↗</a>
         </div>
       </div>
     </div>
@@ -2808,6 +2973,21 @@
 
       <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)"
         oninput="toggleDelegationClearBtn(event)" onchange="toggleDelegationClearBtn(event)">
+
+        <!-- Matrix Reference Banner for Delegations -->
+        <div class="delegation-matrix-banner">
+          <div>
+            <strong>Official Portfolio Matrix:</strong> Review available countries, characters & press portfolios across all 6 committees.
+          </div>
+          <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
+            target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-all">
+            <span>Open Master Matrix</span>
+            <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </a>
+        </div>
 
         <!-- 1. Name of the Delegation -->
         <div class="form-group">
@@ -3186,6 +3366,34 @@
             <div id="reg-committee-1-error" class="error-container">Committee preference 1 is required</div>
           </div>
 
+          <!-- Committee 1 Matrix Links -->
+          <div class="matrix-helper-row" role="region" aria-label="Committee 1 Portfolio Matrix Links">
+            <div class="matrix-helper-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+              <span>MATRIX:</span>
+            </div>
+            <div class="matrix-helper-buttons">
+              <a id="reg-comm1-matrix-link" href="https://docs.google.com/spreadsheets/d/1ilmTRceKjf9o5yGb820WMFA7UygDcb8bF_lIhUpvFQ8/edit?gid=1436649926#gid=1436649926" target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-primary">
+                <span>View <strong id="comm1-matrix-btn-text">UNSC</strong> Matrix</span>
+                <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+              <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632" target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-all">
+                <span>All Committees</span>
+                <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label" for="reg-portfolio-1">
               <span>Portfolio Preference 1 (as per Portfolio Matrix) *</span>
@@ -3245,6 +3453,34 @@
               <option value="ip">IP — International Press Corps</option>
             </select>
             <div id="reg-committee-2-error" class="error-container">Committee preference 2 is required</div>
+          </div>
+
+          <!-- Committee 2 Matrix Links -->
+          <div class="matrix-helper-row" role="region" aria-label="Committee 2 Portfolio Matrix Links">
+            <div class="matrix-helper-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+              <span>MATRIX:</span>
+            </div>
+            <div class="matrix-helper-buttons">
+              <a id="reg-comm2-matrix-link" href="https://docs.google.com/spreadsheets/d/1I4qiQA-zt2Omkx6LjjnCHnt-owW9iagOqrQojUwESFg/edit?gid=1518538601#gid=1518538601" target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-primary">
+                <span>View <strong id="comm2-matrix-btn-text">DISEC</strong> Matrix</span>
+                <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+              <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632" target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-all">
+                <span>All Committees</span>
+                <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="form-group">
@@ -3677,6 +3913,16 @@
 
   <!-- Inline Self-Contained High-Performance Animation Script -->
   <script>
+    const COMMITTEE_MATRIX_LINKS = {
+      all: 'https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632',
+      unsc: 'https://docs.google.com/spreadsheets/d/1ilmTRceKjf9o5yGb820WMFA7UygDcb8bF_lIhUpvFQ8/edit?gid=1436649926#gid=1436649926',
+      disec: 'https://docs.google.com/spreadsheets/d/1I4qiQA-zt2Omkx6LjjnCHnt-owW9iagOqrQojUwESFg/edit?gid=1518538601#gid=1518538601',
+      unhrc: 'https://docs.google.com/spreadsheets/d/1p0DNw4iAw4I539Jyv3vDJWoVYUfh9Tu__qcCXmnvB2Q/edit?gid=71089615#gid=71089615',
+      unodc: 'https://docs.google.com/spreadsheets/d/1wRuUi-KbHaURPyxpwDWXD9U7AHZQHj0CjNyRF8-PlRE/edit?gid=1309158459#gid=1309158459',
+      loksabha: 'https://docs.google.com/spreadsheets/d/1lOaYUwb-LSyeD2b1oj_ZZGkaol2a5P3sF0n7IROSbrA/edit?gid=206665824#gid=206665824',
+      ip: 'https://docs.google.com/spreadsheets/d/1NZ51QrJF74J2xoSiwgFGP8qVJnOOFgTArjvuiHmy1rc/edit?gid=1843717965#gid=1843717965'
+    };
+
     const COMMITTEES = {
       unsc: {
         id: "unsc",
@@ -3789,6 +4035,11 @@
       document.getElementById('modal-fullname').textContent = data.fullName;
       document.getElementById('modal-tagline').textContent = data.tagline;
       document.getElementById('modal-agenda-title').textContent = data.agenda;
+
+      const modalMatrixBtn = document.getElementById('modal-matrix-btn');
+      if (modalMatrixBtn) {
+        modalMatrixBtn.href = COMMITTEE_MATRIX_LINKS[committeeId] || COMMITTEE_MATRIX_LINKS.all;
+      }
 
       const backdrop = document.getElementById('committee-modal-backdrop');
       const modalCard = document.getElementById('committee-modal-card');
@@ -4776,12 +5027,25 @@
 
       rebuildCustomSelect('reg-committee-1');
       updatePortfoliosForCommittee(matchedComm.value, 'reg-portfolio-1', 'reg-portfolio-2');
+      
+      // Update Committee 1 Matrix link
+      const comm1MatrixLink = document.getElementById('reg-comm1-matrix-link');
+      const comm1MatrixText = document.getElementById('comm1-matrix-btn-text');
+      if (comm1MatrixLink) comm1MatrixLink.href = COMMITTEE_MATRIX_LINKS[matchedComm.value] || COMMITTEE_MATRIX_LINKS.all;
+      if (comm1MatrixText) comm1MatrixText.textContent = (matchedComm.value || 'UNSC').toUpperCase();
+
       updateCommittee2Options();
     }
 
     function handleCommittee2Change(selectEl) {
       if (!selectEl) return;
+      const chosenComm2 = (selectEl.value || '').toLowerCase();
       updatePortfoliosForCommittee(selectEl.value, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2');
+
+      const comm2MatrixLink = document.getElementById('reg-comm2-matrix-link');
+      const comm2MatrixText = document.getElementById('comm2-matrix-btn-text');
+      if (comm2MatrixLink) comm2MatrixLink.href = COMMITTEE_MATRIX_LINKS[chosenComm2] || COMMITTEE_MATRIX_LINKS.all;
+      if (comm2MatrixText) comm2MatrixText.textContent = chosenComm2.toUpperCase();
     }
 
     function updateCommittee2Options() {
@@ -4815,6 +5079,13 @@
       rebuildCustomSelect('reg-committee-2');
       // Populate portfolios for Committee 2
       updatePortfoliosForCommittee(comm2Select.value, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2');
+
+      // Update Committee 2 Matrix link
+      const comm2MatrixLink = document.getElementById('reg-comm2-matrix-link');
+      const comm2MatrixText = document.getElementById('comm2-matrix-btn-text');
+      const finalComm2 = (comm2Select.value || '').toLowerCase();
+      if (comm2MatrixLink) comm2MatrixLink.href = COMMITTEE_MATRIX_LINKS[finalComm2] || COMMITTEE_MATRIX_LINKS.all;
+      if (comm2MatrixText) comm2MatrixText.textContent = finalComm2.toUpperCase();
     }
 
     function closeAllCustomSelects() {
