@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>MUNSoc RNSIT | Home</title>
   <meta name="description"
     content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
@@ -25,6 +25,74 @@
     content="An interactive, premium 3D Globe Carousel featuring custom rotation and high-resolution art visuals.">
   <meta property="twitter:image"
     content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
+
+  <!-- Schema.org Event Structured Data (Google Rich Snippets) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "RNSIT Model United Nations Conference 2026 (RNS MUN'26)",
+    "alternateName": "RNSIT MUN 2026",
+    "description": "Annual collegiate Model United Nations conference hosted by MUNSoc RNSIT, featuring simulated committees (UNSC, UNGA, AIPPM), diplomatic debates, and youth leadership summits.",
+    "startDate": "2026-10-06T09:00:00+05:30",
+    "endDate": "2026-10-07T18:00:00+05:30",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": "RNS Institute of Technology (RNSIT)",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Dr. Vishnuvardhan Road, Post, Channasandra, Rajarajeshwarinagar",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "postalCode": "560098",
+        "addressCountry": "IN"
+      }
+    },
+    "image": [
+      "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png"
+    ],
+    "organizer": {
+      "@type": "Organization",
+      "name": "MUNSoc RNSIT",
+      "url": "https://mun-rnsit.vercel.app/"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "RNSIT Student Delegate Access",
+        "price": "999",
+        "priceCurrency": "INR",
+        "validFrom": "2026-08-01T00:00:00+05:30",
+        "url": "https://mun-rnsit.vercel.app/registration",
+        "availability": "https://schema.org/InStock",
+        "description": "All-inclusive 2-day conference access, delegate kit, food & beverages, and certificate for internal RNSIT delegates."
+      },
+      {
+        "@type": "Offer",
+        "name": "External Delegate Access (Early Bird)",
+        "price": "1199",
+        "priceCurrency": "INR",
+        "validFrom": "2026-08-01T00:00:00+05:30",
+        "validThrough": "2026-09-15T23:59:59+05:30",
+        "url": "https://mun-rnsit.vercel.app/registration",
+        "availability": "https://schema.org/InStock",
+        "description": "Discounted early-bird 2-day conference access, delegate kit, food & beverages, and certificate for external delegates."
+      },
+      {
+        "@type": "Offer",
+        "name": "External Delegate Access (Standard)",
+        "price": "1349",
+        "priceCurrency": "INR",
+        "validFrom": "2026-09-16T00:00:00+05:30",
+        "url": "https://mun-rnsit.vercel.app/registration",
+        "availability": "https://schema.org/InStock",
+        "description": "Standard 2-day conference access, delegate kit, food & beverages, and certificate for external delegates."
+      }
+    ]
+  }
+  </script>
 
   <!-- Typography: non-blocking font load to eliminate render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -241,12 +309,10 @@
     }
 
     /* Framer Motion Active / Hover State */
-    .globe-hero-title.media-text-hover:hover .mth-text-left,
     .globe-hero-title.media-text-hover.is-active .mth-text-left {
       margin-right: 0px;
     }
 
-    .globe-hero-title.media-text-hover:hover .mth-capsule-wrapper,
     .globe-hero-title.media-text-hover.is-active .mth-capsule-wrapper {
       width: clamp(130px, 17vw, 210px);
       margin-inline: clamp(8px, 1.3vw, 16px);
@@ -255,9 +321,24 @@
       pointer-events: auto;
     }
 
-    .globe-hero-title.media-text-hover:hover .mth-inner-media,
     .globe-hero-title.media-text-hover.is-active .mth-inner-media {
       transform: translateX(-50%) scale(1.0);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .globe-hero-title.media-text-hover:hover .mth-text-left {
+        margin-right: 0px;
+      }
+      .globe-hero-title.media-text-hover:hover .mth-capsule-wrapper {
+        width: clamp(130px, 17vw, 210px);
+        margin-inline: clamp(8px, 1.3vw, 16px);
+        opacity: 1;
+        filter: blur(0px);
+        pointer-events: auto;
+      }
+      .globe-hero-title.media-text-hover:hover .mth-inner-media {
+        transform: translateX(-50%) scale(1.0);
+      }
     }
 
     .globe-hero-subtitle {
@@ -305,9 +386,16 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .hero-price-card:hover {
-      transform: translate(-1.5px, -1.5px);
-      box-shadow: 4px 4px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .hero-price-card:hover {
+        transform: translate(-1.5px, -1.5px);
+        box-shadow: 4px 4px 0 #000;
+      }
+    }
+
+    .hero-price-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0 #000;
     }
 
     .price-card-lbl {
@@ -354,7 +442,6 @@
     }
 
     @media (max-width: 580px) {
-      .globe-hero-title.media-text-hover:hover .mth-capsule-wrapper,
       .globe-hero-title.media-text-hover.is-active .mth-capsule-wrapper {
         width: clamp(96px, 24vw, 140px);
         margin-inline: 6px;
@@ -524,9 +611,18 @@
       cursor: pointer;
     }
 
-    .council-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 3px 3px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .council-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 3px 3px 0 #000;
+        background-color: #6C0D2C;
+        color: #FFF7EB;
+      }
+    }
+
+    .council-item:active {
+      transform: translateY(1px);
+      box-shadow: 1px 1px 0 #000;
       background-color: #6C0D2C;
       color: #FFF7EB;
     }
@@ -600,9 +696,11 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .summit-card-box:hover {
-      transform: translate(-1.5px, -1.5px);
-      box-shadow: 5.5px 5.5px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .summit-card-box:hover {
+        transform: translate(-1.5px, -1.5px);
+        box-shadow: 5.5px 5.5px 0 #000;
+      }
     }
 
     .card-box-header {
@@ -662,41 +760,69 @@
 
     .inc-unit {
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: #FFF7EB;
+      align-items: center;
+      gap: 12px;
+      background: #FFFDF9;
       border: 1.5px solid #000;
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 10px 13px;
       box-shadow: 2px 2px 0 #000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .inc-unit:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 #000;
+      }
+    }
+
+    .inc-unit:active {
+      transform: translate(0.5px, 0.5px);
+      box-shadow: 1px 1px 0 #000;
     }
 
     .inc-unit-icon {
-      font-size: 0.95rem;
-      line-height: 1;
-      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #FFF7EB;
+      border: 1.5px solid #000;
+      box-shadow: 1.5px 1.5px 0 #000;
+      color: #6C0D2C;
       flex-shrink: 0;
+    }
+
+    .inc-unit-icon svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.2;
     }
 
     .inc-unit-text {
       display: flex;
       flex-direction: column;
       gap: 2px;
+      min-width: 0;
     }
 
     .inc-unit-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       font-weight: 800;
       color: #000;
       line-height: 1.2;
+      letter-spacing: -0.01em;
     }
 
     .inc-unit-desc {
       font-family: 'Outfit', sans-serif;
       font-size: 0.72rem;
       font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.65);
       line-height: 1.3;
     }
 
@@ -883,21 +1009,29 @@
       color: #000;
     }
 
-    .btn-reg-gold:hover {
-      background: #F5B94C;
-      transform: translate(-1px, -1px);
-      box-shadow: 3.5px 3.5px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .btn-reg-gold:hover {
+        background: #F5B94C;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0 #000;
+      }
+
+      .btn-reg-white:hover {
+        background: #FFFFFF;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0 #000;
+      }
+    }
+
+    .btn-reg-gold:active,
+    .btn-reg-white:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0 #000;
     }
 
     .btn-reg-white {
       background: #FFF7EB;
       color: #000;
-    }
-
-    .btn-reg-white:hover {
-      background: #FFFFFF;
-      transform: translate(-1px, -1px);
-      box-shadow: 3.5px 3.5px 0 #000;
     }
 
     .btn-main-txt {
@@ -1402,7 +1536,17 @@
 
           <div class="inclusions-minimal-grid">
             <div class="inc-unit">
-              <span class="inc-unit-icon">🏛️</span>
+              <div class="inc-unit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18"></path>
+                  <path d="M5 21V10"></path>
+                  <path d="M19 21V10"></path>
+                  <path d="M9 21V10"></path>
+                  <path d="M15 21V10"></path>
+                  <path d="M2 10h20"></path>
+                  <path d="m12 3 10 7H2Z"></path>
+                </svg>
+              </div>
               <div class="inc-unit-text">
                 <span class="inc-unit-title">2-Day Full Access</span>
                 <span class="inc-unit-desc">All sessions, debate rounds & socials</span>
@@ -1410,7 +1554,14 @@
             </div>
 
             <div class="inc-unit">
-              <span class="inc-unit-icon">🍽️</span>
+              <div class="inc-unit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"></path>
+                  <path d="M15 2v20"></path>
+                  <path d="M5 2v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2"></path>
+                  <path d="M9 11v11"></path>
+                </svg>
+              </div>
               <div class="inc-unit-text">
                 <span class="inc-unit-title">Food & Beverages</span>
                 <span class="inc-unit-desc">High-tea & buffet meals both days</span>
@@ -1418,7 +1569,12 @@
             </div>
 
             <div class="inc-unit">
-              <span class="inc-unit-icon">💼</span>
+              <div class="inc-unit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="14" x="2" y="7" rx="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
               <div class="inc-unit-text">
                 <span class="inc-unit-title">Delegate Kit</span>
                 <span class="inc-unit-desc">Official kit & background guides</span>
@@ -1426,7 +1582,12 @@
             </div>
 
             <div class="inc-unit">
-              <span class="inc-unit-icon">📜</span>
+              <div class="inc-unit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="6"></circle>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                </svg>
+              </div>
               <div class="inc-unit-text">
                 <span class="inc-unit-title">Physical Certificate</span>
                 <span class="inc-unit-desc">Hard-copy certificate & award eligibility</span>

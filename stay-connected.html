@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Contact | MUNSoc RNSIT</title>
   <link rel="canonical" href="https://mun-rnsit.vercel.app/stay-connected">
   <meta name="description" content="Get in touch with MUNSoc RNSIT. Connect with our delegation and stay updated with assemblies.">
@@ -141,9 +141,16 @@
                   box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .contact-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .contact-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 #000;
+      }
+    }
+
+    .contact-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2.5px 2.5px 0 #000;
     }
 
     .contact-card-inner {
@@ -186,8 +193,10 @@
       text-align: left;
     }
 
-    .contact-email-link:hover {
-      color: #6C0D2C;
+    @media (hover: hover) and (pointer: fine) {
+      .contact-email-link:hover {
+        color: #6C0D2C;
+      }
     }
 
     .copy-btn {
@@ -210,10 +219,12 @@
       flex-shrink: 0;
     }
 
-    .copy-btn:hover {
-      background: #F5B94C;
-      transform: translateY(-2px);
-      box-shadow: 4px 4px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .copy-btn:hover {
+        background: #F5B94C;
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 0 #000;
+      }
     }
 
     .copy-btn:active {
@@ -252,9 +263,16 @@
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .person-contact-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .person-contact-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 #000;
+      }
+    }
+
+    .person-contact-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2.5px 2.5px 0 #000;
     }
 
     .person-role-badge {
@@ -312,8 +330,10 @@
       text-overflow: ellipsis;
     }
 
-    .person-phone-link:hover {
-      color: #6C0D2C;
+    @media (hover: hover) and (pointer: fine) {
+      .person-phone-link:hover {
+        color: #6C0D2C;
+      }
     }
 
     .person-phone-link svg {
@@ -341,10 +361,12 @@
       flex-shrink: 0;
     }
 
-    .person-copy-btn:hover {
-      background: #F5B94C;
-      transform: translateY(-1px);
-      box-shadow: 2.5px 2.5px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .person-copy-btn:hover {
+        background: #F5B94C;
+        transform: translateY(-1px);
+        box-shadow: 2.5px 2.5px 0 #000;
+      }
     }
 
     .person-copy-btn:active {

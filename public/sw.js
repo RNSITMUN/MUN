@@ -1,6 +1,9 @@
-const CACHE_NAME = 'mun-cache-v1';
+const CACHE_NAME = 'mun-cache-v2';
 const PRECACHE_ASSETS = [
   '/',
+  '/registration',
+  '/channels',
+  '/past-events',
   '/team',
   '/stay-connected',
   '/404',

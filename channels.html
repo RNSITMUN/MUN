@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Official Channels | MUNSoc RNSIT & Qlue Quiz Club</title>
   <link rel="canonical" href="https://mun-rnsit.vercel.app/channels">
   <meta name="description" content="Official channels, communities, and social hubs for Model United Nations Society and Qlue Quiz Club at RNSIT.">
@@ -13,6 +13,13 @@
   <meta property="og:title" content="Official Channels | MUNSoc RNSIT & Qlue Quiz Club">
   <meta property="og:description" content="Official channels, communities, and social hubs for Model United Nations Society and Qlue Quiz Club at RNSIT.">
   <meta property="og:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://mun-rnsit.vercel.app/channels">
+  <meta name="twitter:title" content="Official Channels | MUNSoc RNSIT & Qlue Quiz Club">
+  <meta name="twitter:description" content="Official channels, communities, and social hubs for Model United Nations Society and Qlue Quiz Club at RNSIT.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,8 +91,10 @@
       transition: transform 0.2s ease;
     }
 
-    .avatar-crest:hover {
-      transform: scale(1.08) rotate(-3deg);
+    @media (hover: hover) and (pointer: fine) {
+      .avatar-crest:hover {
+        transform: scale(1.08) rotate(-3deg);
+      }
     }
 
     .avatar-crest img {
@@ -110,9 +119,11 @@
       transition: transform 0.2s ease;
     }
 
-    .avatar-qlue:hover {
-      transform: scale(1.08) rotate(4deg);
-      z-index: 3;
+    @media (hover: hover) and (pointer: fine) {
+      .avatar-qlue:hover {
+        transform: scale(1.08) rotate(4deg);
+        z-index: 3;
+      }
     }
 
     .avatar-qlue img {
@@ -197,9 +208,11 @@
       cursor: pointer;
     }
 
-    .bento-card:hover {
-      transform: translate(-4px, -4px);
-      box-shadow: 9px 9px 0 #000;
+    @media (hover: hover) and (pointer: fine) {
+      .bento-card:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 9px 9px 0 #000;
+      }
     }
 
     .bento-card:active {
@@ -327,8 +340,10 @@
       transition: transform 0.2s ease;
     }
 
-    .bento-card:hover .action-arrow {
-      transform: translate(3px, -3px);
+    @media (hover: hover) and (pointer: fine) {
+      .bento-card:hover .action-arrow {
+        transform: translate(3px, -3px);
+      }
     }
 
     /* Email Copy Feedback Toast */

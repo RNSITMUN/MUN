@@ -38,6 +38,37 @@ img,
   user-select: none;
 }
 
+/* Eliminate 300ms mobile touch delay across all clickable and interactive elements */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary,
+[role="button"],
+[tabindex],
+.nav-item,
+.floating-menu-container,
+.floating-menu-item,
+.floating-menu-bottom-bar,
+.committee-card,
+.delegate-type-btn,
+.btn-register-action,
+.btn-close-action,
+.submit-btn,
+.btn-wizard-back,
+.stepper-arrow-btn,
+.copy-btn,
+.person-copy-btn,
+.radio-card-label,
+.matrix-pill-btn,
+.bento-card,
+.action-button,
+.sound-toggle-btn {
+  touch-action: manipulation;
+}
+
 html,
 body {
   overscroll-behavior-x: none;
@@ -330,8 +361,10 @@ body {
     box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.12);
   }
 
-  .nav-pill.nav-scrolled:hover {
-    box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.18);
+  @media (hover: hover) and (pointer: fine) {
+    .nav-pill.nav-scrolled:hover {
+      box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.18);
+    }
   }
 }
 
@@ -381,14 +414,16 @@ body {
   z-index: 2;
 }
 
-.nav-item:hover {
-  color: #000000;
-  /* Darker charcoal black on hover for inactive tabs */
-}
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover {
+    color: #000000;
+    /* Darker charcoal black on hover for inactive tabs */
+  }
 
-.nav-item.active:hover {
-  color: #6C0D2C;
-  /* Keep active wine red on hover */
+  .nav-item.active:hover {
+    color: #6C0D2C;
+    /* Keep active wine red on hover */
+  }
 }
 
 /* Hide Past Events from Navbar */
@@ -494,20 +529,22 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.nav-dropdown-item:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #000000;
-}
-
 .nav-dropdown-item.active {
   color: #6C0D2C;
   font-weight: 600;
   background: rgba(108, 13, 44, 0.06);
 }
 
-.nav-dropdown-item.active:hover {
-  color: #6C0D2C;
-  background: rgba(108, 13, 44, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #000000;
+  }
+
+  .nav-dropdown-item.active:hover {
+    color: #6C0D2C;
+    background: rgba(108, 13, 44, 0.1);
+  }
 }
 
 @media (max-width: 768px) {
@@ -556,7 +593,7 @@ html.modal-open .mobile-floating-menu-root {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   width: 96px;
   height: 33px;
   border-radius: 72px;
@@ -619,18 +656,24 @@ html.modal-open .mobile-floating-menu-root {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 14px 12px 4px 12px;
+  gap: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  flex: 1;
+  transition: opacity 0.3s ease, padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  flex: 0;
+  height: 0;
   overflow: hidden;
 }
 
 .floating-menu-container.is-open .floating-menu-links {
   opacity: 1;
   pointer-events: auto;
+  flex: 1;
+  height: auto;
+  padding: 10px 10px 2px 10px;
 }
 
 /* Menu Items with Staggered Slide In */
@@ -641,16 +684,22 @@ html.modal-open .mobile-floating-menu-root {
   font-size: 0.74rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0em;
-  display: inline-flex;
+  letter-spacing: 0.03em;
+  display: flex;
   align-items: center;
   justify-content: center;
-  height: 1.1em;
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-sizing: border-box;
   transform: translateY(8px);
   opacity: 0;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.4s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .floating-menu-container.is-open .floating-menu-item {
@@ -659,9 +708,19 @@ html.modal-open .mobile-floating-menu-root {
 }
 
 .floating-menu-item.is-active,
-.floating-menu-item:hover,
 .floating-menu-item:focus {
   color: #E5A93C;
+}
+
+.floating-menu-item:active {
+  background-color: rgba(255, 247, 235, 0.12);
+  color: #E5A93C;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .floating-menu-item:hover {
+    color: #E5A93C;
+  }
 }
 
 /* Bottom Bar: Menu + Hamburger */
@@ -670,16 +729,19 @@ html.modal-open .mobile-floating-menu-root {
   z-index: 6;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   height: 33px;
-  padding: 0 10px;
+  padding: 0;
   box-sizing: border-box;
   cursor: pointer;
-  transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1), justify-content 0s;
 }
 
 .floating-menu-container.is-open .floating-menu-bottom-bar {
+  justify-content: space-between;
+  gap: 0;
   padding: 0 14px 10px 14px;
 }
 

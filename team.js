@@ -80,7 +80,7 @@ setGiantName("RNS'MUN", false);
 
 // Set helper label text dynamically based on viewport size
 if (window.innerWidth < 768) {
-  roleDisplay.textContent = "Tap a member to view role";
+  roleDisplay.textContent = "Swipe or tap a member to view role";
 }
 
 // Helper: check if we are on a mobile viewport or a touch screen
@@ -177,8 +177,23 @@ function deactivateAll() {
   // Revert all profile translations and sizes back to original layout
   updateMagneticRipple(null);
 
-  roleDisplay.textContent = isTouchOrMobile() ? "Tap a member to view role" : "Hover a member to view role";
+  roleDisplay.textContent = isTouchOrMobile() ? "Swipe or tap a member to view role" : "Hover a member to view role";
   setGiantName("RNS'MUN", false);
+}
+
+// Function to activate member by index with automatic loop-around
+function activateMemberByIndex(targetIndex) {
+  if (profileContainers.length === 0) return;
+  if (targetIndex < 0) targetIndex = profileContainers.length - 1;
+  if (targetIndex >= profileContainers.length) targetIndex = 0;
+
+  const container = profileContainers[targetIndex];
+  if (!container) return;
+
+  const firstName = container.getAttribute("data-first-name");
+  const fullName = container.getAttribute("data-full-name");
+  const role = container.getAttribute("data-role");
+  activateMember(container, targetIndex, firstName, fullName, role);
 }
 
 // Attach listeners to profile images
@@ -218,6 +233,65 @@ profileContainers.forEach((container) => {
 // Revert to default when tapping/clicking anywhere outside the profile row
 document.addEventListener("click", (e) => {
   if (currentActiveIndex !== null && !profileRow.contains(e.target)) {
+    deactivateAll();
+  }
+});
+
+// Touch Swipe Gesture Recognition for Mobile & Tablets
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+let isTrackingTouch = false;
+
+const teamViewport = document.querySelector(".team-viewport") || document.body;
+
+teamViewport.addEventListener(
+  "touchstart",
+  (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+    isTrackingTouch = true;
+  },
+  { passive: true }
+);
+
+teamViewport.addEventListener(
+  "touchend",
+  (e) => {
+    if (!isTrackingTouch || e.changedTouches.length !== 1) return;
+    isTrackingTouch = false;
+
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
+    const deltaY = e.changedTouches[0].clientY - touchStartY;
+    const elapsed = Date.now() - touchStartTime;
+
+    // Must be a definitive horizontal gesture (min 36px, horizontal dominance > 1.3x, within 600ms)
+    if (Math.abs(deltaX) >= 36 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3 && elapsed < 600) {
+      if (deltaX < 0) {
+        // Swiped Left -> Advance to next member
+        const next = currentActiveIndex === null ? 0 : currentActiveIndex + 1;
+        activateMemberByIndex(next);
+      } else {
+        // Swiped Right -> Return to previous member
+        const prev = currentActiveIndex === null ? profileContainers.length - 1 : currentActiveIndex - 1;
+        activateMemberByIndex(prev);
+      }
+    }
+  },
+  { passive: true }
+);
+
+// Keyboard Left / Right arrow navigation for desktop accessibility
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    const next = currentActiveIndex === null ? 0 : currentActiveIndex + 1;
+    activateMemberByIndex(next);
+  } else if (e.key === "ArrowLeft") {
+    const prev = currentActiveIndex === null ? profileContainers.length - 1 : currentActiveIndex - 1;
+    activateMemberByIndex(prev);
+  } else if (e.key === "Escape") {
     deactivateAll();
   }
 });

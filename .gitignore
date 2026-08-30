@@ -8,3 +8,7 @@ dist
 *.timestamp-*.mjs
 *.report.html
 lighthouse-report*
+*.pem
+*.key
+*credentials*.json
+service-account*.json

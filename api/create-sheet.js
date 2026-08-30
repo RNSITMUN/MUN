@@ -1,10 +1,23 @@
 import { google } from 'googleapis';
 
 export default async function handler(req, res) {
-  // CORS configuration
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  // CORS & Origin Validation Security Check
+  const origin = req.headers.origin || '';
+  const allowedOrigins = [
+    'https://mun-rnsit.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173'
+  ];
+
+  const isAllowed = !origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+  if (!isAllowed) {
+    return res.status(403).json({ success: false, error: 'Access forbidden: unauthorized origin.' });
+  }
+
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', origin || allowedOrigins[0]);
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'

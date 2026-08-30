@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>404 | MUNSoc RNSIT</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://mun-rnsit.vercel.app/404">
@@ -150,18 +150,13 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
-    .action-button:hover {
-      background-color: rgba(255, 255, 255, 0.85);
-      transform: translateY(-2px);
-    }
-
     .sound-toggle-btn {
       font-family: var(--font-sans);
       font-size: 0.92rem;
       font-weight: 600;
       color: #ffffff;
       background: transparent;
-      border: 2px solid #ffffff; /* White border outline */
+      border: 2px solid #ffffff;
       border-radius: 9999px;
       padding: 10px 24px;
       cursor: pointer;
@@ -169,18 +164,25 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
 
-    .sound-toggle-btn:hover {
-      background-color: #ffffff;
-      color: #000000;
-      transform: translateY(-2px);
-    }
-    
-    /* Navigation Link Colors overlayed on video */
-    .nav-item {
-      color: rgba(255, 255, 255, 0.7);
-    }
-    .nav-item:hover, .nav-item.active {
+    .nav-item.active {
       color: #ffffff;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .action-button:hover {
+        background-color: rgba(255, 255, 255, 0.85);
+        transform: translateY(-2px);
+      }
+
+      .sound-toggle-btn:hover {
+        background-color: #ffffff;
+        color: #000000;
+        transform: translateY(-2px);
+      }
+
+      .nav-item:hover {
+        color: #ffffff;
+      }
     }
     
     /* Top Logos and Nav z-index adjustments so they display over fullscreen video */
