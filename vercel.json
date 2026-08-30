@@ -1,6 +1,12 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/contact",
+      "destination": "/stay-connected.html"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
