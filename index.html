@@ -109,10 +109,10 @@
 
   <!-- Preload Critical Assets for Instant Rendering -->
   <link rel="preload" as="image" href="./assets/Logos/25_logo.png">
-  <link rel="preload" as="image" href="./assets/Logos/MUN_logo.png">
-  <link rel="preload" as="image" href="./globe/1.jpeg">
-  <link rel="preload" as="image" href="./globe/2.jpeg">
-  <link rel="preload" as="image" href="./globe/3.jpeg">
+  <link rel="preload" as="image" href="./assets/Logos/MUN_logo.webp">
+  <link rel="preload" as="image" href="./globe/1.webp">
+  <link rel="preload" as="image" href="./globe/2.webp">
+  <link rel="preload" as="image" href="./globe/3.webp">
 
   <style>
     html,
@@ -1034,6 +1034,64 @@
       color: #000;
     }
 
+    .btn-reg-share {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 2px solid #000;
+      background: #FFF7EB;
+      color: #6C0D2C;
+      text-decoration: none;
+      box-shadow: 2.5px 2.5px 0 #000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      touch-action: manipulation;
+      width: 100%;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .btn-reg-share:hover {
+        background: #F3E4D0;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0 #000;
+      }
+    }
+
+    .btn-reg-share:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .home-share-toast {
+      position: fixed;
+      bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #000;
+      color: #FFF7EB;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid #E5A93C;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 9999;
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .home-share-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
     .btn-main-txt {
       font-family: 'Outfit', sans-serif;
       font-size: 0.84rem;
@@ -1658,6 +1716,14 @@
             <span class="btn-main-txt">Register as Delegation</span>
             <span class="btn-sub-txt">10+ GROUP &bull; ₹15K PRIZE &rarr;</span>
           </a>
+
+          <button type="button" class="btn-reg-share" id="home-share-btn" onclick="shareConference()" aria-label="Share Conference with Friends">
+            <span class="btn-main-txt" style="display: inline-flex; align-items: center; gap: 7px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+              Share Conference
+            </span>
+            <span class="btn-sub-txt">1-TAP SHARE &bull; INVITE &rarr;</span>
+          </button>
         </div>
       </div>
 
@@ -1730,7 +1796,53 @@
         }
       });
     })();
+
+    // Web Share API for Conference Invitations
+    async function shareConference() {
+      const shareData = {
+        title: "RNSIT MUN 2026 | Oct 06–07",
+        text: "Join RNSIT Model United Nations Conference 2026 in Bengaluru! Allocations are now open for delegates and 10+ institutional delegations:",
+        url: window.location.origin + "/registration"
+      };
+
+      const toast = document.getElementById('home-share-toast');
+      const showToast = (msg) => {
+        if (!toast) return;
+        toast.innerHTML = `<span>✓</span> ${msg}`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2600);
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            copyUrlFallback();
+          }
+        }
+      } else {
+        copyUrlFallback();
+      }
+
+      function copyUrlFallback() {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareData.url).then(() => {
+            showToast('Link copied! Ready to paste into WhatsApp/IG');
+          }).catch(() => {
+            prompt('Copy registration link:', shareData.url);
+          });
+        } else {
+          prompt('Copy registration link:', shareData.url);
+        }
+      }
+    }
   </script>
+
+  <!-- Share Toast Notification -->
+  <div id="home-share-toast" class="home-share-toast" aria-live="polite">
+    <span>✓</span> Link copied! Ready to paste into WhatsApp/IG
+  </div>
 
   <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>

@@ -180,6 +180,39 @@
       font-weight: 400;
     }
 
+    .channels-share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 9px 20px;
+      background: #FFF7EB;
+      color: #6C0D2C;
+      border: 2px solid #000;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 #000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      touch-action: manipulation;
+      text-transform: uppercase;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .channels-share-btn:hover {
+        background: #F3E4D0;
+        transform: translate(-1.5px, -1.5px);
+        box-shadow: 4.5px 4.5px 0 #000;
+      }
+    }
+
+    .channels-share-btn:active {
+      transform: translate(1.5px, 1.5px);
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
     /* ===== BENTO GRID ===== */
     .bento-grid {
       display: grid;
@@ -349,7 +382,7 @@
     /* Email Copy Feedback Toast */
     .copy-toast {
       position: fixed;
-      bottom: 30px;
+      bottom: calc(84px + env(safe-area-inset-bottom, 0px));
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: #000;
@@ -495,10 +528,10 @@
     <header class="channels-header">
       <div class="channels-avatar-group">
         <div class="avatar-crest" title="MUN Society RNSIT">
-          <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society Logo" decoding="async">
+          <img src="./assets/channels/MUN_blue.webp" onerror="this.onerror=null;this.src='./assets/channels/MUN_blue.jpeg'" alt="MUN Society Logo" decoding="async">
         </div>
         <div class="avatar-qlue" title="Qlue Quiz Club RNSIT">
-          <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club Logo" decoding="async">
+          <img src="./assets/channels/Qlue.webp" onerror="this.onerror=null;this.src='./assets/channels/Qlue.jpeg'" alt="Qlue Quiz Club Logo" decoding="async">
         </div>
       </div>
 
@@ -509,6 +542,13 @@
 
       <h1 class="channels-title">Channels & Hub</h1>
       <p class="channels-subtitle">Direct links to official communication channels, announcements, and communities for MUN Society & Qlue Quiz Club, RNSIT.</p>
+      
+      <div style="margin-top: 6px;">
+        <button type="button" class="channels-share-btn" id="channels-share-btn" aria-label="Share Community Channels">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          <span>Share Hub with Friends</span>
+        </button>
+      </div>
     </header>
 
     <!-- Bento Box Grid -->
@@ -519,7 +559,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 01 ] WHATSAPP COMMUNITY</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/MUN_blue.webp" onerror="this.onerror=null;this.src='./assets/channels/MUN_blue.jpeg'" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -537,7 +577,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 02 ] WHATSAPP COMMUNITY</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/Qlue.webp" onerror="this.onerror=null;this.src='./assets/channels/Qlue.jpeg'" alt="Qlue Quiz Club" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -555,7 +595,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 03 ] INSTAGRAM</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/MUN_blue.webp" onerror="this.onerror=null;this.src='./assets/channels/MUN_blue.jpeg'" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -573,7 +613,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 04 ] INSTAGRAM</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/Qlue.jpeg" alt="Qlue Quiz Club" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/Qlue.webp" onerror="this.onerror=null;this.src='./assets/channels/Qlue.jpeg'" alt="Qlue Quiz Club" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -591,7 +631,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 05 ] LINKEDIN</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/MUN_blue.webp" onerror="this.onerror=null;this.src='./assets/channels/MUN_blue.jpeg'" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -609,7 +649,7 @@
         <div class="card-top-row">
           <span class="card-index">[ 06 ] DIRECT CONTACT</span>
           <div class="card-icon-pill" aria-hidden="true">
-            <img src="./assets/channels/MUN_blue.jpeg" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
+            <img src="./assets/channels/MUN_blue.webp" onerror="this.onerror=null;this.src='./assets/channels/MUN_blue.jpeg'" alt="MUN Society" class="bento-badge-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-main-info">
@@ -659,7 +699,7 @@
         });
       }
 
-      function showToast() {
+        function showToast() {
         if (!toast) return;
         toast.classList.add('show');
         if (actionText) actionText.textContent = 'COPIED TO CLIPBOARD!';
@@ -667,6 +707,45 @@
           toast.classList.remove('show');
           if (actionText) actionText.textContent = 'Click to Copy / Send';
         }, 2400);
+      }
+
+      // Native Web Share API
+      const shareBtn = document.getElementById('channels-share-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const shareData = {
+            title: "Official Channels & Hub | MUNSoc RNSIT",
+            text: "Connect with Model United Nations Society and Qlue Quiz Club at RNSIT. Official communities, WhatsApp groups, and announcements:",
+            url: window.location.href
+          };
+
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+            } catch (err) {
+              if (err.name !== 'AbortError') {
+                copyHubUrl();
+              }
+            }
+          } else {
+            copyHubUrl();
+          }
+
+          function copyHubUrl() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(shareData.url).then(() => {
+                if (toast) {
+                  toast.innerHTML = '<span>✓</span> Channel hub link copied to clipboard!';
+                  toast.classList.add('show');
+                  setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.innerHTML = '<span>✓</span> Email copied: mun@rnsit.ac.in';
+                  }, 2400);
+                }
+              });
+            }
+          }
+        });
       }
     })();
   </script>

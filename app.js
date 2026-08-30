@@ -40,8 +40,8 @@ for (let i = 0; i < 30; i++) {
   const localIndex = i + 1;
   const fallbackItem = baseRedVibeImages[i];
   galleryData.push({
-    src: `./globe/${localIndex}.jpeg`,
-    fallback: fallbackItem.src,
+    src: `./globe/${localIndex}.webp`,
+    fallback: `./globe/${localIndex}.jpeg`,
     alt: `Globe Image ${localIndex}`
   });
 }

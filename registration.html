@@ -2259,6 +2259,250 @@
       cursor: pointer;
       box-shadow: 3px 3px 0px var(--text-primary);
       text-transform: uppercase;
+      touch-action: manipulation;
+    }
+
+    .receipt-print-btn {
+      background: #FFF7EB;
+      color: #6C0D2C;
+      border: 2.5px solid #000;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
+      text-transform: uppercase;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .receipt-print-btn:hover {
+        background: #F2E4D2;
+        transform: translate(-1.5px, -1.5px);
+        box-shadow: 4.5px 4.5px 0px #000;
+      }
+    }
+    .receipt-print-btn:active {
+      transform: translate(1.5px, 1.5px);
+      box-shadow: 1.5px 1.5px 0px #000;
+    }
+
+    /* Printable Receipt Container */
+    #printable-receipt {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm 14mm;
+      }
+
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Hide everything except the receipt */
+      body > *:not(#printable-receipt),
+      nav,
+      .nav-pill,
+      .top-left-logo-container,
+      .top-right-logo-container,
+      .floating-menu-btn,
+      .floating-menu-container,
+      .committee-modal-backdrop,
+      .registration-hero,
+      .committees-section,
+      .direct-reg-banner,
+      canvas,
+      #matrix-drawer,
+      #matrix-drawer-backdrop {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      #printable-receipt {
+        display: block !important;
+        visibility: visible !important;
+        width: 100% !important;
+        max-width: 720px !important;
+        margin: 0 auto !important;
+        padding: 24px !important;
+        border: 2.5px solid #000000 !important;
+        border-radius: 12px !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid !important;
+      }
+
+      .receipt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+      }
+
+      .receipt-brand-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .receipt-logo {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+      }
+
+      .receipt-titles h1 {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #6C0D2C !important;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .receipt-titles p {
+        font-size: 0.8rem;
+        color: #333;
+        margin: 2px 0 0 0;
+        font-weight: 600;
+      }
+
+      .receipt-status-badge {
+        border: 2px solid #000;
+        background: #E5A93C !important;
+        color: #000 !important;
+        font-weight: 800;
+        font-size: 0.74rem;
+        padding: 5px 11px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .receipt-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        background: #FFF7EB !important;
+        border: 1.5px solid #000;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 16px;
+      }
+
+      .receipt-meta-item label {
+        font-size: 0.66rem;
+        font-weight: 700;
+        color: #666;
+        text-transform: uppercase;
+        display: block;
+      }
+
+      .receipt-meta-item span {
+        font-size: 0.84rem;
+        font-weight: 800;
+        color: #000;
+      }
+
+      .receipt-section-title {
+        font-size: 0.84rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin: 12px 0 8px 0;
+        color: #6C0D2C;
+        border-left: 4px solid #6C0D2C;
+        padding-left: 8px;
+      }
+
+      .receipt-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+      }
+
+      .receipt-table th, .receipt-table td {
+        border: 1px solid #000;
+        padding: 7px 12px;
+        font-size: 0.82rem;
+        text-align: left;
+      }
+
+      .receipt-table th {
+        background: #F3E9DA !important;
+        font-weight: 800;
+        width: 36%;
+      }
+
+      .receipt-table td {
+        font-weight: 600;
+        background: #FFF !important;
+      }
+
+      .receipt-notice-box {
+        border: 1.5px dashed #000;
+        background: #FAFAFA !important;
+        border-radius: 8px;
+        padding: 11px;
+        margin-top: 12px;
+        font-size: 0.76rem;
+        line-height: 1.45;
+      }
+
+      .receipt-notice-box strong {
+        color: #6C0D2C;
+      }
+
+      .receipt-footer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 1px solid #CCC;
+      }
+
+      .receipt-footer-left {
+        font-size: 0.7rem;
+        color: #666;
+        line-height: 1.4;
+      }
+
+      .receipt-footer-right {
+        text-align: right;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .receipt-stamp-placeholder {
+        display: inline-block;
+        border: 1.5px solid #6C0D2C;
+        color: #6C0D2C !important;
+        padding: 5px 12px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 5px;
+      }
     }
 
     /* ================================================= */
@@ -3335,6 +3579,10 @@
             style="padding: 6px 12px; font-size: 0.8rem;">
             <span>📥 Download Roster as CSV</span>
           </button>
+          <button type="button" class="sheet-btn-action" onclick="printDelegationReceipt()"
+            style="padding: 6px 12px; font-size: 0.8rem;">
+            <span>🖨️ Save / Print Delegation Slip</span>
+          </button>
         </div>
         <button id="dlg-success-close-btn" class="success-close-btn"
           onclick="handleDelegationSuccessDone()">Done</button>
@@ -4110,7 +4358,13 @@
             class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to
           your WhatsApp/email with payment verification and portfolio allotment.
         </p>
-        <button id="success-close-btn" class="success-close-btn" onclick="handleSuccessDone()">Done</button>
+        <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 14px;">
+          <button type="button" id="print-receipt-btn" class="receipt-print-btn" onclick="printRegistrationReceipt()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Save / Print Receipt</span>
+          </button>
+          <button id="success-close-btn" class="success-close-btn" onclick="handleSuccessDone()">Done</button>
+        </div>
       </div>
     </div>
   </div>
@@ -6997,12 +7251,209 @@
       }
     }
 
+    function printRegistrationReceipt() {
+      const timestamp = Date.now().toString().slice(-6);
+      const receiptId = `RNSMUN26-${timestamp}`;
+
+      const name = document.getElementById('reg-name')?.value.trim() || 'Delegate';
+      const institution = document.getElementById('reg-institution')?.value.trim() || 'RNS Institute of Technology';
+      const usn = document.getElementById('reg-usn')?.value.trim() || 'N/A';
+      const phone = document.getElementById('reg-phone')?.value.trim() || 'N/A';
+      const email = document.getElementById('reg-email')?.value.trim() || 'N/A';
+
+      const comm1Select = document.getElementById('reg-committee-1');
+      const comm1 = (comm1Select && comm1Select.selectedIndex >= 0) ? comm1Select.options[comm1Select.selectedIndex]?.text : 'UNSC';
+
+      const port1 = document.getElementById('reg-portfolio-1')?.value.trim() || '';
+      const port2 = document.getElementById('reg-portfolio-2')?.value.trim() || '';
+      const portfolios1 = [port1, port2].filter(Boolean).join(' / ') || 'Open Allocation';
+
+      const comm2Select = document.getElementById('reg-committee-2');
+      const comm2 = (comm2Select && comm2Select.selectedIndex > 0) ? comm2Select.options[comm2Select.selectedIndex]?.text : 'None Specified';
+
+      const comm2Port1 = document.getElementById('reg-comm2-portfolio-1')?.value.trim() || '';
+      const comm2Port2 = document.getElementById('reg-comm2-portfolio-2')?.value.trim() || '';
+      const portfolios2 = [comm2Port1, comm2Port2].filter(Boolean).join(' / ') || (comm2 !== 'None Specified' ? 'Open Allocation' : 'N/A');
+
+      const category = currentDelegateType === 'internal' ? 'Internal RNSIT Delegate' : 'External Delegate';
+      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,199 (Early Bird Delegate Pass)';
+
+      const dateStr = new Date().toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setTxt('pr-receipt-id', receiptId);
+      setTxt('pr-receipt-date', dateStr);
+      setTxt('pr-name', name);
+      setTxt('pr-institution', institution);
+      setTxt('pr-usn', usn);
+      setTxt('pr-phone', phone);
+      setTxt('pr-email', email);
+      setTxt('pr-category', category);
+      setTxt('pr-committee-1', comm1);
+      setTxt('pr-portfolios-1', portfolios1);
+      setTxt('pr-committee-2', comm2);
+      setTxt('pr-portfolios-2', portfolios2);
+      setTxt('pr-fee-tier', fee);
+
+      window.print();
+    }
+
+    function printDelegationReceipt() {
+      const timestamp = Date.now().toString().slice(-6);
+      const receiptId = `RNSMUN26-DLG-${timestamp}`;
+
+      const dlgName = document.getElementById('dlg-delegation-name')?.value.trim() || 'Institutional Delegation';
+      const headName = document.getElementById('dlg-head-name')?.value.trim() || 'Head of Delegation';
+      const phone = document.getElementById('dlg-phone')?.value.trim() || 'N/A';
+      const email = document.getElementById('dlg-email')?.value.trim() || 'N/A';
+      const count = document.getElementById('dlg-count')?.value.trim() || '10+';
+      const isInternal = document.getElementById('dlg-type-internal')?.checked;
+      const category = isInternal ? 'Internal Institutional Delegation' : 'External Institutional Delegation';
+
+      const dateStr = new Date().toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setTxt('pr-receipt-id', receiptId);
+      setTxt('pr-receipt-date', dateStr);
+      setTxt('pr-name', `${headName} (Head of Delegation)`);
+      setTxt('pr-institution', dlgName);
+      setTxt('pr-usn', `Delegation Size: ${count} Delegates`);
+      setTxt('pr-phone', phone);
+      setTxt('pr-email', email);
+      setTxt('pr-category', category);
+      setTxt('pr-committee-1', 'Multi-Committee Delegation Allocation');
+      setTxt('pr-portfolios-1', 'Recorded via Delegation Google Sheet');
+      setTxt('pr-committee-2', 'Institutional Prize Pool Eligible (₹15,000)');
+      setTxt('pr-portfolios-2', 'Recorded via Delegation Google Sheet');
+      setTxt('pr-fee-tier', 'Institutional Delegation Tier');
+
+      window.print();
+    }
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', handleInitialPageLoad);
     } else {
       handleInitialPageLoad();
     }
   </script>
+
+  <!-- ================================================= -->
+  <!-- OFFICIAL PRINTABLE CONFIRMATION RECEIPT -->
+  <!-- ================================================= -->
+  <div id="printable-receipt" class="printable-receipt" aria-hidden="true">
+    <div class="receipt-header">
+      <div class="receipt-brand-left">
+        <img src="./assets/Logos/MUN_logo.png" alt="MUN Crest" class="receipt-logo" width="58" height="58">
+        <div class="receipt-titles">
+          <h1>RNSIT MUN 2026</h1>
+          <p>Model United Nations Society &bull; RNS Institute of Technology</p>
+          <p style="font-size: 0.74rem; color: #555;">October 06 &bull; 07, 2026</p>
+        </div>
+      </div>
+      <div>
+        <div class="receipt-status-badge">★ Registration Submitted</div>
+      </div>
+    </div>
+
+    <div class="receipt-meta-grid">
+      <div class="receipt-meta-item">
+        <label>Receipt No.</label>
+        <span id="pr-receipt-id">RNSMUN26-000000</span>
+      </div>
+      <div class="receipt-meta-item">
+        <label>Submission Date</label>
+        <span id="pr-receipt-date">--</span>
+      </div>
+      <div class="receipt-meta-item">
+        <label>Verification Status</label>
+        <span id="pr-receipt-status" style="color: #6C0D2C;">Payment Pending Verification</span>
+      </div>
+    </div>
+
+    <div class="receipt-section-title">Delegate Information</div>
+    <table class="receipt-table">
+      <tr>
+        <th>Full Name</th>
+        <td id="pr-name">--</td>
+      </tr>
+      <tr>
+        <th>Institution / College</th>
+        <td id="pr-institution">--</td>
+      </tr>
+      <tr>
+        <th>USN / Roll Number</th>
+        <td id="pr-usn">--</td>
+      </tr>
+      <tr>
+        <th>WhatsApp / Mobile</th>
+        <td id="pr-phone">--</td>
+      </tr>
+      <tr>
+        <th>Email Address</th>
+        <td id="pr-email">--</td>
+      </tr>
+      <tr>
+        <th>Delegate Category</th>
+        <td id="pr-category">--</td>
+      </tr>
+    </table>
+
+    <div class="receipt-section-title">Committee Preferences & Allocation Status</div>
+    <table class="receipt-table">
+      <tr>
+        <th>Primary Committee Preference</th>
+        <td id="pr-committee-1">--</td>
+      </tr>
+      <tr>
+        <th>Primary Portfolio Preferences</th>
+        <td id="pr-portfolios-1">--</td>
+      </tr>
+      <tr>
+        <th>Secondary Committee Preference</th>
+        <td id="pr-committee-2">--</td>
+      </tr>
+      <tr>
+        <th>Secondary Portfolio Preferences</th>
+        <td id="pr-portfolios-2">--</td>
+      </tr>
+      <tr>
+        <th>Applicable Delegate Fee</th>
+        <td id="pr-fee-tier">--</td>
+      </tr>
+    </table>
+
+    <div class="receipt-notice-box">
+      <strong>Official Delegate Registration Confirmation:</strong><br>
+      This document certifies that the candidate above has successfully submitted registration for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>October 06 & 07, 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Background guides, rules of procedure, and portfolio allotments will be communicated through official delegate channels. Delegates must carry this confirmation slip and valid institutional identification to the conference accreditation desk on Day 1.
+    </div>
+
+    <div class="receipt-footer-row">
+      <div class="receipt-footer-left">
+        RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
+        Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
+      </div>
+      <div class="receipt-footer-right">
+        <div class="receipt-stamp-placeholder">Core Committee &bull; MUNSOC RNSIT</div>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>
   <script type="module" src="./animated-nav.js"></script>
