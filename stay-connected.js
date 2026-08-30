@@ -25,7 +25,8 @@ if (canvas) {
       const maxSink = Math.round(peep.height * 0.18); // Feet bleed past bottom edge
       const maxRise = Math.round(peep.height * 0.22); // Upper row stagger
       const offsetY = maxSink - maxRise * gsap.parseEase("power2.in")(Math.random());
-      const startY = stage.height - peep.height + offsetY;
+      // Guarantee headroom so walking bounce (startY - 10) never reaches y < 0
+      const startY = Math.max(14, stage.height - peep.height + offsetY);
       let startX;
       let endX;
 
@@ -90,9 +91,9 @@ if (canvas) {
         get scaleFactor() {
           const h = window.innerHeight || 800;
           const isMobile = (window.innerWidth || 800) < 768;
-          // Responsive scaling: gently increased crowd size with clean anchor
+          // Responsive scaling: full crowd size with clean anchor and zero head clipping
           const targetPeepHeight = isMobile
-            ? Math.min(215, Math.max(140, h * 0.25))
+            ? (h <= 540 ? Math.min(125, Math.max(85, h * 0.22)) : Math.min(210, Math.max(135, h * 0.24)))
             : Math.min(290, Math.max(165, h * 0.31));
           return targetPeepHeight / rect[3];
         },
@@ -236,8 +237,10 @@ if (canvas) {
     img.onload = init;
     img.src = config.src;
 
+    let resizeTimer = null;
     window.addEventListener("resize", () => {
-      resize();
-    });
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 120);
+    }, { passive: true });
   }
 }
