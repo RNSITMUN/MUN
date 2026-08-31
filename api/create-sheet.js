@@ -113,7 +113,10 @@ export default async function handler(req, res) {
     const title = `RNS MUN 26 - ${delegationName.trim()} Roster`;
 
     // 1. Google Apps Script Webhook URL
-    const gasEndpoint = process.env.GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbxE1kr1fAjSP4JiNyRQYu-JU9vMk61chP6YGX_rG2n-5M7iTMz4oE1UJpsIfN5d5f1VRw/exec';
+    const gasEndpoint =
+      process.env.GOOGLE_APPS_SCRIPT_REGISTRATION_URL ||
+      process.env.GOOGLE_APPS_SCRIPT_URL ||
+      'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
     if (gasEndpoint) {
       try {
         const gasResponse = await fetch(gasEndpoint, {

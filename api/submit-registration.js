@@ -84,7 +84,8 @@ export default async function handler(req, res) {
   // ─── Primary: Google Apps Script Webhook ─────────────────────
   const gasUrl =
     process.env.GOOGLE_APPS_SCRIPT_REGISTRATION_URL ||
-    process.env.GOOGLE_APPS_SCRIPT_URL || '';
+    process.env.GOOGLE_APPS_SCRIPT_URL ||
+    'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
 
   if (gasUrl) {
     try {
