@@ -232,6 +232,16 @@
       margin-bottom: 14px;
     }
 
+    .coc-clause-header-left {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .coc-back-to-index {
+      display: none;
+    }
+
     .coc-clause-num {
       font-family: var(--font-sans);
       font-size: 1.25rem;
@@ -352,6 +362,7 @@
       .floating-menu-btn,
       .coc-header,
       .coc-index-nav,
+      .coc-back-to-index,
       .coc-doc-footer {
         display: none !important;
         visibility: hidden !important;
@@ -563,12 +574,186 @@
     }
 
     @media (max-width: 768px) {
-      .coc-document-sheet {
-        padding: 24px 20px;
+      .coc-wrapper {
+        padding: clamp(52px, 8vh, 68px) clamp(12px, 4vw, 20px) calc(88px + env(safe-area-inset-bottom, 16px)) clamp(12px, 4vw, 20px);
+        max-width: 100%;
       }
+
+      .coc-header {
+        margin-bottom: 20px;
+      }
+
+      .coc-meta-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 8px;
+      }
+
+      .coc-display-title {
+        font-size: clamp(1.85rem, 8.5vw, 2.5rem);
+        line-height: 1.0;
+        letter-spacing: -0.03em;
+        margin: 0 0 12px 0;
+        word-break: break-word;
+      }
+
+      .coc-preamble-lead {
+        font-size: clamp(0.88rem, 2.8vw, 0.98rem);
+        line-height: 1.55;
+        max-width: 100%;
+        margin: 0 auto 18px auto;
+        padding: 0 4px;
+      }
+
+      .coc-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+
+      .coc-action-pill {
+        padding: 6px 13px;
+        font-size: 0.74rem;
+        box-shadow: 2px 2px 0px var(--text-primary);
+      }
+
+      /* Natural Organic Quick-Jump Index on mobile */
+      .coc-index-nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px 6px;
+        width: 100%;
+        max-width: 640px;
+        margin: 0 auto 24px auto;
+        padding: 0;
+        scroll-margin-top: clamp(16px, 3vh, 24px);
+      }
+
+      .coc-index-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: 999px;
+        box-shadow: 2px 2px 0px var(--text-primary);
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+
+      .coc-document-sheet {
+        padding: clamp(18px, 4.5vw, 24px) clamp(14px, 4vw, 20px);
+        border: 2px solid var(--text-primary);
+        border-radius: 14px;
+        box-shadow: 4px 4px 0px var(--text-primary);
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .coc-clause {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        scroll-margin-top: clamp(16px, 3vh, 24px);
+      }
+
+      .coc-clause-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .coc-clause-header-left {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .coc-clause-num {
+        font-size: 1.1rem;
+        line-height: 1.2;
+      }
+
+      .coc-clause-title {
+        font-size: clamp(0.96rem, 3.8vw, 1.15rem);
+        line-height: 1.25;
+        word-break: break-word;
+      }
+
+      /* Subtle Back to Index - visible ONLY on the actively jumped clause */
+      .coc-clause.is-index-target .coc-back-to-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-color);
+        font-size: 1.15rem;
+        font-weight: 900;
+        line-height: 1;
+        text-decoration: none;
+        margin-left: auto;
+        padding: 4px 8px;
+        opacity: 0.85;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .coc-clause.is-index-target .coc-back-to-index:hover,
+      .coc-clause.is-index-target .coc-back-to-index:active {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .coc-clause-list {
+        gap: 8px;
+      }
+
+      .coc-clause-item {
+        font-size: clamp(0.86rem, 2.7vw, 0.92rem);
+        line-height: 1.56;
+        gap: 10px;
+      }
+
+      .coc-clause-dot {
+        width: 4.5px;
+        height: 4.5px;
+        margin-top: 8px;
+      }
+
       .coc-doc-footer {
+        margin-top: 24px;
+        padding-top: 18px;
         flex-direction: column;
         align-items: flex-start;
+        gap: 8px;
+      }
+
+      .coc-doc-footer-text {
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      .coc-contact-link {
+        font-size: 0.86rem;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .coc-index-chip {
+        font-size: 0.7rem;
+        padding: 4px 9px;
+      }
+      .coc-action-pill {
+        font-size: 0.7rem;
+        padding: 6px 10px;
       }
     }
   </style>
@@ -626,7 +811,7 @@
     </header>
 
     <!-- Minimal Horizontal Quick-Jump Strip -->
-    <nav class="coc-index-nav" aria-label="Jump to section">
+    <nav class="coc-index-nav" id="coc-index" aria-label="Jump to section">
       <a href="#rule-1" class="coc-index-chip">01 Conduct</a>
       <a href="#rule-2" class="coc-index-chip">02 Decorum</a>
       <a href="#rule-3" class="coc-index-chip">03 Diplomatic</a>
@@ -664,8 +849,11 @@
       <!-- 1. Delegate Conduct -->
       <section class="coc-clause" id="rule-1">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">01</span>
-          <h2 class="coc-clause-title">Delegate Conduct</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">01</span>
+            <h2 class="coc-clause-title">Delegate Conduct</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -686,8 +874,11 @@
       <!-- 2. Committee Decorum -->
       <section class="coc-clause" id="rule-2">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">02</span>
-          <h2 class="coc-clause-title">Committee Decorum</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">02</span>
+            <h2 class="coc-clause-title">Committee Decorum</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -708,8 +899,11 @@
       <!-- 3. Diplomatic Conduct -->
       <section class="coc-clause" id="rule-3">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">03</span>
-          <h2 class="coc-clause-title">Diplomatic Conduct</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">03</span>
+            <h2 class="coc-clause-title">Diplomatic Conduct</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -730,8 +924,11 @@
       <!-- 4. Harassment & Discrimination -->
       <section class="coc-clause" id="rule-4">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">04</span>
-          <h2 class="coc-clause-title">Harassment & Discrimination</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">04</span>
+            <h2 class="coc-clause-title">Harassment & Discrimination</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -760,8 +957,11 @@
       <!-- 5. Dress Code -->
       <section class="coc-clause" id="rule-5">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">05</span>
-          <h2 class="coc-clause-title">Dress Code</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">05</span>
+            <h2 class="coc-clause-title">Dress Code</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -782,8 +982,11 @@
       <!-- 6. Communication & Social Media -->
       <section class="coc-clause" id="rule-6">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">06</span>
-          <h2 class="coc-clause-title">Communication & Social Media</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">06</span>
+            <h2 class="coc-clause-title">Communication & Social Media</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -804,8 +1007,11 @@
       <!-- 7. Academic Integrity & Plagiarism -->
       <section class="coc-clause" id="rule-7">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">07</span>
-          <h2 class="coc-clause-title">Academic Integrity & Plagiarism</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">07</span>
+            <h2 class="coc-clause-title">Academic Integrity & Plagiarism</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -830,8 +1036,11 @@
       <!-- 8. Restricted Items & Substances -->
       <section class="coc-clause" id="rule-8">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">08</span>
-          <h2 class="coc-clause-title">Restricted Items & Substances</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">08</span>
+            <h2 class="coc-clause-title">Restricted Items & Substances</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -852,8 +1061,11 @@
       <!-- 9. Venue & Property -->
       <section class="coc-clause" id="rule-9">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">09</span>
-          <h2 class="coc-clause-title">Venue & Property</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">09</span>
+            <h2 class="coc-clause-title">Venue & Property</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -874,8 +1086,11 @@
       <!-- 10. Photography & Identification -->
       <section class="coc-clause" id="rule-10">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">10</span>
-          <h2 class="coc-clause-title">Photography & Identification</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">10</span>
+            <h2 class="coc-clause-title">Photography & Identification</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -896,8 +1111,11 @@
       <!-- 11. Awards & Fair Play -->
       <section class="coc-clause" id="rule-11">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">11</span>
-          <h2 class="coc-clause-title">Awards & Fair Play</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">11</span>
+            <h2 class="coc-clause-title">Awards & Fair Play</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -918,8 +1136,11 @@
       <!-- 12. Disciplinary Action -->
       <section class="coc-clause" id="rule-12">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">12</span>
-          <h2 class="coc-clause-title">Disciplinary Action</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">12</span>
+            <h2 class="coc-clause-title">Disciplinary Action</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -940,8 +1161,11 @@
       <!-- 13. Final Authority -->
       <section class="coc-clause" id="rule-13">
         <div class="coc-clause-header">
-          <span class="coc-clause-num">13</span>
-          <h2 class="coc-clause-title">Final Authority</h2>
+          <div class="coc-clause-header-left">
+            <span class="coc-clause-num">13</span>
+            <h2 class="coc-clause-title">Final Authority</h2>
+          </div>
+          <a href="#coc-index" class="coc-back-to-index" title="Back to Index" aria-label="Back to Index">↑</a>
         </div>
         <ul class="coc-clause-list">
           <li class="coc-clause-item">
@@ -995,6 +1219,51 @@
         document.title = originalTitle;
       }, 1500);
     }
+
+    // Back-to-Index active state & smooth scrolling
+    document.addEventListener('DOMContentLoaded', function () {
+      var chips = document.querySelectorAll('.coc-index-chip');
+      var backButtons = document.querySelectorAll('.coc-back-to-index');
+      var allClauses = document.querySelectorAll('.coc-clause');
+
+      function clearActiveClause() {
+        allClauses.forEach(function (clause) {
+          clause.classList.remove('is-index-target');
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function (e) {
+          var targetId = this.getAttribute('href');
+          if (targetId && targetId.startsWith('#')) {
+            var targetClause = document.querySelector(targetId);
+            if (targetClause) {
+              e.preventDefault();
+              clearActiveClause();
+              targetClause.classList.add('is-index-target');
+              targetClause.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              try {
+                history.pushState(null, '', targetId);
+              } catch (_) {}
+            }
+          }
+        });
+      });
+
+      backButtons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var indexNav = document.getElementById('coc-index');
+          if (indexNav) {
+            indexNav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            try {
+              history.pushState(null, '', '#coc-index');
+            } catch (_) {}
+          }
+          clearActiveClause();
+        });
+      });
+    });
   </script>
 
   <!-- Topology Shader Background -->
