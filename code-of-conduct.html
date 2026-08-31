@@ -144,18 +144,21 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
     }
 
     .coc-action-pill:hover {
       transform: translate(-1px, -1px);
       box-shadow: 3.5px 3.5px 0px var(--text-primary);
-      background: #FFF7EB;
+      background: var(--accent-color);
+      color: #FFF7EB;
     }
 
     .coc-action-pill:active {
       transform: translate(1px, 1px);
       box-shadow: 1.5px 1.5px 0px var(--text-primary);
+      background: var(--accent-hover);
+      color: #FFF7EB;
     }
 
     /* Minimal Quick-Jump Index Bar */
