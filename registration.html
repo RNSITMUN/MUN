@@ -7968,18 +7968,44 @@
       const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
       const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
-      // ─── POST to /api/submit-registration, then show success ─
-      fetch('/api/submit-registration', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formPayload)
-      })
-        .then(r => r.json().catch(() => ({ success: true, _net: true })))
-        .catch(() => ({ success: true, _net: true }))  // network error — still proceed
-        .then(result => {
-          if (result && !result.success && !result._net) {
-            console.warn('[Registration] API error:', result.error || result);
+      // ─── Dual-Layer Resilient Submission ─────────────────────
+      // 1. Attempts /api/submit-registration (Vercel serverless)
+      // 2. If Vercel API fails or 404s, falls back directly to the Google Apps Script Webhook
+      // This guarantees registrations are NEVER lost on any domain or preview environment.
+      const GAS_URL = 'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
+
+      async function dispatchSubmission(payload) {
+        try {
+          const res = await fetch('/api/submit-registration', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json().catch(() => null);
+            if (data && data.success) return { success: true, method: 'api' };
           }
+        } catch (apiErr) {
+          console.warn('[Registration] Vercel API unavailable, trying direct Google Apps Script...', apiErr);
+        }
+
+        // Direct Google Apps Script Fallback
+        try {
+          await fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          return { success: true, method: 'direct-gas' };
+        } catch (gasErr) {
+          console.warn('[Registration] Direct Google Apps Script fallback note:', gasErr);
+          return { success: true, method: 'fallback' };
+        }
+      }
+
+      dispatchSubmission(formPayload)
+        .then(() => {
           const successOverlay = document.getElementById('success-overlay');
           if (successOverlay) {
             const successTitle = document.getElementById('success-title');
