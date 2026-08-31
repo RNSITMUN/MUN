@@ -24,8 +24,8 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;600;700;800;900&family=Anton&family=Oswald:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;600;700;800;900&family=Anton&family=Oswald:wght@700&display=swap" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Anton&family=Oswald:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Anton&family=Oswald:wght@700&display=swap" rel="stylesheet"></noscript>
 
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
@@ -39,8 +39,6 @@
       --text-primary: #000000;
       --accent-color: #6C0D2C;
       --accent-hover: #520921;
-      --gold-accent: #E5A93C;
-      --gold-hover: #d49526;
       --font-sans: 'Outfit', sans-serif;
     }
 
@@ -57,7 +55,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Background WebGL Shader Canvas */
+    /* WebGL Topology Background Canvas */
     #topology-canvas {
       position: fixed;
       top: 0;
@@ -69,161 +67,115 @@
       opacity: 0.85;
     }
 
-    /* Page Layout Container */
-    .coc-container {
+    /* Page Wrapper */
+    .coc-wrapper {
       position: relative;
       z-index: 5;
       width: 100%;
-      max-width: 980px;
+      max-width: 880px;
       margin: 0 auto;
-      padding: clamp(90px, 14vh, 130px) 20px 80px 20px;
+      padding: clamp(100px, 14vh, 140px) 20px 80px 20px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Hero Section */
-    .coc-hero {
+    /* Editorial Header */
+    .coc-header {
+      width: 100%;
       text-align: center;
-      max-width: 820px;
       margin-bottom: 32px;
     }
 
-    .coc-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #FFFFFF;
-      color: var(--accent-color);
-      border: 2px solid var(--text-primary);
-      border-radius: 999px;
-      padding: 6px 16px;
+    .coc-meta-label {
       font-size: 0.76rem;
       font-weight: 800;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      box-shadow: 2px 2px 0px var(--text-primary);
-      margin-bottom: 16px;
+      color: var(--accent-color);
+      margin-bottom: 12px;
+      display: inline-block;
     }
 
-    .coc-badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent-color);
-    }
-
-    .coc-title {
+    .coc-display-title {
       font-family: var(--font-sans);
-      font-size: clamp(2.4rem, 6.5vw, 4.2rem);
+      font-size: clamp(2.6rem, 6.5vw, 4.2rem);
       font-weight: 900;
       color: var(--text-primary);
       text-transform: uppercase;
       letter-spacing: -0.04em;
-      line-height: 0.98;
+      line-height: 0.96;
       margin: 0 0 16px 0;
-      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.08);
     }
 
-    .coc-subtitle {
-      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-      color: rgba(0, 0, 0, 0.74);
+    .coc-preamble-lead {
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      color: rgba(0, 0, 0, 0.72);
       line-height: 1.6;
+      max-width: 640px;
       margin: 0 auto 24px auto;
-      max-width: 720px;
-      font-weight: 500;
+      font-weight: 400;
     }
 
-    /* Highlight Quick-Pills */
-    .coc-pill-row {
+    /* Header Actions Row */
+    .coc-header-actions {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .coc-highlight-pill {
-      background: #FFFFFF;
-      border: 1.5px solid var(--text-primary);
-      border-radius: 8px;
-      padding: 5px 12px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      box-shadow: 2px 2px 0px var(--text-primary);
-      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
-    /* Search & Filter Bar */
-    .coc-toolbar {
-      width: 100%;
-      max-width: 680px;
-      margin-bottom: 30px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .coc-search-input {
-      flex: 1;
+    .coc-action-pill {
       background: #FFFFFF;
-      border: 2.5px solid var(--text-primary);
-      border-radius: 10px;
-      box-shadow: 3px 3px 0px var(--text-primary);
-      padding: 12px 18px;
-      font-family: var(--font-sans);
-      font-size: 0.92rem;
-      font-weight: 600;
       color: var(--text-primary);
-      outline: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .coc-search-input:focus {
-      transform: translate(-1px, -1px);
-      box-shadow: 5px 5px 0px var(--text-primary);
-    }
-
-    .coc-print-btn {
-      background: var(--accent-color);
-      color: #FFF7EB;
-      border: 2.5px solid var(--text-primary);
-      border-radius: 10px;
-      box-shadow: 3px 3px 0px var(--text-primary);
-      padding: 12px 20px;
+      border: 2px solid var(--text-primary);
+      border-radius: 999px;
+      box-shadow: 2.5px 2.5px 0px var(--text-primary);
+      padding: 7px 16px;
       font-family: var(--font-sans);
-      font-size: 0.86rem;
-      font-weight: 800;
+      font-size: 0.8rem;
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      white-space: nowrap;
+      gap: 6px;
+      text-decoration: none;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    .coc-print-btn:hover {
-      background: var(--accent-hover);
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px var(--text-primary);
+    .coc-action-pill:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px var(--text-primary);
+      background: #FFF7EB;
     }
 
-    /* Quick Jump Anchor Rail */
-    .coc-jump-bar {
+    .coc-action-pill:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0px var(--text-primary);
+    }
+
+    /* Minimal Quick-Jump Index Bar */
+    .coc-index-nav {
       width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 6px 0 16px 0;
+      margin-bottom: 24px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 36px;
+      gap: 8px;
+      box-sizing: border-box;
     }
 
-    .coc-jump-link {
+    .coc-index-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .coc-index-chip {
       background: #FFFFFF;
       color: var(--text-primary);
       border: 1.5px solid var(--text-primary);
@@ -233,74 +185,71 @@
       font-weight: 700;
       text-decoration: none;
       box-shadow: 2px 2px 0px var(--text-primary);
+      white-space: nowrap;
       transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .coc-jump-link:hover {
+    .coc-index-chip:hover {
       background: var(--accent-color);
       color: #FFF7EB;
+      border-color: var(--text-primary);
       transform: translate(-1px, -1px);
       box-shadow: 3px 3px 0px var(--text-primary);
     }
 
-    /* Core Policy Cards Grid */
-    .coc-grid {
+    /* Unified Parchment Document Card */
+    .coc-document-sheet {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .coc-card {
       background: #FFFFFF;
       border: 2.5px solid var(--text-primary);
-      border-radius: 12px;
-      box-shadow: 4px 4px 0px var(--text-primary);
-      padding: clamp(20px, 3vw, 28px);
-      box-sizing: border-box;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .coc-card:hover {
-      transform: translate(-2px, -2px);
+      border-radius: 16px;
       box-shadow: 6px 6px 0px var(--text-primary);
+      padding: clamp(28px, 5vw, 56px);
+      box-sizing: border-box;
+      text-align: left;
     }
 
-    .coc-card-header {
+    /* Clause Article Section */
+    .coc-clause {
+      padding-bottom: 28px;
+      margin-bottom: 28px;
+      border-bottom: 1.5px solid rgba(0, 0, 0, 0.09);
+      scroll-margin-top: 100px;
+    }
+
+    .coc-clause:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .coc-clause-header {
       display: flex;
-      align-items: center;
-      gap: 14px;
+      align-items: baseline;
+      gap: 12px;
       margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 2px dashed rgba(0, 0, 0, 0.12);
     }
 
-    .coc-card-number {
-      background: var(--accent-color);
-      color: #FFF7EB;
-      border: 2px solid var(--text-primary);
-      border-radius: 8px;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
+    .coc-clause-num {
+      font-family: var(--font-sans);
+      font-size: 1.25rem;
       font-weight: 900;
-      flex-shrink: 0;
-      box-shadow: 2px 2px 0px var(--text-primary);
-    }
-
-    .coc-card-title {
-      font-size: clamp(1.15rem, 2.4vw, 1.45rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      margin: 0;
-      color: var(--text-primary);
+      color: var(--accent-color);
       letter-spacing: -0.02em;
     }
 
-    .coc-rule-list {
+    .coc-clause-title {
+      font-family: var(--font-sans);
+      font-size: clamp(1.15rem, 2.4vw, 1.35rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .coc-clause-list {
       margin: 0;
       padding-left: 0;
       list-style: none;
@@ -309,146 +258,100 @@
       gap: 10px;
     }
 
-    .coc-rule-item {
+    .coc-clause-item {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      font-size: 0.94rem;
+      gap: 12px;
+      font-size: 0.98rem;
       color: rgba(0, 0, 0, 0.82);
-      line-height: 1.6;
+      line-height: 1.68;
+      font-weight: 400;
     }
 
-    .coc-rule-bullet {
-      width: 8px;
-      height: 8px;
+    .coc-clause-dot {
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: var(--accent-color);
       flex-shrink: 0;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
-    /* Preamble Callout */
-    .coc-preamble-card {
-      width: 100%;
-      background: #FFF7EB;
-      border: 2.5px solid var(--text-primary);
-      border-left: 8px solid var(--accent-color);
-      border-radius: 12px;
-      box-shadow: 4px 4px 0px var(--text-primary);
-      padding: 20px 24px;
-      box-sizing: border-box;
-      margin-bottom: 24px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      line-height: 1.65;
-      color: var(--text-primary);
-    }
-
-    /* Reporting / Assistance Card */
-    .coc-reporting-card {
-      width: 100%;
-      background: #FFF7EB;
-      border: 2.5px solid var(--text-primary);
-      border-radius: 12px;
-      box-shadow: 4px 4px 0px var(--text-primary);
-      padding: clamp(20px, 3vw, 32px);
-      box-sizing: border-box;
+    /* Minimal Document Footer / Contact Notice */
+    .coc-doc-footer {
       margin-top: 36px;
+      padding-top: 24px;
+      border-top: 2px dashed rgba(0, 0, 0, 0.15);
       display: flex;
-      flex-direction: column;
       align-items: center;
-      text-align: center;
-    }
-
-    .coc-reporting-card h3 {
-      font-size: clamp(1.25rem, 2.4vw, 1.65rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      margin: 0 0 10px 0;
-      letter-spacing: -0.02em;
-    }
-
-    .coc-reporting-card p {
-      font-size: 0.94rem;
-      line-height: 1.6;
-      max-width: 620px;
-      color: rgba(0, 0, 0, 0.74);
-      margin: 0 0 20px 0;
-    }
-
-    .coc-reporting-actions {
-      display: flex;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 16px;
       flex-wrap: wrap;
-      justify-content: center;
     }
 
-    .reporting-btn {
-      background: var(--accent-color);
-      color: #FFF7EB;
-      border: 2px solid var(--text-primary);
-      border-radius: 8px;
-      box-shadow: 3px 3px 0px var(--text-primary);
-      padding: 10px 18px;
-      font-family: var(--font-sans);
-      font-size: 0.86rem;
+    .coc-doc-footer-text {
+      font-size: 0.88rem;
+      color: rgba(0, 0, 0, 0.64);
+      line-height: 1.5;
+      margin: 0;
+      max-width: 480px;
+    }
+
+    .coc-contact-link {
+      color: var(--accent-color);
       font-weight: 800;
-      text-transform: uppercase;
       text-decoration: none;
+      border-bottom: 1.5px solid var(--accent-color);
+      padding-bottom: 2px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      gap: 4px;
+      transition: color 0.15s ease;
     }
 
-    .reporting-btn:hover {
-      background: var(--accent-hover);
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px var(--text-primary);
+    .coc-contact-link:hover {
+      color: var(--accent-hover);
     }
 
-    /* Print Styles */
+    /* Print Viewport Optimizations */
     @media print {
-      #topology-canvas, .coc-toolbar, .coc-jump-bar, .nav-pill, .top-left-logo-container, .top-right-logo-container {
+      #topology-canvas, .coc-header-actions, .coc-index-nav, .nav-pill, .top-left-logo-container, .top-right-logo-container {
         display: none !important;
       }
-      .coc-container {
+      .coc-wrapper {
         padding: 0 !important;
         max-width: 100% !important;
       }
-      .coc-card {
+      .coc-document-sheet {
         box-shadow: none !important;
-        border: 1.5px solid #000 !important;
+        border: none !important;
+        padding: 0 !important;
+      }
+      .coc-clause {
         page-break-inside: avoid;
+        padding-bottom: 16px;
         margin-bottom: 16px;
       }
       @page {
-        margin: 12mm;
+        margin: 15mm;
         size: portrait;
       }
     }
 
     @media (max-width: 768px) {
-      .coc-toolbar {
+      .coc-document-sheet {
+        padding: 24px 20px;
+      }
+      .coc-doc-footer {
         flex-direction: column;
-      }
-      .coc-print-btn {
-        width: 100%;
-        justify-content: center;
-      }
-      .coc-jump-bar {
-        gap: 5px;
-      }
-      .coc-jump-link {
-        font-size: 0.72rem;
-        padding: 4px 10px;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Topology Shader Canvas -->
+  <!-- WebGL Topology Background Shader -->
   <canvas id="topology-canvas"></canvas>
 
   <!-- Top Left Logo -->
@@ -475,368 +378,361 @@
     <a href="/code-of-conduct" class="nav-item active" id="nav-coc">CoC</a>
   </nav>
 
-  <!-- Main Content Container -->
-  <main class="coc-container">
+  <!-- Main Content Layout -->
+  <main class="coc-wrapper">
 
-    <!-- Hero Header -->
-    <header class="coc-hero">
-      <h1 class="coc-title">Code of Conduct</h1>
-      <p class="coc-subtitle">
-        Official rules and regulations to ensure a professional, respectful, fair, and engaging Model United Nations experience for all participants.
+    <!-- Editorial Header -->
+    <header class="coc-header">
+      <span class="coc-meta-label">RNS Model United Nations 2026</span>
+      <h1 class="coc-display-title">Code of Conduct</h1>
+      <p class="coc-preamble-lead">
+        Please follow these rules to ensure a professional, respectful, fair, and engaging Model United Nations experience for all participants.
       </p>
+
+      <div class="coc-header-actions">
+        <button type="button" class="coc-action-pill" onclick="printOfficialPolicy()" title="Print or save as PDF">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>Print / PDF</span>
+        </button>
+        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-action-pill" title="Contact Organizing Committee">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>Contact Committee</span>
+        </a>
+      </div>
     </header>
 
-    <!-- Preamble Card -->
-    <div class="coc-preamble-card">
-      Please follow these rules to ensure a professional, respectful, fair, and engaging Model United Nations experience for all participants.
-    </div>
-
-    <!-- Search & Print Toolbar -->
-    <div class="coc-toolbar">
-      <input type="text" id="cocSearch" class="coc-search-input" placeholder="Search rules (e.g., dress code, AI, decorum, social media)..." aria-label="Search Code of Conduct rules">
-      <button type="button" class="coc-print-btn" onclick="printOfficialPolicy()" title="Print official policy sheet">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-        <span>Print Policy</span>
-      </button>
-    </div>
-
-    <!-- Quick Jump Bar -->
-    <nav class="coc-jump-bar" aria-label="Quick jump to sections">
-      <a href="#rule-1" class="coc-jump-link">1. Delegate Conduct</a>
-      <a href="#rule-2" class="coc-jump-link">2. Committee Decorum</a>
-      <a href="#rule-3" class="coc-jump-link">3. Diplomatic Conduct</a>
-      <a href="#rule-4" class="coc-jump-link">4. Harassment & Discrimination</a>
-      <a href="#rule-5" class="coc-jump-link">5. Dress Code</a>
-      <a href="#rule-6" class="coc-jump-link">6. Social Media</a>
-      <a href="#rule-7" class="coc-jump-link">7. Academic Integrity & AI</a>
-      <a href="#rule-8" class="coc-jump-link">8. Restricted Substances</a>
-      <a href="#rule-9" class="coc-jump-link">9. Venue & Property</a>
-      <a href="#rule-10" class="coc-jump-link">10. Identification</a>
-      <a href="#rule-11" class="coc-jump-link">11. Awards & Fair Play</a>
-      <a href="#rule-12" class="coc-jump-link">12. Disciplinary Action</a>
-      <a href="#rule-13" class="coc-jump-link">13. Final Authority</a>
+    <!-- Minimal Horizontal Quick-Jump Strip -->
+    <nav class="coc-index-nav" aria-label="Jump to section">
+      <a href="#rule-1" class="coc-index-chip">01 Conduct</a>
+      <a href="#rule-2" class="coc-index-chip">02 Decorum</a>
+      <a href="#rule-3" class="coc-index-chip">03 Diplomatic</a>
+      <a href="#rule-4" class="coc-index-chip">04 Harassment</a>
+      <a href="#rule-5" class="coc-index-chip">05 Dress Code</a>
+      <a href="#rule-6" class="coc-index-chip">06 Social Media</a>
+      <a href="#rule-7" class="coc-index-chip">07 Integrity & AI</a>
+      <a href="#rule-8" class="coc-index-chip">08 Substances</a>
+      <a href="#rule-9" class="coc-index-chip">09 Venue</a>
+      <a href="#rule-10" class="coc-index-chip">10 Identification</a>
+      <a href="#rule-11" class="coc-index-chip">11 Awards</a>
+      <a href="#rule-12" class="coc-index-chip">12 Disciplinary</a>
+      <a href="#rule-13" class="coc-index-chip">13 Authority</a>
     </nav>
 
-    <!-- Policy Cards Grid -->
-    <div class="coc-grid" id="cocGrid">
+    <!-- Unified Parchment Document Card -->
+    <article class="coc-document-sheet">
 
       <!-- 1. Delegate Conduct -->
-      <article class="coc-card" id="rule-1">
-        <div class="coc-card-header">
-          <div class="coc-card-number">1</div>
-          <h2 class="coc-card-title">Delegate Conduct</h2>
+      <section class="coc-clause" id="rule-1">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">01</span>
+          <h2 class="coc-clause-title">Delegate Conduct</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>All delegates are expected to maintain professionalism and decorum throughout the conference.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must treat fellow participants, Executive Board members, Organizing Committee members, volunteers, and staff with respect.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Any form of intimidation, bullying, harassment, or disrespectful behavior will not be tolerated.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 2. Committee Decorum -->
-      <article class="coc-card" id="rule-2">
-        <div class="coc-card-header">
-          <div class="coc-card-number">2</div>
-          <h2 class="coc-card-title">Committee Decorum</h2>
+      <section class="coc-clause" id="rule-2">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">02</span>
+          <h2 class="coc-clause-title">Committee Decorum</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must follow the instructions of the Executive Board and adhere to the Rules of Procedure of their respective committees.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Decisions of the Executive Board regarding committee procedure must be respected.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are expected to maintain proper decorum and follow the established rules throughout committee sessions.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 3. Diplomatic Conduct -->
-      <article class="coc-card" id="rule-3">
-        <div class="coc-card-header">
-          <div class="coc-card-number">3</div>
-          <h2 class="coc-card-title">Diplomatic Conduct</h2>
+      <section class="coc-clause" id="rule-3">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">03</span>
+          <h2 class="coc-clause-title">Diplomatic Conduct</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Offensive, derogatory, discriminatory, or inflammatory remarks directed at any participant or group are prohibited.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are expected to use diplomatic and respectful language during formal debate.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Personal attacks against other delegates are strictly prohibited.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 4. Harassment & Discrimination -->
-      <article class="coc-card" id="rule-4">
-        <div class="coc-card-header">
-          <div class="coc-card-number">4</div>
-          <h2 class="coc-card-title">Harassment & Discrimination</h2>
+      <section class="coc-clause" id="rule-4">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">04</span>
+          <h2 class="coc-clause-title">Harassment & Discrimination</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>RNSMUN maintains a zero-tolerance policy toward harassment and discrimination.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Discrimination or harassment based on gender, race, nationality, religion, disability, appearance, or any other personal characteristic will not be tolerated.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Sexual harassment, unwanted physical contact, threats, stalking, or inappropriate conduct of any kind are strictly prohibited.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Any concerns regarding harassment or inappropriate behavior should be reported to the Organizing Committee immediately.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Reports will be handled appropriately and, where possible, with confidentiality.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 5. Dress Code -->
-      <article class="coc-card" id="rule-5">
-        <div class="coc-card-header">
-          <div class="coc-card-number">5</div>
-          <h2 class="coc-card-title">Dress Code</h2>
+      <section class="coc-clause" id="rule-5">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">05</span>
+          <h2 class="coc-clause-title">Dress Code</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are expected to dress in formal Western or traditional formal attire appropriate for a diplomatic conference.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Excessively revealing or inappropriate clothing is not permitted during committee sessions.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>The Organizing Committee reserves the right to address dress-code violations.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 6. Communication & Social Media -->
-      <article class="coc-card" id="rule-6">
-        <div class="coc-card-header">
-          <div class="coc-card-number">6</div>
-          <h2 class="coc-card-title">Communication & Social Media</h2>
+      <section class="coc-clause" id="rule-6">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">06</span>
+          <h2 class="coc-clause-title">Communication & Social Media</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are expected to maintain appropriate conduct on social media and in their respective WhatsApp group chats in relation to the conference.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Posting or sharing content that is abusive, threatening, discriminatory, sexually inappropriate, or intended to harass another participant is prohibited.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must not use conference-related communication platforms to target, intimidate, or publicly shame other participants.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 7. Academic Integrity & Plagiarism -->
-      <article class="coc-card" id="rule-7">
-        <div class="coc-card-header">
-          <div class="coc-card-number">7</div>
-          <h2 class="coc-card-title">Academic Integrity & Plagiarism</h2>
+      <section class="coc-clause" id="rule-7">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">07</span>
+          <h2 class="coc-clause-title">Academic Integrity & Plagiarism</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are encouraged to conduct independent research and prepare their speeches, position papers, and other submissions responsibly.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Plagiarism, fabrication of sources, falsification of information, or deliberate misrepresentation of another delegate's work is prohibited.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>The use of artificial intelligence and internet resources must comply with the policy established by the respective Executive Board.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are responsible for ensuring that their submissions comply with the applicable committee's AI and internet-use guidelines.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 8. Restricted Items & Substances -->
-      <article class="coc-card" id="rule-8">
-        <div class="coc-card-header">
-          <div class="coc-card-number">8</div>
-          <h2 class="coc-card-title">Restricted Items & Substances</h2>
+      <section class="coc-clause" id="rule-8">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">08</span>
+          <h2 class="coc-clause-title">Restricted Items & Substances</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Weapons, explosives, illegal substances, alcohol, and other prohibited items are not permitted at the conference.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Smoking and vaping are prohibited within the conference premises.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Any item deemed dangerous, disruptive, or inappropriate by the Organizing Committee may be confiscated or prohibited.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 9. Venue & Property -->
-      <article class="coc-card" id="rule-9">
-        <div class="coc-card-header">
-          <div class="coc-card-number">9</div>
-          <h2 class="coc-card-title">Venue & Property</h2>
+      <section class="coc-clause" id="rule-9">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">09</span>
+          <h2 class="coc-clause-title">Venue & Property</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates are responsible for maintaining cleanliness and respecting the conference venue.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Damage to venue property, conference equipment, or another participant's belongings may result in disciplinary action.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must follow all safety instructions and venue regulations.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 10. Photography & Identification -->
-      <article class="coc-card" id="rule-10">
-        <div class="coc-card-header">
-          <div class="coc-card-number">10</div>
-          <h2 class="coc-card-title">Photography & Identification</h2>
+      <section class="coc-clause" id="rule-10">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">10</span>
+          <h2 class="coc-clause-title">Photography & Identification</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Participants may be photographed or recorded by the official RNSMUN media team for legitimate conference-related purposes.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must carry their conference identification and display it when required.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Conference credentials must not be transferred or shared with another individual.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 11. Awards & Fair Play -->
-      <article class="coc-card" id="rule-11">
-        <div class="coc-card-header">
-          <div class="coc-card-number">11</div>
-          <h2 class="coc-card-title">Awards & Fair Play</h2>
+      <section class="coc-clause" id="rule-11">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">11</span>
+          <h2 class="coc-clause-title">Awards & Fair Play</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Awards will be determined by the Executive Board based on delegate performance, including diplomacy, substantive knowledge, participation, negotiation, and adherence to committee procedure.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Delegates must not attempt to influence the Executive Board regarding awards.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Any attempt to unfairly manipulate the award process may result in disqualification from consideration.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 12. Disciplinary Action -->
-      <article class="coc-card" id="rule-12">
-        <div class="coc-card-header">
-          <div class="coc-card-number">12</div>
-          <h2 class="coc-card-title">Disciplinary Action</h2>
+      <section class="coc-clause" id="rule-12">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">12</span>
+          <h2 class="coc-clause-title">Disciplinary Action</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Violations of the Code of Conduct may result in a warning, removal from a session, disqualification from awards, or removal from the conference, depending on the severity of the violation.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Serious violations may result in immediate removal from the premises and, where necessary, notification of the appropriate authorities.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>The Organizing Committee reserves the right to take appropriate action in situations not explicitly covered by this Code of Conduct.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
       <!-- 13. Final Authority -->
-      <article class="coc-card" id="rule-13">
-        <div class="coc-card-header">
-          <div class="coc-card-number">13</div>
-          <h2 class="coc-card-title">Final Authority</h2>
+      <section class="coc-clause" id="rule-13">
+        <div class="coc-clause-header">
+          <span class="coc-clause-num">13</span>
+          <h2 class="coc-clause-title">Final Authority</h2>
         </div>
-        <ul class="coc-rule-list">
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+        <ul class="coc-clause-list">
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>By registering for RNSMUN, all participants agree to abide by this Code of Conduct and the Rules of Procedure of their respective committees.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>The Organizing Committee reserves the right to interpret and enforce these regulations in the best interests of safety, fairness, and the smooth functioning of the conference.</span>
           </li>
-          <li class="coc-rule-item">
-            <span class="coc-rule-bullet"></span>
+          <li class="coc-clause-item">
+            <span class="coc-clause-dot"></span>
             <span>Participation in RNSMUN constitutes acceptance of these terms and regulations.</span>
           </li>
         </ul>
-      </article>
+      </section>
 
-    </div>
-
-    <!-- Organizing Committee Contact Card -->
-    <section class="coc-reporting-card">
-      <h3>Organizing Committee Contact</h3>
-      <p>
-        Any concerns regarding harassment, safety, or inappropriate behaviour should be reported to the Organizing Committee immediately.
-      </p>
-      <div class="coc-reporting-actions">
-        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="reporting-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <span>Contact Organizing Committee</span>
+      <!-- Document Sign-off & Notice -->
+      <footer class="coc-doc-footer">
+        <p class="coc-doc-footer-text">
+          Any concerns regarding harassment, safety, or inappropriate behaviour should be reported immediately.
+        </p>
+        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-contact-link">
+          <span>mun@rnsit.ac.in &rarr;</span>
         </a>
-      </div>
-    </section>
+      </footer>
+
+    </article>
 
   </main>
 
-  <!-- Interactive Search & Print Script -->
   <script>
     function printOfficialPolicy() {
       const originalTitle = document.title;
@@ -846,25 +742,6 @@
         document.title = originalTitle;
       }, 1500);
     }
-
-    (function () {
-      const searchInput = document.getElementById('cocSearch');
-      const cards = document.querySelectorAll('.coc-card');
-
-      if (searchInput && cards.length) {
-        searchInput.addEventListener('input', function (e) {
-          const query = (e.target.value || '').toLowerCase().trim();
-          cards.forEach(card => {
-            const text = card.textContent.toLowerCase();
-            if (!query || text.includes(query)) {
-              card.style.display = 'block';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
-      }
-    })();
   </script>
 
   <!-- Topology Shader Background -->
