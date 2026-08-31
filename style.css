@@ -862,3 +862,17 @@ body {
     right: 12px;
   }
 }
+
+/* ===============================
+   GLOBAL PRINT STYLES
+   =============================== */
+@media print {
+  #floatingMenuRoot,
+  .mobile-floating-menu-root,
+  .floating-menu-container,
+  .floating-menu-bottom-bar,
+  .nav-pill,
+  #topology-canvas {
+    display: none !important;
+  }
+}

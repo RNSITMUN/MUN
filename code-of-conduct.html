@@ -314,28 +314,253 @@
       color: var(--accent-hover);
     }
 
-    /* Print Viewport Optimizations */
+    /* Screen Hidden Print Elements */
+    .coc-print-letterhead,
+    .coc-print-signoff {
+      display: none;
+    }
+
+    /* Print Viewport Optimizations (Official Institutional Document Format) */
     @media print {
-      #topology-canvas, .coc-header-actions, .coc-index-nav, .nav-pill, .top-left-logo-container, .top-right-logo-container {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm 12mm 14mm;
+      }
+
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        font-size: 9.5pt !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* HIDE ALL SCREEN UI, NAVIGATION & FLOATING MENU ROOT */
+      #topology-canvas,
+      .top-left-logo-container,
+      .top-right-logo-container,
+      .nav-pill,
+      #floatingMenuRoot,
+      .mobile-floating-menu-root,
+      .floating-menu-container,
+      .floating-menu-bottom-bar,
+      .floating-menu-btn,
+      .coc-header,
+      .coc-index-nav,
+      .coc-doc-footer {
         display: none !important;
       }
-      .coc-wrapper {
-        padding: 0 !important;
-        max-width: 100% !important;
+
+      /* SHOW OFFICIAL PRINT LETTERHEAD */
+      .coc-print-letterhead {
+        display: block !important;
+        margin-bottom: 16px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 10px;
       }
+
+      .coc-print-header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .coc-print-logo {
+        width: 52px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .coc-print-header-center {
+        text-align: center;
+        flex: 1;
+      }
+
+      .coc-print-org {
+        font-size: 13.5pt !important;
+        font-weight: 900 !important;
+        letter-spacing: 0.04em !important;
+        margin: 0 0 2px 0 !important;
+        color: #6C0D2C !important;
+        text-transform: uppercase;
+      }
+
+      .coc-print-suborg {
+        font-size: 8.5pt !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+        margin: 0 0 3px 0 !important;
+        color: #000000 !important;
+      }
+
+      .coc-print-dept {
+        font-size: 7pt !important;
+        color: #555555 !important;
+        margin: 0 !important;
+        font-weight: 500 !important;
+      }
+
+      .coc-print-rule-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1.5px solid #000000;
+        border-bottom: 1.5px solid #000000;
+        padding: 3px 0;
+        margin-bottom: 8px;
+        font-size: 7pt !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase;
+      }
+
+      .coc-print-preamble {
+        font-size: 8pt !important;
+        line-height: 1.42 !important;
+        background: #F8F8F8 !important;
+        border-left: 3.5px solid #6C0D2C !important;
+        padding: 6px 10px !important;
+        margin-top: 6px;
+        color: #222222 !important;
+      }
+
+      /* PRINT DOCUMENT CANVAS */
+      .coc-wrapper {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
       .coc-document-sheet {
         box-shadow: none !important;
         border: none !important;
         padding: 0 !important;
+        background: transparent !important;
       }
+
       .coc-clause {
-        page-break-inside: avoid;
-        padding-bottom: 16px;
-        margin-bottom: 16px;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        padding-bottom: 11px !important;
+        margin-bottom: 11px !important;
+        border-bottom: 1px solid #E0E0E0 !important;
       }
-      @page {
-        margin: 15mm;
-        size: portrait;
+
+      .coc-clause-header {
+        gap: 8px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .coc-clause-num {
+        font-size: 10pt !important;
+        color: #6C0D2C !important;
+        font-weight: 900 !important;
+      }
+
+      .coc-clause-title {
+        font-size: 9.5pt !important;
+        font-weight: 800 !important;
+        color: #000000 !important;
+      }
+
+      .coc-clause-list {
+        gap: 4px !important;
+      }
+
+      .coc-clause-item {
+        font-size: 8.2pt !important;
+        line-height: 1.38 !important;
+        color: #111111 !important;
+        gap: 7px !important;
+      }
+
+      .coc-clause-dot {
+        width: 3.5px !important;
+        height: 3.5px !important;
+        margin-top: 4px !important;
+        background: #6C0D2C !important;
+      }
+
+      /* PRINT SIGNOFF BLOCK */
+      .coc-print-signoff {
+        display: block !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-top: 20px;
+        padding-top: 14px;
+        border-top: 1.5px solid #000000;
+      }
+
+      .coc-print-seal-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .coc-print-seal-box {
+        border: 2px solid #6C0D2C;
+        padding: 5px 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+      }
+
+      .coc-seal-text {
+        font-size: 8.5pt;
+        font-weight: 900;
+        color: #6C0D2C;
+      }
+
+      .coc-seal-sub {
+        font-size: 5.5pt;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+      }
+
+      .coc-print-legal {
+        font-size: 6.8pt;
+        line-height: 1.35;
+        color: #444444;
+        margin: 0;
+      }
+
+      .coc-print-signatures {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 14px;
+      }
+
+      .coc-sig-col {
+        flex: 1;
+        text-align: center;
+      }
+
+      .coc-sig-line {
+        border-bottom: 1px solid #000000;
+        margin-bottom: 5px;
+        height: 22px;
+      }
+
+      .coc-sig-role {
+        display: block;
+        font-size: 7.5pt;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .coc-sig-org {
+        display: block;
+        font-size: 6.5pt;
+        color: #666666;
       }
     }
 
@@ -418,6 +643,27 @@
       <a href="#rule-12" class="coc-index-chip">12 Disciplinary</a>
       <a href="#rule-13" class="coc-index-chip">13 Authority</a>
     </nav>
+
+    <!-- Official Professional Printable Letterhead (Visible in Print & PDF Only) -->
+    <header class="coc-print-letterhead" aria-hidden="true">
+      <div class="coc-print-header-top">
+        <img src="./assets/Logos/MUN_logo.png" alt="RNS MUN" class="coc-print-logo">
+        <div class="coc-print-header-center">
+          <h1 class="coc-print-org">RNS MODEL UNITED NATIONS 2026</h1>
+          <h2 class="coc-print-suborg">RNS INSTITUTE OF TECHNOLOGY, BENGALURU</h2>
+          <p class="coc-print-dept">Secretariat & Department of Delegate Affairs · Official Assembly Documentation</p>
+        </div>
+        <img src="./assets/Logos/25_logo.png" alt="RNSIT" class="coc-print-logo coc-print-logo-right">
+      </div>
+      <div class="coc-print-rule-bar">
+        <span class="coc-print-doc-id">DOC REF: RNSMUN-2026-COC-V1</span>
+        <span class="coc-print-doc-title">OFFICIAL CODE OF CONDUCT & DECORUM CHARTER</span>
+        <span class="coc-print-doc-date">SESSION 2026</span>
+      </div>
+      <div class="coc-print-preamble">
+        <strong>OFFICIAL MANDATE:</strong> Please follow these rules to ensure a professional, respectful, fair, and engaging Model United Nations experience for all participants. By registering for RNSMUN, all participants agree to adhere strictly to these regulations across all committee sessions and conference venues.
+      </div>
+    </header>
 
     <!-- Unified Parchment Document Card -->
     <article class="coc-document-sheet">
@@ -720,7 +966,7 @@
         </ul>
       </section>
 
-      <!-- Document Sign-off & Notice -->
+      <!-- Document Sign-off & Notice (Screen Only) -->
       <footer class="coc-doc-footer">
         <p class="coc-doc-footer-text">
           Any concerns regarding harassment, safety, or inappropriate behaviour should be reported immediately.
@@ -729,6 +975,36 @@
           <span>mun@rnsit.ac.in &rarr;</span>
         </a>
       </footer>
+
+      <!-- Official Professional Endorsement & Signature Block (Visible in Print & PDF Only) -->
+      <div class="coc-print-signoff" aria-hidden="true">
+        <div class="coc-print-seal-wrap">
+          <div class="coc-print-seal-box">
+            <span class="coc-seal-text">RNS MUN '26</span>
+            <span class="coc-seal-sub">SECRETARIAT APPROVED</span>
+          </div>
+          <p class="coc-print-legal">
+            Ratified and issued under the sovereign authority of the RNSIT Model United Nations Society and the Institutional Ethics Council. Violations are subject to disciplinary action by the Executive Board and institutional referral. For official inquiries or emergency assistance, contact <strong>mun@rnsit.ac.in</strong>.
+          </p>
+        </div>
+        <div class="coc-print-signatures">
+          <div class="coc-sig-col">
+            <div class="coc-sig-line"></div>
+            <span class="coc-sig-role">Secretary-General</span>
+            <span class="coc-sig-org">RNS MUN '26</span>
+          </div>
+          <div class="coc-sig-col">
+            <div class="coc-sig-line"></div>
+            <span class="coc-sig-role">Director-General</span>
+            <span class="coc-sig-org">RNS MUN '26</span>
+          </div>
+          <div class="coc-sig-col">
+            <div class="coc-sig-line"></div>
+            <span class="coc-sig-role">Faculty In-Charge</span>
+            <span class="coc-sig-org">MUNSoc RNSIT</span>
+          </div>
+        </div>
+      </div>
 
     </article>
 
