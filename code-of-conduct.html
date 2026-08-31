@@ -815,6 +815,31 @@
     <a href="/code-of-conduct" class="nav-item active" id="nav-coc">CoC</a>
   </nav>
 
+  <script>
+    (function() {
+      const nav = document.querySelector('.nav-pill');
+      if (!nav) return;
+      const items = nav.querySelectorAll('.nav-item');
+      
+      // Prefetch page on hover to ensure instant load
+      items.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          const href = item.getAttribute('href');
+          if (href && href !== window.location.pathname) {
+            const linkId = `prefetch-${href.replace(/\//g, '')}`;
+            if (!document.getElementById(linkId)) {
+              const link = document.createElement('link');
+              link.id = linkId;
+              link.rel = 'prefetch';
+              link.href = href;
+              document.head.appendChild(link);
+            }
+          }
+        });
+      });
+    })();
+  </script>
+
   <!-- Main Content Layout -->
   <main class="coc-wrapper">
 
@@ -1301,11 +1326,12 @@
   </script>
 
   <!-- Topology Shader Background -->
-  <script src="./topology-background.js" defer></script>
-  <!-- Desktop Nav Morphing -->
-  <script src="./animated-nav.js" defer></script>
+  <script type="module" src="./topology-background.js"></script>
   <!-- Mobile Liquid Morph Floating Dock -->
-  <script src="./mobile-floating-menu.js" defer></script>
+  <script type="module" src="./mobile-floating-menu.js"></script>
+  <!-- Desktop Nav Morphing -->
+  <script type="module" src="./animated-nav.js"></script>
+  <script src="/register-sw.js"></script>
 
 </body>
 </html>

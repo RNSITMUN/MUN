@@ -8,52 +8,56 @@
     { label: "CoC", href: "/code-of-conduct" },
   ];
 
-  // Prevent duplicate mounts
-  if (document.getElementById("floatingMenuRoot")) return;
+  function initFloatingMenu() {
+    // Prevent duplicate mounts
+    if (document.getElementById("floatingMenuRoot")) return;
 
-  const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+    let currentPath = window.location.pathname.replace(/\/$/, "").replace(/\.html$/, "") || "/";
+    if (currentPath === "/coc") currentPath = "/code-of-conduct";
+    if (currentPath === "/contact") currentPath = "/stay-connected";
+    if (currentPath === "/teams") currentPath = "/team";
 
-  // Create Root Element
-  const root = document.createElement("div");
-  root.id = "floatingMenuRoot";
-  root.className = "mobile-floating-menu-root";
-  root.innerHTML = `
-    <div class="floating-menu-container" id="floatingMenuContainer">
-      <!-- Yellow background layer -->
-      <div class="floating-menu-bg"></div>
+    // Create Root Element
+    const root = document.createElement("div");
+    root.id = "floatingMenuRoot";
+    root.className = "mobile-floating-menu-root";
+    root.innerHTML = `
+      <div class="floating-menu-container" id="floatingMenuContainer">
+        <!-- Yellow background layer -->
+        <div class="floating-menu-bg"></div>
 
-      <!-- Dark liquid circle expanding from bottom -->
-      <div class="floating-menu-dark-circle"></div>
+        <!-- Dark liquid circle expanding from bottom -->
+        <div class="floating-menu-dark-circle"></div>
 
-      <!-- Menu links list -->
-      <nav class="floating-menu-links" aria-label="Mobile Navigation">
-        ${menuItems
-          .map((item, idx) => {
-            const isActive =
-              currentPath === item.href ||
-              (item.href !== "/" && currentPath.startsWith(item.href));
+        <!-- Menu links list -->
+        <nav class="floating-menu-links" aria-label="Mobile Navigation">
+          ${menuItems
+            .map((item, idx) => {
+              const isActive =
+                currentPath === item.href ||
+                (item.href !== "/" && currentPath.startsWith(item.href));
 
-            return `
-              <a href="${item.href}" class="floating-menu-item ${isActive ? "is-active" : ""}" style="transition-delay: ${0.12 + idx * 0.04}s" data-index="${idx}">
-                <span>${item.label}</span>
-              </a>
-            `;
-          })
-          .join("")}
-      </nav>
+              return `
+                <a href="${item.href}" class="floating-menu-item ${isActive ? "is-active" : ""}" style="transition-delay: ${0.12 + idx * 0.04}s" data-index="${idx}">
+                  <span>${item.label}</span>
+                </a>
+              `;
+            })
+            .join("")}
+        </nav>
 
-      <!-- Bottom toggle bar -->
-      <div class="floating-menu-bottom-bar" id="floatingMenuToggle" role="button" aria-label="Toggle mobile menu" tabindex="0">
-        <span class="floating-menu-label">Menu</span>
-        <div class="floating-hamburger-icon">
-          <span class="hamburger-bar bar-1"></span>
-          <span class="hamburger-bar bar-2"></span>
+        <!-- Bottom toggle bar -->
+        <div class="floating-menu-bottom-bar" id="floatingMenuToggle" role="button" aria-label="Toggle mobile menu" tabindex="0">
+          <span class="floating-menu-label">Menu</span>
+          <div class="floating-hamburger-icon">
+            <span class="hamburger-bar bar-1"></span>
+            <span class="hamburger-bar bar-2"></span>
+          </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
 
-  document.body.appendChild(root);
+    document.body.appendChild(root);
 
   const container = document.getElementById("floatingMenuContainer");
   const toggle = document.getElementById("floatingMenuToggle");
@@ -129,4 +133,11 @@
       setTimeout(() => toggleMenu(false), 120);
     });
   });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFloatingMenu);
+  } else {
+    initFloatingMenu();
+  }
 })();
