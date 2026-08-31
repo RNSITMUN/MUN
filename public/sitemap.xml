@@ -19,11 +19,6 @@
     <priority>0.7</priority>
   </url>
 
-  <url>
-    <loc>https://mun-rnsit.vercel.app/team</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
 
   <url>
     <loc>https://mun-rnsit.vercel.app/stay-connected</loc>

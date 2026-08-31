@@ -39,12 +39,16 @@ const cleanUrlsPlugin = () => ({
         return;
       }
 
+      if (url === '/team.html' || url === '/teams.html') {
+        req.url = '/404.html';
+        next();
+        return;
+      }
+
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
       
       if (!hasExtension) {
-        if (url === '/team') {
-          req.url = '/team.html' + req.url.substring(5);
-        } else if (url === '/stay-connected') {
+        if (url === '/stay-connected') {
           req.url = '/stay-connected.html' + req.url.substring(15);
         } else if (url === '/contact') {
           req.url = '/stay-connected.html' + req.url.substring(8);
@@ -103,7 +107,6 @@ export default defineConfig({
       input: {
         main: resolve(process.cwd(), 'index.html'),
         connected: resolve(process.cwd(), 'stay-connected.html'),
-        team: resolve(process.cwd(), 'team.html'),
         past: resolve(process.cwd(), 'past-events.html'),
         registration: resolve(process.cwd(), 'registration.html'),
         channels: resolve(process.cwd(), 'channels.html'),
