@@ -5,6 +5,14 @@
     {
       "source": "/contact",
       "destination": "/stay-connected.html"
+    },
+    {
+      "source": "/coc",
+      "destination": "/code-of-conduct.html"
+    },
+    {
+      "source": "/code-of-conduct",
+      "destination": "/code-of-conduct.html"
     }
   ],
   "headers": [

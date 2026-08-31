@@ -5,6 +5,7 @@
     { label: "Registration", href: "/registration" },
     { label: "Contact", href: "/stay-connected" },
     { label: "Team", href: "/team" },
+    { label: "CoC", href: "/code-of-conduct" },
   ];
 
   // Prevent duplicate mounts
