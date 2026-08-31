@@ -161,18 +161,15 @@
     /* Minimal Quick-Jump Index Bar */
     .coc-index-nav {
       width: 100%;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding: 6px 0 16px 0;
-      margin-bottom: 24px;
+      max-width: 820px;
+      margin: 0 auto 28px auto;
       display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
+      padding: 0;
       box-sizing: border-box;
-    }
-
-    .coc-index-nav::-webkit-scrollbar {
-      display: none;
     }
 
     .coc-index-chip {
@@ -181,13 +178,14 @@
       border: 1.5px solid var(--text-primary);
       border-radius: 999px;
       padding: 5px 12px;
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       font-weight: 700;
       text-decoration: none;
       box-shadow: 2px 2px 0px var(--text-primary);
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
       transition: all 0.15s ease;
-      flex-shrink: 0;
     }
 
     .coc-index-chip:hover {
