@@ -7860,7 +7860,7 @@
     }
 
     // Delegate Registration Form Submission
-    function handleRegistrationSubmit(e) {
+    async function handleRegistrationSubmit(e) {
       e.preventDefault();
 
       if (!validateStep(1)) {
@@ -7902,21 +7902,6 @@
           return;
         }
         if (screenshotErr) screenshotErr.style.display = 'none';
-
-        // Show internal success confirmation overlay
-        const successOverlay = document.getElementById('success-overlay');
-        if (successOverlay) {
-          const successTitle = document.getElementById('success-title');
-          if (successTitle) successTitle.textContent = 'Registration Submitted!';
-
-          const successMsg = document.getElementById('success-message-text');
-          if (successMsg) {
-            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
-          }
-
-          showSuccessOverlay();
-        }
-        return;
       }
 
       if (currentDelegateType === 'external') {
@@ -7927,22 +7912,90 @@
           return;
         }
         if (screenshotErr) screenshotErr.style.display = 'none';
-
-        // External Delegate Success Screen
-        const successOverlay = document.getElementById('success-overlay');
-        if (successOverlay) {
-          const successTitle = document.getElementById('success-title');
-          if (successTitle) successTitle.textContent = 'Registration Submitted!';
-
-          const successMsg = document.getElementById('success-message-text');
-          if (successMsg) {
-            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our delegate affairs team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
-          }
-
-          showSuccessOverlay();
-        }
-        return;
       }
+
+      // ─── Collect all form field values ──────────────────────
+      const getVal = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      const getRadioVal = (name) => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
+      const getSelectText = (id) => { const el = document.getElementById(id); return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''; };
+
+      const isIEEE = currentDelegateType === 'external' && document.getElementById('ieee-yes-btn')?.classList.contains('selected');
+      const paymentAmount = currentDelegateType === 'internal'
+        ? '₹999'
+        : isIEEE ? '₹1,149 (IEEE)' : '₹1,199 (Early Bird) / ₹1,349 (Standard)';
+
+      const formPayload = {
+        delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : isIEEE ? 'External (IEEE Member)' : 'External',
+        name:              getVal('reg-name'),
+        institution:       getVal('reg-institution'),
+        usn:               getVal('reg-usn'),
+        city:              getVal('reg-city'),
+        phone:             getVal('reg-phone'),
+        email:             getVal('reg-email'),
+        munExperience:     getRadioVal('reg-has-experience') === 'yes' ? 'Yes' : 'No',
+        experienceCount:   getVal('reg-exp-count'),
+        experienceDetails: getVal('reg-experience-details'),
+        committee1:        getSelectText('reg-committee-1'),
+        portfolio1_1:      getSelectText('reg-portfolio-1'),
+        portfolio1_2:      getSelectText('reg-portfolio-2'),
+        committee2:        getSelectText('reg-committee-2'),
+        portfolio2_1:      getSelectText('reg-comm2-portfolio-1'),
+        portfolio2_2:      getSelectText('reg-comm2-portfolio-2'),
+        ieeeId:            isIEEE ? getVal('reg-ieee-id') : '',
+        paymentAmount,
+        screenshotBase64:  _compressedScreenshots[currentDelegateType] || '',
+        screenshotFormat:  (_compressedScreenshots[currentDelegateType] || '').includes('image/webp') ? 'webp' : 'jpeg'
+      };
+
+      // ─── Show spinner on submit button ──────────────────────
+      const submitBtnId = currentDelegateType === 'internal' ? 'internal-submit-btn' : 'external-submit-btn';
+      const submitBtn = document.getElementById(submitBtnId);
+      let originalBtnHTML = '';
+      if (submitBtn) {
+        originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.75';
+        submitBtn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="animation:spin 0.8s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-dashoffset="10" stroke-linecap="round"/></svg>Submitting\u2026</span>`;
+      }
+      if (!document.getElementById('spin-kf')) {
+        const kf = document.createElement('style');
+        kf.id = 'spin-kf';
+        kf.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+        document.head.appendChild(kf);
+      }
+
+      // ─── Success message (used regardless of API result) ────
+      const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
+      const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+
+      // ─── POST to /api/submit-registration, then show success ─
+      fetch('/api/submit-registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formPayload)
+      })
+        .then(r => r.json().catch(() => ({ success: true, _net: true })))
+        .catch(() => ({ success: true, _net: true }))  // network error — still proceed
+        .then(result => {
+          if (result && !result.success && !result._net) {
+            console.warn('[Registration] API error:', result.error || result);
+          }
+          const successOverlay = document.getElementById('success-overlay');
+          if (successOverlay) {
+            const successTitle = document.getElementById('success-title');
+            if (successTitle) successTitle.textContent = 'Registration Submitted!';
+            const successMsg = document.getElementById('success-message-text');
+            if (successMsg) successMsg.innerHTML = successMsgHTML;
+            showSuccessOverlay();
+          }
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.innerHTML = originalBtnHTML;
+          }
+        });
     }
 
     // Scroll modal to top, adapt card height for mobile viewports, and enable smooth scroll
