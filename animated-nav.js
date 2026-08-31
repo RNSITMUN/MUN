@@ -27,6 +27,15 @@
         it.addEventListener("mouseenter", () => {
           prefetchUrl(it.getAttribute("href"));
         }, { passive: true });
+        it.addEventListener("click", (e) => {
+          if (window.innerWidth <= 768) {
+            const href = it.getAttribute("href");
+            if (href && href !== window.location.pathname) {
+              e.preventDefault();
+              window.location.replace(href);
+            }
+          }
+        });
         wrap.appendChild(it);
       });
 
@@ -57,8 +66,15 @@
         clone.addEventListener("mouseenter", () => {
           prefetchUrl(clone.getAttribute("href"));
         }, { passive: true });
-        clone.addEventListener("click", () => {
+        clone.addEventListener("click", (e) => {
           navPill.classList.remove("is-open");
+          if (window.innerWidth <= 768) {
+            const href = clone.getAttribute("href");
+            if (href && href !== window.location.pathname) {
+              e.preventDefault();
+              window.location.replace(href);
+            }
+          }
         });
         dropdown.appendChild(clone);
       });

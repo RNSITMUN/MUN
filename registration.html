@@ -419,6 +419,7 @@
       left: 0;
       width: 100vw;
       height: 100svh;
+      height: 100dvh;
       z-index: 99999;
       display: none;
       align-items: center;
@@ -429,6 +430,9 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       opacity: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
     }
 
     .committee-modal-backdrop.active {
@@ -490,7 +494,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 10;
+      z-index: 999;
       padding: 0;
       outline: none;
       transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -2205,6 +2209,54 @@
       pointer-events: auto !important;
     }
 
+    /* Hide outer close buttons in success state so they never get clipped or overlap */
+    .modal-registration-card.in-success-state > #reg-modal-close,
+    .modal-registration-card.in-dlg-success-state > #dlg-modal-close {
+      display: none !important;
+    }
+
+    /* Dedicated clean unclipped close button placed directly inside success overlay */
+    .success-direct-close-btn {
+      position: absolute !important;
+      top: 14px !important;
+      right: 14px !important;
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: var(--bg-color) !important;
+      border: 2.5px solid var(--text-primary) !important;
+      box-shadow: 2.5px 2.5px 0px var(--text-primary) !important;
+      color: var(--text-primary) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      z-index: 1000 !important;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      padding: 0 !important;
+    }
+
+    .success-direct-close-btn:hover {
+      background-color: var(--accent-color) !important;
+      color: #FFF7EB !important;
+      transform: translate(-1px, -1px) scale(1.06) !important;
+      box-shadow: 3.5px 3.5px 0px var(--text-primary) !important;
+    }
+
+    .success-direct-close-btn:active {
+      transform: translate(1px, 1px) scale(0.94) !important;
+      box-shadow: 1px 1px 0px var(--text-primary) !important;
+    }
+
+    @media (max-width: 480px) {
+      .success-direct-close-btn {
+        top: 10px !important;
+        right: 10px !important;
+        width: 32px !important;
+        height: 32px !important;
+      }
+    }
+
     .success-actions-row {
       display: flex;
       gap: 10px;
@@ -2226,6 +2278,106 @@
     .internal-reg #step-arrow-4,
     .internal-reg #step-indicator-4 {
       display: none;
+    }
+
+    /* Tactile Neo-Brutalist Copy Toast Notification */
+    .tactile-copy-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 32px;
+      transform: translateX(-50%) translateY(140%);
+      background: #FFFDF9;
+      color: var(--text-primary);
+      border: 2.5px solid var(--text-primary);
+      border-radius: 999px;
+      box-shadow: 4px 4px 0px var(--text-primary);
+      padding: 9px 18px 9px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+      max-width: min(92vw, 420px);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .tactile-copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tactile-copy-toast .toast-icon-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #0F9D58;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid var(--text-primary);
+      box-shadow: 1px 1px 0px var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .tactile-copy-toast {
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+        font-size: 0.82rem;
+        padding: 8px 15px 8px 10px;
+      }
+    }
+
+    /* Draft Restored Banner */
+    .draft-restored-banner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px 0;
+      padding: 9px 14px;
+      background: #FFFDF9;
+      border: 2px solid var(--text-primary);
+      border-radius: 10px;
+      box-shadow: 3px 3px 0px var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      animation: draftBannerIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .draft-restored-banner .draft-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0F9D58;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(15, 157, 88, 0.25);
+    }
+
+    .draft-restored-banner .draft-dismiss {
+      margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 4px;
+      font-size: 0.78rem;
+      color: var(--text-secondary, #555);
+      font-family: var(--font-sans);
+      text-decoration: underline;
+      flex-shrink: 0;
+    }
+
+    @keyframes draftBannerIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* IEEE Yes/No Toggle Buttons */
@@ -3055,16 +3207,56 @@
       }
 
       /* Registration Form on Small Phones */
+      .committee-modal-backdrop {
+        align-items: flex-start !important;
+        justify-content: center !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: contain !important;
+        padding: max(8px, env(safe-area-inset-top, 8px)) 8px calc(max(14px, env(safe-area-inset-bottom, 14px)) + var(--keyboard-height, 0px)) 8px !important;
+      }
+
       .modal-registration-card {
-        width: calc(100vw - 16px);
+        width: 100% !important;
         max-width: 480px;
+        margin: auto 0 !important;
         padding: 22px 14px 26px 14px;
         border-radius: 16px;
         box-shadow: 4px 4px 0px var(--text-primary);
-        max-height: min(92dvh, calc(100dvh - 16px));
-        max-height: min(92svh, calc(100svh - 16px));
+        max-height: calc(var(--visual-viewport-height, 100dvh) - 18px) !important;
+        overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
+        scroll-padding-bottom: 90px !important;
+      }
+
+      .committee-modal-backdrop.keyboard-open {
+        align-items: flex-start !important;
+        padding-top: max(6px, env(safe-area-inset-top, 6px)) !important;
+        padding-bottom: 6px !important;
+      }
+
+      .committee-modal-backdrop.keyboard-open .modal-registration-card {
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+        max-height: calc(var(--visual-viewport-height, 100dvh) - 12px) !important;
+      }
+
+      .wizard-step-panel {
+        padding-bottom: 24px;
+      }
+
+      .wizard-btn-row {
+        margin-top: 22px;
+        padding-bottom: 18px;
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea,
+      .combobox-input {
+        scroll-margin-bottom: 120px !important;
+        scroll-margin-top: 24px !important;
       }
 
       /* Mobile Confirmation Screen Optimization */
@@ -3850,24 +4042,33 @@
 
       <!-- Delegation Success Screen Overlay -->
       <div id="dlg-success-overlay" class="success-overlay">
+        <button type="button" class="success-direct-close-btn" onclick="handleDelegationSuccessDone()" aria-label="Close Delegation Confirmation">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title">Delegation Registered!</h3>
         <p class="success-message">
           Thank you for submitting <strong id="dlg-success-name">your delegation</strong>. Our team will shortly contact
           you via mail for payment and the delegation sheet.
         </p>
-        <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+        <div style="margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%;">
           <a id="dlg-success-sheet-link" href="#" target="_blank" class="sheet-btn-action"
-            style="padding: 8px 16px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: #0F9D58; color: #FFFFFF; border-color: var(--text-primary);">
-            <span>📊 Open Delegation Google Sheet</span>
+            style="padding: 9px 18px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: #0F9D58; color: #FFFFFF; border-color: var(--text-primary); font-weight: 700;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+            <span>Open Delegation Google Sheet</span>
           </a>
           <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
-            style="padding: 6px 12px; font-size: 0.8rem;">
-            <span>📥 Download Roster as CSV</span>
+            style="padding: 8px 16px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 7px; font-weight: 700;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download Roster as CSV</span>
           </button>
           <button type="button" class="sheet-btn-action" onclick="printDelegationReceipt()"
-            style="padding: 6px 12px; font-size: 0.8rem;">
-            <span>🖨️ Save / Print Delegation Slip</span>
+            style="padding: 8px 16px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 7px; font-weight: 700;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Save / Print Delegation Slip</span>
           </button>
         </div>
         <button id="dlg-success-close-btn" class="success-close-btn"
@@ -4637,6 +4838,12 @@
 
       <!-- Success Screen Overlay -->
       <div id="success-overlay" class="success-overlay">
+        <button type="button" class="success-direct-close-btn" onclick="handleSuccessDone()" aria-label="Close Registration Confirmation">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         <div class="success-icon-badge">✓</div>
         <h3 class="success-title" id="success-title">Registration Submitted!</h3>
         <p class="success-message" id="success-message-text">
@@ -4752,15 +4959,129 @@
       }, 50);
     }
 
-    // Prevent touch gestures on backdrops from scrolling underlying page on mobile
-    document.addEventListener('DOMContentLoaded', () => {
+    // Intelligent mobile viewport and scroll handling for modal forms & virtual keyboard
+    function initMobileVirtualKeyboardScroll() {
+      if (window.visualViewport) {
+        const updateVisualViewport = () => {
+          const vv = window.visualViewport;
+          const fullHeight = window.innerHeight || document.documentElement.clientHeight;
+          const keyboardHeight = Math.max(0, fullHeight - vv.height);
+
+          document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
+          document.documentElement.style.setProperty('--visual-viewport-height', `${vv.height}px`);
+
+          const activeBackdrops = document.querySelectorAll('.committee-modal-backdrop.active');
+          activeBackdrops.forEach(backdrop => {
+            if (keyboardHeight > 80) {
+              backdrop.classList.add('keyboard-open');
+            } else {
+              backdrop.classList.remove('keyboard-open');
+            }
+          });
+
+          // If focused element is inside modal, ensure it remains in comfortable viewing range
+          const activeEl = document.activeElement;
+          if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'SELECT' || activeEl.tagName === 'TEXTAREA')) {
+            const card = activeEl.closest('.modal-registration-card');
+            if (card) {
+              const cardRect = card.getBoundingClientRect();
+              const elRect = activeEl.getBoundingClientRect();
+              if (elRect.bottom > cardRect.bottom - 20 || elRect.top < cardRect.top + 20) {
+                activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+              }
+            }
+          }
+        };
+
+        window.visualViewport.addEventListener('resize', updateVisualViewport);
+        window.visualViewport.addEventListener('scroll', updateVisualViewport);
+      }
+
+      // Smooth auto-scroll when any input inside registration modal is tapped/focused
+      const formFields = document.querySelectorAll(
+        '.modal-registration-card input, .modal-registration-card select, .modal-registration-card textarea'
+      );
+      formFields.forEach(field => {
+        field.addEventListener('focus', () => {
+          setTimeout(() => {
+            const card = field.closest('.modal-registration-card');
+            if (card) {
+              const cardRect = card.getBoundingClientRect();
+              const fieldRect = field.getBoundingClientRect();
+              // Scroll card so focused field has plenty of space above and below
+              const offsetFromTop = fieldRect.top - cardRect.top;
+              const desiredPos = card.scrollTop + offsetFromTop - Math.min(100, cardRect.height * 0.25);
+              card.scrollTo({
+                top: Math.max(0, desiredPos),
+                behavior: 'smooth'
+              });
+            }
+          }, 300);
+        }, { passive: true });
+      });
+
+      // Prevent backdrop touches from scrolling underlying page while allowing inner card to scroll freely
       document.querySelectorAll('.committee-modal-backdrop').forEach(backdrop => {
         backdrop.addEventListener('touchmove', (e) => {
-          if (e.target === backdrop) {
+          if (e.target === backdrop && !backdrop.classList.contains('keyboard-open') && backdrop.scrollHeight <= backdrop.clientHeight) {
             e.preventDefault();
           }
         }, { passive: false });
       });
+    }
+
+    document.addEventListener('DOMContentLoaded', initMobileVirtualKeyboardScroll);
+
+    // =========================================================================
+    // NATIVE MOBILE BROWSER & PHONE HARDWARE BACK BUTTON CONTROLLER
+    // =========================================================================
+    let isProgrammaticHistoryBack = false;
+
+    function pushModalHistoryState(modalId) {
+      if (!window.history.state || !window.history.state.munModalActive) {
+        try {
+          window.history.pushState(
+            { munModalActive: true, modalId: modalId, t: Date.now() },
+            '',
+            window.location.pathname + window.location.search
+          );
+        } catch (err) {}
+      }
+    }
+
+    function popModalHistoryState() {
+      if (window.history.state && window.history.state.munModalActive) {
+        isProgrammaticHistoryBack = true;
+        window.history.back();
+        setTimeout(() => { isProgrammaticHistoryBack = false; }, 150);
+      }
+    }
+
+    // Intercept phone back button / swipe back gesture to smoothly dismiss open modals
+    window.addEventListener('popstate', (e) => {
+      if (isProgrammaticHistoryBack) {
+        isProgrammaticHistoryBack = false;
+        return;
+      }
+
+      const regBackdrop = document.getElementById('registration-modal-backdrop');
+      const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
+      const typeBackdrop = document.getElementById('delegate-type-modal-backdrop');
+      const commBackdrop = document.getElementById('committee-modal-backdrop');
+
+      // Dismiss any open form/modal cleanly without exiting the registration page
+      if (regBackdrop && (regBackdrop.classList.contains('active') || regBackdrop.style.display === 'flex')) {
+        closeRegistrationModal(true);
+      }
+      if (dlgBackdrop && (dlgBackdrop.classList.contains('active') || dlgBackdrop.style.display === 'flex')) {
+        closeDelegationRegistrationModal(true);
+      }
+      if (typeBackdrop && (typeBackdrop.classList.contains('active') || typeBackdrop.style.display === 'flex')) {
+        closeDelegateTypeModal(null, true);
+      }
+      if (commBackdrop && (commBackdrop.classList.contains('active') || commBackdrop.style.display === 'flex')) {
+        closeCommitteeModal(null, true);
+      }
     });
 
     // Handle Card Click - Ultra Smooth FLIP Expansion
@@ -4769,6 +5090,7 @@
       const data = COMMITTEES[committeeId];
       if (!data) return;
 
+      pushModalHistoryState('committee-profile');
       activeCommitteeData = data;
       activeClickedCard = cardElement;
       isCardAnimating = true;
@@ -4796,19 +5118,17 @@
         height: 200
       };
 
-      // 3. Activate backdrop
-      backdrop.classList.add('active');
+      // 3. Reveal backdrop & card (Hidden visibility during layout prep)
       backdrop.style.display = 'flex';
+      backdrop.style.opacity = '1';
+      backdrop.classList.add('active');
       lockBackgroundScroll();
 
-      // 4. Measure target modal rect
       if (window.gsap) {
         gsap.set(modalCard, { clearProps: 'transform,x,y,scale,scaleX,scaleY,opacity' });
       }
-
       const endRect = modalCard.getBoundingClientRect();
 
-      // 5. Invert geometry calculation
       const deltaX = startRect.left - endRect.left;
       const deltaY = startRect.top - endRect.top;
       const scaleX = endRect.width > 0 ? startRect.width / endRect.width : 1;
@@ -4877,7 +5197,10 @@
     }
 
     // Close Modal - Ultra Smooth Reverse FLIP Collapse
-    function closeCommitteeModal(callback) {
+    function closeCommitteeModal(callback, fromPopState = false) {
+      if (!fromPopState) {
+        popModalHistoryState();
+      }
       if (isCardAnimating) {
         if (typeof callback === 'function') callback();
         return;
@@ -5878,6 +6201,7 @@
       const typeCard = document.getElementById('delegate-type-modal-card');
       if (!typeBackdrop || !typeCard) return;
 
+      pushModalHistoryState('delegate-type');
       typeBackdrop.classList.add('active');
       typeBackdrop.style.display = 'flex';
       lockBackgroundScroll();
@@ -5890,7 +6214,10 @@
       }
     }
 
-    function closeDelegateTypeModal(callback) {
+    function closeDelegateTypeModal(callback, fromPopState = false) {
+      if (!fromPopState) {
+        popModalHistoryState();
+      }
       const typeBackdrop = document.getElementById('delegate-type-modal-backdrop');
       const typeCard = document.getElementById('delegate-type-modal-card');
       if (!typeBackdrop || !typeCard) return;
@@ -5966,7 +6293,7 @@
 
       closeDelegateTypeModal(() => {
         openRegistrationModal(selectedCommitteeForReg);
-      });
+      }, true);
     }
 
     // ==========================================
@@ -6035,6 +6362,89 @@
       if (regCard) regCard.scrollTop = 0;
     }
 
+    // ─── Shared Canvas Image Compressor ───────────────────────────────────────
+    // Compresses any image File to WebP (or JPEG fallback) in-browser using HTML5
+    // Canvas. Target output: ≤ 250 KB, max dimension 1920px, quality adaptive.
+    // Returns a Promise<{ dataUrl, blob, originalKB, compressedKB, format }>.
+    function compressScreenshot(file) {
+      return new Promise((resolve, reject) => {
+        const MAX_SIDE = 1920;           // max width or height in px
+        const TARGET_KB = 250;          // target compressed size
+        const MIN_QUALITY = 0.45;       // lowest quality floor
+        const WEBP_SUPPORTED = (() => {
+          try {
+            return document.createElement('canvas')
+              .toDataURL('image/webp').startsWith('data:image/webp');
+          } catch { return false; }
+        })();
+        const FORMAT = WEBP_SUPPORTED ? 'image/webp' : 'image/jpeg';
+        const EXT = WEBP_SUPPORTED ? 'webp' : 'jpg';
+
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+
+          // Scale down if either dimension exceeds MAX_SIDE
+          let { naturalWidth: w, naturalHeight: h } = img;
+          if (w > MAX_SIDE || h > MAX_SIDE) {
+            const ratio = Math.min(MAX_SIDE / w, MAX_SIDE / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, w, h);
+
+          // Adaptive quality: start at 0.82, walk down until ≤ TARGET_KB
+          let quality = 0.82;
+          let dataUrl = canvas.toDataURL(FORMAT, quality);
+          const base64Overhead = `data:${FORMAT};base64,`.length;
+
+          while (quality > MIN_QUALITY) {
+            const sizeKB = Math.ceil((dataUrl.length - base64Overhead) * 0.75 / 1024);
+            if (sizeKB <= TARGET_KB) break;
+            quality = Math.max(MIN_QUALITY, quality - 0.08);
+            dataUrl = canvas.toDataURL(FORMAT, quality);
+          }
+
+          // Convert dataUrl → Blob so submission code can use it like a File
+          const byteString = atob(dataUrl.split(',')[1]);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+          const blob = new Blob([ab], { type: FORMAT });
+
+          resolve({
+            dataUrl,
+            blob,
+            format: EXT,
+            originalKB: Math.round(file.size / 1024),
+            compressedKB: Math.round(blob.size / 1024),
+            width: w,
+            height: h
+          });
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error('Image failed to load'));
+        };
+
+        img.src = objectUrl;
+      });
+    }
+
+    // Stores compressed dataURLs keyed by flow ('internal' | 'external')
+    // so the submit handler can reference them without re-reading the file.
+    const _compressedScreenshots = {};
+
     function handlePaymentScreenshotSelected(input) {
       const file = input.files && input.files[0];
       const submitBtn = document.getElementById('internal-submit-btn');
@@ -6047,28 +6457,65 @@
 
       if (file) {
         if (fileNameEl) fileNameEl.textContent = file.name;
-        if (fileSizeEl) fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          if (previewThumb) previewThumb.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-
+        // Show a "compressing…" indicator while canvas does its work
+        if (fileSizeEl) {
+          fileSizeEl.textContent = 'Compressing…';
+          fileSizeEl.style.color = '#888';
+        }
         if (emptyState) emptyState.style.display = 'none';
         if (fileState) fileState.style.display = 'flex';
         if (err) err.style.display = 'none';
 
+        // Disable submit until compression is done
         if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.removeAttribute('disabled');
-          submitBtn.style.opacity = '1';
-          submitBtn.style.cursor = 'pointer';
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.55';
+          submitBtn.style.cursor = 'not-allowed';
         }
+
+        compressScreenshot(file).then(result => {
+          _compressedScreenshots['internal'] = result.dataUrl;
+
+          if (previewThumb) previewThumb.src = result.dataUrl;
+          if (fileSizeEl) {
+            const savedPct = result.originalKB > 0
+              ? Math.round((1 - result.compressedKB / result.originalKB) * 100)
+              : 0;
+            fileSizeEl.textContent =
+              `${result.compressedKB} KB · saved ${savedPct}% (was ${result.originalKB} KB)`;
+            fileSizeEl.style.color = '#0F9D58';
+          }
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        }).catch(() => {
+          // Compression failed — fall back to raw FileReader preview
+          const reader = new FileReader();
+          reader.onload = e => {
+            if (previewThumb) previewThumb.src = e.target.result;
+            _compressedScreenshots['internal'] = e.target.result;
+          };
+          reader.readAsDataURL(file);
+          if (fileSizeEl) {
+            fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB (raw)`;
+            fileSizeEl.style.color = '';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        });
       } else {
         removePaymentScreenshot();
       }
     }
+
 
     function removePaymentScreenshot() {
       const input = document.getElementById('reg-payment-screenshot');
@@ -6090,21 +6537,71 @@
       }
     }
 
+    // Tactile Neo-Brutalist Toast Controller
+    let toastTimeout = null;
+
+    function showTactileToast(message = 'mun@rnsit.ac.in copied to clipboard!') {
+      const toast = document.getElementById('tactile-copy-toast');
+      const textEl = document.getElementById('tactile-toast-text');
+      if (!toast) return;
+
+      if (textEl) textEl.textContent = message;
+
+      // Haptic tactile vibration feedback on supporting mobile devices
+      if (navigator.vibrate) {
+        try { navigator.vibrate(20); } catch (e) {}
+      }
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+
+      toast.classList.add('show');
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+
+    function fallbackCopyText(text, callback) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (callback) callback();
+      } catch (err) {
+        if (callback) callback();
+      }
+    }
+
     function copyInternalUPI() {
       const upiText = 'mun@rnsit.ac.in';
       const copyBtn = document.getElementById('copy-upi-btn');
+
+      const onCopied = () => {
+        showTactileToast('mun@rnsit.ac.in copied to clipboard!');
+        if (copyBtn) {
+          const originalText = copyBtn.textContent;
+          copyBtn.textContent = '✓ Copied!';
+          copyBtn.style.background = '#0F9D58';
+          setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.background = 'var(--accent-color)';
+          }, 2000);
+        }
+      };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(upiText).then(() => {
-          if (copyBtn) {
-            const originalText = copyBtn.textContent;
-            copyBtn.textContent = '✓ Copied!';
-            copyBtn.style.background = '#0F9D58';
-            setTimeout(() => {
-              copyBtn.textContent = originalText;
-              copyBtn.style.background = 'var(--accent-color)';
-            }, 2000);
-          }
+        navigator.clipboard.writeText(upiText).then(onCopied).catch(() => {
+          fallbackCopyText(upiText, onCopied);
         });
+      } else {
+        fallbackCopyText(upiText, onCopied);
       }
     }
 
@@ -6121,24 +6618,59 @@
 
       if (file) {
         if (fileNameEl) fileNameEl.textContent = file.name;
-        if (fileSizeEl) fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          if (previewThumb) previewThumb.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-
+        if (fileSizeEl) {
+          fileSizeEl.textContent = 'Compressing…';
+          fileSizeEl.style.color = '#888';
+        }
         if (emptyState) emptyState.style.display = 'none';
         if (fileState) fileState.style.display = 'flex';
         if (err) err.style.display = 'none';
 
+        // Disable submit until compression is done
         if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.removeAttribute('disabled');
-          submitBtn.style.opacity = '1';
-          submitBtn.style.cursor = 'pointer';
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.55';
+          submitBtn.style.cursor = 'not-allowed';
         }
+
+        compressScreenshot(file).then(result => {
+          _compressedScreenshots['external'] = result.dataUrl;
+
+          if (previewThumb) previewThumb.src = result.dataUrl;
+          if (fileSizeEl) {
+            const savedPct = result.originalKB > 0
+              ? Math.round((1 - result.compressedKB / result.originalKB) * 100)
+              : 0;
+            fileSizeEl.textContent =
+              `${result.compressedKB} KB · saved ${savedPct}% (was ${result.originalKB} KB)`;
+            fileSizeEl.style.color = '#0F9D58';
+          }
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        }).catch(() => {
+          // Compression fallback
+          const reader = new FileReader();
+          reader.onload = e => {
+            if (previewThumb) previewThumb.src = e.target.result;
+            _compressedScreenshots['external'] = e.target.result;
+          };
+          reader.readAsDataURL(file);
+          if (fileSizeEl) {
+            fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB (raw)`;
+            fileSizeEl.style.color = '';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        });
       } else {
         removeExternalPaymentScreenshot();
       }
@@ -6167,18 +6699,26 @@
     function copyExternalUPI() {
       const upiText = 'mun@rnsit.ac.in';
       const copyBtn = document.getElementById('copy-external-upi-btn');
+
+      const onCopied = () => {
+        showTactileToast('mun@rnsit.ac.in copied to clipboard!');
+        if (copyBtn) {
+          const originalText = copyBtn.textContent;
+          copyBtn.textContent = '✓ Copied!';
+          copyBtn.style.background = '#0F9D58';
+          setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.background = 'var(--accent-color)';
+          }, 2000);
+        }
+      };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(upiText).then(() => {
-          if (copyBtn) {
-            const originalText = copyBtn.textContent;
-            copyBtn.textContent = '✓ Copied!';
-            copyBtn.style.background = '#0F9D58';
-            setTimeout(() => {
-              copyBtn.textContent = originalText;
-              copyBtn.style.background = 'var(--accent-color)';
-            }, 2000);
-          }
+        navigator.clipboard.writeText(upiText).then(onCopied).catch(() => {
+          fallbackCopyText(upiText, onCopied);
         });
+      } else {
+        fallbackCopyText(upiText, onCopied);
       }
     }
 
@@ -6534,6 +7074,7 @@
 
       if (!regBackdrop || !regCard) return;
 
+      pushModalHistoryState('registration');
       regBackdrop.classList.add('active');
       regBackdrop.style.display = 'flex';
       lockBackgroundScroll();
@@ -6547,7 +7088,10 @@
     }
 
     // Close Registration Modal
-    function closeRegistrationModal() {
+    function closeRegistrationModal(fromPopState = false) {
+      if (!fromPopState) {
+        popModalHistoryState();
+      }
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
       closeAllCustomSelects();
@@ -6592,6 +7136,7 @@
       const dlgCard = document.getElementById('delegation-modal-card');
       if (!dlgBackdrop || !dlgCard) return;
 
+      pushModalHistoryState('delegation');
       dlgBackdrop.classList.add('active');
       dlgBackdrop.style.display = 'flex';
       lockBackgroundScroll();
@@ -6605,7 +7150,10 @@
       }
     }
 
-    function closeDelegationRegistrationModal() {
+    function closeDelegationRegistrationModal(fromPopState = false) {
+      if (!fromPopState) {
+        popModalHistoryState();
+      }
       const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
       const dlgCard = document.getElementById('delegation-modal-card');
       closeAllCustomSelects();
@@ -7119,9 +7667,16 @@
     function copyDelegationSheetLink() {
       const link = document.getElementById('dlg-sheet-link')?.value;
       if (link) {
-        navigator.clipboard.writeText(link).then(() => {
-          alert('Google Sheet link copied to clipboard!');
-        });
+        const onCopied = () => {
+          showTactileToast('Google Sheet link copied to clipboard!');
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(onCopied).catch(() => {
+            fallbackCopyText(link, onCopied);
+          });
+        } else {
+          fallbackCopyText(link, onCopied);
+        }
       }
     }
 
@@ -7407,6 +7962,7 @@
     }
 
     function handleSuccessDone() {
+      popModalHistoryState();
       sessionStorage.removeItem('pending_internal_payment');
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
@@ -7559,6 +8115,11 @@
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
         setTimeout(openDelegationRegistrationModal, 150);
+        if (window.location.hash) {
+          try {
+            history.replaceState(null, '', window.location.pathname + (window.location.search || ''));
+          } catch (e) {}
+        }
       } else {
         const committeeParam = urlParams.get('committee');
         if (committeeParam) {
@@ -7695,6 +8256,190 @@
     } else {
       handleInitialPageLoad();
     }
+
+    // ==========================================
+    // FORM DRAFT AUTO-SAVE (sessionStorage)
+    // Protects Step 1–3 inputs from phone-call
+    // interruptions, accidental reloads, or app
+    // backgrounding on mobile.
+    // ==========================================
+    const DRAFT_KEY = 'mun_reg_draft_v1';
+
+    // Fields to persist — text/email/tel/select/textarea (no file inputs, no payment data)
+    const DRAFT_FIELDS = [
+      // Step 1 — Personal Details
+      'reg-name', 'reg-institution', 'reg-usn', 'reg-city',
+      'reg-phone', 'reg-email',
+      // Step 1 — Experience (radio → stored as text in hidden field)
+      'reg-exp-yes', 'reg-exp-no',   // radio
+      'reg-exp-count',               // select
+      'reg-experience-details',      // textarea
+      // Step 2 — Committee 1
+      'reg-committee-1', 'reg-portfolio-1', 'reg-portfolio-2',
+      // Step 3 — Committee 2
+      'reg-committee-2', 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2',
+      // Step 4 — IEEE ID (only text field, never payment data)
+      'reg-ieee-id'
+    ];
+
+    function saveDraft() {
+      const data = {};
+      DRAFT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'radio') {
+          if (el.checked) data[id] = el.value;
+        } else {
+          data[id] = el.value;
+        }
+      });
+      // Also save delegate type and current step
+      data['_delegateType'] = currentDelegateType || 'internal';
+      try {
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+      } catch (e) { /* storage quota or private mode */ }
+    }
+
+    function clearDraft() {
+      try { sessionStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    }
+
+    function restoreDraft() {
+      let raw;
+      try { raw = sessionStorage.getItem(DRAFT_KEY); } catch (e) {}
+      if (!raw) return false;
+
+      let data;
+      try { data = JSON.parse(raw); } catch (e) { clearDraft(); return false; }
+      if (!data || typeof data !== 'object') { clearDraft(); return false; }
+
+      // Check that at least the Name field has content — otherwise skip
+      if (!data['reg-name'] || !data['reg-name'].trim()) return false;
+
+      // Restore values
+      DRAFT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el || !(id in data)) return;
+        if (el.type === 'radio') {
+          if (data[id] === el.value) {
+            el.checked = true;
+            // Trigger MUN experience toggle if applicable
+            if (el.name === 'reg-has-experience') handleExperienceToggle(el.value);
+          }
+        } else if (el.tagName === 'SELECT') {
+          el.value = data[id];
+          // Fire change event so dependent selects (portfolios) rebuild
+          el.dispatchEvent(new Event('change'));
+        } else {
+          el.value = data[id];
+        }
+      });
+
+      // Restore delegate type
+      if (data['_delegateType']) {
+        currentDelegateType = data['_delegateType'];
+      }
+
+      return true;
+    }
+
+    function showDraftRestoredBanner(step1Panel) {
+      // Avoid duplicates
+      if (document.getElementById('draft-restored-banner')) return;
+
+      const banner = document.createElement('div');
+      banner.id = 'draft-restored-banner';
+      banner.className = 'draft-restored-banner';
+      banner.setAttribute('role', 'status');
+      banner.innerHTML = `
+        <span class="draft-dot"></span>
+        <span>Draft restored &mdash; your entries are back!</span>
+        <button class="draft-dismiss" onclick="clearDraftAndDismissBanner()" aria-label="Dismiss draft">Clear</button>
+      `;
+
+      // Insert at top of Step 1 panel content
+      const firstFormGroup = step1Panel.querySelector('.form-group');
+      if (firstFormGroup) {
+        step1Panel.insertBefore(banner, firstFormGroup);
+      } else {
+        step1Panel.prepend(banner);
+      }
+
+      // Auto-dismiss after 6s
+      setTimeout(() => {
+        if (banner.parentNode) {
+          banner.style.transition = 'opacity 0.4s ease';
+          banner.style.opacity = '0';
+          setTimeout(() => banner.remove(), 400);
+        }
+      }, 6000);
+    }
+
+    function clearDraftAndDismissBanner() {
+      clearDraft();
+      const banner = document.getElementById('draft-restored-banner');
+      if (banner) {
+        banner.style.transition = 'opacity 0.3s ease';
+        banner.style.opacity = '0';
+        setTimeout(() => banner.remove(), 300);
+      }
+      // Also reset the form fields so the user knows they cleared
+      const form = document.getElementById('delegate-registration-form');
+      if (form) {
+        form.reset();
+        const institution = document.getElementById('reg-institution');
+        if (institution) institution.readOnly = false;
+      }
+    }
+
+    // Attach debounced input/change listeners to all draft fields
+    function attachDraftListeners() {
+      let saveTimer = null;
+      const debouncedSave = () => {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveDraft, 600); // 600ms debounce
+      };
+
+      DRAFT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const events = el.type === 'radio' || el.tagName === 'SELECT' ? ['change'] : ['input', 'change'];
+        events.forEach(evt => el.addEventListener(evt, debouncedSave, { passive: true }));
+      });
+    }
+
+    // Hook into openRegistrationModal to restore draft on open
+    const _origOpenRegistrationModal = openRegistrationModal;
+    openRegistrationModal = function(preferredCommitteeId = 'unsc') {
+      _origOpenRegistrationModal(preferredCommitteeId);
+      // Try to restore draft — runs after goToStep(1) sets up DOM
+      setTimeout(() => {
+        const restored = restoreDraft();
+        if (restored) {
+          const step1Panel = document.getElementById('wizard-step-1');
+          if (step1Panel) showDraftRestoredBanner(step1Panel);
+        }
+      }, 80);
+    };
+
+    // Clear draft on successful submission (both internal & external paths)
+    const _origShowSuccessOverlay = showSuccessOverlay;
+    showSuccessOverlay = function() {
+      clearDraft();
+      // Remove banner if still visible
+      const banner = document.getElementById('draft-restored-banner');
+      if (banner) banner.remove();
+      _origShowSuccessOverlay();
+    };
+
+    // Initialize listeners once DOM is ready
+    const initDraftAutoSave = () => { attachDraftListeners(); };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDraftAutoSave);
+    } else {
+      initDraftAutoSave();
+    }
+    // End Form Draft Auto-Save
   </script>
 
   <!-- ================================================= -->
@@ -7941,6 +8686,16 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Tactile Neo-Brutalist Copy Toast Notification -->
+  <div id="tactile-copy-toast" class="tactile-copy-toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-icon-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <span id="tactile-toast-text" class="toast-message-text">mun@rnsit.ac.in copied to clipboard!</span>
   </div>
 
   <script type="module" src="./topology-background.js"></script>

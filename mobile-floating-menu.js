@@ -57,15 +57,33 @@
   const container = document.getElementById("floatingMenuContainer");
   const toggle = document.getElementById("floatingMenuToggle");
   let isOpen = false;
+  let isClosingFromPop = false;
 
   function toggleMenu(open) {
-    isOpen = typeof open === "boolean" ? open : !isOpen;
+    const nextState = typeof open === "boolean" ? open : !isOpen;
+    if (nextState === isOpen) return;
+    isOpen = nextState;
     if (isOpen) {
       container.classList.add("is-open");
+      try {
+        window.history.pushState({ munFloatingMenu: true }, "", window.location.href);
+      } catch (err) {}
     } else {
       container.classList.remove("is-open");
+      if (!isClosingFromPop && window.history.state && window.history.state.munFloatingMenu) {
+        window.history.back();
+      }
     }
   }
+
+  // Intercept back button to close floating menu if open
+  window.addEventListener("popstate", (e) => {
+    if (isOpen) {
+      isClosingFromPop = true;
+      toggleMenu(false);
+      setTimeout(() => { isClosingFromPop = false; }, 100);
+    }
+  });
 
   // Bottom bar toggle
   toggle.addEventListener("click", (e) => {
@@ -95,10 +113,18 @@
     }
   });
 
-  // Close menu upon item click
+  // Handle menu item clicks: On mobile, replace location to avoid multi-page back loops
   const items = container.querySelectorAll(".floating-menu-item");
   items.forEach((item) => {
-    item.addEventListener("click", () => {
+    item.addEventListener("click", (e) => {
+      const href = item.getAttribute("href");
+      if (href && href !== window.location.pathname) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          window.location.replace(href);
+          return;
+        }
+      }
       setTimeout(() => toggleMenu(false), 120);
     });
   });

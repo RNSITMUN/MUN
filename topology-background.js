@@ -1,12 +1,97 @@
 /**
  * Fluid Topographic Contour Lines Background
  * Recreated from shoe-finder shader architecture with lightweight standalone WebGL.
+ *
+ * Performance tiers:
+ *  - Low-end device / battery ≤ 20% → 30 FPS cap, opacity reduced
+ *  - Modal open on mobile → rendering paused entirely
+ *  - Scroll active on mobile → draw every 4th frame
+ *  - Scroll active on desktop → draw every 2nd frame
+ *  - Tab hidden → paused
+ *  - Canvas off-screen → paused via IntersectionObserver
  */
 (function () {
   if (typeof window === 'undefined') return;
 
+  // ─── Battery & Performance State ─────────────────────────────────────────
+  let batteryLevel = 1.0;       // 0.0–1.0; assumes full until Battery API responds
+  let isCharging = true;
+  let targetFPS = 60;           // will be updated based on conditions
+  let lastFrameTime = 0;
+  let isModalOpen = false;      // set to true by modal observers
+
+  // Detect low-end device heuristics (hardware concurrency + memory)
+  const lowEndDevice = (
+    (navigator.hardwareConcurrency != null && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory != null && navigator.deviceMemory <= 2)
+  );
+
+  const isMobileDevice = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
+
+  // Battery API – asynchronously update batteryLevel
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then((battery) => {
+      batteryLevel = battery.level;
+      isCharging = battery.charging;
+
+      battery.addEventListener('levelchange', () => {
+        batteryLevel = battery.level;
+        updateTargetFPS();
+      });
+      battery.addEventListener('chargingchange', () => {
+        isCharging = battery.charging;
+        updateTargetFPS();
+      });
+
+      updateTargetFPS();
+    }).catch(() => { /* Battery API not permitted – use defaults */ });
+  }
+
+  function updateTargetFPS() {
+    const batterySaver = !isCharging && batteryLevel <= 0.20;
+    const reducedMode = isMobileDevice || lowEndDevice || (!isCharging && batteryLevel <= 0.40);
+
+    if (batterySaver) {
+      targetFPS = 20;       // 20 FPS on very low battery to save power
+    } else if (reducedMode) {
+      targetFPS = 30;       // 30 FPS on mobile / low-end / mid-battery
+    } else {
+      targetFPS = 60;       // 60 FPS otherwise (shader is already low-power)
+    }
+  }
+
+  updateTargetFPS();
+
+  // ─── Modal-Open Detection ─────────────────────────────────────────────────
+  // When any committee/registration modal is open on mobile, pause the GPU
+  // to ensure 120Hz compositor smoothness for form scrolling.
+  if (isMobileDevice && typeof MutationObserver !== 'undefined') {
+    const modalObserver = new MutationObserver(() => {
+      const modals = document.querySelectorAll(
+        '#committee-modal-backdrop.active,' +
+        '#registration-modal-backdrop.active,' +
+        '#delegation-modal-backdrop.active,' +
+        '#delegate-type-modal-backdrop.active'
+      );
+      isModalOpen = modals.length > 0;
+    });
+    // Observe body after DOM ready so modals exist
+    const startModalObs = () => {
+      modalObserver.observe(document.body, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class', 'style']
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startModalObs);
+    } else {
+      startModalObs();
+    }
+  }
+
+  // ─── Core Renderer ────────────────────────────────────────────────────────
   function initTopologyBackground() {
-    // Avoid double initialization
     if (document.getElementById('topology-bg-canvas')) return;
 
     const canvas = document.createElement('canvas');
@@ -15,7 +100,13 @@
     canvas.setAttribute('aria-hidden', 'true');
     document.body.prepend(canvas);
 
-    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'low-power' });
+    const gl = canvas.getContext('webgl', {
+      alpha: true,
+      antialias: false,
+      powerPreference: 'low-power',
+      preserveDrawingBuffer: false
+    });
+
     if (!gl) {
       console.warn('WebGL not supported for topology background');
       return;
@@ -147,18 +238,20 @@
     const uOpacityLoc = gl.getUniformLocation(program, 'uOpacity');
     const uColorLoc = gl.getUniformLocation(program, 'uColor');
 
-    // Shader uniforms
+    // Base shader uniforms
     gl.uniform1f(uScaleLoc, 1.8);
     gl.uniform1f(uLineThicknessLoc, 0.030);
-    gl.uniform1f(uOpacityLoc, 0.060); // Fine-tuned opacity
     gl.uniform3f(uColorLoc, 0.0, 0.0, 0.0); // Black/charcoal lines matching neo-brutalist theme
+
+    // Initial opacity based on device capability
+    const baseOpacity = (isMobileDevice || lowEndDevice) ? 0.045 : 0.060;
+    gl.uniform1f(uOpacityLoc, baseOpacity);
 
     let width = 0;
     let height = 0;
 
     function resize() {
-      const isMobile = window.innerWidth < 768;
-      const maxDpr = isMobile ? 1.0 : 1.5;
+      const maxDpr = isMobileDevice ? 1.0 : 1.5;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       const newWidth = Math.floor(window.innerWidth * dpr);
       const newHeight = Math.floor(window.innerHeight * dpr);
@@ -176,12 +269,12 @@
     window.addEventListener('resize', resize, { passive: true });
     resize();
 
+    // ─── Runtime State ──────────────────────────────────────────────────────
     let startTime = performance.now();
     let isVisible = true;
     let isScrolling = false;
     let scrollTimer = null;
-    let isCanvasInView = true; // Track if canvas is in viewport (mobile optimization)
-    const isMobileDevice = window.innerWidth < 768;
+    let isCanvasInView = true;
 
     document.addEventListener('visibilitychange', () => {
       isVisible = document.visibilityState === 'visible';
@@ -190,13 +283,11 @@
     window.addEventListener('scroll', () => {
       isScrolling = true;
       if (scrollTimer) clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
-        isScrolling = false;
-      }, 120);
+      scrollTimer = setTimeout(() => { isScrolling = false; }, 150);
     }, { passive: true });
 
-    // On mobile, use IntersectionObserver to completely pause rendering when scrolled away
-    if (isMobileDevice && typeof IntersectionObserver !== 'undefined') {
+    // IntersectionObserver – pause entirely when canvas scrolled off-screen
+    if (typeof IntersectionObserver !== 'undefined') {
       const topoObserver = new IntersectionObserver((entries) => {
         for (const entry of entries) {
           isCanvasInView = entry.isIntersecting;
@@ -205,23 +296,38 @@
       topoObserver.observe(canvas);
     }
 
+    // ─── Render Loop ────────────────────────────────────────────────────────
     let frameCount = 0;
-    function render() {
-      frameCount++;
-      if (isVisible && isCanvasInView) {
-        // Mobile: during active scroll, draw every 4th frame to free GPU for compositor
-        // Desktop: during active scroll, draw every 2nd frame
-        const skipRatio = isMobileDevice ? 4 : 2;
-        if (!isScrolling || frameCount % skipRatio === 0) {
-          const currentTime = (performance.now() - startTime) * 0.001;
-          gl.uniform1f(uTimeLoc, currentTime);
-          gl.drawArrays(gl.TRIANGLES, 0, 6);
-        }
-      }
+
+    function render(now) {
       requestAnimationFrame(render);
+
+      frameCount++;
+
+      // 1. Hard pause: tab hidden, canvas off-screen, or modal open on mobile
+      if (!isVisible || !isCanvasInView) return;
+      if (isMobileDevice && isModalOpen) return;
+
+      // 2. FPS cap: throttle by skipping frames when below target FPS
+      //    targetFPS updated by battery listener (20 / 30 / 60)
+      const msPerFrame = 1000 / targetFPS;
+      if (now - lastFrameTime < msPerFrame - 0.5) return;  // 0.5ms tolerance
+      lastFrameTime = now;
+
+      // 3. Scroll throttle on top of FPS cap
+      //    Mobile: skip 3 in every 4 frames while actively scrolling
+      //    Desktop: skip every other frame while scrolling
+      if (isScrolling) {
+        const skipMod = isMobileDevice ? 4 : 2;
+        if (frameCount % skipMod !== 0) return;
+      }
+
+      const currentTime = (now - startTime) * 0.001;
+      gl.uniform1f(uTimeLoc, currentTime);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
-    render();
+    requestAnimationFrame(render);
   }
 
   if (document.readyState === 'loading') {
