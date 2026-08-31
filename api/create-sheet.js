@@ -4,13 +4,15 @@ export default async function handler(req, res) {
   // CORS & Origin Validation Security Check
   const origin = req.headers.origin || '';
   const allowedOrigins = [
+    'https://mun.rnsit.ac.in',
+    'https://www.mun.rnsit.ac.in',
     'https://mun-rnsit.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:5173'
   ];
 
-  const isAllowed = !origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+  const isAllowed = !origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('.rnsit.ac.in');
   if (!isAllowed) {
     return res.status(403).json({ success: false, error: 'Access forbidden: unauthorized origin.' });
   }
