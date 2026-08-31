@@ -586,6 +586,23 @@ html.modal-open .mobile-floating-menu-root {
   .mobile-floating-menu-root {
     bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
+  .floating-menu-container.is-open {
+    height: 195px;
+    width: 170px;
+  }
+  .floating-menu-container.is-open .floating-menu-links {
+    padding: 8px 8px 2px 8px;
+    gap: 2px;
+  }
+  .floating-menu-item {
+    height: 26px;
+    min-height: 24px;
+    font-size: 0.7rem;
+  }
+  .floating-menu-container.is-open .floating-menu-bottom-bar {
+    height: 26px;
+    padding: 0 8px 6px 8px;
+  }
 }
 
 .floating-menu-container {
@@ -608,8 +625,8 @@ html.modal-open .mobile-floating-menu-root {
 }
 
 .floating-menu-container.is-open {
-  width: 175px;
-  height: 205px;
+  width: clamp(165px, 46vw, 185px);
+  height: 220px;
   border-radius: 18px;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0 #000000;
@@ -673,7 +690,11 @@ html.modal-open .mobile-floating-menu-root {
   pointer-events: auto;
   flex: 1;
   height: auto;
-  padding: 10px 10px 2px 10px;
+  padding: 12px 10px 4px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 3px;
 }
 
 /* Menu Items with Staggered Slide In */
@@ -681,16 +702,18 @@ html.modal-open .mobile-floating-menu-root {
   text-decoration: none;
   color: #FFF7EB;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   width: 100%;
-  min-height: 36px;
-  padding: 6px 14px;
+  height: 30px;
+  min-height: 28px;
+  padding: 0 10px;
   border-radius: 8px;
   box-sizing: border-box;
   transform: translateY(8px);
@@ -736,13 +759,14 @@ html.modal-open .mobile-floating-menu-root {
   padding: 0;
   box-sizing: border-box;
   cursor: pointer;
-  transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1), justify-content 0s;
+  transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .floating-menu-container.is-open .floating-menu-bottom-bar {
-  justify-content: space-between;
-  gap: 0;
-  padding: 0 14px 10px 14px;
+  justify-content: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 10px 8px 10px;
 }
 
 .floating-menu-label {
