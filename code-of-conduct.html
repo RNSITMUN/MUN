@@ -173,6 +173,7 @@
       gap: 8px;
       padding: 0;
       box-sizing: border-box;
+      scroll-margin-top: clamp(40px, 8vh, 85px);
     }
 
     .coc-index-chip {
@@ -227,7 +228,8 @@
 
     .coc-clause-header {
       display: flex;
-      align-items: baseline;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -236,10 +238,36 @@
       display: flex;
       align-items: baseline;
       gap: 12px;
+      flex: 1;
+      min-width: 0;
     }
 
     .coc-back-to-index {
       display: none;
+    }
+
+    /* Subtle Back to Index - visible ONLY on the actively jumped clause (Desktop & Mobile) */
+    .coc-clause.is-index-target .coc-back-to-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-color);
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1;
+      text-decoration: none;
+      margin-left: auto;
+      padding: 4px 8px;
+      opacity: 0.85;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .coc-clause.is-index-target .coc-back-to-index:hover,
+    .coc-clause.is-index-target .coc-back-to-index:active {
+      opacity: 1;
+      transform: translateY(-2px);
     }
 
     .coc-clause-num {
@@ -1255,7 +1283,13 @@
           e.preventDefault();
           var indexNav = document.getElementById('coc-index');
           if (indexNav) {
-            indexNav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            var navRect = indexNav.getBoundingClientRect();
+            var offset = window.innerWidth <= 768 ? 50 : 85;
+            var targetY = window.pageYOffset + navRect.top - offset;
+            window.scrollTo({
+              top: Math.max(0, targetY),
+              behavior: 'smooth'
+            });
             try {
               history.pushState(null, '', '#coc-index');
             } catch (_) {}
