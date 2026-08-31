@@ -1,7 +1,7 @@
 {
   "name": "MUNSoc RNSIT",
   "short_name": "RNS'MUN",
-  "description": "Model United Nations Society RNSIT - Interactive Gallery, Events, and Connection Hub.",
+  "description": "Model United Nations Society RNSIT - Interactive Gallery, Team, and Connection Hub.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

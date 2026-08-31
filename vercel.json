@@ -3,32 +3,12 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/team",
-      "destination": "/404.html"
+      "source": "/contact",
+      "destination": "/stay-connected.html"
     },
     {
       "source": "/teams",
-      "destination": "/404.html"
-    },
-    {
-      "source": "/team.html",
-      "destination": "/404.html"
-    },
-    {
-      "source": "/teams.html",
-      "destination": "/404.html"
-    },
-    {
-      "source": "/team/(.*)",
-      "destination": "/404.html"
-    },
-    {
-      "source": "/teams/(.*)",
-      "destination": "/404.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/stay-connected.html"
+      "destination": "/team.html"
     },
     {
       "source": "/coc",

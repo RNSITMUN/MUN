@@ -2,8 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /404
-Disallow: /team
-Disallow: /teams
-Disallow: /team.html
-Disallow: /teams.html
 Sitemap: https://mun-rnsit.vercel.app/sitemap.xml
