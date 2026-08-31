@@ -6673,6 +6673,59 @@
     // so the submit handler can reference them without re-reading the file.
     const _compressedScreenshots = {};
 
+    function resetPaymentScreenshotState() {
+      delete _compressedScreenshots['internal'];
+      delete _compressedScreenshots['external'];
+      _compressedScreenshots['internal'] = null;
+      _compressedScreenshots['external'] = null;
+
+      // 1. Internal screenshot inputs & UI
+      const internalInput = document.getElementById('reg-payment-screenshot');
+      if (internalInput) internalInput.value = '';
+      const internalEmptyState = document.getElementById('dropzone-empty-state');
+      if (internalEmptyState) internalEmptyState.style.display = 'block';
+      const internalFileState = document.getElementById('dropzone-file-state');
+      if (internalFileState) internalFileState.style.display = 'none';
+      const internalFileName = document.getElementById('screenshot-file-name');
+      if (internalFileName) internalFileName.textContent = '';
+      const internalFileSize = document.getElementById('screenshot-file-size');
+      if (internalFileSize) internalFileSize.textContent = '';
+      const internalThumb = document.getElementById('screenshot-preview-thumb');
+      if (internalThumb) internalThumb.src = '';
+      const internalErr = document.getElementById('reg-payment-screenshot-error');
+      if (internalErr) internalErr.style.display = 'none';
+      const internalSubmitBtn = document.getElementById('internal-submit-btn');
+      if (internalSubmitBtn) {
+        internalSubmitBtn.disabled = true;
+        internalSubmitBtn.setAttribute('disabled', 'true');
+        internalSubmitBtn.style.opacity = '0.45';
+        internalSubmitBtn.style.cursor = 'not-allowed';
+      }
+
+      // 2. External screenshot inputs & UI
+      const externalInput = document.getElementById('reg-external-payment-screenshot');
+      if (externalInput) externalInput.value = '';
+      const externalEmptyState = document.getElementById('external-dropzone-empty-state');
+      if (externalEmptyState) externalEmptyState.style.display = 'block';
+      const externalFileState = document.getElementById('external-dropzone-file-state');
+      if (externalFileState) externalFileState.style.display = 'none';
+      const externalFileName = document.getElementById('external-screenshot-file-name');
+      if (externalFileName) externalFileName.textContent = '';
+      const externalFileSize = document.getElementById('external-screenshot-file-size');
+      if (externalFileSize) externalFileSize.textContent = '';
+      const externalThumb = document.getElementById('external-screenshot-preview-thumb');
+      if (externalThumb) externalThumb.src = '';
+      const externalErr = document.getElementById('reg-external-payment-screenshot-error');
+      if (externalErr) externalErr.style.display = 'none';
+      const externalSubmitBtn = document.getElementById('external-submit-btn');
+      if (externalSubmitBtn) {
+        externalSubmitBtn.disabled = true;
+        externalSubmitBtn.setAttribute('disabled', 'true');
+        externalSubmitBtn.style.opacity = '0.45';
+        externalSubmitBtn.style.cursor = 'not-allowed';
+      }
+    }
+
     function handlePaymentScreenshotSelected(input) {
       const file = input.files && input.files[0];
       const submitBtn = document.getElementById('internal-submit-btn');
@@ -6744,18 +6797,26 @@
       }
     }
 
-
     function removePaymentScreenshot() {
+      delete _compressedScreenshots['internal'];
+      _compressedScreenshots['internal'] = null;
+
       const input = document.getElementById('reg-payment-screenshot');
       const submitBtn = document.getElementById('internal-submit-btn');
       const emptyState = document.getElementById('dropzone-empty-state');
       const fileState = document.getElementById('dropzone-file-state');
+      const fileNameEl = document.getElementById('screenshot-file-name');
+      const fileSizeEl = document.getElementById('screenshot-file-size');
       const previewThumb = document.getElementById('screenshot-preview-thumb');
+      const err = document.getElementById('reg-payment-screenshot-error');
 
       if (input) input.value = '';
       if (emptyState) emptyState.style.display = 'block';
       if (fileState) fileState.style.display = 'none';
+      if (fileNameEl) fileNameEl.textContent = '';
+      if (fileSizeEl) fileSizeEl.textContent = '';
       if (previewThumb) previewThumb.src = '';
+      if (err) err.style.display = 'none';
 
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -6905,16 +6966,25 @@
     }
 
     function removeExternalPaymentScreenshot() {
+      delete _compressedScreenshots['external'];
+      _compressedScreenshots['external'] = null;
+
       const input = document.getElementById('reg-external-payment-screenshot');
       const submitBtn = document.getElementById('external-submit-btn');
       const emptyState = document.getElementById('external-dropzone-empty-state');
       const fileState = document.getElementById('external-dropzone-file-state');
+      const fileNameEl = document.getElementById('external-screenshot-file-name');
+      const fileSizeEl = document.getElementById('external-screenshot-file-size');
       const previewThumb = document.getElementById('external-screenshot-preview-thumb');
+      const err = document.getElementById('reg-external-payment-screenshot-error');
 
       if (input) input.value = '';
       if (emptyState) emptyState.style.display = 'block';
       if (fileState) fileState.style.display = 'none';
+      if (fileNameEl) fileNameEl.textContent = '';
+      if (fileSizeEl) fileSizeEl.textContent = '';
       if (previewThumb) previewThumb.src = '';
+      if (err) err.style.display = 'none';
 
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -7296,7 +7366,17 @@
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
 
-      setCommittee1Selection(preferredCommitteeId);
+      // Clear any transient screenshot state
+      resetPaymentScreenshotState();
+
+      // Check if a saved draft exists in sessionStorage
+      const restored = restoreDraft();
+      if (!restored) {
+        setCommittee1Selection(preferredCommitteeId);
+      } else {
+        const step1Panel = document.getElementById('wizard-step-1');
+        if (step1Panel) showDraftRestoredBanner(step1Panel);
+      }
 
       goToStep(1);
 
@@ -8198,7 +8278,7 @@
       if (currentDelegateType === 'internal') {
         const screenshotInput = document.getElementById('reg-payment-screenshot');
         const screenshotErr = document.getElementById('reg-payment-screenshot-error');
-        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0) {
+        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0 || !_compressedScreenshots['internal']) {
           if (screenshotErr) screenshotErr.style.display = 'block';
           return;
         }
@@ -8208,7 +8288,7 @@
       if (currentDelegateType === 'external') {
         const screenshotInput = document.getElementById('reg-external-payment-screenshot');
         const screenshotErr = document.getElementById('reg-external-payment-screenshot-error');
-        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0) {
+        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0 || !_compressedScreenshots['external']) {
           if (screenshotErr) screenshotErr.style.display = 'block';
           return;
         }
@@ -8270,9 +8350,6 @@
       const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
       // ─── Dual-Layer Resilient Submission ─────────────────────
-      // 1. Attempts /api/submit-registration (Vercel serverless)
-      // 2. If Vercel API fails or 404s, falls back directly to the Google Apps Script Webhook
-      // This guarantees registrations are NEVER lost on any domain or preview environment.
       const GAS_URL = 'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
 
       async function dispatchSubmission(payload) {
@@ -8327,6 +8404,11 @@
 
     // Scroll modal to top, adapt card height for mobile viewports, and enable smooth scroll
     function showSuccessOverlay() {
+      clearDraft();
+      resetPaymentScreenshotState();
+      const banner = document.getElementById('draft-restored-banner');
+      if (banner) banner.remove();
+
       const regCard = document.getElementById('registration-modal-card');
       const successOverlay = document.getElementById('success-overlay');
       if (regCard) {
@@ -8344,6 +8426,9 @@
     function handleSuccessDone() {
       popModalHistoryState();
       sessionStorage.removeItem('pending_internal_payment');
+      clearDraft();
+      resetPaymentScreenshotState();
+
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
       closeAllCustomSelects();
@@ -8370,11 +8455,12 @@
               form.reset();
               const institution = document.getElementById('reg-institution');
               if (institution) institution.readOnly = false;
+              handleExperienceToggle('no');
+              form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+              form.querySelectorAll('.error-container').forEach(el => { el.style.display = 'none'; });
             }
+            setCommittee1Selection('unsc');
             goToStep(1);
-            setTimeout(() => {
-              document.querySelectorAll('select.form-select').forEach(s => s.dispatchEvent(new Event('change')));
-            }, 50);
           }
         });
       } else {
@@ -8388,7 +8474,15 @@
         regCard.style.overflowY = '';
         regCard.style.maxHeight = '';
         const form = document.getElementById('delegate-registration-form');
-        if (form) form.reset();
+        if (form) {
+          form.reset();
+          const institution = document.getElementById('reg-institution');
+          if (institution) institution.readOnly = false;
+          handleExperienceToggle('no');
+          form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+          form.querySelectorAll('.error-container').forEach(el => { el.style.display = 'none'; });
+        }
+        setCommittee1Selection('unsc');
         goToStep(1);
       }
     }
@@ -8480,6 +8574,7 @@
 
     // Initialize custom select on page load and check for direct modal links
     function handleInitialPageLoad() {
+      resetPaymentScreenshotState();
       initCustomSelects();
       const comm1Select = document.getElementById('reg-committee-1');
       if (comm1Select) {
@@ -8648,12 +8743,12 @@
     // Fields to persist — text/email/tel/select/textarea (no file inputs, no payment data)
     const DRAFT_FIELDS = [
       // Step 1 — Personal Details
-      'reg-name', 'reg-institution', 'reg-usn', 'reg-city',
+      'reg-name', 'reg-age', 'reg-institution', 'reg-usn', 'reg-city',
       'reg-phone', 'reg-email',
-      // Step 1 — Experience (radio → stored as text in hidden field)
-      'reg-exp-yes', 'reg-exp-no',   // radio
-      'reg-exp-count',               // select
-      'reg-experience-details',      // textarea
+      // Step 1 — Experience
+      'reg-exp-yes', 'reg-exp-no',
+      'reg-exp-count',
+      'reg-experience-details',
       // Step 2 — Committee 1
       'reg-committee-1', 'reg-portfolio-1', 'reg-portfolio-2',
       // Step 3 — Committee 2
@@ -8673,7 +8768,7 @@
           data[id] = el.value;
         }
       });
-      // Also save delegate type and current step
+      // Also save delegate type
       data['_delegateType'] = currentDelegateType || 'internal';
       try {
         sessionStorage.setItem(DRAFT_KEY, JSON.stringify(data));
@@ -8693,32 +8788,123 @@
       try { data = JSON.parse(raw); } catch (e) { clearDraft(); return false; }
       if (!data || typeof data !== 'object') { clearDraft(); return false; }
 
-      // Check that at least the Name field has content — otherwise skip
-      if (!data['reg-name'] || !data['reg-name'].trim()) return false;
+      // Check that at least some actual user value has been entered
+      const hasValue = Object.keys(data).some(k => k !== '_delegateType' && typeof data[k] === 'string' && data[k].trim() !== '');
+      if (!hasValue) return false;
 
-      // Restore values
-      DRAFT_FIELDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el || !(id in data)) return;
-        if (el.type === 'radio') {
-          if (data[id] === el.value) {
-            el.checked = true;
-            // Trigger MUN experience toggle if applicable
-            if (el.name === 'reg-has-experience') handleExperienceToggle(el.value);
+      // 1. Restore delegate type if saved
+      if (data['_delegateType']) {
+        currentDelegateType = data['_delegateType'];
+        const typeHidden = document.getElementById('reg-delegate-type');
+        if (typeHidden) typeHidden.value = currentDelegateType;
+        const titleEl = document.getElementById('reg-form-title');
+        if (titleEl) {
+          titleEl.textContent = currentDelegateType === 'internal' ? 'Internal Delegate Registration' : 'External Delegate Registration';
+        }
+        const institution = document.getElementById('reg-institution');
+        if (institution) {
+          if (currentDelegateType === 'internal') {
+            institution.value = 'RNS Institute of Technology';
+            institution.readOnly = true;
+          } else {
+            if (institution.value === 'RNS Institute of Technology' && !data['reg-institution']) {
+              institution.value = '';
+            }
+            institution.readOnly = false;
           }
-        } else if (el.tagName === 'SELECT') {
-          el.value = data[id];
-          // Fire change event so dependent selects (portfolios) rebuild
-          el.dispatchEvent(new Event('change'));
-        } else {
+        }
+      }
+
+      // 2. Step 1: Text & simple fields
+      const step1TextFields = ['reg-name', 'reg-age', 'reg-institution', 'reg-usn', 'reg-city', 'reg-phone', 'reg-email', 'reg-experience-details', 'reg-ieee-id'];
+      step1TextFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && id in data && data[id] !== undefined) {
           el.value = data[id];
         }
       });
 
-      // Restore delegate type
-      if (data['_delegateType']) {
-        currentDelegateType = data['_delegateType'];
+      // Step 1: Experience Radio
+      if (data['reg-exp-yes'] === 'yes') {
+        const yesRadio = document.getElementById('reg-exp-yes');
+        if (yesRadio) {
+          yesRadio.checked = true;
+          handleExperienceToggle('yes');
+        }
+      } else if (data['reg-exp-no'] === 'no') {
+        const noRadio = document.getElementById('reg-exp-no');
+        if (noRadio) {
+          noRadio.checked = true;
+          handleExperienceToggle('no');
+        }
       }
+
+      // Step 1: Experience Count
+      if (data['reg-exp-count']) {
+        const expCount = document.getElementById('reg-exp-count');
+        if (expCount) {
+          expCount.value = data['reg-exp-count'];
+          rebuildCustomSelect('reg-exp-count');
+          const detailsSection = document.getElementById('exp-details-section');
+          if (detailsSection && data['reg-exp-yes'] === 'yes') {
+            detailsSection.style.display = 'block';
+          }
+        }
+      }
+
+      // 3. Committee 1 in exact dependency order:
+      // a. Restore reg-committee-1
+      const comm1Val = data['reg-committee-1'] || 'unsc';
+      setCommittee1Selection(comm1Val);
+
+      // b. Restore reg-portfolio-1
+      const p1Select = document.getElementById('reg-portfolio-1');
+      if (p1Select && data['reg-portfolio-1']) {
+        const p1Val = data['reg-portfolio-1'];
+        if (Array.from(p1Select.options).some(o => o.value === p1Val)) {
+          p1Select.value = p1Val;
+          rebuildCustomSelect('reg-portfolio-1');
+        }
+      }
+
+      // c. Rebuild Portfolio 2 options and restore reg-portfolio-2
+      const p2Val = data['reg-portfolio-2'] || '';
+      updatePortfolio2Options(comm1Val, 'reg-portfolio-1', 'reg-portfolio-2', p2Val);
+
+      // 4. Committee 2 in exact dependency order:
+      // a. Update Committee 2 options (excludes Committee 1)
+      updateCommittee2Options();
+      const comm2Select = document.getElementById('reg-committee-2');
+      if (comm2Select && data['reg-committee-2']) {
+        const desiredComm2 = data['reg-committee-2'].toLowerCase();
+        if (desiredComm2 !== comm1Val.toLowerCase() && Array.from(comm2Select.options).some(o => o.value === desiredComm2)) {
+          comm2Select.value = desiredComm2;
+          rebuildCustomSelect('reg-committee-2');
+          // Update Committee 2 Matrix link
+          const comm2MatrixLink = document.getElementById('reg-comm2-matrix-link');
+          const comm2MatrixText = document.getElementById('comm2-matrix-btn-text');
+          if (comm2MatrixLink) comm2MatrixLink.href = COMMITTEE_MATRIX_LINKS[desiredComm2] || COMMITTEE_MATRIX_LINKS.all;
+          if (comm2MatrixText) comm2MatrixText.textContent = desiredComm2.toUpperCase();
+          // Populate portfolios for Committee 2
+          updatePortfoliosForCommittee(desiredComm2, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2');
+        }
+      }
+
+      const activeComm2 = comm2Select ? comm2Select.value : '';
+
+      // b. Restore reg-comm2-portfolio-1
+      const comm2P1Select = document.getElementById('reg-comm2-portfolio-1');
+      if (comm2P1Select && data['reg-comm2-portfolio-1']) {
+        const comm2P1Val = data['reg-comm2-portfolio-1'];
+        if (Array.from(comm2P1Select.options).some(o => o.value === comm2P1Val)) {
+          comm2P1Select.value = comm2P1Val;
+          rebuildCustomSelect('reg-comm2-portfolio-1');
+        }
+      }
+
+      // c. Rebuild Comm 2 Portfolio 2 options and restore reg-comm2-portfolio-2
+      const comm2P2Val = data['reg-comm2-portfolio-2'] || '';
+      updatePortfolio2Options(activeComm2, 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2', comm2P2Val);
 
       return true;
     }
@@ -8757,18 +8943,36 @@
 
     function clearDraftAndDismissBanner() {
       clearDraft();
+      resetPaymentScreenshotState();
       const banner = document.getElementById('draft-restored-banner');
       if (banner) {
         banner.style.transition = 'opacity 0.3s ease';
         banner.style.opacity = '0';
         setTimeout(() => banner.remove(), 300);
       }
-      // Also reset the form fields so the user knows they cleared
+      // Completely reset form fields and dependent selects
       const form = document.getElementById('delegate-registration-form');
       if (form) {
         form.reset();
         const institution = document.getElementById('reg-institution');
-        if (institution) institution.readOnly = false;
+        if (institution) {
+          if (currentDelegateType === 'internal') {
+            institution.value = 'RNS Institute of Technology';
+            institution.readOnly = true;
+          } else {
+            institution.value = '';
+            institution.readOnly = false;
+          }
+        }
+        handleExperienceToggle('no');
+        const noRadio = document.getElementById('reg-exp-no');
+        if (noRadio) noRadio.checked = true;
+
+        form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+        form.querySelectorAll('.error-container').forEach(el => { el.style.display = 'none'; });
+
+        setCommittee1Selection('unsc');
+        goToStep(1);
       }
     }
 
@@ -8777,8 +8981,14 @@
       let saveTimer = null;
       const debouncedSave = () => {
         clearTimeout(saveTimer);
-        saveTimer = setTimeout(saveDraft, 600); // 600ms debounce
+        saveTimer = setTimeout(saveDraft, 400); // 400ms debounce
       };
+
+      const form = document.getElementById('delegate-registration-form');
+      if (form) {
+        form.addEventListener('input', debouncedSave, { passive: true });
+        form.addEventListener('change', debouncedSave, { passive: true });
+      }
 
       DRAFT_FIELDS.forEach(id => {
         const el = document.getElementById(id);
@@ -8787,30 +8997,6 @@
         events.forEach(evt => el.addEventListener(evt, debouncedSave, { passive: true }));
       });
     }
-
-    // Hook into openRegistrationModal to restore draft on open
-    const _origOpenRegistrationModal = openRegistrationModal;
-    openRegistrationModal = function(preferredCommitteeId = 'unsc') {
-      _origOpenRegistrationModal(preferredCommitteeId);
-      // Try to restore draft — runs after goToStep(1) sets up DOM
-      setTimeout(() => {
-        const restored = restoreDraft();
-        if (restored) {
-          const step1Panel = document.getElementById('wizard-step-1');
-          if (step1Panel) showDraftRestoredBanner(step1Panel);
-        }
-      }, 80);
-    };
-
-    // Clear draft on successful submission (both internal & external paths)
-    const _origShowSuccessOverlay = showSuccessOverlay;
-    showSuccessOverlay = function() {
-      clearDraft();
-      // Remove banner if still visible
-      const banner = document.getElementById('draft-restored-banner');
-      if (banner) banner.remove();
-      _origShowSuccessOverlay();
-    };
 
     // Initialize listeners once DOM is ready
     const initDraftAutoSave = () => { attachDraftListeners(); };
