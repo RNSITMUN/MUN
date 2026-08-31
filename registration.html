@@ -2134,30 +2134,86 @@
       top: 0;
       left: 0;
       width: 100%;
-      /* Match the card's own padding area — never taller than the card */
       height: 100%;
-      min-height: unset;
+      max-height: 100%;
       background-color: var(--bg-color);
-      border-radius: 20px;
+      border-radius: inherit;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 34px;
+      padding: clamp(24px, 4vw, 34px);
       box-sizing: border-box;
       text-align: center;
       opacity: 0;
       pointer-events: none;
       transform: scale(0.95);
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 20;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
 
     .success-overlay.show {
       opacity: 1;
       pointer-events: auto;
       transform: scale(1);
+    }
+
+    /* Modal card adaptations during success display */
+    .modal-registration-card.in-success-state,
+    .modal-registration-card.in-dlg-success-state {
+      height: auto !important;
+      min-height: unset !important;
+      max-height: min(88dvh, calc(100svh - 32px)) !important;
+      width: 100% !important;
+      max-width: 480px !important;
+      box-sizing: border-box !important;
+      padding: clamp(24px, 5vw, 32px) clamp(18px, 4vw, 26px) !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: auto !important;
+    }
+
+    .modal-registration-card.in-success-state .reg-form-header,
+    .modal-registration-card.in-success-state .wizard-stepper,
+    .modal-registration-card.in-success-state #delegate-registration-form,
+    .modal-registration-card.in-dlg-success-state .reg-form-header,
+    .modal-registration-card.in-dlg-success-state #delegation-registration-form {
+      display: none !important;
+    }
+
+    .modal-registration-card.in-success-state .success-overlay,
+    .modal-registration-card.in-dlg-success-state .success-overlay {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: unset !important;
+      max-height: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+
+    .success-actions-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      width: 100%;
+      flex-shrink: 0;
     }
 
     /* Internal pay-now: both buttons equal flex */
@@ -2292,15 +2348,16 @@
       box-shadow: 1.5px 1.5px 0px #000;
     }
 
-    /* Printable Receipt Container */
-    #printable-receipt {
+    /* Printable Receipt Containers */
+    #printable-receipt,
+    #printable-delegation-receipt {
       display: none;
     }
 
     @media print {
       @page {
         size: A4 portrait;
-        margin: 10mm 14mm;
+        margin: 8mm 12mm;
       }
 
       body {
@@ -2313,8 +2370,8 @@
         print-color-adjust: exact !important;
       }
 
-      /* Hide everything except the receipt */
-      body > *:not(#printable-receipt),
+      /* Hide everything except the receipts */
+      body > *:not(#printable-receipt):not(#printable-delegation-receipt),
       nav,
       .nav-pill,
       .top-left-logo-container,
@@ -2332,19 +2389,50 @@
         visibility: hidden !important;
       }
 
-      #printable-receipt {
+      #printable-receipt,
+      #printable-delegation-receipt {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      /* Individual delegate receipt print display */
+      body.printing-individual #printable-receipt,
+      body:not(.printing-delegation) #printable-receipt {
         display: block !important;
         visibility: visible !important;
         width: 100% !important;
         max-width: 720px !important;
         margin: 0 auto !important;
-        padding: 24px !important;
+        padding: 16px 22px !important;
         border: 2.5px solid #000000 !important;
         border-radius: 12px !important;
         background: #FFFFFF !important;
         color: #000000 !important;
         box-shadow: none !important;
         page-break-inside: avoid !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Institutional delegation receipt print display */
+      body.printing-delegation #printable-delegation-receipt {
+        display: block !important;
+        visibility: visible !important;
+        width: 100% !important;
+        max-width: 720px !important;
+        margin: 0 auto !important;
+        padding: 16px 22px !important;
+        border: 2.5px solid #000000 !important;
+        border-radius: 12px !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid !important;
+        box-sizing: border-box !important;
+      }
+
+      body.printing-delegation #printable-receipt {
+        display: none !important;
+        visibility: hidden !important;
       }
 
       .receipt-header {
@@ -2352,8 +2440,8 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 2px solid #000;
-        padding-bottom: 14px;
-        margin-bottom: 16px;
+        padding-bottom: 10px;
+        margin-bottom: 12px;
       }
 
       .receipt-brand-left {
@@ -2362,26 +2450,30 @@
         gap: 14px;
       }
 
-      .receipt-logo {
-        width: 58px;
-        height: 58px;
+      .receipt-header-logo-img {
+        height: 46px;
+        width: auto;
+        max-width: 220px;
         object-fit: contain;
+        filter: brightness(0);
+        display: block;
       }
 
-      .receipt-titles h1 {
-        font-size: 1.35rem;
-        font-weight: 900;
-        color: #6C0D2C !important;
-        margin: 0;
+      .receipt-society-text {
+        font-size: 0.74rem;
+        color: #222;
+        margin: 2px 0 0 0;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .receipt-date-text {
+        font-size: 0.7rem;
+        color: #6C0D2C;
+        margin: 1px 0 0 0;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-      }
-
-      .receipt-titles p {
-        font-size: 0.8rem;
-        color: #333;
-        margin: 2px 0 0 0;
-        font-weight: 600;
       }
 
       .receipt-status-badge {
@@ -2389,7 +2481,7 @@
         background: #E5A93C !important;
         color: #000 !important;
         font-weight: 800;
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         padding: 5px 11px;
         border-radius: 6px;
         text-transform: uppercase;
@@ -2399,16 +2491,16 @@
       .receipt-meta-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 8px;
         background: #FFF7EB !important;
         border: 1.5px solid #000;
         border-radius: 8px;
-        padding: 10px 14px;
-        margin-bottom: 16px;
+        padding: 8px 12px;
+        margin-bottom: 12px;
       }
 
       .receipt-meta-item label {
-        font-size: 0.66rem;
+        font-size: 0.64rem;
         font-weight: 700;
         color: #666;
         text-transform: uppercase;
@@ -2416,32 +2508,32 @@
       }
 
       .receipt-meta-item span {
-        font-size: 0.84rem;
+        font-size: 0.82rem;
         font-weight: 800;
         color: #000;
       }
 
       .receipt-section-title {
-        font-size: 0.84rem;
+        font-size: 0.8rem;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin: 12px 0 8px 0;
+        margin: 10px 0 6px 0;
         color: #6C0D2C;
         border-left: 4px solid #6C0D2C;
-        padding-left: 8px;
+        padding-left: 7px;
       }
 
       .receipt-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
       }
 
       .receipt-table th, .receipt-table td {
         border: 1px solid #000;
-        padding: 7px 12px;
-        font-size: 0.82rem;
+        padding: 5px 10px;
+        font-size: 0.78rem;
         text-align: left;
       }
 
@@ -2459,49 +2551,115 @@
       .receipt-notice-box {
         border: 1.5px dashed #000;
         background: #FAFAFA !important;
-        border-radius: 8px;
-        padding: 11px;
-        margin-top: 12px;
-        font-size: 0.76rem;
-        line-height: 1.45;
+        border-radius: 6px;
+        padding: 9px 12px;
+        margin-top: 8px;
+        font-size: 0.72rem;
+        line-height: 1.4;
       }
 
       .receipt-notice-box strong {
         color: #6C0D2C;
       }
 
+      /* Secretariat & Delegate Affairs Contacts Section */
+      .receipt-contacts-section {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border: 1.5px solid #000;
+        border-radius: 6px;
+        background: #FFFDF9 !important;
+      }
+
+      .receipt-contacts-header {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #6C0D2C;
+        margin-bottom: 6px;
+      }
+
+      .receipt-contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .receipt-contact-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: #FFFFFF !important;
+        border: 1px solid #222;
+        border-radius: 4px;
+        padding: 5px 8px;
+      }
+
+      .receipt-contact-card .contact-name {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #000;
+      }
+
+      .receipt-contact-card .contact-role {
+        font-size: 0.65rem;
+        color: #555;
+        font-weight: 600;
+      }
+
+      .receipt-contact-card .contact-phone {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #6C0D2C;
+        font-family: monospace;
+        margin-top: 1px;
+      }
+
       .receipt-footer-row {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-top: 20px;
-        padding-top: 12px;
-        border-top: 1px solid #CCC;
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid #DDD;
       }
 
       .receipt-footer-left {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         color: #666;
-        line-height: 1.4;
+        line-height: 1.35;
       }
 
       .receipt-footer-right {
         text-align: right;
-        font-size: 0.74rem;
-        font-weight: 700;
       }
 
       .receipt-stamp-placeholder {
         display: inline-block;
-        border: 1.5px solid #6C0D2C;
-        color: #6C0D2C !important;
+        border: 2px dashed #6C0D2C;
+        background: #FFFDF9 !important;
         padding: 5px 12px;
-        font-size: 0.72rem;
-        font-weight: 800;
         border-radius: 6px;
-        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .receipt-stamp-placeholder .stamp-line-1 {
+        display: block;
+        font-weight: 800;
+        font-size: 0.76rem;
         letter-spacing: 0.05em;
-        margin-top: 5px;
+        text-transform: uppercase;
+        color: #000;
+      }
+
+      .receipt-stamp-placeholder .stamp-line-2 {
+        display: block;
+        font-weight: 800;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        color: #6C0D2C;
+        margin-top: 1px;
       }
     }
 
@@ -2909,6 +3067,104 @@
         overscroll-behavior: contain;
       }
 
+      /* Mobile Confirmation Screen Optimization */
+      .modal-registration-card.in-success-state,
+      .modal-registration-card.in-dlg-success-state {
+        height: auto !important;
+        min-height: unset !important;
+        max-height: min(90dvh, calc(100svh - 24px)) !important;
+        width: 100% !important;
+        max-width: 440px !important;
+        box-sizing: border-box !important;
+        padding: clamp(20px, 4.5vw, 26px) clamp(16px, 3.8vw, 22px) !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow-y: auto !important;
+        margin: auto !important;
+      }
+
+      .success-overlay {
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .success-icon-badge {
+        width: clamp(44px, 11vw, 52px);
+        height: clamp(44px, 11vw, 52px);
+        font-size: 1.35rem;
+        border-width: 2.5px;
+        box-shadow: 3px 3px 0px var(--text-primary);
+        margin-bottom: 8px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      .success-title {
+        font-size: clamp(1.12rem, 4.4vw, 1.36rem);
+        margin: 0 0 6px 0;
+        line-height: 1.2;
+        flex-shrink: 0;
+      }
+
+      .success-message {
+        font-size: clamp(0.78rem, 2.6vw, 0.86rem);
+        line-height: 1.44;
+        margin: 0 0 10px 0;
+        max-width: 100%;
+      }
+
+      .success-committee-badge {
+        font-size: 0.76rem;
+        padding: 2px 7px;
+        margin: 2px 0;
+        display: inline-block;
+        line-height: 1.25;
+      }
+
+      .success-actions-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        margin-top: 14px;
+        align-items: stretch;
+        flex-shrink: 0;
+      }
+
+      .receipt-print-btn,
+      .success-close-btn {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 14px;
+        font-size: 0.84rem;
+        border-radius: 8px;
+        box-shadow: 2.5px 2.5px 0px var(--text-primary);
+        min-height: 42px;
+        justify-content: center;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      @media (min-width: 440px) {
+        .success-actions-row {
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+        .receipt-print-btn {
+          flex: 1 1 auto;
+          max-width: 220px;
+        }
+        .success-close-btn {
+          flex: 0 1 120px;
+          min-width: 100px;
+        }
+      }
+
       .reg-form-header {
         padding-left: 28px;
         padding-right: 28px;
@@ -3054,6 +3310,36 @@
         max-height: min(94svh, calc(100svh - 12px));
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
+      }
+
+      .modal-registration-card.in-success-state,
+      .modal-registration-card.in-dlg-success-state {
+        max-height: min(94dvh, calc(100svh - 16px)) !important;
+        padding: 12px 8px !important;
+      }
+
+      .success-overlay {
+        padding: 12px 10px;
+      }
+      .success-icon-badge {
+        width: 38px;
+        height: 38px;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+      }
+      .success-title {
+        font-size: 1.05rem;
+        margin-bottom: 4px;
+      }
+      .success-message {
+        font-size: 0.74rem;
+        line-height: 1.35;
+        margin-bottom: 8px;
+      }
+      .receipt-print-btn,
+      .success-close-btn {
+        padding: 8px 10px;
+        font-size: 0.76rem;
       }
 
       .reg-form-header {
@@ -4358,7 +4644,7 @@
             class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to
           your WhatsApp/email with payment verification and portfolio allotment.
         </p>
-        <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 14px;">
+        <div class="success-actions-row">
           <button type="button" id="print-receipt-btn" class="receipt-print-btn" onclick="printRegistrationReceipt()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             <span>Save / Print Receipt</span>
@@ -6279,12 +6565,22 @@
             regBackdrop.style.display = 'none';
             unlockBackgroundScroll();
             gsap.set(regCard, { clearProps: 'all' });
+            regCard.classList.remove('in-success-state');
+            regCard.style.overflowY = '';
+            regCard.style.maxHeight = '';
+            const successOverlay = document.getElementById('success-overlay');
+            if (successOverlay) successOverlay.classList.remove('show');
           }
         });
       } else {
         regBackdrop.classList.remove('active');
         regBackdrop.style.display = 'none';
         unlockBackgroundScroll();
+        regCard.classList.remove('in-success-state');
+        regCard.style.overflowY = '';
+        regCard.style.maxHeight = '';
+        const successOverlay = document.getElementById('success-overlay');
+        if (successOverlay) successOverlay.classList.remove('show');
       }
     }
 
@@ -6326,15 +6622,25 @@
             dlgBackdrop.classList.remove('active');
             dlgBackdrop.style.display = 'none';
             unlockBackgroundScroll();
-            // User requested: clicking X mark should erase data
             clearDelegationForm();
             gsap.set(dlgCard, { clearProps: 'all' });
+            dlgCard.classList.remove('in-dlg-success-state');
+            dlgCard.style.overflowY = '';
+            dlgCard.style.maxHeight = '';
+            const successOverlay = document.getElementById('dlg-success-overlay');
+            if (successOverlay) successOverlay.classList.remove('show');
           }
         });
       } else {
         dlgBackdrop.classList.remove('active');
         dlgBackdrop.style.display = 'none';
         unlockBackgroundScroll();
+        clearDelegationForm();
+        dlgCard.classList.remove('in-dlg-success-state');
+        dlgCard.style.overflowY = '';
+        dlgCard.style.maxHeight = '';
+        const successOverlay = document.getElementById('dlg-success-overlay');
+        if (successOverlay) successOverlay.classList.remove('show');
       }
     }
 
@@ -6961,12 +7267,14 @@
       const dlgCard = document.getElementById('delegation-modal-card');
       if (dlgCard) {
         dlgCard.scrollTop = 0;
-        dlgCard.style.overflow = 'hidden';
-        dlgCard.style.maxHeight = '500px'; // Compact - no full-screen on mobile
+        dlgCard.classList.add('in-dlg-success-state');
+        dlgCard.style.overflowY = 'auto';
+        dlgCard.style.webkitOverflowScrolling = 'touch';
       }
 
       const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) {
+        successOverlay.scrollTop = 0;
         successOverlay.classList.add('show');
         const successName = document.getElementById('dlg-success-name');
         if (successName) successName.textContent = payload.delegationName;
@@ -6976,6 +7284,12 @@
     }
 
     function handleDelegationSuccessDone() {
+      const dlgCard = document.getElementById('delegation-modal-card');
+      if (dlgCard) {
+        dlgCard.classList.remove('in-dlg-success-state');
+        dlgCard.style.overflowY = '';
+        dlgCard.style.maxHeight = '';
+      }
       const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) successOverlay.classList.remove('show');
       closeDelegationRegistrationModal();
@@ -7042,7 +7356,7 @@
 
           const successMsg = document.getElementById('success-message-text');
           if (successMsg) {
-            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br><br>Your internal delegate registration and payment screenshot for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> have been successfully submitted.<br><br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
           }
 
           showSuccessOverlay();
@@ -7067,7 +7381,7 @@
 
           const successMsg = document.getElementById('success-message-text');
           if (successMsg) {
-            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br><br>Your external delegate registration and payment screenshot for <span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span> have been successfully submitted.<br><br>Our delegate affairs team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+            successMsg.innerHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our delegate affairs team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
           }
 
           showSuccessOverlay();
@@ -7076,16 +7390,20 @@
       }
     }
 
-    // Scroll modal to top, constrain card height, and lock scroll so form is hidden
+    // Scroll modal to top, adapt card height for mobile viewports, and enable smooth scroll
     function showSuccessOverlay() {
       const regCard = document.getElementById('registration-modal-card');
       const successOverlay = document.getElementById('success-overlay');
       if (regCard) {
         regCard.scrollTop = 0;
-        regCard.style.overflow = 'hidden';
-        regCard.style.maxHeight = '500px'; // Compact — no full-screen on mobile
+        regCard.classList.add('in-success-state');
+        regCard.style.overflowY = 'auto';
+        regCard.style.webkitOverflowScrolling = 'touch';
       }
-      if (successOverlay) successOverlay.classList.add('show');
+      if (successOverlay) {
+        successOverlay.scrollTop = 0;
+        successOverlay.classList.add('show');
+      }
     }
 
     function handleSuccessDone() {
@@ -7107,7 +7425,9 @@
             // Now hidden — reset everything silently
             const successOverlay = document.getElementById('success-overlay');
             if (successOverlay) successOverlay.classList.remove('show');
+            regCard.classList.remove('in-success-state');
             regCard.style.overflow = '';
+            regCard.style.overflowY = '';
             regCard.style.maxHeight = '';
             const form = document.getElementById('delegate-registration-form');
             if (form) {
@@ -7127,7 +7447,9 @@
         unlockBackgroundScroll();
         const successOverlay = document.getElementById('success-overlay');
         if (successOverlay) successOverlay.classList.remove('show');
+        regCard.classList.remove('in-success-state');
         regCard.style.overflow = '';
+        regCard.style.overflowY = '';
         regCard.style.maxHeight = '';
         const form = document.getElementById('delegate-registration-form');
         if (form) form.reset();
@@ -7201,9 +7523,9 @@
 
           if (successMsg) {
             successMsg.innerHTML = `
-              <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br><br>
-              <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br><br>
-              <em style="font-size: 0.82rem; color: rgba(0,0,0,0.5);">Thank you for registering with RNS MUN '26.</em>
+              <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br>
+              <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br>
+              <em style="font-size: 0.8rem; color: rgba(0,0,0,0.5); display: inline-block; margin-top: 4px;">Thank you for registering with RNS MUN '26.</em>
             `;
           }
 
@@ -7301,9 +7623,22 @@
       setTxt('pr-portfolios-1', portfolios1);
       setTxt('pr-committee-2', comm2);
       setTxt('pr-portfolios-2', portfolios2);
-      setTxt('pr-fee-tier', fee);
+      // Print Individual Delegate Receipt
+      document.body.classList.add('printing-individual');
+      document.body.classList.remove('printing-delegation');
+
+      // Set document.title to RNSMUN26_[Name] so browser defaults "Save as PDF" filename
+      const cleanName = name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
+      const originalTitle = document.title;
+      document.title = `RNSMUN26_${cleanName || 'Delegate'}`;
 
       window.print();
+
+      // Restore document title after print dialogue finishes
+      setTimeout(() => {
+        document.title = originalTitle;
+        document.body.classList.remove('printing-individual');
+      }, 1500);
     }
 
     function printDelegationReceipt() {
@@ -7316,7 +7651,7 @@
       const email = document.getElementById('dlg-email')?.value.trim() || 'N/A';
       const count = document.getElementById('dlg-count')?.value.trim() || '10+';
       const isInternal = document.getElementById('dlg-type-internal')?.checked;
-      const category = isInternal ? 'Internal Institutional Delegation' : 'External Institutional Delegation';
+      const category = isInternal ? 'Internal Institutional Delegation (RNSIT)' : 'External Institutional Delegation';
 
       const dateStr = new Date().toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -7329,21 +7664,30 @@
         if (el) el.textContent = val;
       };
 
-      setTxt('pr-receipt-id', receiptId);
-      setTxt('pr-receipt-date', dateStr);
-      setTxt('pr-name', `${headName} (Head of Delegation)`);
-      setTxt('pr-institution', dlgName);
-      setTxt('pr-usn', `Delegation Size: ${count} Delegates`);
-      setTxt('pr-phone', phone);
-      setTxt('pr-email', email);
-      setTxt('pr-category', category);
-      setTxt('pr-committee-1', 'Multi-Committee Delegation Allocation');
-      setTxt('pr-portfolios-1', 'Recorded via Delegation Google Sheet');
-      setTxt('pr-committee-2', 'Institutional Prize Pool Eligible (₹15,000)');
-      setTxt('pr-portfolios-2', 'Recorded via Delegation Google Sheet');
-      setTxt('pr-fee-tier', 'Institutional Delegation Tier');
+      setTxt('pr-dlg-receipt-id', receiptId);
+      setTxt('pr-dlg-receipt-date', dateStr);
+      setTxt('pr-dlg-inst-name', dlgName);
+      setTxt('pr-dlg-head-fullname', headName);
+      setTxt('pr-dlg-inst-phone', phone);
+      setTxt('pr-dlg-inst-email', email);
+      setTxt('pr-dlg-inst-category', category);
+      setTxt('pr-dlg-inst-size', `${count} Confirmed Delegates`);
+
+      // Print Institutional Delegation Receipt
+      document.body.classList.add('printing-delegation');
+      document.body.classList.remove('printing-individual');
+
+      // Set document.title to RNSMUN26_Delegation_[Name] so browser defaults "Save as PDF" filename
+      const cleanDlgName = (headName || dlgName).replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
+      const originalTitle = document.title;
+      document.title = `RNSMUN26_Delegation_${cleanDlgName || 'Roster'}`;
 
       window.print();
+
+      setTimeout(() => {
+        document.title = originalTitle;
+        document.body.classList.remove('printing-delegation');
+      }, 1500);
     }
 
     if (document.readyState === 'loading') {
@@ -7359,11 +7703,10 @@
   <div id="printable-receipt" class="printable-receipt" aria-hidden="true">
     <div class="receipt-header">
       <div class="receipt-brand-left">
-        <img src="./assets/Logos/MUN_logo.png" alt="MUN Crest" class="receipt-logo" width="58" height="58">
+        <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
         <div class="receipt-titles">
-          <h1>RNSIT MUN 2026</h1>
-          <p>Model United Nations Society &bull; RNS Institute of Technology</p>
-          <p style="font-size: 0.74rem; color: #555;">October 06 &bull; 07, 2026</p>
+          <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
+          <p class="receipt-date-text">October 06 &bull; 07, 2026 &bull; Bengaluru, India</p>
         </div>
       </div>
       <div>
@@ -7443,13 +7786,159 @@
       This document certifies that the candidate above has successfully submitted registration for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>October 06 & 07, 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Background guides, rules of procedure, and portfolio allotments will be communicated through official delegate channels. Delegates must carry this confirmation slip and valid institutional identification to the conference accreditation desk on Day 1.
     </div>
 
+    <!-- Secretariat & Delegate Affairs Contacts Section -->
+    <div class="receipt-contacts-section">
+      <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
+      <div class="receipt-contacts-grid">
+        <div class="receipt-contact-card">
+          <span class="contact-name">Zeyan</span>
+          <span class="contact-role">Head &bull; Delegate Affairs</span>
+          <span class="contact-phone">+91 91559 73955</span>
+        </div>
+        <div class="receipt-contact-card">
+          <span class="contact-name">Adith</span>
+          <span class="contact-role">Head &bull; Delegate Affairs</span>
+          <span class="contact-phone">+91 89702 62490</span>
+        </div>
+        <div class="receipt-contact-card">
+          <span class="contact-name">Aditi</span>
+          <span class="contact-role">Charge d'Affaires</span>
+          <span class="contact-phone">+91 91080 80956</span>
+        </div>
+      </div>
+    </div>
+
     <div class="receipt-footer-row">
       <div class="receipt-footer-left">
         RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
         Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
       </div>
       <div class="receipt-footer-right">
-        <div class="receipt-stamp-placeholder">Core Committee &bull; MUNSOC RNSIT</div>
+        <div class="receipt-stamp-placeholder">
+          <span class="stamp-line-1">Core Secretariat,</span>
+          <span class="stamp-line-2">RNS MUN 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- OFFICIAL PRINTABLE DELEGATION ACCREDITATION RECEIPT -->
+  <!-- ================================================= -->
+  <div id="printable-delegation-receipt" class="printable-receipt" aria-hidden="true">
+    <div class="receipt-header">
+      <div class="receipt-brand-left">
+        <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
+        <div class="receipt-titles">
+          <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
+          <p class="receipt-date-text">October 06 &bull; 07, 2026 &bull; Bengaluru, India</p>
+        </div>
+      </div>
+      <div>
+        <div class="receipt-status-badge">★ Delegation Registered</div>
+      </div>
+    </div>
+
+    <div class="receipt-meta-grid">
+      <div class="receipt-meta-item">
+        <label>Delegation Receipt No.</label>
+        <span id="pr-dlg-receipt-id">RNSMUN26-DLG-000000</span>
+      </div>
+      <div class="receipt-meta-item">
+        <label>Registration Date</label>
+        <span id="pr-dlg-receipt-date">--</span>
+      </div>
+      <div class="receipt-meta-item">
+        <label>Roster Status</label>
+        <span id="pr-dlg-receipt-status" style="color: #6C0D2C;">Roster Under Verification</span>
+      </div>
+    </div>
+
+    <div class="receipt-section-title">Institution & Head of Delegation Details</div>
+    <table class="receipt-table">
+      <tr>
+        <th>Institution / College / School</th>
+        <td id="pr-dlg-inst-name">--</td>
+      </tr>
+      <tr>
+        <th>Head of Delegation / Faculty Lead</th>
+        <td id="pr-dlg-head-fullname">--</td>
+      </tr>
+      <tr>
+        <th>Official Contact Mobile</th>
+        <td id="pr-dlg-inst-phone">--</td>
+      </tr>
+      <tr>
+        <th>Official Contact Email</th>
+        <td id="pr-dlg-inst-email">--</td>
+      </tr>
+      <tr>
+        <th>Delegation Classification</th>
+        <td id="pr-dlg-inst-category">--</td>
+      </tr>
+    </table>
+
+    <div class="receipt-section-title">Delegation Participation & Roster Specifications</div>
+    <table class="receipt-table">
+      <tr>
+        <th>Confirmed Delegation Strength</th>
+        <td id="pr-dlg-inst-size">--</td>
+      </tr>
+      <tr>
+        <th>Roster Submission Method</th>
+        <td>Official Linked Google Sheet / CSV Roster Records</td>
+      </tr>
+      <tr>
+        <th>Cross-Committee Distribution</th>
+        <td>UNSC, UNHRC, DISEC, Lok Sabha, AIPPM, International Press</td>
+      </tr>
+      <tr>
+        <th>Best Delegation Trophy Award</th>
+        <td>Eligible for Best Delegation Award (₹15,000 Institutional Prize Pool)</td>
+      </tr>
+      <tr>
+        <th>Applicable Registration Fee</th>
+        <td>Institutional Delegation Tier (Consolidated Invoicing)</td>
+      </tr>
+    </table>
+
+    <div class="receipt-notice-box">
+      <strong>Official Institutional Delegation Accreditation Notice:</strong><br>
+      This document certifies that the institution named above has successfully registered an official delegation for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>October 06 & 07, 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Delegation committee portfolios and country allotments are being processed by the Delegate Affairs Secretariat in coordination with the Head of Delegation. The Head of Delegation or authorized representative must present this confirmation slip at the Secretariat Accreditation Desk on Day 1 to collect all delegate kits, placards, and identity credentials.
+    </div>
+
+    <!-- Secretariat & Delegate Affairs Contacts Section -->
+    <div class="receipt-contacts-section">
+      <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
+      <div class="receipt-contacts-grid">
+        <div class="receipt-contact-card">
+          <span class="contact-name">Zeyan</span>
+          <span class="contact-role">Head &bull; Delegate Affairs</span>
+          <span class="contact-phone">+91 91559 73955</span>
+        </div>
+        <div class="receipt-contact-card">
+          <span class="contact-name">Adith</span>
+          <span class="contact-role">Head &bull; Delegate Affairs</span>
+          <span class="contact-phone">+91 89702 62490</span>
+        </div>
+        <div class="receipt-contact-card">
+          <span class="contact-name">Aditi</span>
+          <span class="contact-role">Charge d'Affaires</span>
+          <span class="contact-phone">+91 91080 80956</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt-footer-row">
+      <div class="receipt-footer-left">
+        RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
+        Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
+      </div>
+      <div class="receipt-footer-right">
+        <div class="receipt-stamp-placeholder">
+          <span class="stamp-line-1">Core Secretariat,</span>
+          <span class="stamp-line-2">RNS MUN 2026</span>
+        </div>
       </div>
     </div>
   </div>

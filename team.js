@@ -102,8 +102,23 @@ function updateMagneticRipple(activeIndex) {
     });
     return;
   }
+
+  // On Mobile: Maintain clean 2-row layout without horizontal row-shifting
+  if (isMobile) {
+    profileContainers.forEach((container, i) => {
+      container.style.removeProperty("--profile-tx");
+      if (i === activeIndex) {
+        container.style.setProperty("--profile-scale", "1.12");
+        container.style.setProperty("opacity", "1");
+      } else {
+        container.style.setProperty("--profile-scale", "0.94");
+        container.style.setProperty("opacity", "0.76");
+      }
+    });
+    return;
+  }
   
-  const baseSize = isMobile ? (isSmallPhone ? 15 : (isPhone ? 15.5 : 16)) : 95;
+  const baseSize = 95;
   
   // 1. Calculate the scale for each profile container
   const scales = [];
