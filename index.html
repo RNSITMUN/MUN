@@ -166,6 +166,13 @@
       border: none !important;
     }
 
+    /* PC Only: Push globe down to provide comfortable breathing room below price badges */
+    @media (min-width: 900px) {
+      html.home-page .carousel-container {
+        transform: translateY(115px);
+      }
+    }
+
     #carousel-root,
     #carousel-root:focus,
     #carousel-root:focus-visible,

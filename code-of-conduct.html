@@ -341,6 +341,7 @@
 
       /* HIDE ALL SCREEN UI, NAVIGATION & FLOATING MENU ROOT */
       #topology-canvas,
+      canvas,
       .top-left-logo-container,
       .top-right-logo-container,
       .nav-pill,
@@ -353,71 +354,68 @@
       .coc-index-nav,
       .coc-doc-footer {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
       }
 
       /* SHOW OFFICIAL PRINT LETTERHEAD */
       .coc-print-letterhead {
         display: block !important;
-        margin-bottom: 16px;
-        border-bottom: 2px solid #000000;
-        padding-bottom: 10px;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 14px 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
       }
 
       .coc-print-header-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 8px;
+        display: flex !important;
+        width: 100% !important;
+        align-items: flex-end !important;
+        justify-content: space-between !important;
+        gap: 20px !important;
+        margin: 0 0 10px 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
       }
 
-      .coc-print-logo {
-        width: 52px;
-        height: auto;
-        object-fit: contain;
-      }
-
-      .coc-print-header-center {
-        text-align: center;
-        flex: 1;
-      }
-
-      .coc-print-org {
-        font-size: 13.5pt !important;
-        font-weight: 900 !important;
-        letter-spacing: 0.04em !important;
-        margin: 0 0 2px 0 !important;
-        color: #6C0D2C !important;
-        text-transform: uppercase;
-      }
-
-      .coc-print-suborg {
-        font-size: 8.5pt !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.08em !important;
-        margin: 0 0 3px 0 !important;
-        color: #000000 !important;
-      }
-
-      .coc-print-dept {
-        font-size: 7pt !important;
-        color: #555555 !important;
+      .coc-print-hero-logo {
+        display: block !important;
+        width: 48% !important;
+        max-width: 320px !important;
+        height: auto !important;
+        object-fit: contain !important;
         margin: 0 !important;
-        font-weight: 500 !important;
+      }
+
+      .coc-print-date-badge {
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        font-size: 13pt !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+        color: #6C0D2C !important;
+        line-height: 1 !important;
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+        text-align: right !important;
+        white-space: nowrap !important;
       }
 
       .coc-print-rule-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1.5px solid #000000;
-        border-bottom: 1.5px solid #000000;
-        padding: 3px 0;
-        margin-bottom: 8px;
+        display: flex !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        border-top: 1.5px solid #000000 !important;
+        border-bottom: 1.5px solid #000000 !important;
+        padding: 4px 0 !important;
+        margin-bottom: 8px !important;
         font-size: 7pt !important;
         font-weight: 800 !important;
         letter-spacing: 0.06em !important;
-        text-transform: uppercase;
+        text-transform: uppercase !important;
       }
 
       .coc-print-preamble {
@@ -647,13 +645,8 @@
     <!-- Official Professional Printable Letterhead (Visible in Print & PDF Only) -->
     <header class="coc-print-letterhead" aria-hidden="true">
       <div class="coc-print-header-top">
-        <img src="./assets/Logos/MUN_logo.png" alt="RNS MUN" class="coc-print-logo">
-        <div class="coc-print-header-center">
-          <h1 class="coc-print-org">RNS MODEL UNITED NATIONS 2026</h1>
-          <h2 class="coc-print-suborg">RNS INSTITUTE OF TECHNOLOGY, BENGALURU</h2>
-          <p class="coc-print-dept">Secretariat & Department of Delegate Affairs · Official Assembly Documentation</p>
-        </div>
-        <img src="./assets/Logos/25_logo.png" alt="RNSIT" class="coc-print-logo coc-print-logo-right">
+        <img src="./assets/Logos/RNS_MUN_2026_dark.png" alt="RNS MUN 2026" class="coc-print-hero-logo">
+        <div class="coc-print-date-badge">October 06 – 07, 2026</div>
       </div>
       <div class="coc-print-rule-bar">
         <span class="coc-print-doc-id">DOC REF: RNSMUN-2026-COC-V1</span>
@@ -976,7 +969,7 @@
         </a>
       </footer>
 
-      <!-- Official Professional Endorsement & Signature Block (Visible in Print & PDF Only) -->
+      <!-- Official Professional Endorsement Block (Visible in Print & PDF Only) -->
       <div class="coc-print-signoff" aria-hidden="true">
         <div class="coc-print-seal-wrap">
           <div class="coc-print-seal-box">
@@ -986,23 +979,6 @@
           <p class="coc-print-legal">
             Ratified and issued under the sovereign authority of the RNSIT Model United Nations Society and the Institutional Ethics Council. Violations are subject to disciplinary action by the Executive Board and institutional referral. For official inquiries or emergency assistance, contact <strong>mun@rnsit.ac.in</strong>.
           </p>
-        </div>
-        <div class="coc-print-signatures">
-          <div class="coc-sig-col">
-            <div class="coc-sig-line"></div>
-            <span class="coc-sig-role">Secretary-General</span>
-            <span class="coc-sig-org">RNS MUN '26</span>
-          </div>
-          <div class="coc-sig-col">
-            <div class="coc-sig-line"></div>
-            <span class="coc-sig-role">Director-General</span>
-            <span class="coc-sig-org">RNS MUN '26</span>
-          </div>
-          <div class="coc-sig-col">
-            <div class="coc-sig-line"></div>
-            <span class="coc-sig-role">Faculty In-Charge</span>
-            <span class="coc-sig-org">MUNSoc RNSIT</span>
-          </div>
         </div>
       </div>
 
