@@ -2023,6 +2023,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex-wrap: wrap;
       background: #FFFFFF;
       border: 2px solid #0F9D58;
       border-radius: 8px;
@@ -4019,9 +4020,11 @@
                   <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
                     class="sheet-link-text">Open Google Sheet</a>
                 </div>
-                <div>
-                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()">Download as
-                    CSV</button>
+                <div class="sheet-link-actions" style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
+                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterExcel()"
+                    title="Download Microsoft Excel spreadsheet preserving column widths and colors">Download as Excel (.xlsx)</button>
+                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
+                    title="Download raw comma-separated values file">CSV</button>
                 </div>
               </div>
             </div>
@@ -7461,6 +7464,31 @@
         ];
     }
 
+
+    // Direct Excel (.xlsx) Export Handler
+    function downloadDelegationRosterExcel() {
+      const delegationNameInput = document.getElementById('dlg-delegation-name');
+      const delegationName = delegationNameInput ? delegationNameInput.value.trim() : 'Delegation';
+      const sheetLink = document.getElementById('dlg-sheet-link')?.value || '';
+
+      // Direct Google Sheets .xlsx export URL preserves all colors, column widths, and cell borders!
+      const match = sheetLink.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (match && match[1]) {
+        const sheetId = match[1];
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx`;
+        const a = document.createElement('a');
+        a.href = exportUrl;
+        a.download = `RNS_MUN_26_${delegationName.replace(/\s+/g, '_')}_Roster.xlsx`;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+
+      // If sheet link is not ready, fall back to CSV generator
+      downloadDelegationRosterCSV();
+    }
 
     function downloadDelegationRosterCSV() {
       const delegationNameInput = document.getElementById('dlg-delegation-name');
