@@ -76,11 +76,13 @@ function setGiantName(name, isActiveMember) {
 }
 
 // Initialize default name
-setGiantName("RNS'MUN", false);
+setGiantName("RNSMUN", false);
 
 // Set helper label text dynamically based on viewport size
 if (window.innerWidth < 768) {
   roleDisplay.textContent = "Swipe or tap a member to view role";
+} else {
+  roleDisplay.textContent = "Hover a member to view role";
 }
 
 // Helper: check if we are on a mobile viewport or a touch screen
@@ -184,7 +186,7 @@ function activateMember(container, index, firstName, fullName, role) {
   setGiantName(firstName, true);
 }
 
-// Function to deactivate and revert to RNS'MUN default
+// Function to deactivate and revert to RNSMUN default
 function deactivateAll() {
   currentActiveIndex = null;
   profileContainers.forEach(c => c.classList.remove("active"));
@@ -193,7 +195,7 @@ function deactivateAll() {
   updateMagneticRipple(null);
 
   roleDisplay.textContent = isTouchOrMobile() ? "Swipe or tap a member to view role" : "Hover a member to view role";
-  setGiantName("RNS'MUN", false);
+  setGiantName("RNSMUN", false);
 }
 
 // Function to activate member by index with automatic loop-around
