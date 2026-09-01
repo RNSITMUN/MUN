@@ -7692,13 +7692,13 @@
       const direct = localStorage.getItem(`dlg_sheet_email_${clean}`) ||
                      localStorage.getItem(`active_dlg_sheet_email_${clean}`) ||
                      localStorage.getItem(`submitted_dlg_email_${clean}`);
-      if (direct && direct !== 'registered' && !direct.startsWith('{')) {
+      if (direct && direct !== 'registered' && !direct.startsWith('{') && direct.includes('docs.google.com/spreadsheets')) {
         return direct;
       }
 
       // 2. Centralized registered emails map
       const regMap = getRegisteredEmailsMap();
-      if (regMap[clean] && regMap[clean].sheetUrl) {
+      if (regMap[clean] && regMap[clean].sheetUrl && regMap[clean].sheetUrl.includes('docs.google.com/spreadsheets')) {
         return regMap[clean].sheetUrl;
       }
 
@@ -7707,9 +7707,22 @@
         const raw = localStorage.getItem(`submitted_dlg_email_${clean}`);
         if (raw && raw.startsWith('{')) {
           const parsed = JSON.parse(raw);
-          if (parsed && parsed.sheetUrl) return parsed.sheetUrl;
+          if (parsed && parsed.sheetUrl && parsed.sheetUrl.includes('docs.google.com/spreadsheets')) {
+            return parsed.sheetUrl;
+          }
         }
       } catch (e) {}
+
+      // 4. Scan all localStorage keys for delegation sheets
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('active_dlg_sheet_') || k.startsWith('dlg_sheet_') || k.startsWith('submitted_dlg_'))) {
+          const val = localStorage.getItem(k);
+          if (val && typeof val === 'string' && val.includes('docs.google.com/spreadsheets')) {
+            return val;
+          }
+        }
+      }
 
       return null;
     }
@@ -7721,11 +7734,11 @@
 
       if (localStorage.getItem(`submitted_dlg_email_${clean}`)) return true;
       const regMap = getRegisteredEmailsMap();
-      if (regMap[clean] && (regMap[clean].type === 'delegation' || regMap[clean].type === 'remote_sync')) return true;
+      if (regMap[clean] && (regMap[clean].type === 'delegation' || regMap[clean].sheetUrl)) return true;
       return false;
     }
 
-    // ─── Delegation Email Check (Zero-Lag Lookup & Button State Restoration) ───────
+    // ─── Delegation Email Check (Zero-Lag Lookup & Sheet Display) ───────
     let _dlgEmailDebounceTimer = null;
     function checkEmailRegistration(inputEl) {
       if (!inputEl) inputEl = document.getElementById('dlg-email');
@@ -7755,12 +7768,16 @@
         if (existsMsg) existsMsg.style.display = 'none';
         if (sheetResult) sheetResult.classList.remove('is-generated');
         if (hiddenLinkInput) hiddenLinkInput.value = '';
-        if (sheetAnchor) sheetAnchor.href = '#';
+        if (sheetAnchor) {
+          sheetAnchor.href = '#';
+          sheetAnchor.textContent = 'Open Google Sheet';
+        }
         if (sheetErr) sheetErr.style.display = 'none';
       };
 
       // Helper to render and lock an existing roster sheet for this email
       const displayExistingSheet = (sheetUrl, isSubmitted) => {
+        if (!sheetUrl || !sheetUrl.includes('http')) return;
         if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
         if (sheetAnchor) {
           sheetAnchor.href = sheetUrl;
@@ -7813,13 +7830,11 @@
         if (createSheetBtn) createSheetBtn.style.display = 'none';
         if (submitBtn) submitBtn.style.display = 'none';
         if (exitBtn) exitBtn.style.display = 'block';
-        return;
       } else {
-        // Any new or edited email without an existing sheet restores the clean Create Sheet button!
         restoreDefaultState();
       }
 
-      // 3. Non-blocking debounced remote lookup if valid email format
+      // 3. Remote lookup to fetch the live Google Sheet URL from server
       if (/^\S+@\S+\.\S+$/.test(email)) {
         clearTimeout(_dlgEmailDebounceTimer);
         _dlgEmailDebounceTimer = setTimeout(async () => {
@@ -7834,13 +7849,11 @@
                   localStorage.setItem(`submitted_dlg_email_${email}`, remoteSheetUrl);
                   markEmailAsRegistered(email, 'delegation', { sheetUrl: remoteSheetUrl });
                   displayExistingSheet(remoteSheetUrl, true);
-                } else {
-                  markEmailAsRegistered(email, 'remote_sync');
+                } else if (data.type === 'individual') {
                   if (existsMsg) {
-                    existsMsg.textContent = 'This email has already registered.';
+                    existsMsg.textContent = 'This email is already registered as an Individual Delegate. Please use a different email for your delegation.';
                     existsMsg.style.display = 'block';
                   }
-                  if (errEl) errEl.style.display = 'none';
                   if (createSheetBtn) createSheetBtn.style.display = 'none';
                   if (submitBtn) submitBtn.style.display = 'none';
                   if (exitBtn) exitBtn.style.display = 'block';
@@ -7848,7 +7861,7 @@
               }
             }
           } catch (e) {}
-        }, 300);
+        }, 200);
       }
     }
 
