@@ -7682,48 +7682,18 @@
       return false;
     }
 
-    // ─── Delegation Email & Sheet Helpers (Strict Email-First Binding) ───────
+    // ─── Delegation Email & Sheet Helpers (Live Google Drive & Server First) ───
     function getDelegationSheetForEmail(email) {
       if (!email) return null;
       const clean = String(email).trim().toLowerCase();
       if (!clean) return null;
 
-      // 1. Direct email-keyed local storage
-      const direct = localStorage.getItem(`dlg_sheet_email_${clean}`) ||
-                     localStorage.getItem(`active_dlg_sheet_email_${clean}`) ||
-                     localStorage.getItem(`submitted_dlg_email_${clean}`);
-      if (direct && direct !== 'registered' && !direct.startsWith('{') && direct.includes('docs.google.com/spreadsheets')) {
+      // Only return if explicitly set in current session
+      const direct = localStorage.getItem(`active_dlg_sheet_email_${clean}`) ||
+                     localStorage.getItem(`dlg_sheet_email_${clean}`);
+      if (direct && direct.includes('docs.google.com/spreadsheets')) {
         return direct;
       }
-
-      // 2. Centralized registered emails map
-      const regMap = getRegisteredEmailsMap();
-      if (regMap[clean] && regMap[clean].sheetUrl && regMap[clean].sheetUrl.includes('docs.google.com/spreadsheets')) {
-        return regMap[clean].sheetUrl;
-      }
-
-      // 3. JSON formatted submission payload
-      try {
-        const raw = localStorage.getItem(`submitted_dlg_email_${clean}`);
-        if (raw && raw.startsWith('{')) {
-          const parsed = JSON.parse(raw);
-          if (parsed && parsed.sheetUrl && parsed.sheetUrl.includes('docs.google.com/spreadsheets')) {
-            return parsed.sheetUrl;
-          }
-        }
-      } catch (e) {}
-
-      // 4. Scan all localStorage keys for delegation sheets
-      for (let i = 0; i < localStorage.length; i++) {
-        const k = localStorage.key(i);
-        if (k && (k.startsWith('active_dlg_sheet_') || k.startsWith('dlg_sheet_') || k.startsWith('submitted_dlg_'))) {
-          const val = localStorage.getItem(k);
-          if (val && typeof val === 'string' && val.includes('docs.google.com/spreadsheets')) {
-            return val;
-          }
-        }
-      }
-
       return null;
     }
 
@@ -7731,14 +7701,10 @@
       if (!email) return false;
       const clean = String(email).trim().toLowerCase();
       if (!clean) return false;
-
-      if (localStorage.getItem(`submitted_dlg_email_${clean}`)) return true;
-      const regMap = getRegisteredEmailsMap();
-      if (regMap[clean] && (regMap[clean].type === 'delegation' || regMap[clean].sheetUrl)) return true;
-      return false;
+      return !!localStorage.getItem(`submitted_dlg_email_${clean}`);
     }
 
-    // ─── Delegation Email Check (Zero-Lag Lookup & Sheet Display) ───────
+    // ─── Delegation Email Check (Live Drive Verification & State Restoration) ───
     let _dlgEmailDebounceTimer = null;
     function checkEmailRegistration(inputEl) {
       if (!inputEl) inputEl = document.getElementById('dlg-email');
@@ -7814,27 +7780,10 @@
         return;
       }
 
-      // 2. Instant Local Lookup strictly for this email
-      const existingSheetUrl = getDelegationSheetForEmail(email);
-      const isSubmitted = isDelegationEmailSubmitted(email);
+      // 2. Default clean state while checking
+      restoreDefaultState();
 
-      if (existingSheetUrl) {
-        displayExistingSheet(existingSheetUrl, isSubmitted);
-        return;
-      } else if (isSubmitted) {
-        if (existsMsg) {
-          existsMsg.textContent = 'This email has already registered a delegation.';
-          existsMsg.style.display = 'block';
-        }
-        if (errEl) errEl.style.display = 'none';
-        if (createSheetBtn) createSheetBtn.style.display = 'none';
-        if (submitBtn) submitBtn.style.display = 'none';
-        if (exitBtn) exitBtn.style.display = 'block';
-      } else {
-        restoreDefaultState();
-      }
-
-      // 3. Remote lookup to fetch the live Google Sheet URL from server
+      // 3. Live remote verification against Google Drive & Google Apps Script
       if (/^\S+@\S+\.\S+$/.test(email)) {
         clearTimeout(_dlgEmailDebounceTimer);
         _dlgEmailDebounceTimer = setTimeout(async () => {
@@ -7842,13 +7791,14 @@
             const res = await fetch(`/api/check-email?email=${encodeURIComponent(email)}`);
             if (res.ok) {
               const data = await res.json().catch(() => null);
-              if (data && data.exists && inputEl.value.trim().toLowerCase() === email) {
-                const remoteSheetUrl = data.sheetUrl || getDelegationSheetForEmail(email);
-                if (remoteSheetUrl) {
-                  localStorage.setItem(`dlg_sheet_email_${email}`, remoteSheetUrl);
-                  localStorage.setItem(`submitted_dlg_email_${email}`, remoteSheetUrl);
-                  markEmailAsRegistered(email, 'delegation', { sheetUrl: remoteSheetUrl });
-                  displayExistingSheet(remoteSheetUrl, true);
+              if (inputEl.value.trim().toLowerCase() !== email) return;
+
+              if (data && data.exists) {
+                if (data.sheetUrl) {
+                  // Active sheet exists in Google Drive!
+                  localStorage.setItem(`dlg_sheet_email_${email}`, data.sheetUrl);
+                  localStorage.setItem(`submitted_dlg_email_${email}`, data.sheetUrl);
+                  displayExistingSheet(data.sheetUrl, true);
                 } else if (data.type === 'individual') {
                   if (existsMsg) {
                     existsMsg.textContent = 'This email is already registered as an Individual Delegate. Please use a different email for your delegation.';
@@ -7858,6 +7808,12 @@
                   if (submitBtn) submitBtn.style.display = 'none';
                   if (exitBtn) exitBtn.style.display = 'block';
                 }
+              } else {
+                // Email is not in Drive or was deleted -> ensure clean form state
+                localStorage.removeItem(`dlg_sheet_email_${email}`);
+                localStorage.removeItem(`submitted_dlg_email_${email}`);
+                localStorage.removeItem(`active_dlg_sheet_email_${email}`);
+                restoreDefaultState();
               }
             }
           } catch (e) {}

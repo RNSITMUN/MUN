@@ -89,7 +89,24 @@ export default async function handler(req, res) {
         console.warn('[check-email] Registrations sheet check warning:', regErr.message);
       }
 
-      // 2. Check Delegations sheet for delegation email & sheetUrl
+      // 2. Check Google Drive for active delegation roster sheet
+      try {
+        const drive = google.drive({ version: 'v3', auth });
+        const existingList = await drive.files.list({
+          q: `'${email}' in writers and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false`,
+          fields: 'files(id, name, webViewLink)',
+          pageSize: 5
+        });
+        const existingSheet = existingList.data.files?.find(f => f.name && f.name.includes('RNS MUN 26'));
+        if (existingSheet && existingSheet.id) {
+          existingSheetUrl = `https://docs.google.com/spreadsheets/d/${existingSheet.id}/edit?usp=sharing`;
+          duplicateFound = true;
+        }
+      } catch (driveErr) {
+        console.warn('[check-email] Drive search warning:', driveErr.message);
+      }
+
+      // 3. Check Delegations sheet for delegation email & sheetUrl
       try {
         const dlgRes = await sheets.spreadsheets.values.get({
           spreadsheetId: masterSheetId,
@@ -101,7 +118,7 @@ export default async function handler(req, res) {
           if (foundIdx !== -1) {
             duplicateFound = true;
             const sheetCell = row.find(cell => cell && String(cell).includes('docs.google.com/spreadsheets'));
-            if (sheetCell) {
+            if (sheetCell && !existingSheetUrl) {
               existingSheetUrl = String(sheetCell).trim();
             }
             break;
