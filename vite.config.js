@@ -72,7 +72,7 @@ const cleanUrlsPlugin = () => ({
           req.url = '/registration.html' + req.url.substring(13);
         } else if (url === '/channels') {
           req.url = '/channels.html' + req.url.substring(9);
-        } else if (url === '/code-of-conduct' || url === '/coc') {
+        } else if (url === '/code-of-conduct' || url === '/coc' || url === '/equity-policy') {
           req.url = '/code-of-conduct.html';
         } else if (url === '/404') {
           req.url = '/404.html' + req.url.substring(4);

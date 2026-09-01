@@ -5,7 +5,7 @@
     { label: "Registration", href: "/registration" },
     { label: "Contact", href: "/stay-connected" },
     { label: "Team", href: "/team" },
-    { label: "CoC", href: "/code-of-conduct" },
+    { label: "Equity Policy", href: "/code-of-conduct" },
   ];
 
   function initFloatingMenu() {
@@ -13,7 +13,7 @@
     if (document.getElementById("floatingMenuRoot")) return;
 
     let currentPath = window.location.pathname.replace(/\/$/, "").replace(/\.html$/, "") || "/";
-    if (currentPath === "/coc") currentPath = "/code-of-conduct";
+    if (currentPath === "/coc" || currentPath === "/equity-policy") currentPath = "/code-of-conduct";
     if (currentPath === "/contact") currentPath = "/stay-connected";
     if (currentPath === "/teams") currentPath = "/team";
 

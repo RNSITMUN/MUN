@@ -17,6 +17,10 @@
     {
       "source": "/code-of-conduct",
       "destination": "/code-of-conduct.html"
+    },
+    {
+      "source": "/equity-policy",
+      "destination": "/code-of-conduct.html"
     }
   ],
   "headers": [
