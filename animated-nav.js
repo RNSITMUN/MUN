@@ -1,4 +1,6 @@
 // Scroll Morph & Dropdown Navigation Handler
+import './anti-scrape.js';
+
 (function () {
   function prefetchUrl(href) {
     if (!href || href === window.location.pathname || href.startsWith("#") || href.startsWith("http")) return;

@@ -3,6 +3,7 @@
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Registration", href: "/registration" },
+    { label: "Venue", href: "/venue" },
     { label: "Contact", href: "/stay-connected" },
     { label: "Team", href: "/team" },
     { label: "Equity Policy", href: "/code-of-conduct" },

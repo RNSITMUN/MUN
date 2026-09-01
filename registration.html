@@ -15,12 +15,23 @@
   <meta property="og:title" content="MUNSoc RNSIT | Committees & Registration">
   <meta property="og:description"
     content="Explore committee agendas and register for the RNSIT Model United Nations conference.">
-  <meta property="og:image"
-    content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
+  <meta property="og:site_name" content="MUNSoc RNSIT">
+  <meta property="og:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta property="og:image:secure_url" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="RNSIT Model United Nations Conference Official Banner">
+  <link rel="image_src" href="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://mun.rnsit.ac.in/registration">
   <meta name="twitter:title" content="MUNSoc RNSIT | Committees & Registration">
   <meta name="twitter:description"
     content="Explore committee agendas and register for the RNSIT Model United Nations conference.">
+  <meta name="twitter:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta name="twitter:image:alt" content="RNSIT Model United Nations Conference Official Banner">
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3464,19 +3475,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #000;
-        padding-bottom: 10px;
-        margin-bottom: 12px;
+        border-bottom: 2.5px solid #000;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
       }
 
       .receipt-brand-left {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 16px;
       }
 
       .receipt-header-logo-img {
-        height: 46px;
+        height: 52px;
         width: auto;
         max-width: 220px;
         object-fit: contain;
@@ -3484,16 +3495,37 @@
         display: block;
       }
 
+      .receipt-org-title {
+        font-family: 'Anton', 'Outfit', sans-serif;
+        font-size: 1.4rem;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+        color: #000000;
+        text-transform: uppercase;
+      }
+
+      .receipt-doc-subtitle {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 900;
+        color: #6C0D2C;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin: 3px 0 2px 0;
+      }
+
       .receipt-society-text {
-        font-size: 0.74rem;
-        color: #222;
+        font-size: 0.72rem;
+        color: #333;
         margin: 2px 0 0 0;
         font-weight: 700;
         letter-spacing: 0.02em;
       }
 
       .receipt-date-text {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         color: #6C0D2C;
         margin: 1px 0 0 0;
         font-weight: 800;
@@ -3501,15 +3533,31 @@
         letter-spacing: 0.05em;
       }
 
+      .receipt-header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+      }
+
       .receipt-status-badge {
         border: 2px solid #000;
         background: #E5A93C !important;
         color: #000 !important;
-        font-weight: 800;
+        font-weight: 900;
         font-size: 0.72rem;
-        padding: 5px 11px;
+        padding: 5px 12px;
         border-radius: 6px;
         text-transform: uppercase;
+        letter-spacing: 0.07em;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      .receipt-id-tag {
+        font-family: monospace;
+        font-weight: 800;
+        font-size: 0.86rem;
+        color: #000;
         letter-spacing: 0.06em;
       }
 
@@ -4564,6 +4612,7 @@
     <a href="/" class="nav-item" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
     <a href="/registration" class="nav-item active" id="nav-registration">Registration</a>
+    <a href="/venue" class="nav-item" id="nav-venue">Venue</a>
     <a href="/stay-connected" class="nav-item" id="nav-connected">Contact</a>
     <a href="/team" class="nav-item" id="nav-team">Team</a>
     <a href="/code-of-conduct" class="nav-item" id="nav-coc">Equity Policy</a>
@@ -5184,8 +5233,15 @@
             delegation sheet</div>
         </div>
 
+        <!-- Non-Refundable Policy Notice -->
+        <div class="neo-note-callout"
+          style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 14px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+          <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
+          <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
+        </div>
+
         <!-- Submit Buttons -->
-        <div style="display: flex; gap: 12px; margin-top: 32px;">
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
           <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()"
             style="display: none; flex: 1;">Exit</button>
           <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1;">Submit Delegation
@@ -5193,87 +5249,89 @@
         </div>
       </form>
 
-      <!-- Delegation Success Screen Overlay -->
-      <div id="dlg-success-overlay" class="success-overlay">
-        <button type="button" class="success-direct-close-btn" onclick="handleDelegationSuccessDone()" aria-label="Close Delegation Confirmation">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        <div class="success-icon-badge">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </div>
-        <h3 class="success-title">Delegation Registered!</h3>
-        <p class="success-message">
-          Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Our secretariat will contact you with official allocation confirmations.
-        </p>
+      <!-- Delegation Success Screen Template (Inert, dynamically mounted upon verified registration completion) -->
+      <template id="dlg-success-template">
+        <div id="dlg-success-overlay" class="success-overlay">
+          <button type="button" class="success-direct-close-btn" onclick="handleDelegationSuccessDone()" aria-label="Close Delegation Confirmation">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="success-icon-badge">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h3 class="success-title">Delegation Registered!</h3>
+          <p class="success-message">
+            Thank you for registering <strong id="dlg-success-name">your delegation</strong>. Our secretariat will contact you with official allocation confirmations.
+          </p>
 
-        <!-- Neo-Brutalist Delegation Hub Card -->
-        <div class="dlg-success-hub-card">
-          <div class="dlg-hub-header">
-            <span class="dlg-hub-badge">OFFICIAL ROSTER RECORD</span>
-            <span class="dlg-hub-status">● LIVE SHEET ACTIVE</span>
+          <!-- Neo-Brutalist Delegation Hub Card -->
+          <div class="dlg-success-hub-card">
+            <div class="dlg-hub-header">
+              <span class="dlg-hub-badge">OFFICIAL ROSTER RECORD</span>
+              <span class="dlg-hub-status">● LIVE SHEET ACTIVE</span>
+            </div>
+
+            <!-- Hero Primary Action Button -->
+            <a id="dlg-success-sheet-link" href="#" target="_blank" rel="noopener noreferrer" class="dlg-hub-hero-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+              </svg>
+              <span>Open Google Spreadsheet</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+
+            <!-- Actions Grid -->
+            <div class="dlg-hub-grid">
+              <button type="button" class="dlg-hub-action-btn" onclick="downloadDelegationRosterExcel()" title="Download formatted Excel (.xlsx) file">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span>Excel (.xlsx)</span>
+              </button>
+
+              <button type="button" class="dlg-hub-action-btn" onclick="downloadDelegationRosterCSV()" title="Download raw CSV file">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download CSV</span>
+              </button>
+
+              <button type="button" class="dlg-hub-action-btn" onclick="printDelegationReceipt()" title="Print official printable roster slip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                <span>Print Slip</span>
+              </button>
+
+              <button type="button" class="dlg-hub-action-btn dlg-hub-wa-btn" onclick="shareDelegationRosterWhatsApp()" title="Share into your college WhatsApp delegation group">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                <span>WhatsApp</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Hero Primary Action Button -->
-          <a id="dlg-success-sheet-link" href="#" target="_blank" rel="noopener noreferrer" class="dlg-hub-hero-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="3" y1="15" x2="21" y2="15"></line>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-            </svg>
-            <span>Open Google Spreadsheet</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;">
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
-            </svg>
-          </a>
-
-          <!-- Actions Grid -->
-          <div class="dlg-hub-grid">
-            <button type="button" class="dlg-hub-action-btn" onclick="downloadDelegationRosterExcel()" title="Download formatted Excel (.xlsx) file">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-              </svg>
-              <span>Excel (.xlsx)</span>
-            </button>
-
-            <button type="button" class="dlg-hub-action-btn" onclick="downloadDelegationRosterCSV()" title="Download raw CSV file">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span>Download CSV</span>
-            </button>
-
-            <button type="button" class="dlg-hub-action-btn" onclick="printDelegationReceipt()" title="Print official printable roster slip">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                <rect x="6" y="14" width="12" height="8"></rect>
-              </svg>
-              <span>Print Slip</span>
-            </button>
-
-            <button type="button" class="dlg-hub-action-btn dlg-hub-wa-btn" onclick="shareDelegationRosterWhatsApp()" title="Share into your college WhatsApp delegation group">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-              <span>WhatsApp</span>
-            </button>
-          </div>
+          <button id="dlg-success-close-btn" class="success-close-btn"
+            onclick="handleDelegationSuccessDone()">Done</button>
         </div>
-
-        <button id="dlg-success-close-btn" class="success-close-btn"
-          onclick="handleDelegationSuccessDone()">Done</button>
-      </div>
+      </template>
     </div>
   </div>
 
@@ -5378,15 +5436,15 @@
 
       <!-- Step Indicator -->
       <div class="wizard-stepper" aria-label="Registration Steps">
-        <span class="wizard-step is-active" id="step-indicator-1">Step 1</span>
+        <span class="wizard-step is-active" id="step-indicator-1">Delegate Details</span>
         <span class="wizard-step-arrow">→</span>
-        <span class="wizard-step" id="step-indicator-2">Step 2</span>
+        <span class="wizard-step" id="step-indicator-2">Step 1</span>
         <span class="wizard-step-arrow">→</span>
-        <span class="wizard-step" id="step-indicator-3">Step 3</span>
+        <span class="wizard-step" id="step-indicator-3">Step 2</span>
         <span class="wizard-step-arrow step-arrow-4" id="step-arrow-4">→</span>
-        <span class="wizard-step" id="step-indicator-4">Payment</span>
+        <span class="wizard-step" id="step-indicator-4">Step 3</span>
         <span class="wizard-step-arrow" id="step-arrow-5" style="display: none;">→</span>
-        <span class="wizard-step" id="step-indicator-5" style="display: none;">Payment</span>
+        <span class="wizard-step" id="step-indicator-5" style="display: none;">Confirmation</span>
       </div>
 
       <form id="delegate-registration-form" novalidate onsubmit="handleRegistrationSubmit(event)">
@@ -5396,26 +5454,26 @@
         <div class="wizard-step-panel is-active" id="wizard-step-1">
           <div class="form-group">
             <label class="form-label" for="reg-name">Full Name *</label>
-            <input type="text" id="reg-name" class="form-input" placeholder="e.g. Aditi Sharma" autocomplete="name" autocapitalize="words" spellcheck="false" required>
+            <input type="text" id="reg-name" class="form-input" placeholder="e.g. Karthik Prasad" autocomplete="name" autocapitalize="words" spellcheck="false" required>
             <div id="reg-name-error" class="error-container" aria-live="polite" role="alert">Full Name is required</div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="reg-age">Age *</label>
-            <input type="number" id="reg-age" class="form-input" placeholder="e.g. 19" min="12" max="45" inputmode="numeric" autocomplete="off" required>
+            <input type="number" id="reg-age" class="form-input" placeholder="e.g. 19" min="18" max="28" inputmode="numeric" autocomplete="off" required>
             <div id="reg-age-error" class="error-container" aria-live="polite" role="alert">Valid age is required</div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="reg-institution">College / Institute Name *</label>
-            <input type="text" id="reg-institution" class="form-input" placeholder="e.g. RNS Institute of Technology"
+            <input type="text" id="reg-institution" class="form-input" placeholder="e.g. College / Institute Name"
               autocomplete="organization" autocapitalize="words" spellcheck="false" required>
             <div id="reg-institution-error" class="error-container" aria-live="polite" role="alert">College/Institute name is required</div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="reg-usn">USN / Roll No</label>
-            <input type="text" id="reg-usn" class="form-input" placeholder="e.g. 1RN22CS001 (Optional)" autocomplete="off" autocapitalize="characters" spellcheck="false">
+            <input type="text" id="reg-usn" class="form-input" autocomplete="off" autocapitalize="characters" spellcheck="false">
           </div>
 
           <div class="form-group">
@@ -5432,7 +5490,7 @@
 
           <div class="form-group">
             <label class="form-label" for="reg-email">Email Address *</label>
-            <input type="email" id="reg-email" class="form-input" placeholder="aditi@example.com" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" oninput="checkIndividualEmailRegistration(this)" onblur="checkIndividualEmailRegistration(this)" required>
+            <input type="email" id="reg-email" class="form-input" placeholder="sup@gmail.com" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" oninput="checkIndividualEmailRegistration(this)" onblur="checkIndividualEmailRegistration(this)" required>
             <div id="reg-email-error" class="error-container" aria-live="polite" role="alert">Valid email is required</div>
             <div id="reg-email-exists-msg" class="error-container" aria-live="polite" role="alert" style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email address has already been registered for RNS MUN '26. Each delegate may only register once.</div>
           </div>
@@ -5781,6 +5839,13 @@
               </div>
             </div>
 
+            <!-- Non-Refundable Policy Notice -->
+            <div class="neo-note-callout"
+              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 10px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+              <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
+              <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
+            </div>
+
             <!-- Submit Button (Disabled until screenshot is uploaded) -->
             <div class="wizard-btn-row">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
@@ -5902,6 +5967,13 @@
               </div>
             </div>
 
+            <!-- Non-Refundable Policy Notice -->
+            <div class="neo-note-callout"
+              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+              <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
+              <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
+            </div>
+
             <!-- Navigation Buttons -->
             <div class="wizard-btn-row" id="reg-step-4-btns">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
@@ -5975,6 +6047,13 @@
             </div>
           </div>
 
+          <!-- Non-Refundable Policy Notice -->
+          <div class="neo-note-callout"
+            style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+            <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
+            <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
+          </div>
+
           <!-- Screenshot Upload Box -->
           <div class="form-group" style="margin-bottom: 22px;">
             <label class="form-label" for="reg-external-payment-screenshot"
@@ -6041,29 +6120,32 @@
 
       </form>
 
-      <!-- Success Screen Overlay -->
-      <div id="success-overlay" class="success-overlay">
-        <button type="button" class="success-direct-close-btn" onclick="handleSuccessDone()" aria-label="Close Registration Confirmation">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        <div class="success-icon-badge">✓</div>
-        <h3 class="success-title" id="success-title">Registration Submitted!</h3>
-        <p class="success-message" id="success-message-text">
-          Thank you for registering. Your external delegate application for <span id="success-committee-name"
-            class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to
-          your WhatsApp/email with payment verification and portfolio allotment.
-        </p>
-        <div class="success-actions-row">
-          <button type="button" id="print-receipt-btn" class="receipt-print-btn" onclick="printRegistrationReceipt()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            <span>Save / Print Receipt</span>
+      <!-- Individual Delegate Success Screen Template (Inert, dynamically mounted upon verified registration completion) -->
+      <template id="individual-success-template">
+        <div id="success-overlay" class="success-overlay">
+          <button type="button" class="success-direct-close-btn" onclick="handleSuccessDone()" aria-label="Close Registration Confirmation">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
-          <button id="success-close-btn" class="success-close-btn" onclick="handleSuccessDone()">Done</button>
+          <div class="success-icon-badge">✓</div>
+          <h3 class="success-title" id="success-title">Registration Submitted!</h3>
+          <p class="success-message" id="success-message-text">
+            Thank you for registering. Your external delegate application for <span id="success-committee-name"
+              class="success-committee-badge">UNSC</span> has been recorded. Our delegate affairs team will reach out to
+            your WhatsApp/email with payment verification and portfolio allotment.
+          </p>
+
+          <div class="success-actions-row">
+            <button type="button" id="print-receipt-btn" class="receipt-print-btn" onclick="printRegistrationReceipt()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Save / Print Receipt</span>
+            </button>
+            <button id="success-close-btn" class="success-close-btn" onclick="handleSuccessDone()">Done</button>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 
@@ -7474,10 +7556,16 @@
           if (errEl) errEl.style.display = 'none';
 
           // Update stepper labels for internal (4 steps)
+          const step1Ind = document.getElementById('step-indicator-1');
+          const step2Ind = document.getElementById('step-indicator-2');
+          const step3Ind = document.getElementById('step-indicator-3');
           const step4Ind = document.getElementById('step-indicator-4');
           const step5Arrow = document.getElementById('step-arrow-5');
           const step5Ind = document.getElementById('step-indicator-5');
-          if (step4Ind) step4Ind.textContent = 'Payment';
+          if (step1Ind) step1Ind.textContent = 'Delegate Details';
+          if (step2Ind) step2Ind.textContent = 'Step 1';
+          if (step3Ind) step3Ind.textContent = 'Step 2';
+          if (step4Ind) step4Ind.textContent = 'Step 3';
           if (step5Arrow) step5Arrow.style.display = 'none';
           if (step5Ind) step5Ind.style.display = 'none';
         } else {
@@ -7485,17 +7573,23 @@
             institution.value = '';
           }
           institution.readOnly = false;
-          institution.placeholder = 'e.g. RV College / BMS College';
+          institution.placeholder = 'e.g. College / Institute Name';
 
           // Update stepper labels for external (5 steps)
+          const step1Ind = document.getElementById('step-indicator-1');
+          const step2Ind = document.getElementById('step-indicator-2');
+          const step3Ind = document.getElementById('step-indicator-3');
           const step4Ind = document.getElementById('step-indicator-4');
           const step5Arrow = document.getElementById('step-arrow-5');
           const step5Ind = document.getElementById('step-indicator-5');
-          if (step4Ind) step4Ind.textContent = 'Pass';
+          if (step1Ind) step1Ind.textContent = 'Delegate Details';
+          if (step2Ind) step2Ind.textContent = 'Step 1';
+          if (step3Ind) step3Ind.textContent = 'Step 2';
+          if (step4Ind) step4Ind.textContent = 'Step 3';
           if (step5Arrow) step5Arrow.style.display = 'inline';
           if (step5Ind) {
             step5Ind.style.display = 'inline-block';
-            step5Ind.textContent = 'Payment';
+            step5Ind.textContent = 'Confirmation';
           }
         }
       }
@@ -8110,10 +8204,10 @@
         if (age) {
           const errorEl = document.getElementById('reg-age-error');
           const ageVal = parseInt(age.value, 10);
-          if (!age.value.trim() || isNaN(ageVal) || ageVal < 10 || ageVal > 45) {
+          if (!age.value.trim() || isNaN(ageVal) || ageVal < 18 || ageVal > 28) {
             age.classList.add('has-error');
             if (errorEl) {
-              errorEl.textContent = 'Please enter a valid age (12-35)';
+              errorEl.textContent = 'Please enter a valid age (18–28)';
               errorEl.style.display = 'block';
             }
             isValid = false;
@@ -8472,7 +8566,10 @@
             regCard.style.overflowY = '';
             regCard.style.maxHeight = '';
             const successOverlay = document.getElementById('success-overlay');
-            if (successOverlay) successOverlay.classList.remove('show');
+            if (successOverlay) {
+              successOverlay.classList.remove('show');
+              if (successOverlay.parentNode) successOverlay.remove();
+            }
           }
         });
       } else {
@@ -8483,7 +8580,10 @@
         regCard.style.overflowY = '';
         regCard.style.maxHeight = '';
         const successOverlay = document.getElementById('success-overlay');
-        if (successOverlay) successOverlay.classList.remove('show');
+        if (successOverlay) {
+          successOverlay.classList.remove('show');
+          if (successOverlay.parentNode) successOverlay.remove();
+        }
       }
     }
 
@@ -8549,7 +8649,10 @@
             dlgCard.style.overflowY = '';
             dlgCard.style.maxHeight = '';
             const successOverlay = document.getElementById('dlg-success-overlay');
-            if (successOverlay) successOverlay.classList.remove('show');
+            if (successOverlay) {
+              successOverlay.classList.remove('show');
+              if (successOverlay.parentNode) successOverlay.remove();
+            }
           }
         });
       } else {
@@ -8561,7 +8664,10 @@
         dlgCard.style.overflowY = '';
         dlgCard.style.maxHeight = '';
         const successOverlay = document.getElementById('dlg-success-overlay');
-        if (successOverlay) successOverlay.classList.remove('show');
+        if (successOverlay) {
+          successOverlay.classList.remove('show');
+          if (successOverlay.parentNode) successOverlay.remove();
+        }
       }
     }
 
@@ -9510,23 +9616,33 @@
       markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName, sheetUrl: sheetLink.value.trim() });
       if (cleanName) localStorage.setItem(`submitted_dlg_${cleanName}`, sheetLink.value.trim());
 
-      // Show Delegation Success Screen
+      // Show Delegation Success Screen dynamically from inert template
+      showDelegationSuccessOverlay(payload.delegationName, payload.googleSheetLink);
+    }
+
+    function showDelegationSuccessOverlay(delegationName, googleSheetLink) {
       const dlgCard = document.getElementById('delegation-modal-card');
+      let successOverlay = document.getElementById('dlg-success-overlay');
+      if (!successOverlay) {
+        const tmpl = document.getElementById('dlg-success-template');
+        if (tmpl && dlgCard) {
+          dlgCard.appendChild(tmpl.content.cloneNode(true));
+          successOverlay = document.getElementById('dlg-success-overlay');
+        }
+      }
       if (dlgCard) {
         dlgCard.scrollTop = 0;
         dlgCard.classList.add('in-dlg-success-state');
         dlgCard.style.overflowY = 'auto';
         dlgCard.style.webkitOverflowScrolling = 'touch';
       }
-
-      const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) {
+        const successName = document.getElementById('dlg-success-name');
+        if (successName) successName.textContent = delegationName || 'your delegation';
+        const successSheetLink = document.getElementById('dlg-success-sheet-link');
+        if (successSheetLink && googleSheetLink) successSheetLink.href = googleSheetLink;
         successOverlay.scrollTop = 0;
         successOverlay.classList.add('show');
-        const successName = document.getElementById('dlg-success-name');
-        if (successName) successName.textContent = payload.delegationName;
-        const successSheetLink = document.getElementById('dlg-success-sheet-link');
-        if (successSheetLink) successSheetLink.href = payload.googleSheetLink;
       }
     }
 
@@ -9538,7 +9654,10 @@
         dlgCard.style.maxHeight = '';
       }
       const successOverlay = document.getElementById('dlg-success-overlay');
-      if (successOverlay) successOverlay.classList.remove('show');
+      if (successOverlay) {
+        successOverlay.classList.remove('show');
+        if (successOverlay.parentNode) successOverlay.remove();
+      }
       clearDelegationForm();
       closeDelegationRegistrationModal();
     }
@@ -9748,14 +9867,8 @@
             });
           }
 
-          const successOverlay = document.getElementById('success-overlay');
-          if (successOverlay) {
-            const successTitle = document.getElementById('success-title');
-            if (successTitle) successTitle.textContent = 'Registration Submitted!';
-            const successMsg = document.getElementById('success-message-text');
-            if (successMsg) successMsg.innerHTML = successMsgHTML;
-            showSuccessOverlay();
-          }
+          // Dynamically mount and display success screen
+          showSuccessOverlay('Registration Submitted!', successMsgHTML);
         })
         .finally(() => {
           if (submitBtn) {
@@ -9766,15 +9879,34 @@
         });
     }
 
-    // Scroll modal to top, adapt card height for mobile viewports, and enable smooth scroll
-    function showSuccessOverlay() {
+    // Scroll modal to top, mount success template dynamically, and adapt card height
+    function showSuccessOverlay(customTitle, customMessageHTML) {
       clearDraft();
       resetPaymentScreenshotState();
       const banner = document.getElementById('draft-restored-banner');
       if (banner) banner.remove();
 
       const regCard = document.getElementById('registration-modal-card');
-      const successOverlay = document.getElementById('success-overlay');
+      let successOverlay = document.getElementById('success-overlay');
+      if (!successOverlay) {
+        const tmpl = document.getElementById('individual-success-template');
+        if (tmpl && regCard) {
+          regCard.appendChild(tmpl.content.cloneNode(true));
+          successOverlay = document.getElementById('success-overlay');
+        }
+      }
+
+      if (successOverlay) {
+        if (customTitle) {
+          const titleEl = document.getElementById('success-title');
+          if (titleEl) titleEl.textContent = customTitle;
+        }
+        if (customMessageHTML) {
+          const msgEl = document.getElementById('success-message-text');
+          if (msgEl) msgEl.innerHTML = customMessageHTML;
+        }
+      }
+
       if (regCard) {
         regCard.scrollTop = 0;
         regCard.classList.add('in-success-state');
@@ -9809,7 +9941,10 @@
             gsap.set(regCard, { clearProps: 'all' });
             // Now hidden — reset everything silently
             const successOverlay = document.getElementById('success-overlay');
-            if (successOverlay) successOverlay.classList.remove('show');
+            if (successOverlay) {
+              successOverlay.classList.remove('show');
+              if (successOverlay.parentNode) successOverlay.remove();
+            }
             regCard.classList.remove('in-success-state');
             regCard.style.overflow = '';
             regCard.style.overflowY = '';
@@ -9832,7 +9967,10 @@
         regBackdrop.style.display = 'none';
         unlockBackgroundScroll();
         const successOverlay = document.getElementById('success-overlay');
-        if (successOverlay) successOverlay.classList.remove('show');
+        if (successOverlay) {
+          successOverlay.classList.remove('show');
+          if (successOverlay.parentNode) successOverlay.remove();
+        }
         regCard.classList.remove('in-success-state');
         regCard.style.overflow = '';
         regCard.style.overflowY = '';
@@ -9908,27 +10046,16 @@
           const regBackdrop = document.getElementById('registration-modal-backdrop');
           const regCard = document.getElementById('registration-modal-card');
           const successOverlay = document.getElementById('success-overlay');
-          const successTitle = document.getElementById('success-title');
-          const successMsg = document.getElementById('success-message-text');
-
-          if (successTitle) {
-            successTitle.textContent = 'Complete Your Payment';
-          }
-
-          if (successMsg) {
-            successMsg.innerHTML = `
-              <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br>
-              <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br>
-              <em style="font-size: 0.8rem; color: rgba(0,0,0,0.5); display: inline-block; margin-top: 4px;">Thank you for registering with RNSMUN 2026.</em>
-            `;
-          }
-
           if (regBackdrop) {
             regBackdrop.classList.add('active');
             regBackdrop.style.display = 'flex';
             lockBackgroundScroll();
             // Use helper so modal scrolls to top and scroll is locked
-            showSuccessOverlay();
+            showSuccessOverlay('Complete Your Payment', `
+              <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br>
+              <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br>
+              <em style="font-size: 0.8rem; color: rgba(0,0,0,0.5); display: inline-block; margin-top: 4px;">Thank you for registering with RNSMUN 2026.</em>
+            `);
           }
         }
       } catch (err) {
@@ -10077,23 +10204,107 @@
         year: 'numeric'
       });
 
-      const setTxt = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-      };
+      // Remove any existing receipt element
+      const existing = document.getElementById('printable-receipt');
+      if (existing) existing.remove();
 
-      setTxt('pr-receipt-id', receiptId);
-      setTxt('pr-receipt-date', dateStr);
-      setTxt('pr-name', name);
-      setTxt('pr-institution', institution);
-      setTxt('pr-usn', usn);
-      setTxt('pr-phone', phone);
-      setTxt('pr-email', email);
-      setTxt('pr-category', category);
-      setTxt('pr-committee-1', comm1);
-      setTxt('pr-portfolios-1', portfolios1);
-      setTxt('pr-committee-2', comm2);
-      setTxt('pr-portfolios-2', portfolios2);
+      // Dynamically construct printable receipt on runtime action only
+      const receiptEl = document.createElement('div');
+      receiptEl.id = 'printable-receipt';
+      receiptEl.className = 'printable-receipt';
+      receiptEl.setAttribute('aria-hidden', 'true');
+      receiptEl.innerHTML = `
+        <div class="receipt-header">
+          <div class="receipt-brand-left">
+            <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
+            <div class="receipt-titles">
+              <h2 class="receipt-org-title">RNS MUN'26</h2>
+              <div class="receipt-doc-subtitle">OFFICIAL DELEGATE CONFIRMATION</div>
+              <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
+              <p class="receipt-date-text">06–07 OCTOBER 2026 &bull; Bengaluru, India</p>
+            </div>
+          </div>
+          <div class="receipt-header-right">
+            <div class="receipt-status-badge">PAYMENT PENDING VERIFICATION</div>
+            <div class="receipt-id-tag">${receiptId}</div>
+          </div>
+        </div>
+
+        <div class="receipt-meta-grid">
+          <div class="receipt-meta-item">
+            <label>Receipt No.</label>
+            <span id="pr-receipt-id">${receiptId}</span>
+          </div>
+          <div class="receipt-meta-item">
+            <label>Submission Date</label>
+            <span id="pr-receipt-date">${dateStr}</span>
+          </div>
+          <div class="receipt-meta-item">
+            <label>Verification Status</label>
+            <span id="pr-receipt-status" style="color: #6C0D2C;">Payment Pending Verification</span>
+          </div>
+        </div>
+
+        <div class="receipt-section-title">Delegate Information</div>
+        <table class="receipt-table">
+          <tr><th>Full Name</th><td id="pr-name">${name}</td></tr>
+          <tr><th>Institution / College</th><td id="pr-institution">${institution}</td></tr>
+          <tr><th>USN / Roll Number</th><td id="pr-usn">${usn}</td></tr>
+          <tr><th>WhatsApp / Mobile</th><td id="pr-phone">${phone}</td></tr>
+          <tr><th>Email Address</th><td id="pr-email">${email}</td></tr>
+          <tr><th>Delegate Category</th><td id="pr-category">${category}</td></tr>
+        </table>
+
+        <div class="receipt-section-title">Committee Preferences & Allocation Status</div>
+        <table class="receipt-table">
+          <tr><th>Primary Committee Preference</th><td id="pr-committee-1">${comm1}</td></tr>
+          <tr><th>Primary Portfolio Preferences</th><td id="pr-portfolios-1">${portfolios1}</td></tr>
+          <tr><th>Secondary Committee Preference</th><td id="pr-committee-2">${comm2}</td></tr>
+          <tr><th>Secondary Portfolio Preferences</th><td id="pr-portfolios-2">${portfolios2}</td></tr>
+          <tr><th>Applicable Delegate Fee</th><td id="pr-fee-tier">${fee}</td></tr>
+        </table>
+
+        <div class="receipt-notice-box">
+          <strong>Official Delegate Registration Confirmation:</strong><br>
+          This document certifies that the candidate above has successfully submitted registration for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>06–07 OCTOBER 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Background guides, rules of procedure, and portfolio allotments will be communicated through official delegate channels. Delegates must carry this confirmation slip and valid institutional identification to the conference accreditation desk on Day 1.
+        </div>
+
+        <div class="receipt-contacts-section">
+          <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
+          <div class="receipt-contacts-grid">
+            <div class="receipt-contact-card">
+              <span class="contact-name">Zeyan</span>
+              <span class="contact-role">Head &bull; Delegate Affairs</span>
+              <span class="contact-phone">+91 91559 73955</span>
+            </div>
+            <div class="receipt-contact-card">
+              <span class="contact-name">Adith</span>
+              <span class="contact-role">Head &bull; Delegate Affairs</span>
+              <span class="contact-phone">+91 89702 62490</span>
+            </div>
+            <div class="receipt-contact-card">
+              <span class="contact-name">Aditi</span>
+              <span class="contact-role">Charge d'Affaires</span>
+              <span class="contact-phone">+91 91080 80956</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="receipt-footer-row">
+          <div class="receipt-footer-left">
+            RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
+            Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
+          </div>
+          <div class="receipt-footer-right">
+            <div class="receipt-stamp-placeholder">
+              <span class="stamp-line-1">Core Secretariat,</span>
+              <span class="stamp-line-2">RNSMUN 2026</span>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(receiptEl);
+
       // Print Individual Delegate Receipt
       document.body.classList.add('printing-individual');
       document.body.classList.remove('printing-delegation');
@@ -10105,10 +10316,13 @@
 
       window.print();
 
-      // Restore document title after print dialogue finishes
+      // Restore document title and cleanup after print dialogue finishes
       setTimeout(() => {
         document.title = originalTitle;
         document.body.classList.remove('printing-individual');
+        if (receiptEl && receiptEl.parentNode) {
+          receiptEl.remove();
+        }
       }, 1500);
     }
 
@@ -10130,19 +10344,105 @@
         year: 'numeric'
       });
 
-      const setTxt = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-      };
+      // Remove any existing delegation receipt element
+      const existing = document.getElementById('printable-delegation-receipt');
+      if (existing) existing.remove();
 
-      setTxt('pr-dlg-receipt-id', receiptId);
-      setTxt('pr-dlg-receipt-date', dateStr);
-      setTxt('pr-dlg-inst-name', dlgName);
-      setTxt('pr-dlg-head-fullname', headName);
-      setTxt('pr-dlg-inst-phone', phone);
-      setTxt('pr-dlg-inst-email', email);
-      setTxt('pr-dlg-inst-category', category);
-      setTxt('pr-dlg-inst-size', `${count} Confirmed Delegates`);
+      // Dynamically construct printable delegation receipt on runtime action only
+      const dlgReceiptEl = document.createElement('div');
+      dlgReceiptEl.id = 'printable-delegation-receipt';
+      dlgReceiptEl.className = 'printable-receipt';
+      dlgReceiptEl.setAttribute('aria-hidden', 'true');
+      dlgReceiptEl.innerHTML = `
+        <div class="receipt-header">
+          <div class="receipt-brand-left">
+            <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
+            <div class="receipt-titles">
+              <h2 class="receipt-org-title">RNS MUN'26</h2>
+              <div class="receipt-doc-subtitle">OFFICIAL DELEGATION ACCREDITATION CONFIRMATION</div>
+              <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
+              <p class="receipt-date-text">06–07 OCTOBER 2026 &bull; Bengaluru, India</p>
+            </div>
+          </div>
+          <div class="receipt-header-right">
+            <div class="receipt-status-badge">ROSTER UNDER VERIFICATION</div>
+            <div class="receipt-id-tag">${receiptId}</div>
+          </div>
+        </div>
+
+        <div class="receipt-meta-grid">
+          <div class="receipt-meta-item">
+            <label>Delegation Receipt No.</label>
+            <span id="pr-dlg-receipt-id">${receiptId}</span>
+          </div>
+          <div class="receipt-meta-item">
+            <label>Registration Date</label>
+            <span id="pr-dlg-receipt-date">${dateStr}</span>
+          </div>
+          <div class="receipt-meta-item">
+            <label>Roster Status</label>
+            <span id="pr-dlg-receipt-status" style="color: #6C0D2C;">Roster Under Verification</span>
+          </div>
+        </div>
+
+        <div class="receipt-section-title">Institution & Head of Delegation Details</div>
+        <table class="receipt-table">
+          <tr><th>Institution / College / School</th><td id="pr-dlg-inst-name">${dlgName}</td></tr>
+          <tr><th>Head of Delegation / Faculty Lead</th><td id="pr-dlg-head-fullname">${headName}</td></tr>
+          <tr><th>Official Contact Mobile</th><td id="pr-dlg-inst-phone">${phone}</td></tr>
+          <tr><th>Official Contact Email</th><td id="pr-dlg-inst-email">${email}</td></tr>
+          <tr><th>Delegation Classification</th><td id="pr-dlg-inst-category">${category}</td></tr>
+        </table>
+
+        <div class="receipt-section-title">Delegation Participation & Roster Specifications</div>
+        <table class="receipt-table">
+          <tr><th>Confirmed Delegation Strength</th><td id="pr-dlg-inst-size">${count} Confirmed Delegates</td></tr>
+          <tr><th>Roster Submission Method</th><td>Official Linked Google Sheet / CSV Roster Records</td></tr>
+          <tr><th>Cross-Committee Distribution</th><td>UNSC, Lok Sabha, DISEC, UNHRC, UNODC, International Press (IP)</td></tr>
+          <tr><th>Best Delegation Award</th><td>Flagship Best Delegation Trophy + Cash Prize</td></tr>
+          <tr><th>Applicable Registration Fee</th><td>Institutional Delegation Tier (Consolidated Invoicing)</td></tr>
+        </table>
+
+        <div class="receipt-notice-box">
+          <strong>Official Institutional Delegation Accreditation Notice:</strong><br>
+          This document certifies that the institution named above has successfully registered an official delegation for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>06–07 OCTOBER 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Delegation committee portfolios and country allotments are being processed by the Delegate Affairs Secretariat in coordination with the Head of Delegation. The Head of Delegation or authorized representative must present this confirmation slip at the Secretariat Accreditation Desk on Day 1 to collect all delegate kits, placards, and identity credentials.
+        </div>
+
+        <div class="receipt-contacts-section">
+          <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
+          <div class="receipt-contacts-grid">
+            <div class="receipt-contact-card">
+              <span class="contact-name">Zeyan</span>
+              <span class="contact-role">Head &bull; Delegate Affairs</span>
+              <span class="contact-phone">+91 91559 73955</span>
+            </div>
+            <div class="receipt-contact-card">
+              <span class="contact-name">Adith</span>
+              <span class="contact-role">Head &bull; Delegate Affairs</span>
+              <span class="contact-phone">+91 89702 62490</span>
+            </div>
+            <div class="receipt-contact-card">
+              <span class="contact-name">Aditi</span>
+              <span class="contact-role">Charge d'Affaires</span>
+              <span class="contact-phone">+91 91080 80956</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="receipt-footer-row">
+          <div class="receipt-footer-left">
+            RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
+            Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
+          </div>
+          <div class="receipt-footer-right">
+            <div class="receipt-stamp-placeholder">
+              <span class="stamp-line-1">Core Secretariat,</span>
+              <span class="stamp-line-2">RNSMUN 2026</span>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(dlgReceiptEl);
 
       // Print Institutional Delegation Receipt
       document.body.classList.add('printing-delegation');
@@ -10158,6 +10458,9 @@
       setTimeout(() => {
         document.title = originalTitle;
         document.body.classList.remove('printing-delegation');
+        if (dlgReceiptEl && dlgReceiptEl.parentNode) {
+          dlgReceiptEl.remove();
+        }
       }, 1500);
     }
 
@@ -10443,251 +10746,7 @@
     // End Form Draft Auto-Save
   </script>
 
-  <!-- ================================================= -->
-  <!-- OFFICIAL PRINTABLE CONFIRMATION RECEIPT -->
-  <!-- ================================================= -->
-  <div id="printable-receipt" class="printable-receipt" aria-hidden="true">
-    <div class="receipt-header">
-      <div class="receipt-brand-left">
-        <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
-        <div class="receipt-titles">
-          <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
-          <p class="receipt-date-text">October 06 &bull; 07, 2026 &bull; Bengaluru, India</p>
-        </div>
-      </div>
-      <div>
-        <div class="receipt-status-badge">★ Registration Submitted</div>
-      </div>
-    </div>
 
-    <div class="receipt-meta-grid">
-      <div class="receipt-meta-item">
-        <label>Receipt No.</label>
-        <span id="pr-receipt-id">RNSMUN26-000000</span>
-      </div>
-      <div class="receipt-meta-item">
-        <label>Submission Date</label>
-        <span id="pr-receipt-date">--</span>
-      </div>
-      <div class="receipt-meta-item">
-        <label>Verification Status</label>
-        <span id="pr-receipt-status" style="color: #6C0D2C;">Payment Pending Verification</span>
-      </div>
-    </div>
-
-    <div class="receipt-section-title">Delegate Information</div>
-    <table class="receipt-table">
-      <tr>
-        <th>Full Name</th>
-        <td id="pr-name">--</td>
-      </tr>
-      <tr>
-        <th>Institution / College</th>
-        <td id="pr-institution">--</td>
-      </tr>
-      <tr>
-        <th>USN / Roll Number</th>
-        <td id="pr-usn">--</td>
-      </tr>
-      <tr>
-        <th>WhatsApp / Mobile</th>
-        <td id="pr-phone">--</td>
-      </tr>
-      <tr>
-        <th>Email Address</th>
-        <td id="pr-email">--</td>
-      </tr>
-      <tr>
-        <th>Delegate Category</th>
-        <td id="pr-category">--</td>
-      </tr>
-    </table>
-
-    <div class="receipt-section-title">Committee Preferences & Allocation Status</div>
-    <table class="receipt-table">
-      <tr>
-        <th>Primary Committee Preference</th>
-        <td id="pr-committee-1">--</td>
-      </tr>
-      <tr>
-        <th>Primary Portfolio Preferences</th>
-        <td id="pr-portfolios-1">--</td>
-      </tr>
-      <tr>
-        <th>Secondary Committee Preference</th>
-        <td id="pr-committee-2">--</td>
-      </tr>
-      <tr>
-        <th>Secondary Portfolio Preferences</th>
-        <td id="pr-portfolios-2">--</td>
-      </tr>
-      <tr>
-        <th>Applicable Delegate Fee</th>
-        <td id="pr-fee-tier">--</td>
-      </tr>
-    </table>
-
-    <div class="receipt-notice-box">
-      <strong>Official Delegate Registration Confirmation:</strong><br>
-      This document certifies that the candidate above has successfully submitted registration for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>October 06 & 07, 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Background guides, rules of procedure, and portfolio allotments will be communicated through official delegate channels. Delegates must carry this confirmation slip and valid institutional identification to the conference accreditation desk on Day 1.
-    </div>
-
-    <!-- Secretariat & Delegate Affairs Contacts Section -->
-    <div class="receipt-contacts-section">
-      <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
-      <div class="receipt-contacts-grid">
-        <div class="receipt-contact-card">
-          <span class="contact-name">Zeyan</span>
-          <span class="contact-role">Head &bull; Delegate Affairs</span>
-          <span class="contact-phone">+91 91559 73955</span>
-        </div>
-        <div class="receipt-contact-card">
-          <span class="contact-name">Adith</span>
-          <span class="contact-role">Head &bull; Delegate Affairs</span>
-          <span class="contact-phone">+91 89702 62490</span>
-        </div>
-        <div class="receipt-contact-card">
-          <span class="contact-name">Aditi</span>
-          <span class="contact-role">Charge d'Affaires</span>
-          <span class="contact-phone">+91 91080 80956</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="receipt-footer-row">
-      <div class="receipt-footer-left">
-        RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
-        Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
-      </div>
-      <div class="receipt-footer-right">
-        <div class="receipt-stamp-placeholder">
-          <span class="stamp-line-1">Core Secretariat,</span>
-          <span class="stamp-line-2">RNSMUN 2026</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================================================= -->
-  <!-- OFFICIAL PRINTABLE DELEGATION ACCREDITATION RECEIPT -->
-  <!-- ================================================= -->
-  <div id="printable-delegation-receipt" class="printable-receipt" aria-hidden="true">
-    <div class="receipt-header">
-      <div class="receipt-brand-left">
-        <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
-        <div class="receipt-titles">
-          <p class="receipt-society-text">Model United Nations Society &bull; RNS Institute of Technology</p>
-          <p class="receipt-date-text">October 06 &bull; 07, 2026 &bull; Bengaluru, India</p>
-        </div>
-      </div>
-      <div>
-        <div class="receipt-status-badge">★ Delegation Registered</div>
-      </div>
-    </div>
-
-    <div class="receipt-meta-grid">
-      <div class="receipt-meta-item">
-        <label>Delegation Receipt No.</label>
-        <span id="pr-dlg-receipt-id">RNSMUN26-DLG-000000</span>
-      </div>
-      <div class="receipt-meta-item">
-        <label>Registration Date</label>
-        <span id="pr-dlg-receipt-date">--</span>
-      </div>
-      <div class="receipt-meta-item">
-        <label>Roster Status</label>
-        <span id="pr-dlg-receipt-status" style="color: #6C0D2C;">Roster Under Verification</span>
-      </div>
-    </div>
-
-    <div class="receipt-section-title">Institution & Head of Delegation Details</div>
-    <table class="receipt-table">
-      <tr>
-        <th>Institution / College / School</th>
-        <td id="pr-dlg-inst-name">--</td>
-      </tr>
-      <tr>
-        <th>Head of Delegation / Faculty Lead</th>
-        <td id="pr-dlg-head-fullname">--</td>
-      </tr>
-      <tr>
-        <th>Official Contact Mobile</th>
-        <td id="pr-dlg-inst-phone">--</td>
-      </tr>
-      <tr>
-        <th>Official Contact Email</th>
-        <td id="pr-dlg-inst-email">--</td>
-      </tr>
-      <tr>
-        <th>Delegation Classification</th>
-        <td id="pr-dlg-inst-category">--</td>
-      </tr>
-    </table>
-
-    <div class="receipt-section-title">Delegation Participation & Roster Specifications</div>
-    <table class="receipt-table">
-      <tr>
-        <th>Confirmed Delegation Strength</th>
-        <td id="pr-dlg-inst-size">--</td>
-      </tr>
-      <tr>
-        <th>Roster Submission Method</th>
-        <td>Official Linked Google Sheet / CSV Roster Records</td>
-      </tr>
-      <tr>
-        <th>Cross-Committee Distribution</th>
-        <td>UNSC, UNHRC, DISEC, Lok Sabha, AIPPM, International Press</td>
-      </tr>
-      <tr>
-        <th>Best Delegation Trophy Award</th>
-        <td>Eligible for Flagship Best Delegation Award</td>
-      </tr>
-      <tr>
-        <th>Applicable Registration Fee</th>
-        <td>Institutional Delegation Tier (Consolidated Invoicing)</td>
-      </tr>
-    </table>
-
-    <div class="receipt-notice-box">
-      <strong>Official Institutional Delegation Accreditation Notice:</strong><br>
-      This document certifies that the institution named above has successfully registered an official delegation for the <strong>RNSIT Model United Nations Conference 2026</strong> scheduled for <strong>October 06 & 07, 2026</strong> at RNS Institute of Technology, Channasandra, Bengaluru. Delegation committee portfolios and country allotments are being processed by the Delegate Affairs Secretariat in coordination with the Head of Delegation. The Head of Delegation or authorized representative must present this confirmation slip at the Secretariat Accreditation Desk on Day 1 to collect all delegate kits, placards, and identity credentials.
-    </div>
-
-    <!-- Secretariat & Delegate Affairs Contacts Section -->
-    <div class="receipt-contacts-section">
-      <div class="receipt-contacts-header">Secretariat & Delegate Affairs Inquiries</div>
-      <div class="receipt-contacts-grid">
-        <div class="receipt-contact-card">
-          <span class="contact-name">Zeyan</span>
-          <span class="contact-role">Head &bull; Delegate Affairs</span>
-          <span class="contact-phone">+91 91559 73955</span>
-        </div>
-        <div class="receipt-contact-card">
-          <span class="contact-name">Adith</span>
-          <span class="contact-role">Head &bull; Delegate Affairs</span>
-          <span class="contact-phone">+91 89702 62490</span>
-        </div>
-        <div class="receipt-contact-card">
-          <span class="contact-name">Aditi</span>
-          <span class="contact-role">Charge d'Affaires</span>
-          <span class="contact-phone">+91 91080 80956</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="receipt-footer-row">
-      <div class="receipt-footer-left">
-        RNS Institute of Technology, Dr. Vishnuvardhan Road, RR Nagar Post, Bengaluru 560098<br>
-        Inquiries: <strong>mun@rnsit.ac.in</strong> &bull; Official Portal: <strong>mun.rnsit.ac.in</strong>
-      </div>
-      <div class="receipt-footer-right">
-        <div class="receipt-stamp-placeholder">
-          <span class="stamp-line-1">Core Secretariat,</span>
-          <span class="stamp-line-2">RNSMUN 2026</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Tactile Neo-Brutalist Copy Toast Notification -->
   <div id="tactile-copy-toast" class="tactile-copy-toast" role="status" aria-live="polite" aria-atomic="true">

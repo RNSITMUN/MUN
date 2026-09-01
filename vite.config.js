@@ -74,6 +74,8 @@ const cleanUrlsPlugin = () => ({
           req.url = '/channels.html' + req.url.substring(9);
         } else if (url === '/code-of-conduct' || url === '/coc' || url === '/equity-policy') {
           req.url = '/code-of-conduct.html';
+        } else if (url === '/venue' || url === '/location') {
+          req.url = '/venue.html';
         } else if (url === '/404') {
           req.url = '/404.html' + req.url.substring(4);
         } else if (url !== '/' && url !== '') {
@@ -126,6 +128,7 @@ export default defineConfig({
         registration: resolve(process.cwd(), 'registration.html'),
         channels: resolve(process.cwd(), 'channels.html'),
         coc: resolve(process.cwd(), 'code-of-conduct.html'),
+        venue: resolve(process.cwd(), 'venue.html'),
         error: resolve(process.cwd(), '404.html')
       }
     }

@@ -390,12 +390,12 @@ body {
 /* Nav Item Links */
 .nav-item {
   position: relative;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.65);
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.86rem;
+  font-weight: 600;
   text-decoration: none;
-  padding: 8px 16px;
+  padding: 6px 13px;
   border-radius: 9999px;
   white-space: nowrap;
   display: flex;
@@ -405,24 +405,25 @@ body {
   box-sizing: border-box;
   z-index: 2;
   touch-action: manipulation;
-  transition: color 0.25s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-item.active {
   color: #6C0D2C;
-  font-weight: 600;
+  font-weight: 800;
+  background: rgba(108, 13, 44, 0.08);
   z-index: 2;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .nav-item:hover {
     color: #000000;
-    /* Darker charcoal black on hover for inactive tabs */
+    background: rgba(0, 0, 0, 0.04);
   }
 
   .nav-item.active:hover {
     color: #6C0D2C;
-    /* Keep active wine red on hover */
+    background: rgba(108, 13, 44, 0.12);
   }
 }
 

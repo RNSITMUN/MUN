@@ -2,6 +2,7 @@ const profileRow = document.getElementById("profile-row");
 const roleDisplay = document.getElementById("role-display");
 const giantTextContainer = document.getElementById("giant-text-container");
 const profileContainers = document.querySelectorAll(".profile-img-container");
+const teamDots = document.querySelectorAll(".team-dot");
 
 // Manage active names and transitions
 let currentActiveIndex = null;
@@ -177,11 +178,17 @@ function activateMember(container, index, firstName, fullName, role) {
   profileContainers.forEach(c => c.classList.remove("active"));
   container.classList.add("active");
 
+  // Update dots indicator
+  teamDots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
+
   // Apply fluid magnetic ripple sizes and translates
   updateMagneticRipple(index);
 
   // Update displays
   roleDisplay.textContent = `${role} • ${fullName}`;
+  roleDisplay.classList.add("is-active-member");
   roleDisplay.style.opacity = "1";
   setGiantName(firstName, true);
 }
@@ -191,10 +198,14 @@ function deactivateAll() {
   currentActiveIndex = null;
   profileContainers.forEach(c => c.classList.remove("active"));
   
+  // Clear dots indicator
+  teamDots.forEach(dot => dot.classList.remove("active"));
+
   // Revert all profile translations and sizes back to original layout
   updateMagneticRipple(null);
 
   roleDisplay.textContent = isTouchOrMobile() ? "Swipe or tap a member to view role" : "Hover a member to view role";
+  roleDisplay.classList.remove("is-active-member");
   setGiantName("RNSMUN", false);
 }
 
@@ -243,6 +254,18 @@ profileContainers.forEach((container) => {
       deactivateAll();
     } else {
       activateMember(container, index, firstName, fullName, role);
+    }
+  });
+});
+
+// Attach click listeners to dots indicator
+teamDots.forEach((dot, dotIndex) => {
+  dot.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (currentActiveIndex === dotIndex) {
+      deactivateAll();
+    } else {
+      activateMemberByIndex(dotIndex);
     }
   });
 });

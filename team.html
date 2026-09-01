@@ -4,22 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Our Team | MUNSoc RNSIT</title>
-  <link rel="canonical" href="https://mun-rnsit.vercel.app/team">
+  <link rel="canonical" href="https://mun.rnsit.ac.in/team">
   <meta name="description" content="Meet the small but mighty team directing MUNSoc RNSIT.">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mun-rnsit.vercel.app/team">
+  <meta property="og:url" content="https://mun.rnsit.ac.in/team">
   <meta property="og:title" content="Our Team | MUNSoc RNSIT">
   <meta property="og:description" content="Meet the small but mighty team directing MUNSoc RNSIT.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
+  <meta property="og:site_name" content="MUNSoc RNSIT">
+  <meta property="og:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta property="og:image:secure_url" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="RNSIT Model United Nations Conference Official Banner">
+  <link rel="image_src" href="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
 
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://mun-rnsit.vercel.app/team">
-  <meta property="twitter:title" content="Our Team | MUNSoc RNSIT">
-  <meta property="twitter:description" content="Meet the small but mighty team directing MUNSoc RNSIT.">
-  <meta property="twitter:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://mun.rnsit.ac.in/team">
+  <meta name="twitter:title" content="Our Team | MUNSoc RNSIT">
+  <meta name="twitter:description" content="Meet the small but mighty team directing MUNSoc RNSIT.">
+  <meta name="twitter:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta name="twitter:image:alt" content="RNSIT Model United Nations Conference Official Banner">
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,39 +66,60 @@
       padding: 0 12px;
     }
     
+    .team-kicker {
+      font-size: clamp(0.68rem, 2vw, 0.76rem);
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8C6D3B;
+      margin-bottom: clamp(10px, 1.8vh, 18px);
+      user-select: none;
+      opacity: 0.92;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 20;
+    }
+
     /* Profile row at the top */
     .profile-row {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      height: 170px; /* space to accommodate expanded images */
+      gap: 14px;
+      height: 170px;
       width: max-content;
-      max-width: 90%;
+      max-width: 92%;
       z-index: 20;
       padding: 10px;
     }
     
     .profile-img-container {
       position: relative;
-      width: 95px; /* Fixed width to prevent reflows */
-      height: 95px; /* Fixed height to prevent reflows */
+      width: 96px;
+      height: 96px;
       cursor: pointer;
       transform-origin: center center;
       transform: translate3d(var(--profile-tx, 0px), 0, 0) scale(var(--profile-scale, 1));
-      transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity 0.48s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
       z-index: 25;
-      border-radius: 16px; /* Modern squircle rounded corners */
-      overflow: hidden;    /* Clamp visual zoom transformations */
-      will-change: transform, opacity; /* Hardware acceleration hint */
+      border-radius: 18px;
+      border: 2.5px solid rgba(0, 0, 0, 0.06);
+      background: #FFF7EB;
+      overflow: hidden;
+      will-change: transform, opacity;
+      -webkit-tap-highlight-color: transparent;
     }
     
     .profile-img-container.active {
-      z-index: 30; /* Pull active profile above side ones */
-      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      z-index: 30;
+      border-color: #6C0D2C;
+      box-shadow: 0 12px 30px rgba(108, 13, 44, 0.22);
     }
     
     .profile-img-container img {
@@ -98,26 +127,60 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      border-radius: 16px; /* Align image radius to container */
+      border-radius: 15px;
       pointer-events: none;
+      transition: transform 0.45s ease;
+    }
+
+    /* Minimalist Dots Indicator on Mobile */
+    .team-dots-indicator {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      z-index: 20;
+    }
+
+    .team-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.16);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .team-dot.active {
+      width: 22px;
+      border-radius: 10px;
+      background: #6C0D2C;
+      box-shadow: 0 2px 8px rgba(108, 13, 44, 0.3);
     }
 
     /* Role label below the profiles */
     .role-display {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      color: rgba(0, 0, 0, 0.4);
-      letter-spacing: 0.2em;
+      color: rgba(0, 0, 0, 0.45);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      margin-top: 32px; /* Generous clearance below expanded active profile box */
-      height: 20px; /* visual stability */
-      transition: opacity 0.3s ease;
+      margin-top: 24px;
+      height: 24px;
+      line-height: 24px;
+      transition: color 0.3s ease, opacity 0.3s ease;
       z-index: 10;
       text-align: center;
       max-width: 92vw;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .role-display.is-active-member {
+      color: #6C0D2C;
+      font-weight: 800;
     }
     
     /* Giant text section */
@@ -127,7 +190,7 @@
       max-width: 100vw;
       height: 22vw;
       overflow: hidden;
-      margin-top: 40px;
+      margin-top: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -162,25 +225,22 @@
     }
     
     .giant-name.active-member {
-      color: #6C0D2C; /* Deep Wine Red active reveal accent */
+      color: #6C0D2C;
     }
     
     .letter {
       display: inline-block;
-      transform: translateY(150%); /* Translate even deeper to guarantee giant letter tops are 100% hidden */
-      /* Default exit transition (when slide-in class is removed or slide-out added - sliding down) */
+      transform: translateY(150%);
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    /* Slide in state (entering from below with a smooth, modern easeOutExpo) */
     .slide-in .letter {
       transform: translateY(0);
       transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    /* Slide out state (exiting downwards) */
     .slide-out .letter {
-      transform: translateY(150%) !important; /* Translate completely below container bounds */
+      transform: translateY(150%) !important;
       transition-duration: 0.28s !important;
       transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
@@ -193,24 +253,27 @@
        TEAM RESPONSIVE MEDIA QUERIES (Height & Width Balanced)
        ========================================================= */
 
-    /* Mobile Phones (≤ 768px): 2 Lines (3 on top, 2 below, much larger images) */
+    /* Mobile Phones (≤ 768px): 2 Lines (3 on top, 2 below) */
     @media (max-width: 768px) {
       .team-viewport {
         justify-content: center;
-        padding-top: max(16px, env(safe-area-inset-top, 16px));
-        padding-bottom: max(60px, calc(40px + env(safe-area-inset-bottom, 0px)));
+        padding-top: max(14px, env(safe-area-inset-top, 14px));
+        padding-bottom: max(64px, calc(44px + env(safe-area-inset-bottom, 0px)));
+      }
+      .team-dots-indicator {
+        display: flex;
       }
       .profile-row {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        gap: clamp(12px, 3.5vw, 18px);
+        gap: clamp(10px, 3.2vw, 16px);
         width: 100%;
-        max-width: clamp(330px, 94vw, 420px);
+        max-width: clamp(320px, 92vw, 400px);
         height: auto;
-        margin: 0 auto clamp(16px, 2.5vh, 26px) auto;
-        padding: 6px;
+        margin: 0 auto clamp(8px, 1.5vh, 16px) auto;
+        padding: 4px;
       }
       .profile-row-break {
         display: block;
@@ -219,40 +282,31 @@
         flex-basis: 100%;
       }
       .profile-img-container {
-        width: clamp(92px, 26vw, 114px);
-        height: clamp(92px, 26vw, 114px);
-        border-radius: clamp(18px, 4.5vw, 24px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        border: 3px solid transparent;
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                    border-color 0.35s ease,
-                    box-shadow 0.35s ease;
+        width: clamp(88px, 25vw, 108px);
+        height: clamp(88px, 25vw, 108px);
+        border-radius: clamp(18px, 4.5vw, 22px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        border: 2.5px solid rgba(0, 0, 0, 0.08);
       }
       .profile-img-container.active {
         border-color: #6C0D2C;
-        box-shadow: 0 10px 28px rgba(108, 13, 44, 0.25);
-      }
-      .profile-img-container img {
-        border-radius: inherit;
-      }
-      .cursor-bubble {
-        display: none;
+        box-shadow: 0 8px 24px rgba(108, 13, 44, 0.22);
+        transform: scale(1.04);
       }
       .role-display {
-        font-size: clamp(0.84rem, 2.8vw, 1rem);
+        font-size: clamp(0.78rem, 2.6vw, 0.88rem);
         letter-spacing: 0.14em;
         margin-top: 0;
-        margin-bottom: clamp(12px, 2.2vh, 20px);
+        margin-bottom: clamp(6px, 1.2vh, 14px);
       }
       .giant-text-container {
         margin-top: 0;
-        height: clamp(130px, 24vh, 210px);
-        margin-bottom: clamp(8px, 1.8vh, 20px);
+        height: clamp(110px, 20vh, 180px);
+        margin-bottom: clamp(4px, 1vh, 12px);
       }
       .giant-name {
-        font-size: clamp(4.2rem, 28vw, 7.6rem);
-        transform: scaleY(1.32);
+        font-size: clamp(3.8rem, 25vw, 6.8rem);
+        transform: scaleY(1.26);
         transform-origin: center center;
       }
     }
@@ -260,24 +314,24 @@
     /* Narrow Screen Phones (≤ 360px) */
     @media (max-width: 360px) {
       .profile-row {
-        gap: 10px;
-        margin-bottom: 12px;
+        gap: 8px;
+        margin-bottom: 8px;
       }
       .profile-img-container {
-        width: 82px;
-        height: 82px;
+        width: 78px;
+        height: 78px;
         border-radius: 16px;
       }
       .role-display {
-        font-size: 0.78rem;
-        margin-bottom: 10px;
+        font-size: 0.74rem;
+        margin-bottom: 6px;
       }
       .giant-text-container {
-        height: 110px;
+        height: 95px;
       }
       .giant-name {
-        font-size: clamp(3.2rem, 26vw, 4rem);
-        transform: scaleY(1.28);
+        font-size: clamp(3rem, 24vw, 3.8rem);
+        transform: scaleY(1.22);
       }
     }
 
@@ -285,29 +339,36 @@
     @media (max-height: 600px) and (max-width: 768px) {
       .team-viewport {
         justify-content: center;
-        padding-top: max(8px, env(safe-area-inset-top, 8px));
+        padding-top: max(6px, env(safe-area-inset-top, 6px));
         padding-bottom: max(45px, calc(20px + env(safe-area-inset-bottom, 0px)));
       }
+      .team-kicker {
+        display: none;
+      }
       .profile-row {
-        height: clamp(75px, 15vh, 90px);
-        margin-bottom: 6px;
+        height: auto;
+        margin-bottom: 4px;
       }
       .profile-img-container {
-        width: clamp(48px, 14vw, 58px);
-        height: clamp(48px, 14vw, 58px);
+        width: clamp(52px, 14vw, 64px);
+        height: clamp(52px, 14vw, 64px);
+        border-radius: 12px;
+      }
+      .team-dots-indicator {
+        margin: 2px 0 4px 0;
       }
       .role-display {
         font-size: 0.72rem;
         margin-top: 0;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         height: 16px;
       }
       .giant-text-container {
-        height: clamp(55px, 14vh, 80px);
+        height: clamp(50px, 12vh, 70px);
         margin-top: 0;
       }
       .giant-name {
-        font-size: clamp(2.4rem, 14vh, 3.8rem);
+        font-size: clamp(2.2rem, 12vh, 3.4rem);
       }
     }
 
@@ -352,6 +413,7 @@
     <a href="/" class="nav-item" id="nav-gallery">Home</a>
     <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
     <a href="/registration" class="nav-item" id="nav-registration">Registration</a>
+    <a href="/venue" class="nav-item" id="nav-venue">Venue</a>
     <a href="/stay-connected" class="nav-item" id="nav-connected">Contact</a>
     <a href="/team" class="nav-item active" id="nav-team">Team</a>
     <a href="/code-of-conduct" class="nav-item" id="nav-coc">Equity Policy</a>
@@ -393,6 +455,9 @@
 
   <!-- Main Viewport -->
   <main class="team-viewport">
+    <!-- Minimalist Section Kicker -->
+    <div class="team-kicker" id="team-kicker">★ MUNSOC SECRETARIAT</div>
+
     <!-- Profile Row Container -->
     <div class="profile-row" id="profile-row">
       <div class="profile-img-container" data-index="0" data-first-name="NIKHIL" data-full-name="Nikhil Nayak" data-role="Secretary General">
@@ -413,6 +478,15 @@
       </div>
     </div>
     
+    <!-- Minimalist Pagination Dots on Mobile -->
+    <div class="team-dots-indicator" id="team-dots-indicator" aria-hidden="true">
+      <span class="team-dot" data-index="0"></span>
+      <span class="team-dot" data-index="1"></span>
+      <span class="team-dot" data-index="2"></span>
+      <span class="team-dot" data-index="3"></span>
+      <span class="team-dot" data-index="4"></span>
+    </div>
+
     <!-- Role display below the profile row -->
     <div class="role-display" id="role-display">Hover a member to view role</div>
 
