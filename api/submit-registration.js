@@ -148,6 +148,27 @@ export default async function handler(req, res) {
       });
       const sheets = google.sheets({ version: 'v4', auth });
 
+      // Check if email already registered in Registrations sheet (Column H)
+      try {
+        const checkRes = await sheets.spreadsheets.values.get({
+          spreadsheetId: masterSheetId,
+          range: 'Registrations!H:H'
+        });
+        const rows = checkRes.data.values || [];
+        const cleanReqEmail = payload.email.toLowerCase();
+        const alreadyExists = rows.some(
+          r => r[0] && String(r[0]).trim().toLowerCase() === cleanReqEmail
+        );
+        if (alreadyExists) {
+          return res.status(409).json({
+            success: false,
+            error: 'This email address is already registered for RNS MUN 26. If you need assistance, please contact mun@rnsit.ac.in.'
+          });
+        }
+      } catch (checkErr) {
+        console.warn('[submit-registration] Pre-submission duplicate check notice:', checkErr.message);
+      }
+
       const row = [
         payload.timestamp,
         payload.delegateType,
