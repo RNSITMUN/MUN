@@ -34,14 +34,12 @@ const baseRedVibeImages = [
   { src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80", alt: "Tech circuits red highlights" }
 ];
 
-// Map elements to local paths (./assets/globe/1.jpg to ./assets/globe/30.jpg) with fallback Unsplash URLs
 const galleryData = [];
 for (let i = 0; i < 30; i++) {
   const localIndex = i + 1;
-  const fallbackItem = baseRedVibeImages[i];
   galleryData.push({
-    src: `./globe/${localIndex}.webp`,
-    fallback: `./globe/${localIndex}.jpeg`,
+    src: `./globe/${localIndex}.webp?v=3`,
+    fallback: `./globe/${localIndex}.jpeg?v=3`,
     alt: `Globe Image ${localIndex}`
   });
 }

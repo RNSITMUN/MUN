@@ -4,26 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>RNS MUN 2026 | Model United Nations Conference | RNSIT Bengaluru</title>
+  <title>RNSMUN 2026 | Model United Nations Conference | RNSIT Bengaluru</title>
   <meta name="description"
-    content="RNSIT Model United Nations Conference 2026 — Oct 6-7, Bengaluru. Join 6 committees, 200+ delegates. Register as individual delegate or institutional delegation. ₹999 internal · ₹1,199 early-bird external · ₹1,349 standard.">
+    content="RNSIT Model United Nations Conference 2026 — Oct 6-7, Bengaluru. Join 6 committees, 150+ delegates. Register as individual delegate or institutional delegation. ₹999 internal · ₹1,199 early-bird external · ₹1,349 standard.">
   <link rel="canonical" href="https://mun.rnsit.ac.in/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mun.rnsit.ac.in/">
-  <meta property="og:title" content="RNS MUN 2026 | Model United Nations Conference | Oct 6–7, Bengaluru">
+  <meta property="og:title" content="RNSMUN 2026 | Model United Nations Conference | Oct 6–7, Bengaluru">
   <meta property="og:description"
-    content="Join RNSIT Model United Nations Conference 2026 — Oct 6–7, Bengaluru. 6 committees, 200+ delegates. Register now as an individual delegate or institutional delegation.">
+    content="Join RNSIT Model United Nations Conference 2026 — Oct 6–7, Bengaluru. 6 committees, 150+ delegates. Register now as an individual delegate or institutional delegation.">
   <meta property="og:image"
     content="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://mun.rnsit.ac.in/">
-  <meta property="twitter:title" content="RNS MUN 2026 | Model United Nations Conference | Oct 6–7, Bengaluru">
+  <meta property="twitter:title" content="RNSMUN 2026 | Model United Nations Conference | Oct 6–7, Bengaluru">
   <meta property="twitter:description"
-    content="Join RNSIT Model United Nations Conference 2026 — Oct 6–7, Bengaluru. 6 committees, 200+ delegates. Register now as an individual delegate or institutional delegation.">
+    content="Join RNSIT Model United Nations Conference 2026 — Oct 6–7, Bengaluru. 6 committees, 150+ delegates. Register now as an individual delegate or institutional delegation.">
   <meta property="twitter:image"
     content="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png">
 
@@ -32,8 +32,8 @@
   {
     "@context": "https://schema.org",
     "@type": "Event",
-    "name": "RNSIT Model United Nations Conference 2026 (RNS MUN'26)",
-    "alternateName": "RNS MUN 2026",
+    "name": "RNSIT Model United Nations Conference 2026 (RNSMUN 2026)",
+    "alternateName": "RNSMUN'26",
     "description": "Annual collegiate Model United Nations conference hosted by MUNSoc RNSIT, featuring simulated committees (UNSC, UNGA, AIPPM), diplomatic debates, and youth leadership summits on October 06-07, 2026 at RNSIT Bengaluru.",
     "startDate": "2026-10-06T09:00:00+05:30",
     "endDate": "2026-10-07T18:00:00+05:30",
@@ -109,7 +109,7 @@
         "validThrough": "2026-10-05T23:59:59+05:30",
         "url": "https://mun.rnsit.ac.in/registration?type=delegation",
         "availability": "https://schema.org/InStock",
-        "description": "Standard delegation pass per delegate for external institutions (after early bird) with automated roster generation and eligibility for the Best Delegation Trophy (₹15,000 Prize Pool)."
+        "description": "Standard delegation pass per delegate for external institutions (after early bird) with automated roster generation and eligibility for the Flagship Best Delegation Trophy."
       }
     ]
   }
@@ -159,7 +159,7 @@
     }
 
     html.home-page .carousel-container {
-      transform: translateY(68px);
+      transform: translateY(135px);
       position: relative;
       z-index: 2;
       outline: none !important;
@@ -169,7 +169,7 @@
     /* PC Only: Push globe down to provide comfortable breathing room below price badges */
     @media (min-width: 900px) {
       html.home-page .carousel-container {
-        transform: translateY(115px);
+        transform: translateY(195px);
       }
     }
 
@@ -249,12 +249,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      pointer-events: auto;
-      cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
       position: relative;
       padding: 4px 10px;
+      cursor: default;
     }
 
     .mth-text-left {
@@ -389,84 +388,184 @@
       letter-spacing: 0.02em;
     }
 
-    /* 2 Separate Neo-Brutalist Pricing Boxes */
-    .hero-pricing-duo {
+    /* Hero Pricing - Ultra-Minimal Clean Pill Aesthetic (Slightly Bigger) */
+    .hero-pricing-minimal {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 6px;
+      margin-top: 12px;
       pointer-events: auto;
-      flex-wrap: wrap;
-      max-width: 94vw;
+      max-width: 92vw;
     }
 
-    .hero-price-card {
+    .hpm-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: #FFFDF9;
-      border: 2px solid #000;
-      border-radius: 10px;
-      padding: 6px 14px;
-      box-shadow: 2.5px 2.5px 0 #000;
+      gap: 10px;
+      background: rgba(255, 253, 249, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.2px solid rgba(0, 0, 0, 0.16);
+      border-radius: 9999px;
+      padding: 5.5px 18px 5.5px 7px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
       font-family: 'Outfit', sans-serif;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      cursor: default;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .hero-price-card:hover {
-        transform: translate(-1.5px, -1.5px);
-        box-shadow: 4px 4px 0 #000;
+      .hpm-pill:hover {
+        transform: translateY(-1.5px);
+        border-color: rgba(0, 0, 0, 0.32);
+        box-shadow: 0 7px 24px rgba(0, 0, 0, 0.1);
       }
     }
 
-    .hero-price-card:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1.5px 1.5px 0 #000;
-    }
-
-    .price-card-lbl {
-      font-size: 0.68rem;
-      font-weight: 800;
+    .hpm-tag {
+      font-size: 0.65rem;
+      font-weight: 900;
       letter-spacing: 0.08em;
-      color: #6C0D2C;
       text-transform: uppercase;
-    }
-
-    .price-card-val {
-      font-size: 1rem;
-      font-weight: 900;
-      color: #000;
-    }
-
-    .price-card-val del {
-      font-size: 0.8rem;
-      color: rgba(0, 0, 0, 0.55);
-      font-weight: 700;
-      text-decoration: line-through;
-      text-decoration-color: #6C0D2C;
-      margin-right: 2px;
-    }
-
-    .price-card-discount {
-      color: #6C0D2C;
-      font-weight: 900;
-    }
-
-    .price-card-badge {
       background: #E5A93C;
       color: #000;
-      border: 1.5px solid #000;
-      border-radius: 5px;
-      padding: 2px 7px;
-      font-size: 0.64rem;
+      border-radius: 9999px;
+      padding: 4px 11px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .hpm-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 0.84rem;
+      line-height: 1;
+    }
+
+    .hpm-lbl {
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.55);
+      font-size: 0.76rem;
+    }
+
+    .hpm-val {
+      font-weight: 900;
+      color: #6C0D2C;
+      font-size: 1.06rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hpm-del {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.38);
+      text-decoration: line-through;
+      text-decoration-color: #6C0D2C;
+    }
+
+    .hpm-sep {
+      color: rgba(0, 0, 0, 0.25);
+      font-size: 0.8rem;
+    }
+
+    .hpm-val-internal {
       font-weight: 800;
+      color: rgba(0, 0, 0, 0.88);
+      font-size: 1.02rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hpm-footnote {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.58);
+      letter-spacing: 0.02em;
+    }
+
+    .hpm-footnote span:first-child {
+      color: #6C0D2C;
+      font-weight: 700;
       letter-spacing: 0.04em;
+    }
+
+    .hero-register-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 5px;
+      background: #E5A93C;
+      color: #000000;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      white-space: nowrap;
-      box-shadow: 1px 1px 0 #000;
-      margin-left: 2px;
+      text-decoration: none;
+      padding: 7px 22px;
+      border: 1.8px solid #000000;
+      border-radius: 9999px;
+      box-shadow: 2.5px 2.5px 0 #000000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hero-register-btn:hover {
+        background: #f0b548;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0 #000000;
+      }
+    }
+
+    .hero-register-btn:active {
+      transform: translate(1.5px, 1.5px);
+      box-shadow: 1px 1px 0 #000000;
+    }
+
+    .hero-register-btn svg {
+      transition: transform 0.18s ease;
+    }
+
+    .hero-register-btn:hover svg {
+      transform: translateX(2.5px);
+    }
+
+    @media (max-width: 480px) {
+      .hpm-pill {
+        gap: 7px;
+        padding: 4.5px 13px 4.5px 5px;
+      }
+      .hpm-tag {
+        font-size: 0.58rem;
+        padding: 3px 8px;
+      }
+      .hpm-lbl {
+        font-size: 0.72rem;
+      }
+      .hpm-val {
+        font-size: 0.95rem;
+      }
+      .hpm-val-internal {
+        font-size: 0.92rem;
+      }
+      .hpm-footnote {
+        font-size: 0.65rem;
+      }
+      .hero-register-btn {
+        font-size: 0.74rem;
+        padding: 6px 18px;
+        box-shadow: 2px 2px 0 #000000;
+      }
     }
 
     @media (max-width: 580px) {
@@ -704,6 +803,207 @@
       letter-spacing: 0.04em;
     }
 
+    /* WHY RNS MUN'26? FEATURE SECTION */
+    .why-mun-block {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 32px;
+      width: 100%;
+    }
+
+    .why-mun-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+    }
+
+    .why-mun-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 3px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .why-mun-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.85rem, 4.4vw, 2.75rem);
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      color: #000;
+      margin: 0;
+      line-height: 1.05;
+    }
+
+    .why-mun-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.86rem, 1.4vw, 1.02rem);
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+      margin: 0;
+      max-width: 520px;
+      line-height: 1.45;
+    }
+
+    .why-mun-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .why-card {
+      display: flex;
+      flex-direction: column;
+      background: #FFFDF9;
+      border: 2px solid #000;
+      border-radius: 14px;
+      padding: 20px 18px;
+      box-shadow: 3.5px 3.5px 0 #000;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      position: relative;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .why-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 #000;
+      }
+    }
+
+    .why-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .why-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #FFF7EB;
+      border: 1.5px solid #000;
+      box-shadow: 1.5px 1.5px 0 #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6C0D2C;
+      flex-shrink: 0;
+    }
+
+    .why-card-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .why-card-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: rgba(108, 13, 44, 0.45);
+      letter-spacing: 0.05em;
+    }
+
+    .why-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.08rem, 1.5vw, 1.25rem);
+      font-weight: 900;
+      color: #000;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+    }
+
+    .why-card-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #6C0D2C;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 900px) {
+      .why-mun-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .why-card {
+        padding: 16px 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .why-mun-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .why-card {
+        padding: 11px 10px 10px 10px;
+        border-width: 1.6px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 0 #000;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .why-card-top {
+        margin-bottom: 8px;
+      }
+      .why-card-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        border-width: 1.2px;
+        box-shadow: 1px 1px 0 #000;
+      }
+      .why-card-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+      .why-card-num {
+        font-size: 0.68rem;
+      }
+      .why-card-title {
+        font-size: 0.88rem;
+        margin: 0 0 2px 0;
+        line-height: 1.15;
+      }
+      .why-card-tagline {
+        font-size: 0.68rem;
+        line-height: 1.25;
+      }
+      .why-mun-block {
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .why-mun-grid {
+        gap: 6px;
+      }
+      .why-card {
+        padding: 9px 8px;
+      }
+      .why-card-title {
+        font-size: 0.82rem;
+      }
+      .why-card-tagline {
+        font-size: 0.62rem;
+      }
+    }
+
     /* 2 Info Boxes Grid (Row 1) */
     .summit-dual-grid {
       display: grid;
@@ -891,10 +1191,12 @@
 
     .prize-tier-amount {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.18rem;
+      font-size: clamp(0.72rem, 1.1vw, 0.84rem);
       font-weight: 900;
-      color: #000;
-      line-height: 1;
+      letter-spacing: 0.04em;
+      color: #6C0D2C;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     .prize-ip-bar {
@@ -951,9 +1253,15 @@
 
     .flagship-box-amount {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.28rem;
+      font-size: clamp(0.75rem, 1.15vw, 0.88rem);
       font-weight: 900;
+      letter-spacing: 0.04em;
       color: #6C0D2C;
+      white-space: nowrap;
+      background: rgba(108, 13, 44, 0.07);
+      border: 1.5px dashed #6C0D2C;
+      padding: 4px 10px;
+      border-radius: 6px;
     }
 
     /* Full-Width Registration Banner (Row 2) */
@@ -1202,7 +1510,7 @@
 
     @media (max-width: 580px) {
       .mun26-editorial-section {
-        padding: 38px max(14px, env(safe-area-inset-right, 14px)) max(40px, calc(24px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
+        padding: 38px max(14px, env(safe-area-inset-right, 14px)) max(105px, calc(90px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
       }
 
       .editorial-meta-bar {
@@ -1263,16 +1571,38 @@
       }
 
       .prize-tier-strip {
+        display: flex;
+        flex-direction: column;
         gap: 6px;
-        padding: 8px 6px;
+        padding: 8px 10px;
+      }
+
+      .prize-tier-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px 0;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+      }
+
+      .prize-tier-item:last-child {
+        border-bottom: none;
       }
 
       .prize-tier-amount {
-        font-size: 1.05rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+
+      .prize-flagship-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
       }
 
       .flagship-box-amount {
-        font-size: 1.12rem;
+        font-size: 0.85rem;
+        align-self: flex-start;
       }
 
       .summit-registration-box {
@@ -1330,7 +1660,7 @@
         padding: 6px 4px;
       }
       .prize-tier-amount {
-        font-size: 0.95rem;
+        font-size: 0.65rem;
       }
       .prize-tier-lbl {
         font-size: 0.56rem;
@@ -1343,7 +1673,8 @@
         font-size: 0.8rem;
       }
       .flagship-box-amount {
-        font-size: 1.02rem;
+        font-size: 0.68rem;
+        padding: 3px 6px;
       }
       .summit-registration-box {
         padding: 16px 12px;
@@ -1372,15 +1703,20 @@
         font-size: 0.74rem;
         margin: 2px 0 0 0;
       }
-      .hero-pricing-duo {
-        margin-top: 6px;
-        gap: 6px;
+      .hero-pricing-minimal {
+        margin-top: 4px;
+        gap: 2px;
       }
-      .hero-price-card {
-        padding: 4px 8px;
+      .hpm-pill {
+        padding: 3px 8px 3px 4px;
       }
-      .price-card-val {
-        font-size: 0.88rem;
+      .hpm-val, .hpm-val-internal {
+        font-size: 0.78rem;
+      }
+      .hero-register-btn {
+        padding: 5px 16px;
+        font-size: 0.72rem;
+        margin-top: 3px;
       }
     }
 
@@ -1396,15 +1732,20 @@
         font-size: 0.7rem;
         margin: 1px 0 0 0;
       }
-      .hero-pricing-duo {
-        margin-top: 4px;
-        gap: 6px;
+      .hero-pricing-minimal {
+        margin-top: 2px;
+        gap: 1px;
       }
-      .hero-price-card {
-        padding: 3px 8px;
+      .hpm-pill {
+        padding: 2px 7px 2px 3px;
       }
-      .price-card-val {
-        font-size: 0.84rem;
+      .hpm-val, .hpm-val-internal {
+        font-size: 0.74rem;
+      }
+      .hero-register-btn {
+        padding: 4px 14px;
+        font-size: 0.68rem;
+        margin-top: 2px;
       }
     }
 
@@ -1570,34 +1911,40 @@
   <main class="globe-viewport">
     <!-- Floating Globe Hero Title -->
     <div class="globe-hero-header">
-      <h1 class="globe-hero-title media-text-hover" aria-label="RNS MUN'26">
-        <span class="mth-text-left">RNS</span>
-        <div class="mth-capsule-wrapper" aria-hidden="true">
-          <div class="mth-inner-media">
-            <video src="./assets/video/logo_video.mp4" loop muted playsinline autoplay preload="none" class="mth-video-element" loading="lazy"></video>
-            <span class="mth-media-gloss"></span>
-          </div>
-        </div>
-        <span class="mth-text-right">MUN<span class="title-apostrophe">'26</span></span>
+      <h1 class="globe-hero-title" aria-label="RNSMUN 2026">
+        RNSMUN 2026
       </h1>
       <p class="globe-hero-subtitle">
         <span>Model United Nations Conference</span>
         <span>&bull;</span>
         <span class="hero-date-text">Oct 06 &mdash; 07</span>
       </p>
-      <div class="hero-pricing-duo">
-        <!-- Box 1: RNSIT Delegate -->
-        <div class="hero-price-card">
-          <span class="price-card-lbl">RNSIT</span>
-          <span class="price-card-val">₹999</span>
+      <div class="hero-pricing-minimal">
+        <div class="hpm-pill">
+          <span class="hpm-tag">EARLY BIRD</span>
+          <span class="hpm-item">
+            <span class="hpm-lbl">External</span>
+            <span class="hpm-val">₹1,199</span>
+            <del class="hpm-del">₹1,349</del>
+          </span>
+          <span class="hpm-sep">&bull;</span>
+          <span class="hpm-item">
+            <span class="hpm-lbl">RNSIT</span>
+            <span class="hpm-val-internal">₹999</span>
+          </span>
         </div>
-
-        <!-- Box 2: External Delegate -->
-        <div class="hero-price-card">
-          <span class="price-card-lbl">EXTERNAL</span>
-          <span class="price-card-val"><del>₹1,349</del> <strong class="price-card-discount">₹1,199</strong></span>
-          <span class="price-card-badge">EARLY BIRD &bull; SEPT 15</span>
-        </div>
+        <p class="hpm-footnote">
+          <span>Ends Sept 15</span>
+          <span>&bull;</span>
+          <span>Includes meals, kit & certificates</span>
+        </p>
+        <a href="/registration" class="hero-register-btn" aria-label="Register for RNSMUN 2026">
+          <span>REGISTER</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
     </div>
 
@@ -1606,43 +1953,114 @@
 
   </main>
 
-  <!-- RNS MUN'26 EDITORIAL SUMMIT SECTION -->
+  <!-- RNSMUN 2026 EDITORIAL SUMMIT SECTION -->
   <section class="mun26-editorial-section" id="mun26" aria-labelledby="summit-heading">
     <div class="mun26-editorial-wrap">
       <h2 id="summit-heading" class="sr-only">Summit Details</h2>
 
+      <!-- WHY RNSMUN 2026? FEATURE SECTION -->
+      <div class="why-mun-block">
+        <div class="why-mun-header">
+          <h2 class="why-mun-title">WHY RNSMUN 2026?</h2>
+          <p class="why-mun-subtitle">An arena designed for rigorous debate, diplomatic excellence, and transformative leadership.</p>
+        </div>
+
+        <div class="why-mun-grid">
+          <!-- Pillar 1: 6 Committees -->
+          <div class="why-card">
+            <div class="why-card-top">
+              <div class="why-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                  <path d="M3 9h18"></path>
+                  <path d="M9 21V9"></path>
+                </svg>
+              </div>
+              <span class="why-card-num">01</span>
+            </div>
+            <h3 class="why-card-title">6 Committees</h3>
+            <p class="why-card-tagline">Choose your arena.</p>
+          </div>
+
+          <!-- Pillar 2: 150+ Delegates -->
+          <div class="why-card">
+            <div class="why-card-top">
+              <div class="why-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <span class="why-card-num">02</span>
+            </div>
+            <h3 class="why-card-title">150+ Delegates</h3>
+            <p class="why-card-tagline">Compete with the best.</p>
+          </div>
+
+          <!-- Pillar 3: Experienced EB -->
+          <div class="why-card">
+            <div class="why-card-top">
+              <div class="why-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                </svg>
+              </div>
+              <span class="why-card-num">03</span>
+            </div>
+            <h3 class="why-card-title">Experienced EB</h3>
+            <p class="why-card-tagline">Challenge. Debate. Lead.</p>
+          </div>
+
+          <!-- Pillar 4: Flagship Awards -->
+          <div class="why-card">
+            <div class="why-card-top">
+              <div class="why-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="6"></circle>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                </svg>
+              </div>
+              <span class="why-card-num">04</span>
+            </div>
+            <h3 class="why-card-title">Flagship Awards</h3>
+            <p class="why-card-tagline">Recognition that matters.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- 2 Boxes Row: Registration Includes & Prize Pool -->
       <div class="summit-dual-grid">
 
-        <!-- Box 1: Registration Includes -->
+        <!-- Box 1: The Delegate Experience -->
         <div class="summit-card-box">
           <div class="card-box-header">
-            <h3 class="card-box-title">Registration Includes</h3>
+            <h3 class="card-box-title">The Delegate Experience</h3>
             <span class="card-box-tag">ALL-INCLUSIVE</span>
           </div>
 
           <div class="inclusions-minimal-grid">
+            <!-- 1. 150+ Delegates -->
             <div class="inc-unit">
               <div class="inc-unit-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 21h18"></path>
-                  <path d="M5 21V10"></path>
-                  <path d="M19 21V10"></path>
-                  <path d="M9 21V10"></path>
-                  <path d="M15 21V10"></path>
-                  <path d="M2 10h20"></path>
-                  <path d="m12 3 10 7H2Z"></path>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </div>
               <div class="inc-unit-text">
-                <span class="inc-unit-title">2-Day Full Access</span>
-                <span class="inc-unit-desc">All sessions, debate rounds & socials</span>
+                <span class="inc-unit-title">150+ Delegates</span>
+                <span class="inc-unit-desc">Meet participants from colleges across Bengaluru</span>
               </div>
             </div>
 
+            <!-- 2. Meals Included -->
             <div class="inc-unit">
               <div class="inc-unit-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"></path>
                   <path d="M15 2v20"></path>
                   <path d="M5 2v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2"></path>
@@ -1650,66 +2068,70 @@
                 </svg>
               </div>
               <div class="inc-unit-text">
-                <span class="inc-unit-title">Food & Beverages</span>
-                <span class="inc-unit-desc">High-tea & buffet meals both days</span>
+                <span class="inc-unit-title">Meals Included</span>
+                <span class="inc-unit-desc">High tea & buffet lunch on both conference days</span>
               </div>
             </div>
 
+            <!-- 3. Delegate Essentials -->
             <div class="inc-unit">
               <div class="inc-unit-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="14" x="2" y="7" rx="2"></rect>
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m7.5 4.27 9 5.15"></path>
+                  <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                  <path d="m3.3 7 8.7 5 8.7-5"></path>
+                  <path d="M12 22V12"></path>
                 </svg>
               </div>
               <div class="inc-unit-text">
-                <span class="inc-unit-title">Delegate Kit</span>
-                <span class="inc-unit-desc">Official kit & background guides</span>
+                <span class="inc-unit-title">Delegate Essentials</span>
+                <span class="inc-unit-desc">Official kit, placard & background guide</span>
               </div>
             </div>
 
+            <!-- 4. Awards & Certificates -->
             <div class="inc-unit">
               <div class="inc-unit-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="8" r="6"></circle>
                   <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
                 </svg>
               </div>
               <div class="inc-unit-text">
-                <span class="inc-unit-title">Physical Certificate</span>
-                <span class="inc-unit-desc">Hard-copy certificate & award eligibility</span>
+                <span class="inc-unit-title">Awards & Certificates</span>
+                <span class="inc-unit-desc">Physical certificates with award eligibility</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Box 2: Prize Pool -->
+        <!-- Box 2: Awards & Recognition -->
         <div class="summit-card-box">
           <div class="card-box-header">
-            <h3 class="card-box-title">Prize Pool</h3>
-            <span class="card-box-tag-gold">₹15,000 DELEGATION POOL</span>
+            <h3 class="card-box-title">Awards &amp; Recognition</h3>
+            <span class="card-box-tag-gold">FLAGSHIP AWARDS</span>
           </div>
 
           <div class="prize-minimal-container">
-            <!-- 3 Main Committee Payouts -->
+            <!-- 3 Main Committee Awards -->
             <div class="prize-tier-strip">
               <div class="prize-tier-item">
                 <span class="prize-tier-lbl">BEST DELEGATE</span>
-                <span class="prize-tier-amount">₹8,000</span>
+                <span class="prize-tier-amount">REVEALING SOON</span>
               </div>
               <div class="prize-tier-item">
                 <span class="prize-tier-lbl">HIGH COMM</span>
-                <span class="prize-tier-amount">₹5,000</span>
+                <span class="prize-tier-amount">REVEALING SOON</span>
               </div>
               <div class="prize-tier-item">
                 <span class="prize-tier-lbl">SPEC MENTION</span>
-                <span class="prize-tier-amount">₹3,000</span>
+                <span class="prize-tier-amount">REVEALING SOON</span>
               </div>
             </div>
 
             <!-- Press Corps -->
             <div class="prize-ip-bar">
-              <span><strong>IP (Press Corps)</strong>: Best Reporter ₹6,000 &bull; High Comm ₹5,000</span>
+              <span><strong>IP (Press Corps)</strong>: Best Reporter &bull; High Comm &bull; Revealing Soon</span>
             </div>
 
             <!-- Flagship Best Delegation Award -->
@@ -1718,7 +2140,7 @@
                 <span class="flagship-box-tag">FLAGSHIP AWARD</span>
                 <span class="flagship-box-title">Best Delegation (10+ Members)</span>
               </div>
-              <span class="flagship-box-amount">₹15,000</span>
+              <span class="flagship-box-amount">PRIZE DETAILS TBA</span>
             </div>
           </div>
         </div>
@@ -1729,7 +2151,7 @@
       <div class="summit-registration-box">
         <div class="reg-box-left">
           <span class="reg-box-tag">★ REGISTRATIONS LIVE</span>
-          <h4 class="reg-box-heading">Represent at RNS MUN 2026</h4>
+          <h4 class="reg-box-heading">Represent at RNSMUN 2026</h4>
           <p class="reg-box-desc">
             Direct entry allocations open for individual delegates and 10+ member institutional delegations across all 6 committees.
           </p>
@@ -1743,7 +2165,7 @@
 
           <a href="/registration?type=delegation" class="btn-reg-white" aria-label="Register as Delegation">
             <span class="btn-main-txt">Register as Delegation</span>
-            <span class="btn-sub-txt">10+ GROUP &bull; ₹15K PRIZE &rarr;</span>
+            <span class="btn-sub-txt">10+ GROUP &bull; COMPETE FOR THE FLAGSHIP AWARD &rarr;</span>
           </a>
 
           <button type="button" class="btn-reg-share" id="home-share-btn" onclick="shareConference()" aria-label="Share Conference with Friends">
@@ -1829,8 +2251,8 @@
     // Web Share API for Conference Invitations
     async function shareConference() {
       const shareData = {
-        title: "RNSIT MUN 2026 | Oct 06–07",
-        text: "Join RNSIT Model United Nations Conference 2026 in Bengaluru! Allocations are now open for delegates and 10+ institutional delegations:",
+        title: "RNSMUN 2026 | Oct 06–07",
+        text: "Join RNSMUN 2026 Model United Nations Conference in Bengaluru! Allocations are now open for delegates and 10+ institutional delegations:",
         url: window.location.origin + "/registration"
       };
 
