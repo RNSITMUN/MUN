@@ -3756,51 +3756,54 @@
       }
 
       .committees-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
       }
 
       .committee-card {
-        padding: 12px 14px;
+        padding: 14px 10px 12px 10px;
         border-width: 2px;
         box-shadow: 2.5px 2.5px 0px var(--text-primary);
-        min-height: auto;
-        border-radius: 12px;
+        min-height: 175px;
+        border-radius: 14px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
+        text-align: center;
+        gap: 8px;
       }
 
       .card-top-content {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 12px;
-        text-align: left;
-        flex: 1;
-        min-width: 0;
+        width: 100%;
+        text-align: center;
       }
 
       .logo-wrapper {
         width: 48px;
         height: 48px;
-        margin-bottom: 0;
+        border-radius: 11px;
+        margin-bottom: 8px;
         flex-shrink: 0;
       }
 
       .committee-logo {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
       }
 
       .committee-name {
-        font-size: 0.98rem;
-        margin-bottom: 1px;
+        font-size: 0.94rem;
+        font-weight: 900;
+        margin-bottom: 2px;
+        line-height: 1.15;
       }
 
       .committee-fullname {
-        font-size: 0.72rem;
+        font-size: 0.68rem;
         line-height: 1.25;
         margin-bottom: 0;
         display: -webkit-box;
@@ -3810,16 +3813,46 @@
       }
 
       .card-badge-preview {
-        font-size: 0.7rem;
-        padding: 6px 10px;
-        gap: 4px;
+        font-size: 0.64rem;
+        padding: 4px 8px;
+        gap: 3px;
         white-space: nowrap;
         flex-shrink: 0;
+        border-radius: 6px;
       }
 
       .card-badge-preview svg {
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
+      }
+
+      @media (max-width: 370px) {
+        .committees-grid {
+          gap: 7px;
+        }
+        .committee-card {
+          padding: 11px 6px 10px 6px;
+          min-height: 160px;
+        }
+        .logo-wrapper {
+          width: 42px;
+          height: 42px;
+          margin-bottom: 6px;
+        }
+        .committee-logo {
+          width: 26px;
+          height: 26px;
+        }
+        .committee-name {
+          font-size: 0.86rem;
+        }
+        .committee-fullname {
+          font-size: 0.62rem;
+        }
+        .card-badge-preview {
+          font-size: 0.58rem;
+          padding: 3px 6px;
+        }
       }
 
       .direct-reg-banner {
@@ -3837,11 +3870,12 @@
 
       /* Modal Sizing on Small Phones */
       .committee-modal-card {
-        width: calc(100vw - 16px);
+        width: min(440px, calc(100vw - 20px));
+        margin: auto !important;
         padding: 22px 14px 18px 14px;
         border-radius: 16px;
-        max-height: min(92dvh, calc(100dvh - 16px));
-        max-height: min(92svh, calc(100svh - 16px));
+        max-height: min(90dvh, calc(100dvh - 20px));
+        max-height: min(90svh, calc(100svh - 20px));
         box-shadow: 4px 4px 0px var(--accent-color);
       }
 
@@ -3908,14 +3942,23 @@
         padding: 11px 12px;
       }
 
-      /* Registration Form on Small Phones */
+      /* Registration Form & Committee Modal on Small Phones */
       .committee-modal-backdrop {
-        align-items: flex-start !important;
+        align-items: center !important;
         justify-content: center !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
         overscroll-behavior-y: contain !important;
-        padding: max(8px, env(safe-area-inset-top, 8px)) 8px calc(max(14px, env(safe-area-inset-bottom, 14px)) + var(--keyboard-height, 0px)) 8px !important;
+        padding: max(12px, env(safe-area-inset-top, 12px)) 10px calc(max(14px, env(safe-area-inset-bottom, 14px)) + var(--keyboard-height, 0px)) 10px !important;
+      }
+
+      #committee-modal-backdrop {
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      #committee-modal-backdrop .committee-modal-card {
+        margin: auto !important;
       }
 
       .modal-registration-card {
