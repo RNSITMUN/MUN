@@ -100,6 +100,13 @@ export default async function handler(req, res) {
       try {
         const gasData = JSON.parse(rawText);
         if (gasData && gasData.success) {
+          if (gasData.duplicate) {
+            return res.status(409).json({
+              success: false,
+              duplicate: true,
+              error: 'This email address is already registered for RNS MUN 26. Each delegate may only register once.'
+            });
+          }
           return res.status(200).json({
             success: true,
             rowNumber: gasData.rowNumber,

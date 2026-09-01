@@ -8745,9 +8745,12 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          if (res.ok) {
-            const data = await res.json().catch(() => null);
-            if (data && data.success) return { success: true, method: 'api' };
+          const data = await res.json().catch(() => null);
+          if (res.status === 409 || (data && data.duplicate)) {
+            return { success: false, duplicate: true, error: data?.error || 'This email address is already registered.' };
+          }
+          if (res.ok && data && data.success) {
+            return { success: true, method: 'api' };
           }
         } catch (apiErr) {
           console.warn('[Registration] Vercel API unavailable, trying direct Google Apps Script...', apiErr);
@@ -8755,12 +8758,19 @@
 
         // Direct Google Apps Script Fallback
         try {
-          await fetch(GAS_URL, {
+          const gasRes = await fetch(GAS_URL, {
             method: 'POST',
-            mode: 'no-cors',
+            redirect: 'follow',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           });
+          const rawText = await gasRes.text();
+          try {
+            const gasData = JSON.parse(rawText);
+            if (gasData && gasData.duplicate) {
+              return { success: false, duplicate: true, error: 'This email address is already registered.' };
+            }
+          } catch (e) {}
           return { success: true, method: 'direct-gas' };
         } catch (gasErr) {
           console.warn('[Registration] Direct Google Apps Script fallback note:', gasErr);
@@ -8769,7 +8779,28 @@
       }
 
       dispatchSubmission(formPayload)
-        .then(() => {
+        .then((result) => {
+          if (result && result.duplicate) {
+            // DO NOT SHOW SUCCESS SCREEN FOR DUPLICATES!
+            if (formPayload.email) markEmailAsRegistered(formPayload.email, 'individual');
+            goToStep(1);
+            const emailInput = document.getElementById('reg-email');
+            if (emailInput) {
+              emailInput.classList.add('has-error');
+              emailInput.focus();
+            }
+            const existsMsg = document.getElementById('reg-email-exists-msg');
+            if (existsMsg) {
+              existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+              existsMsg.style.display = 'block';
+            }
+            const regCard = document.getElementById('registration-modal-card');
+            if (window.gsap && regCard) {
+              gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
+            }
+            return;
+          }
+
           // Immediately mark email as registered in local cache
           if (formPayload.email) {
             markEmailAsRegistered(formPayload.email, 'individual', {

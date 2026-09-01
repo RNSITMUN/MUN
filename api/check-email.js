@@ -122,7 +122,39 @@ export default async function handler(req, res) {
     }
   }
 
-  // Fallback: When Google Sheets service account is not directly configured
+  // ─── Query Google Apps Script Webhook (Fallback) ─────────────
+  const gasUrl =
+    process.env.GOOGLE_APPS_SCRIPT_REGISTRATION_URL ||
+    process.env.GOOGLE_APPS_SCRIPT_URL ||
+    'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
+
+  if (gasUrl) {
+    try {
+      const gasRes = await fetch(gasUrl, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'checkEmail', email })
+      });
+      const rawText = await gasRes.text();
+      try {
+        const gasData = JSON.parse(rawText);
+        if (gasData && typeof gasData.exists === 'boolean') {
+          return res.status(200).json({
+            success: true,
+            exists: gasData.exists,
+            type: gasData.type || null,
+            sheetUrl: gasData.sheetUrl || null,
+            email
+          });
+        }
+      } catch (jsonErr) {}
+    } catch (gasErr) {
+      console.warn('[check-email] Apps Script check notice:', gasErr.message);
+    }
+  }
+
+  // Fallback: When no direct lookup configured
   return res.status(200).json({
     success: true,
     exists: false,
