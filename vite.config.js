@@ -3,14 +3,17 @@ import { resolve } from 'path';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 import createSheetHandler from './api/create-sheet.js';
+import submitRegistrationHandler from './api/submit-registration.js';
+import checkEmailHandler from './api/check-email.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
   configureServer(server) {
     server.middlewares.use(async (req, res, next) => {
-      const url = req.url.split('?')[0];
+      const [urlPath, queryString] = req.url.split('?');
+      const url = urlPath;
 
-      if (url === '/api/create-sheet') {
+      const handleApiRequest = (handler) => {
         let body = '';
         req.on('data', chunk => { body += chunk; });
         req.on('end', async () => {
@@ -18,6 +21,12 @@ const cleanUrlsPlugin = () => ({
             req.body = body ? JSON.parse(body) : {};
           } catch (e) {
             req.body = {};
+          }
+          if (queryString) {
+            const params = new URLSearchParams(queryString);
+            req.query = Object.fromEntries(params.entries());
+          } else {
+            req.query = {};
           }
           res.status = (code) => {
             res.statusCode = code;
@@ -29,14 +38,23 @@ const cleanUrlsPlugin = () => ({
             return res;
           };
           try {
-            await createSheetHandler(req, res);
+            await handler(req, res);
           } catch (err) {
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ success: false, error: err.message }));
           }
         });
-        return;
+      };
+
+      if (url === '/api/create-sheet') {
+        return handleApiRequest(createSheetHandler);
+      }
+      if (url === '/api/submit-registration') {
+        return handleApiRequest(submitRegistrationHandler);
+      }
+      if (url === '/api/check-email') {
+        return handleApiRequest(checkEmailHandler);
       }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
