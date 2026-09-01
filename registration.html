@@ -363,6 +363,194 @@
       color: #000;
     }
 
+    /* Eligibility Criteria Box (Neo-Brutalist Equity Policy Style) */
+    .eligibility-criteria-box {
+      width: 100%;
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 16px;
+      box-shadow: 4.5px 4.5px 0 #000;
+      padding: clamp(20px, 3.5vw, 28px);
+      box-sizing: border-box;
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .eligibility-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid rgba(0, 0, 0, 0.12);
+      flex-wrap: wrap;
+    }
+
+    .eligibility-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .eligibility-kicker {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .eligibility-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.25rem, 2.8vw, 1.55rem);
+      font-weight: 900;
+      color: #000;
+      margin: 2px 0 0 0;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .eligibility-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: rgba(0, 0, 0, 0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eligibility-content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .eligibility-card {
+      background: #FFFFFF;
+      border: 1.8px solid #000;
+      border-radius: 12px;
+      padding: 18px 16px;
+      box-shadow: 2.5px 2.5px 0 #000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .eligibility-card-gold {
+      background: #FFFDF9;
+      border-color: #000;
+    }
+
+    .eligibility-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eligibility-icon-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1.5px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFF7EB;
+      color: #6C0D2C;
+      flex-shrink: 0;
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .badge-gold {
+      background: #E5A93C;
+      color: #000;
+    }
+
+    .eligibility-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 850;
+      color: #000;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .eligibility-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: rgba(0, 0, 0, 0.78);
+    }
+
+    .eligibility-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .el-bullet {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #6C0D2C;
+      color: #FFF;
+      font-size: 0.65rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      margin-top: 1.5px;
+    }
+
+    .el-bullet-cross {
+      background: #800000;
+      font-size: 0.68rem;
+    }
+
+    .el-bullet-star {
+      background: #E5A93C;
+      color: #000;
+    }
+
+    .eligibility-list strong {
+      color: #000;
+      font-weight: 800;
+    }
+
+    @media (max-width: 768px) {
+      .eligibility-content-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .eligibility-criteria-box {
+        padding: 18px 14px;
+        margin-top: 18px;
+      }
+      .eligibility-title {
+        font-size: 1.25rem;
+      }
+      .eligibility-card {
+        padding: 14px 12px;
+      }
+    }
+
     /* Subview Top Navigation */
     .reg-subview {
       width: 100%;
@@ -4449,9 +4637,9 @@
           </div>
         </div>
 
-        <!-- Option 2: Delegation (10+ Members) -->
+        <!-- Option 2: Delegation (9+ Members) -->
         <div class="reg-choice-card reg-choice-card-gold" onclick="selectRegistrationPath('delegation')" role="button" tabindex="0"
-          onkeydown="if(event.key==='Enter') selectRegistrationPath('delegation')" aria-label="Register as Group Representation (10+ Members)">
+          onkeydown="if(event.key==='Enter') selectRegistrationPath('delegation')" aria-label="Register as Group Representation (9+ Members)">
           <div class="reg-choice-top">
             <div class="reg-choice-badge reg-choice-badge-dlg">GROUP REPRESENTATION</div>
             <div class="reg-choice-icon dlg-icon" aria-hidden="true">
@@ -4463,7 +4651,7 @@
           </div>
 
           <div>
-            <h2 class="reg-choice-title">DELEGATION — 10+ MEMBERS</h2>
+            <h2 class="reg-choice-title">DELEGATION — 9+ MEMBERS</h2>
             <div class="reg-choice-steps" style="margin-top: 10px;">
               <span class="step-item">Build your roster</span>
               <span class="step-arrow">&rarr;</span>
@@ -4476,7 +4664,7 @@
           <div class="reg-choice-highlights">
             <div class="choice-hl-item">
               <span class="hl-bullet">✓</span>
-              <span><strong>10+ Delegates</strong> &bull; Institutional & club delegations</span>
+              <span><strong>9+ Delegates</strong> &bull; Institutional & club delegations</span>
             </div>
             <div class="choice-hl-item">
               <span class="hl-bullet">★</span>
@@ -4493,6 +4681,69 @@
           </div>
         </div>
       </div>
+
+      <!-- Eligibility Criteria Box (Parchment Equity Policy Aesthetic) -->
+      <div class="eligibility-criteria-box">
+        <div class="eligibility-header">
+          <div class="eligibility-header-left">
+            <span class="eligibility-kicker">★ DELEGATE POLICY</span>
+            <h3 class="eligibility-title">ELIGIBILITY CRITERIA</h3>
+          </div>
+          <span class="eligibility-tag">RNSMUN 2026 OFFICIAL REGULATIONS</span>
+        </div>
+
+        <div class="eligibility-content-grid">
+          <!-- 1. Academic & Student Qualifications -->
+          <div class="eligibility-card">
+            <div class="eligibility-card-head">
+              <div class="eligibility-icon-badge" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+              </div>
+              <h4 class="eligibility-card-title">Academic & Student Eligibility</h4>
+            </div>
+            <ul class="eligibility-list">
+              <li>
+                <span class="el-bullet">✓</span>
+                <div>Participation is open to students currently pursuing an <strong>undergraduate</strong> or <strong>postgraduate</strong> programme at a recognised college or university.</div>
+              </li>
+              <li>
+                <span class="el-bullet el-bullet-cross">✕</span>
+                <div>School students are <strong>not eligible</strong> to participate.</div>
+              </li>
+              <li>
+                <span class="el-bullet">✓</span>
+                <div>Participants must be actively enrolled in their programme at the time of registration.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 2. Institutional Delegation Criteria -->
+          <div class="eligibility-card eligibility-card-gold">
+            <div class="eligibility-card-head">
+              <div class="eligibility-icon-badge badge-gold" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="6"></circle>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                </svg>
+              </div>
+              <h4 class="eligibility-card-title">Institutional Delegation Criteria</h4>
+            </div>
+            <ul class="eligibility-list">
+              <li>
+                <span class="el-bullet el-bullet-star">★</span>
+                <div>Institutional Delegation (Group Registration) enables the registered group to qualify for the <strong>"Best Delegation"</strong> award subject to performance.</div>
+              </li>
+              <li>
+                <span class="el-bullet">✓</span>
+                <div>Institutional Delegation (Group Registration) should contain a <strong>minimum of 9 delegates</strong>, with at least 1 delegate in each committee; maximum strength being <strong>18 delegates</strong>.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 2. INDIVIDUAL DELEGATE SUBVIEW -->
@@ -4502,7 +4753,6 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           <span>Change Option</span>
         </button>
-        <div class="reg-subview-pill">INDIVIDUAL DELEGATE FLOW</div>
       </div>
 
       <div class="registration-header">
@@ -4662,7 +4912,7 @@
 
       <!-- Switch to Delegation prompt -->
       <div class="reg-switch-prompt">
-        <span>Registering an institutional delegation of 10+ members?</span>
+        <span>Registering an institutional delegation of 9+ members?</span>
         <button type="button" class="btn-switch-link" onclick="selectRegistrationPath('delegation')">
           Switch to Delegation Registration &rarr;
         </button>
@@ -4676,7 +4926,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           <span>Change Option</span>
         </button>
-        <div class="reg-subview-pill reg-subview-pill-gold">GROUP REPRESENTATION (10+ MEMBERS)</div>
+        <div class="reg-subview-pill reg-subview-pill-gold">GROUP REPRESENTATION (9+ MEMBERS)</div>
       </div>
 
       <div class="delegation-hub-card">
@@ -4690,7 +4940,7 @@
           <span class="step-item">Get allocation</span>
         </div>
         <p class="hub-subtitle">
-          Groups of 10 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title and flagship award.
+          Groups of 9 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title and flagship award.
         </p>
 
         <div class="delegation-hub-actions">
@@ -4847,12 +5097,12 @@
             style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
         </div>
 
-        <!-- 5. Number of Delegates in Delegation (10 - 18 with direct typing & stepper arrows) -->
+        <!-- 5. Number of Delegates in Delegation (9 - 18 with direct typing & stepper arrows) -->
         <div class="form-group">
-          <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (10 – 18)</label>
+          <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (9 – 18)</label>
           <div class="delegate-number-input-wrap">
-            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="10" max="18" value="10"
-              placeholder="10" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
+            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="9" max="18" value="9"
+              placeholder="9" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
               required>
             <div class="delegate-number-steppers">
               <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)"
@@ -4871,7 +5121,7 @@
               </button>
             </div>
           </div>
-          <div id="dlg-count-error" class="error-container" aria-live="polite" role="alert">Number of delegates must be between 10 and 18</div>
+          <div id="dlg-count-error" class="error-container" aria-live="polite" role="alert">Number of delegates must be between 9 and 18</div>
         </div>
 
         <!-- 6. Internal or External Radio -->
@@ -5580,7 +5830,7 @@
                     <span
                       style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
                     <span
-                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
                   </div>
                   <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
                     Early Bird Offer
@@ -5602,7 +5852,7 @@
                     <span
                       style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
                     <span
-                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
                   </div>
                   <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
                     Affiliated Rate
@@ -5637,7 +5887,7 @@
                   <span
                     style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
                   <span
-                    style="font-size: 1.15rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans);">₹1,199</span>
+                    style="font-size: 1.15rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans);">₹1,200</span>
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -5647,7 +5897,7 @@
                 </span>
                 <span
                   style="font-size: 1.55rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">
-                  ₹1,199
+                  ₹1,200
                 </span>
               </div>
             </div>
@@ -5656,7 +5906,7 @@
             <div class="wizard-btn-row" id="reg-step-4-btns">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
               <button type="button" class="submit-btn wizard-next-btn" id="reg-proceed-to-pay-btn"
-                onclick="handleProceedToExternalPayment()">Proceed to Payment (₹1,199) →</button>
+                onclick="handleProceedToExternalPayment()">Proceed to Payment (₹1,200) →</button>
             </div>
 
           </div>
@@ -5680,11 +5930,11 @@
                 <span
                   style="font-size: 1.1rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
                 <span
-                  style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,199</span>
+                  style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
               </div>
             </div>
             <p style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
-              Scan the QR code or use the UPI ID below to complete your payment of ₹1,199. Upload the transaction
+              Scan the QR code or use the UPI ID below to complete your payment of ₹1,200. Upload the transaction
               screenshot below to complete your registration.
             </p>
           </div>
@@ -5701,7 +5951,7 @@
             <div
               style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
               <img id="external-upi-qr"
-                src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D1199%26cu%3DINR"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D1200%26cu%3DINR"
                 alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
             </div>
 
@@ -5732,7 +5982,7 @@
               <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Please upload the
                 screenshot of your payment *</span>
               <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
-                PROOF OF ₹1,199 TRANSFER ]</span>
+                PROOF OF ₹1,200 TRANSFER ]</span>
             </label>
 
             <div class="file-upload-dropzone" id="external-payment-dropzone"
@@ -8093,7 +8343,7 @@
         }
         if (ieeeSection) ieeeSection.style.display = 'block';
         if (orderDesc) orderDesc.textContent = 'IEEE Affiliated Delegate Pass';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,199) →';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
       } else {
         if (standardCard) {
           standardCard.style.background = '#FFFFFF';
@@ -8107,7 +8357,7 @@
         }
         if (ieeeSection) ieeeSection.style.display = 'none';
         if (orderDesc) orderDesc.textContent = 'External Delegate Pass (Early Bird)';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,199) →';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
       }
     }
 
@@ -8715,9 +8965,9 @@
       const input = document.getElementById('dlg-count');
       if (!input) return;
       let val = parseInt(input.value, 10);
-      if (isNaN(val)) val = 10;
+      if (isNaN(val)) val = 9;
       val += delta;
-      if (val < 10) val = 10;
+      if (val < 9) val = 9;
       if (val > 18) val = 18;
       input.value = val;
 
@@ -8733,9 +8983,9 @@
       if (!input) return;
       const err = document.getElementById('dlg-count-error');
       const val = parseInt(input.value, 10);
-      if (input.value.trim() && (isNaN(val) || val < 10 || val > 18)) {
+      if (input.value.trim() && (isNaN(val) || val < 9 || val > 18)) {
         if (err) {
-          err.textContent = 'Number of delegates must be between 10 and 18';
+          err.textContent = 'Number of delegates must be between 9 and 18';
           err.style.display = 'block';
         }
         input.classList.add('has-error');
@@ -8748,8 +8998,8 @@
     function validateDelegateCountBlur(input) {
       if (!input) return;
       let val = parseInt(input.value, 10);
-      if (isNaN(val) || val < 10) {
-        input.value = 10;
+      if (isNaN(val) || val < 9) {
+        input.value = 9;
       } else if (val > 18) {
         input.value = 18;
       }
@@ -9146,14 +9396,14 @@
         }
       });
 
-      // Validate Count (10 - 18 delegates limit)
+      // Validate Count (9 - 18 delegates limit)
       if (count) {
         const err = document.getElementById('dlg-count-error');
         const countVal = parseInt(count.value, 10);
-        if (!count.value.trim() || isNaN(countVal) || countVal < 10 || countVal > 18) {
+        if (!count.value.trim() || isNaN(countVal) || countVal < 9 || countVal > 18) {
           count.classList.add('has-error');
           if (err) {
-            err.textContent = 'Number of delegates must be between 10 and 18';
+            err.textContent = 'Number of delegates must be between 9 and 18';
             err.style.display = 'block';
           }
           hasError = true;
@@ -9377,7 +9627,7 @@
       const isIEEE = currentDelegateType === 'external' && document.getElementById('ieee-yes-btn')?.classList.contains('selected');
       const paymentAmount = currentDelegateType === 'internal'
         ? '₹999'
-        : isIEEE ? '₹1,149 (IEEE)' : '₹1,199 (Early Bird) / ₹1,349 (Standard)';
+        : isIEEE ? '₹1,149 (IEEE)' : '₹1,200 (Early Bird) / ₹1,349 (Standard)';
 
       const formPayload = {
         delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : isIEEE ? 'External (IEEE Member)' : 'External',
@@ -9819,7 +10069,7 @@
       const portfolios2 = [comm2Port1, comm2Port2].filter(Boolean).join(' / ') || (comm2 !== 'None Specified' ? 'Open Allocation' : 'N/A');
 
       const category = currentDelegateType === 'internal' ? 'Internal RNSIT Delegate' : 'External Delegate';
-      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,199 (Early Bird Delegate Pass)';
+      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,200 (Early Bird Delegate Pass)';
 
       const dateStr = new Date().toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -9870,7 +10120,7 @@
       const headName = document.getElementById('dlg-head-name')?.value.trim() || 'Head of Delegation';
       const phone = document.getElementById('dlg-phone')?.value.trim() || 'N/A';
       const email = document.getElementById('dlg-email')?.value.trim() || 'N/A';
-      const count = document.getElementById('dlg-count')?.value.trim() || '10+';
+      const count = document.getElementById('dlg-count')?.value.trim() || '9+';
       const isInternal = document.getElementById('dlg-type-internal')?.checked;
       const category = isInternal ? 'Internal Institutional Delegation (RNSIT)' : 'External Institutional Delegation';
 
