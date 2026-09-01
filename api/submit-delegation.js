@@ -37,104 +37,71 @@ export default async function handler(req, res) {
 
   // ─── Input Validation ────────────────────────────────────────
   const body = req.body || {};
-  const { name, email, phone, delegateType } = body;
+  const { delegationName, headName, email, phone } = body;
 
-  if (!name || !String(name).trim()) {
-    return res.status(400).json({ success: false, error: 'Full name is required.' });
+  if (!delegationName || !String(delegationName).trim()) {
+    return res.status(400).json({ success: false, error: 'Delegation / Institution name is required.' });
+  }
+  if (!headName || !String(headName).trim()) {
+    return res.status(400).json({ success: false, error: 'Head of Delegation name is required.' });
   }
   if (!email || !String(email).trim()) {
     return res.status(400).json({ success: false, error: 'Email address is required.' });
   }
   if (!phone || !String(phone).trim()) {
-    return res.status(400).json({ success: false, error: 'WhatsApp phone number is required.' });
+    return res.status(400).json({ success: false, error: 'Contact phone number is required.' });
   }
 
-  // ─── Sanitise all string fields ──────────────────────────────
   function clean(val) {
     return val ? String(val).trim().substring(0, 500) : '';
   }
 
   const cleanEmail = String(email).trim().toLowerCase();
-  const cleanName = clean(name);
+  const cleanDelegationName = clean(delegationName);
+  const cleanHeadName = clean(headName);
 
   // ─── Supabase Integration ────────────────────────────────────
   if (!supabase) {
-    console.warn('[submit-registration] SUPABASE_URL or SUPABASE_KEY not configured in environment.');
-    // Return mock success in local dev if credentials not yet configured
+    console.warn('[submit-delegation] SUPABASE_URL or SUPABASE_KEY not configured in environment.');
     return res.status(200).json({
       success: true,
-      message: 'Registration received (Supabase credentials pending in environment).'
+      message: 'Delegation received (Supabase credentials pending in environment).'
     });
   }
 
   try {
-    // 1. Check for Duplicate Email
-    const { data: existingUser, error: checkError } = await supabase
-      .from('registrations')
-      .select('id')
-      .ilike('email', cleanEmail)
-      .limit(1);
-
-    if (checkError) {
-      console.warn('[submit-registration] Duplicate check warning:', checkError.message);
-    } else if (existingUser && existingUser.length > 0) {
-      return res.status(409).json({
-        success: false,
-        duplicate: true,
-        error: "This email address has already been registered for RNS MUN '26. Each delegate may only register once."
-      });
-    }
-
-    // 2. Upload Payment Screenshot to Supabase Storage
+    // 1. Upload Payment Screenshot (if present)
     let screenshotUrl = '';
     if (body.screenshotBase64) {
       screenshotUrl = await uploadScreenshotToStorage(
         body.screenshotBase64,
-        cleanName,
+        'delegation_' + cleanDelegationName,
         body.screenshotFormat || 'webp'
       );
     }
 
-    // 3. Insert Registration Record into Supabase PostgreSQL
+    // 2. Insert Delegation Record into Supabase
     const { data: insertedRecord, error: insertError } = await supabase
-      .from('registrations')
+      .from('delegations')
       .insert([
         {
-          delegate_type:      clean(delegateType),
-          name:               cleanName,
-          institution:        clean(body.institution),
-          usn:                clean(body.usn),
-          city:               clean(body.city),
-          phone:              clean(phone),
-          email:              cleanEmail,
-          mun_experience:     clean(body.munExperience),
-          experience_count:   clean(body.experienceCount),
-          experience_details: clean(body.experienceDetails),
-          committee1:         clean(body.committee1),
-          portfolio1_1:       clean(body.portfolio1_1),
-          portfolio1_2:       clean(body.portfolio1_2),
-          committee2:         clean(body.committee2),
-          portfolio2_1:       clean(body.portfolio2_1),
-          portfolio2_2:       clean(body.portfolio2_2),
-          ieee_id:            clean(body.ieeeId),
-          payment_amount:     clean(body.paymentAmount),
-          screenshot_url:     screenshotUrl,
-          status:             'Pending Verification'
+          delegation_name: cleanDelegationName,
+          delegation_type: clean(body.delegationType) || 'Club / Society / School',
+          head_name:       cleanHeadName,
+          email:           cleanEmail,
+          phone:           clean(phone),
+          member_count:    parseInt(body.memberCount, 10) || 1,
+          roster_data:     Array.isArray(body.rosterData) ? body.rosterData : (body.rosterData ? [body.rosterData] : []),
+          payment_amount:  clean(body.paymentAmount),
+          screenshot_url:  screenshotUrl,
+          status:          'Pending Verification'
         }
       ])
       .select('id, created_at')
       .single();
 
     if (insertError) {
-      if (insertError.code === '23505') {
-        // Postgres Unique constraint violation
-        return res.status(409).json({
-          success: false,
-          duplicate: true,
-          error: "This email address has already been registered for RNS MUN '26."
-        });
-      }
-      console.error('[submit-registration] Supabase insert error:', insertError);
+      console.error('[submit-delegation] Supabase insert error:', insertError);
       return res.status(500).json({ success: false, error: 'Database error: ' + insertError.message });
     }
 
@@ -145,7 +112,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('[submit-registration] Fatal error:', err);
+    console.error('[submit-delegation] Fatal error:', err);
     return res.status(500).json({ success: false, error: 'Internal server error: ' + err.message });
   }
 }

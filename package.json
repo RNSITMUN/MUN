@@ -15,6 +15,7 @@
     "vite-plugin-image-optimizer": "^2.0.3"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
     "googleapis": "^176.0.0",
     "gsap": "^3.15.0"
   }

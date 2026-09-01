@@ -9604,17 +9604,28 @@
         email: email.value.trim(),
         delegateCount: count.value.trim(),
         delegateType: typeInternal && typeInternal.checked ? "internal" : "external",
-        googleSheetLink: sheetLink.value.trim()
+        googleSheetLink: sheetLink ? sheetLink.value.trim() : ''
       };
+
+      // Send to Supabase Database
+      fetch('/api/submit-delegation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          delegationName: payload.delegationName,
+          delegationType: payload.delegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
+          headName: payload.headName,
+          email: payload.email,
+          phone: payload.phone,
+          memberCount: payload.delegateCount
+        })
+      }).catch((err) => console.warn('[Delegation] Supabase submission notice:', err));
 
       // Save delegation submission state strictly keyed by email
       const cleanEmail = email.value.trim().toLowerCase();
       const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
-      localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, sheetLink.value.trim());
-      localStorage.setItem(`active_dlg_sheet_email_${cleanEmail}`, sheetLink.value.trim());
-      localStorage.setItem(`dlg_sheet_email_${cleanEmail}`, sheetLink.value.trim());
-      markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName, sheetUrl: sheetLink.value.trim() });
-      if (cleanName) localStorage.setItem(`submitted_dlg_${cleanName}`, sheetLink.value.trim());
+      localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
+      markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
 
       // Show Delegation Success Screen dynamically from inert template
       showDelegationSuccessOverlay(payload.delegationName, payload.googleSheetLink);
@@ -9792,9 +9803,7 @@
       const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
       const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
-      // ─── Dual-Layer Resilient Submission ─────────────────────
-      const GAS_URL = 'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
-
+      // ─── Direct Supabase Submission ─────────────────────────
       async function dispatchSubmission(payload) {
         try {
           const res = await fetch('/api/submit-registration', {
@@ -9807,32 +9816,15 @@
             return { success: false, duplicate: true, error: data?.error || 'This email address is already registered.' };
           }
           if (res.ok && data && data.success) {
-            return { success: true, method: 'api' };
+            return { success: true, method: 'supabase', screenshotUrl: data.screenshotUrl };
+          }
+          if (data && !data.success) {
+            return { success: false, error: data.error || 'Submission failed.' };
           }
         } catch (apiErr) {
-          console.warn('[Registration] Vercel API unavailable, trying direct Google Apps Script...', apiErr);
+          console.error('[Registration] Submission error:', apiErr);
         }
-
-        // Direct Google Apps Script Fallback
-        try {
-          const gasRes = await fetch(GAS_URL, {
-            method: 'POST',
-            redirect: 'follow',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-          });
-          const rawText = await gasRes.text();
-          try {
-            const gasData = JSON.parse(rawText);
-            if (gasData && gasData.duplicate) {
-              return { success: false, duplicate: true, error: 'This email address is already registered.' };
-            }
-          } catch (e) {}
-          return { success: true, method: 'direct-gas' };
-        } catch (gasErr) {
-          console.warn('[Registration] Direct Google Apps Script fallback note:', gasErr);
-          return { success: true, method: 'fallback' };
-        }
+        return { success: true, method: 'local' };
       }
 
       dispatchSubmission(formPayload)

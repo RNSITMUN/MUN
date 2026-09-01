@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+import { supabase } from './_supabase.js';
 
 export default async function handler(req, res) {
   // CORS & Origin Validation Security Check
@@ -43,139 +43,56 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, exists: false, message: 'Invalid or empty email' });
   }
 
-  // Parse Google Credentials if available
-  let credentials = null;
-  if (process.env.GOOGLE_SERVICE_ACCOUNT) {
-    try {
-      credentials =
-        typeof process.env.GOOGLE_SERVICE_ACCOUNT === 'string'
-          ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT)
-          : process.env.GOOGLE_SERVICE_ACCOUNT;
-    } catch (e) {
-      console.error('[check-email] Error parsing GOOGLE_SERVICE_ACCOUNT:', e);
-    }
-  } else if (process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
-    credentials = {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      project_id: process.env.GOOGLE_PROJECT_ID
-    };
+  if (!supabase) {
+    // If Supabase not configured in local dev environment yet
+    return res.status(200).json({ success: true, exists: false });
   }
 
-  const masterSheetId = process.env.GOOGLE_MASTER_SHEET_ID;
+  try {
+    // 1. Check in individual registrations
+    const { data: regRows, error: regError } = await supabase
+      .from('registrations')
+      .select('id')
+      .ilike('email', email)
+      .limit(1);
 
-  if (credentials && masterSheetId) {
-    try {
-      const auth = new google.auth.GoogleAuth({
-        credentials,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
-      });
-      const sheets = google.sheets({ version: 'v4', auth });
-
-      let duplicateFound = false;
-      let existingSheetUrl = null;
-
-      // 1. Column H is Email in Registrations sheet
-      try {
-        const checkRes = await sheets.spreadsheets.values.get({
-          spreadsheetId: masterSheetId,
-          range: 'Registrations!H:H'
-        });
-        const rows = checkRes.data.values || [];
-        duplicateFound = rows.some(
-          r => r[0] && String(r[0]).trim().toLowerCase() === email
-        );
-      } catch (regErr) {
-        console.warn('[check-email] Registrations sheet check warning:', regErr.message);
-      }
-
-      // 2. Check Google Drive for active delegation roster sheet
-      try {
-        const drive = google.drive({ version: 'v3', auth });
-        const existingList = await drive.files.list({
-          q: `'${email}' in writers and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false`,
-          fields: 'files(id, name, webViewLink)',
-          pageSize: 5
-        });
-        const existingSheet = existingList.data.files?.find(f => f.name && f.name.includes('RNS MUN 26'));
-        if (existingSheet && existingSheet.id) {
-          existingSheetUrl = `https://docs.google.com/spreadsheets/d/${existingSheet.id}/edit?usp=sharing`;
-          duplicateFound = true;
-        }
-      } catch (driveErr) {
-        console.warn('[check-email] Drive search warning:', driveErr.message);
-      }
-
-      // 3. Check Delegations sheet for delegation email & sheetUrl
-      try {
-        const dlgRes = await sheets.spreadsheets.values.get({
-          spreadsheetId: masterSheetId,
-          range: 'Delegations!A:Z'
-        });
-        const dlgRows = dlgRes.data.values || [];
-        for (const row of dlgRows) {
-          const foundIdx = row.findIndex(cell => cell && String(cell).trim().toLowerCase() === email);
-          if (foundIdx !== -1) {
-            duplicateFound = true;
-            const sheetCell = row.find(cell => cell && String(cell).includes('docs.google.com/spreadsheets'));
-            if (sheetCell && !existingSheetUrl) {
-              existingSheetUrl = String(sheetCell).trim();
-            }
-            break;
-          }
-        }
-      } catch (dlgErr) {
-        // Tab might not exist, silently proceed
-      }
-
+    if (regError) {
+      console.warn('[check-email] Supabase query notice:', regError.message);
+    } else if (regRows && regRows.length > 0) {
       return res.status(200).json({
         success: true,
-        exists: duplicateFound,
-        sheetUrl: existingSheetUrl,
-        email
+        exists: true,
+        type: 'individual',
+        message: "This email address is already registered for RNS MUN '26."
       });
-    } catch (sheetsErr) {
-      console.warn('[check-email] Google Sheets check warning:', sheetsErr.message);
     }
-  }
 
-  // ─── Query Google Apps Script Webhook (Fallback) ─────────────
-  const gasUrl =
-    process.env.GOOGLE_APPS_SCRIPT_REGISTRATION_URL ||
-    process.env.GOOGLE_APPS_SCRIPT_URL ||
-    'https://script.google.com/macros/s/AKfycbyjnzD__AM_WFRv0I4qgSVkHPZ0i8-lgh3JCnSMZa2iRsJI2PSsg_R0CrQt4T7UQdOnoA/exec';
+    // 2. Check in delegations
+    const { data: dlgRows, error: dlgError } = await supabase
+      .from('delegations')
+      .select('id')
+      .ilike('email', email)
+      .limit(1);
 
-  if (gasUrl) {
-    try {
-      const gasRes = await fetch(gasUrl, {
-        method: 'POST',
-        redirect: 'follow',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'checkEmail', email })
+    if (dlgError) {
+      console.warn('[check-email] Delegation query notice:', dlgError.message);
+    } else if (dlgRows && dlgRows.length > 0) {
+      return res.status(200).json({
+        success: true,
+        exists: true,
+        type: 'delegation',
+        message: "This email address is already registered as a Delegation Head for RNS MUN '26."
       });
-      const rawText = await gasRes.text();
-      try {
-        const gasData = JSON.parse(rawText);
-        if (gasData && typeof gasData.exists === 'boolean') {
-          return res.status(200).json({
-            success: true,
-            exists: gasData.exists,
-            type: gasData.type || null,
-            sheetUrl: gasData.sheetUrl || null,
-            email
-          });
-        }
-      } catch (jsonErr) {}
-    } catch (gasErr) {
-      console.warn('[check-email] Apps Script check notice:', gasErr.message);
     }
-  }
 
-  // Fallback: When no direct lookup configured
-  return res.status(200).json({
-    success: true,
-    exists: false,
-    email,
-    note: 'No direct sheet lookup configured'
-  });
+    return res.status(200).json({
+      success: true,
+      exists: false,
+      message: 'Email available'
+    });
+
+  } catch (err) {
+    console.error('[check-email] Query error:', err);
+    return res.status(200).json({ success: true, exists: false });
+  }
 }
