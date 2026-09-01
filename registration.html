@@ -7491,13 +7491,13 @@
       lockBackgroundScroll();
       stepDelegateCount(0);
 
-      // If a sheet generation was in flight when previously closed, restore state
-      const emailInput = document.getElementById('dlg-email');
-      if (_generatingEmail && emailInput && !emailInput.value) {
-        emailInput.value = _generatingEmail;
-        checkEmailRegistration(emailInput);
-      }
-      if (_isGeneratingDelegationSheet) {
+      // Only restore email if generation was actively in-flight
+      if (_isGeneratingDelegationSheet && _generatingEmail) {
+        const emailInput = document.getElementById('dlg-email');
+        if (emailInput && !emailInput.value) {
+          emailInput.value = _generatingEmail;
+          checkEmailRegistration(emailInput);
+        }
         const btn = document.getElementById('dlg-create-sheet-btn');
         if (btn) {
           btn.disabled = true;
@@ -7926,6 +7926,8 @@
     }
 
     function clearDelegationForm() {
+      _isGeneratingDelegationSheet = false;
+      _generatingEmail = '';
       const form = document.getElementById('delegation-registration-form');
       if (form) {
         form.reset();
@@ -7936,13 +7938,26 @@
           el.style.display = 'none';
         });
 
+        // Reset text/tel/email inputs explicitly
+        const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+        inputs.forEach(i => { i.value = ''; });
+
+        const countInput = document.getElementById('dlg-count');
+        if (countInput) countInput.value = '10';
+
+        const typeExternal = document.getElementById('dlg-type-external');
+        if (typeExternal) typeExternal.checked = true;
+
         // Reset sheet generator UI & buttons
         const sheetResult = document.getElementById('dlg-sheet-result');
         if (sheetResult) sheetResult.classList.remove('is-generated');
         const sheetLink = document.getElementById('dlg-sheet-link');
         if (sheetLink) sheetLink.value = '';
         const sheetAnchor = document.getElementById('dlg-sheet-anchor');
-        if (sheetAnchor) sheetAnchor.href = '#';
+        if (sheetAnchor) {
+          sheetAnchor.href = '#';
+          sheetAnchor.textContent = 'Open Google Sheet';
+        }
 
         const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
         if (createSheetBtn) {
@@ -8593,16 +8608,8 @@
       }
       const successOverlay = document.getElementById('dlg-success-overlay');
       if (successOverlay) successOverlay.classList.remove('show');
+      clearDelegationForm();
       closeDelegationRegistrationModal();
-      const form = document.getElementById('delegation-registration-form');
-      if (form) {
-        form.reset();
-        const sheetResult = document.getElementById('dlg-sheet-result');
-        if (sheetResult) sheetResult.classList.remove('is-generated');
-        const sheetLink = document.getElementById('dlg-sheet-link');
-        if (sheetLink) sheetLink.value = '';
-        document.querySelectorAll('#delegation-registration-form select.form-select').forEach(s => s.dispatchEvent(new Event('change')));
-      }
     }
 
     // Delegate Registration Form Submission
