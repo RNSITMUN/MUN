@@ -1,16 +1,47 @@
 import { createClient } from '@supabase/supabase-js';
+import fs from 'fs';
+import path from 'path';
+
+function getEnv(key) {
+  if (process.env[key]) return process.env[key];
+  try {
+    const envPaths = ['.env.local', '.env'];
+    for (const file of envPaths) {
+      const fullPath = path.resolve(process.cwd(), file);
+      if (fs.existsSync(fullPath)) {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const lines = content.split(/\r?\n/);
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('#') || !trimmed.includes('=')) continue;
+          const eqIdx = trimmed.indexOf('=');
+          const k = trimmed.substring(0, eqIdx).trim();
+          let v = trimmed.substring(eqIdx + 1).trim();
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.substring(1, v.length - 1);
+          }
+          process.env[k] = v;
+          if (k === key) return v;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[Supabase Config] Env load error:', e.message);
+  }
+  return process.env[key] || '';
+}
 
 const supabaseUrl =
-  process.env.SUPABASE_URL ||
-  process.env.NEXT_PUBLIC_SUPABASE_URL ||
-  process.env.VITE_SUPABASE_URL ||
+  getEnv('SUPABASE_URL') ||
+  getEnv('NEXT_PUBLIC_SUPABASE_URL') ||
+  getEnv('VITE_SUPABASE_URL') ||
   '';
 
 const supabaseKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_ANON_KEY ||
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  process.env.VITE_SUPABASE_ANON_KEY ||
+  getEnv('SUPABASE_SERVICE_ROLE_KEY') ||
+  getEnv('SUPABASE_ANON_KEY') ||
+  getEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY') ||
+  getEnv('VITE_SUPABASE_ANON_KEY') ||
   '';
 
 export const supabase = (supabaseUrl && supabaseKey)
@@ -18,6 +49,12 @@ export const supabase = (supabaseUrl && supabaseKey)
       auth: { persistSession: false }
     })
   : null;
+
+if (!supabase) {
+  console.warn('⚠️ [Supabase] Client initialized with NULL credentials. Check .env.local or Vercel environment variables.');
+} else {
+  console.log('⚡ [Supabase] Client successfully initialized for URL:', supabaseUrl);
+}
 
 /**
  * Uploads a base64 payment screenshot to the Supabase Storage bucket.

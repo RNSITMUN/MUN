@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
-import createSheetHandler from './api/create-sheet.js';
+import submitDelegationHandler from './api/submit-delegation.js';
 import submitRegistrationHandler from './api/submit-registration.js';
 import checkEmailHandler from './api/check-email.js';
 
@@ -47,8 +47,8 @@ const cleanUrlsPlugin = () => ({
         });
       };
 
-      if (url === '/api/create-sheet') {
-        return handleApiRequest(createSheetHandler);
+      if (url === '/api/submit-delegation') {
+        return handleApiRequest(submitDelegationHandler);
       }
       if (url === '/api/submit-registration') {
         return handleApiRequest(submitRegistrationHandler);

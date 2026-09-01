@@ -39,6 +39,8 @@ export default async function handler(req, res) {
   const body = req.body || {};
   const { name, email, phone, delegateType } = body;
 
+  console.log('📥 [submit-registration] Received registration request for:', email, name);
+
   if (!name || !String(name).trim()) {
     return res.status(400).json({ success: false, error: 'Full name is required.' });
   }
@@ -59,11 +61,10 @@ export default async function handler(req, res) {
 
   // ─── Supabase Integration ────────────────────────────────────
   if (!supabase) {
-    console.warn('[submit-registration] SUPABASE_URL or SUPABASE_KEY not configured in environment.');
-    // Return mock success in local dev if credentials not yet configured
-    return res.status(200).json({
-      success: true,
-      message: 'Registration received (Supabase credentials pending in environment).'
+    console.error('❌ [submit-registration] SUPABASE_URL or SUPABASE_KEY is missing!');
+    return res.status(500).json({
+      success: false,
+      error: 'Database configuration missing. Please check SUPABASE_URL and SUPABASE_KEY.'
     });
   }
 
@@ -78,6 +79,7 @@ export default async function handler(req, res) {
     if (checkError) {
       console.warn('[submit-registration] Duplicate check warning:', checkError.message);
     } else if (existingUser && existingUser.length > 0) {
+      console.warn('⚠️ [submit-registration] Duplicate email rejected:', cleanEmail);
       return res.status(409).json({
         success: false,
         duplicate: true,
@@ -88,11 +90,13 @@ export default async function handler(req, res) {
     // 2. Upload Payment Screenshot to Supabase Storage
     let screenshotUrl = '';
     if (body.screenshotBase64) {
+      console.log('📸 [submit-registration] Uploading payment screenshot...');
       screenshotUrl = await uploadScreenshotToStorage(
         body.screenshotBase64,
         cleanName,
         body.screenshotFormat || 'webp'
       );
+      console.log('📸 [submit-registration] Screenshot URL:', screenshotUrl);
     }
 
     // 3. Insert Registration Record into Supabase PostgreSQL
@@ -127,16 +131,17 @@ export default async function handler(req, res) {
 
     if (insertError) {
       if (insertError.code === '23505') {
-        // Postgres Unique constraint violation
         return res.status(409).json({
           success: false,
           duplicate: true,
           error: "This email address has already been registered for RNS MUN '26."
         });
       }
-      console.error('[submit-registration] Supabase insert error:', insertError);
+      console.error('❌ [submit-registration] Supabase insert error:', insertError);
       return res.status(500).json({ success: false, error: 'Database error: ' + insertError.message });
     }
+
+    console.log('✅ [submit-registration] Successfully saved to Supabase! ID:', insertedRecord?.id);
 
     return res.status(200).json({
       success: true,
@@ -145,7 +150,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('[submit-registration] Fatal error:', err);
+    console.error('❌ [submit-registration] Fatal error:', err);
     return res.status(500).json({ success: false, error: 'Internal server error: ' + err.message });
   }
 }
