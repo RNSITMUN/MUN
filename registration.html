@@ -8221,54 +8221,6 @@
       const cleanName = delegationName.toLowerCase().trim().replace(/\s+/g, '_');
       const btn = document.getElementById('dlg-create-sheet-btn');
 
-      // 1. Strict Email-First Rule: If this email already has a sheet (submitted or active), REUSE IT!
-      // No matter what the delegation name, head name, or other details are!
-      const existingSheetUrl = getDelegationSheetForEmail(cleanEmail);
-      const isSubmitted = isDelegationEmailSubmitted(cleanEmail);
-
-      if (existingSheetUrl || isSubmitted) {
-        const targetUrl = existingSheetUrl || localStorage.getItem(`submitted_dlg_email_${cleanEmail}`);
-        if (targetUrl && targetUrl !== 'registered') {
-          const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-          if (hiddenLinkInput) hiddenLinkInput.value = targetUrl;
-
-          const resultBox = document.getElementById('dlg-sheet-result');
-          const anchor = document.getElementById('dlg-sheet-anchor');
-          if (resultBox && anchor) {
-            anchor.href = targetUrl;
-            anchor.textContent = `Open Google Sheet: ${delegationName || 'Delegation Roster'}`;
-            resultBox.classList.add('is-generated');
-          }
-        }
-
-        if (isSubmitted) {
-          const errorEl = document.getElementById('dlg-sheet-error');
-          if (errorEl) {
-            errorEl.innerHTML = `⚠️ This email has already submitted a delegation roster.<br><a href="${targetUrl || '#'}" target="_blank" style="color:var(--accent-color);font-weight:700;text-decoration:underline;">Click to open submitted Google Sheet</a>`;
-            errorEl.style.display = 'block';
-          }
-          if (btn) {
-            btn.innerHTML = '<span>⚠️ Already Submitted</span>';
-            btn.disabled = true;
-          }
-          const existsMsg = document.getElementById('dlg-email-exists-msg');
-          if (existsMsg) {
-            existsMsg.textContent = 'This email has already registered a delegation.';
-            existsMsg.style.display = 'block';
-          }
-          const submitBtn = document.getElementById('dlg-submit-btn');
-          const exitBtn = document.getElementById('dlg-exit-btn');
-          if (submitBtn) submitBtn.style.display = 'none';
-          if (exitBtn) exitBtn.style.display = 'block';
-        } else {
-          if (btn) {
-            btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-            btn.disabled = false;
-          }
-        }
-        return; // NEVER create a duplicate sheet for the same email!
-      }
-
       const gasUrl = "https://script.google.com/macros/s/AKfycbxE1kr1fAjSP4JiNyRQYu-JU9vMk61chP6YGX_rG2n-5M7iTMz4oE1UJpsIfN5d5f1VRw/exec";
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
