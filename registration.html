@@ -4111,7 +4111,9 @@
           <div style="display: flex; gap: 8px;">
             <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com"
               autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"
-              oninput="checkEmailRegistration(this)" required style="flex: 1;">
+              oninput="checkEmailRegistration(this)" onkeyup="checkEmailRegistration(this)" onchange="checkEmailRegistration(this)"
+              onpaste="setTimeout(() => checkEmailRegistration(this), 0)" oncut="setTimeout(() => checkEmailRegistration(this), 0)"
+              required style="flex: 1;">
             <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()"
               style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear
               Data</button>
@@ -4456,8 +4458,9 @@
 
           <div class="form-group">
             <label class="form-label" for="reg-email">Email Address *</label>
-            <input type="email" id="reg-email" class="form-input" placeholder="aditi@example.com" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required>
+            <input type="email" id="reg-email" class="form-input" placeholder="aditi@example.com" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" oninput="checkIndividualEmailRegistration(this)" onblur="checkIndividualEmailRegistration(this)" required>
             <div id="reg-email-error" class="error-container" aria-live="polite" role="alert">Valid email is required</div>
+            <div id="reg-email-exists-msg" class="error-container" aria-live="polite" role="alert" style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email address has already been registered for RNS MUN '26. Each delegate may only register once.</div>
           </div>
 
           <!-- Prior MUN Experience (Yes / No Radio Group) -->
@@ -7145,16 +7148,29 @@
         // Email validation
         if (email) {
           const errorEl = document.getElementById('reg-email-error');
-          if (!email.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value)) {
+          const existsMsg = document.getElementById('reg-email-exists-msg');
+          const emailVal = email.value.trim().toLowerCase();
+
+          if (!emailVal || !/^\S+@\S+\.\S+$/.test(emailVal)) {
             email.classList.add('has-error');
+            if (existsMsg) existsMsg.style.display = 'none';
             if (errorEl) {
               errorEl.textContent = 'Please enter a valid email address';
               errorEl.style.display = 'block';
             }
             isValid = false;
+          } else if (isEmailRegisteredLocal(emailVal)) {
+            email.classList.add('has-error');
+            if (errorEl) errorEl.style.display = 'none';
+            if (existsMsg) {
+              existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+              existsMsg.style.display = 'block';
+            }
+            isValid = false;
           } else {
             email.classList.remove('has-error');
             if (errorEl) errorEl.style.display = 'none';
+            if (existsMsg) existsMsg.style.display = 'none';
           }
         }
 
@@ -7339,6 +7355,27 @@
     // EXTERNAL DELEGATE PROCEED TO PAYMENT (Step 4 → Step 5)
     // ==========================================
     function handleProceedToExternalPayment() {
+      // Duplicate Email Safety Guard
+      const emailVal = document.getElementById('reg-email')?.value.trim().toLowerCase();
+      if (isEmailRegisteredLocal(emailVal)) {
+        goToStep(1);
+        const emailInput = document.getElementById('reg-email');
+        if (emailInput) {
+          emailInput.classList.add('has-error');
+          emailInput.focus();
+        }
+        const existsMsg = document.getElementById('reg-email-exists-msg');
+        if (existsMsg) {
+          existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+          existsMsg.style.display = 'block';
+        }
+        const regCard = document.getElementById('registration-modal-card');
+        if (window.gsap && regCard) {
+          gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
+        }
+        return;
+      }
+
       // Validate IEEE ID if member
       if (isIEEEMember === true) {
         const ieeeId = document.getElementById('reg-ieee-id');
@@ -7376,6 +7413,10 @@
       } else {
         const step1Panel = document.getElementById('wizard-step-1');
         if (step1Panel) showDraftRestoredBanner(step1Panel);
+        const emailInput = document.getElementById('reg-email');
+        if (emailInput && emailInput.value.trim()) {
+          checkIndividualEmailRegistration(emailInput);
+        }
       }
 
       goToStep(1);
@@ -7436,9 +7477,9 @@
       }
     }
 
-    // ==========================================
-    // DELEGATION REGISTRATION FLOW & GOOGLE SHEETS
-    // ==========================================
+    let _isGeneratingDelegationSheet = false;
+    let _generatingEmail = '';
+
     function openDelegationRegistrationModal() {
       const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
       const dlgCard = document.getElementById('delegation-modal-card');
@@ -7449,6 +7490,20 @@
       dlgBackdrop.style.display = 'flex';
       lockBackgroundScroll();
       stepDelegateCount(0);
+
+      // If a sheet generation was in flight when previously closed, restore state
+      const emailInput = document.getElementById('dlg-email');
+      if (_generatingEmail && emailInput && !emailInput.value) {
+        emailInput.value = _generatingEmail;
+        checkEmailRegistration(emailInput);
+      }
+      if (_isGeneratingDelegationSheet) {
+        const btn = document.getElementById('dlg-create-sheet-btn');
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '<span>⏳ Creating in Google Drive...</span>';
+        }
+      }
 
       if (window.gsap) {
         gsap.fromTo(dlgCard,
@@ -7500,46 +7555,300 @@
       }
     }
 
+    // ─── Centralized Registered Email Tracker ──────────────────────
+    const REG_EMAILS_KEY = 'mun26_registered_emails';
+
+    function getRegisteredEmailsMap() {
+      try {
+        const raw = localStorage.getItem(REG_EMAILS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return {};
+    }
+
+    function isEmailRegisteredLocal(email) {
+      if (!email) return false;
+      const clean = String(email).trim().toLowerCase();
+      if (!clean) return false;
+
+      // 1. Direct registry lookup
+      const regMap = getRegisteredEmailsMap();
+      if (regMap[clean]) return true;
+
+      // 2. Direct keys lookup
+      if (localStorage.getItem(`submitted_ind_email_${clean}`)) return true;
+      if (localStorage.getItem(`submitted_dlg_email_${clean}`)) return true;
+
+      // 3. Scan all localStorage keys for submitted_
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('submitted_dlg_email_') || k.startsWith('submitted_ind_email_'))) {
+          if (k.slice(k.lastIndexOf('_') + 1).toLowerCase() === clean) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function markEmailAsRegistered(email, type = 'individual', meta = {}) {
+      if (!email) return;
+      const clean = String(email).trim().toLowerCase();
+      if (!clean) return;
+
+      // Set specific key
+      if (type === 'delegation') {
+        localStorage.setItem(`submitted_dlg_email_${clean}`, meta.sheetUrl || 'registered');
+      } else {
+        localStorage.setItem(`submitted_ind_email_${clean}`, JSON.stringify({ timestamp: new Date().toISOString(), ...meta }));
+      }
+
+      // Update centralized map
+      const regMap = getRegisteredEmailsMap();
+      regMap[clean] = { type, timestamp: new Date().toISOString(), ...meta };
+      try {
+        localStorage.setItem(REG_EMAILS_KEY, JSON.stringify(regMap));
+      } catch (e) {}
+    }
+
+    // Background asynchronous remote check (cached, non-blocking)
+    const _emailRemoteCheckCache = new Map();
+    async function checkEmailRemote(email) {
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) return false;
+      const clean = String(email).trim().toLowerCase();
+      if (_emailRemoteCheckCache.has(clean)) {
+        return _emailRemoteCheckCache.get(clean);
+      }
+      try {
+        const res = await fetch(`/api/check-email?email=${encodeURIComponent(clean)}`);
+        if (res.ok) {
+          const data = await res.json().catch(() => null);
+          if (data && data.exists) {
+            _emailRemoteCheckCache.set(clean, true);
+            markEmailAsRegistered(clean, 'remote_sync');
+            return true;
+          }
+        }
+      } catch (e) {}
+      _emailRemoteCheckCache.set(clean, false);
+      return false;
+    }
+
+    // ─── Individual Delegate Email Real-Time Check ────────────────
+    let _indEmailDebounceTimer = null;
+    function checkIndividualEmailRegistration(inputEl) {
+      if (!inputEl) inputEl = document.getElementById('reg-email');
+      if (!inputEl) return;
+
+      const email = inputEl.value.trim().toLowerCase();
+      const errEl = document.getElementById('reg-email-error');
+      const existsMsg = document.getElementById('reg-email-exists-msg');
+
+      if (!email) {
+        inputEl.classList.remove('has-error');
+        if (errEl) errEl.style.display = 'none';
+        if (existsMsg) existsMsg.style.display = 'none';
+        return;
+      }
+
+      // Instant 0ms local check
+      if (isEmailRegisteredLocal(email)) {
+        inputEl.classList.add('has-error');
+        if (errEl) errEl.style.display = 'none';
+        if (existsMsg) {
+          existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+          existsMsg.style.display = 'block';
+        }
+        return true;
+      } else {
+        if (existsMsg) existsMsg.style.display = 'none';
+      }
+
+      // Non-blocking background remote check if valid format
+      if (/^\S+@\S+\.\S+$/.test(email)) {
+        clearTimeout(_indEmailDebounceTimer);
+        _indEmailDebounceTimer = setTimeout(async () => {
+          const exists = await checkEmailRemote(email);
+          if (exists && inputEl.value.trim().toLowerCase() === email) {
+            inputEl.classList.add('has-error');
+            if (errEl) errEl.style.display = 'none';
+            if (existsMsg) {
+              existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+              existsMsg.style.display = 'block';
+            }
+          }
+        }, 300);
+      }
+      return false;
+    }
+
+    // ─── Delegation Email & Sheet Helpers (Strict Email-First Binding) ───────
+    function getDelegationSheetForEmail(email) {
+      if (!email) return null;
+      const clean = String(email).trim().toLowerCase();
+      if (!clean) return null;
+
+      // 1. Direct email-keyed local storage
+      const direct = localStorage.getItem(`dlg_sheet_email_${clean}`) ||
+                     localStorage.getItem(`active_dlg_sheet_email_${clean}`) ||
+                     localStorage.getItem(`submitted_dlg_email_${clean}`);
+      if (direct && direct !== 'registered' && !direct.startsWith('{')) {
+        return direct;
+      }
+
+      // 2. Centralized registered emails map
+      const regMap = getRegisteredEmailsMap();
+      if (regMap[clean] && regMap[clean].sheetUrl) {
+        return regMap[clean].sheetUrl;
+      }
+
+      // 3. JSON formatted submission payload
+      try {
+        const raw = localStorage.getItem(`submitted_dlg_email_${clean}`);
+        if (raw && raw.startsWith('{')) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.sheetUrl) return parsed.sheetUrl;
+        }
+      } catch (e) {}
+
+      return null;
+    }
+
+    function isDelegationEmailSubmitted(email) {
+      if (!email) return false;
+      const clean = String(email).trim().toLowerCase();
+      if (!clean) return false;
+
+      if (localStorage.getItem(`submitted_dlg_email_${clean}`)) return true;
+      const regMap = getRegisteredEmailsMap();
+      if (regMap[clean] && (regMap[clean].type === 'delegation' || regMap[clean].type === 'remote_sync')) return true;
+      return false;
+    }
+
+    // ─── Delegation Email Check (Zero-Lag Lookup & Button State Restoration) ───────
+    let _dlgEmailDebounceTimer = null;
     function checkEmailRegistration(inputEl) {
+      if (!inputEl) inputEl = document.getElementById('dlg-email');
+      if (!inputEl) return;
+
       const email = inputEl.value.trim().toLowerCase();
       const existsMsg = document.getElementById('dlg-email-exists-msg');
       const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
       const submitBtn = document.getElementById('dlg-submit-btn');
       const exitBtn = document.getElementById('dlg-exit-btn');
+      const errEl = document.getElementById('dlg-email-error');
 
       const sheetResult = document.getElementById('dlg-sheet-result');
       const hiddenLinkInput = document.getElementById('dlg-sheet-link');
       const sheetAnchor = document.getElementById('dlg-sheet-anchor');
+      const sheetErr = document.getElementById('dlg-sheet-error');
 
-      const hasRegisteredUrl = email ? localStorage.getItem(`submitted_dlg_email_${email}`) : null;
+      // Helper to restore the default clean state of "Create Delegation Sheet" button & form
+      const restoreDefaultState = () => {
+        if (createSheetBtn) {
+          createSheetBtn.style.display = 'inline-flex';
+          createSheetBtn.disabled = false;
+          createSheetBtn.innerHTML = '<span>Create Delegation Sheet</span>';
+        }
+        if (submitBtn) submitBtn.style.display = 'block';
+        if (exitBtn) exitBtn.style.display = 'none';
+        if (existsMsg) existsMsg.style.display = 'none';
+        if (sheetResult) sheetResult.classList.remove('is-generated');
+        if (hiddenLinkInput) hiddenLinkInput.value = '';
+        if (sheetAnchor) sheetAnchor.href = '#';
+        if (sheetErr) sheetErr.style.display = 'none';
+      };
 
-      if (hasRegisteredUrl) {
-        if (existsMsg) existsMsg.style.display = 'block';
+      // Helper to render and lock an existing roster sheet for this email
+      const displayExistingSheet = (sheetUrl, isSubmitted) => {
+        if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
+        if (sheetAnchor) {
+          sheetAnchor.href = sheetUrl;
+          const dlgName = document.getElementById('dlg-delegation-name')?.value.trim();
+          sheetAnchor.textContent = dlgName ? `Open Google Sheet: ${dlgName}` : 'Open Google Sheet';
+        }
+        if (sheetResult) sheetResult.classList.add('is-generated');
+        if (sheetErr) sheetErr.style.display = 'none';
+
+        if (isSubmitted) {
+          if (existsMsg) {
+            existsMsg.textContent = 'This email has already registered a delegation.';
+            existsMsg.style.display = 'block';
+          }
+          if (errEl) errEl.style.display = 'none';
+          if (createSheetBtn) createSheetBtn.style.display = 'none';
+          if (submitBtn) submitBtn.style.display = 'none';
+          if (exitBtn) exitBtn.style.display = 'block';
+        } else {
+          if (existsMsg) existsMsg.style.display = 'none';
+          if (createSheetBtn) {
+            createSheetBtn.style.display = 'inline-flex';
+            createSheetBtn.disabled = false;
+            createSheetBtn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+          }
+          if (submitBtn) submitBtn.style.display = 'block';
+          if (exitBtn) exitBtn.style.display = 'none';
+        }
+      };
+
+      // 1. If email field is cleared or modified to empty, immediately restore default button state
+      if (!email) {
+        restoreDefaultState();
+        return;
+      }
+
+      // 2. Instant Local Lookup strictly for this email
+      const existingSheetUrl = getDelegationSheetForEmail(email);
+      const isSubmitted = isDelegationEmailSubmitted(email);
+
+      if (existingSheetUrl) {
+        displayExistingSheet(existingSheetUrl, isSubmitted);
+        return;
+      } else if (isSubmitted) {
+        if (existsMsg) {
+          existsMsg.textContent = 'This email has already registered a delegation.';
+          existsMsg.style.display = 'block';
+        }
+        if (errEl) errEl.style.display = 'none';
         if (createSheetBtn) createSheetBtn.style.display = 'none';
         if (submitBtn) submitBtn.style.display = 'none';
         if (exitBtn) exitBtn.style.display = 'block';
-
-        // Display previously generated sheet
-        if (hiddenLinkInput) {
-          hiddenLinkInput.value = hasRegisteredUrl;
-          hiddenLinkInput.dataset.fromHistory = 'true';
-        }
-        if (sheetAnchor) sheetAnchor.href = hasRegisteredUrl;
-        if (sheetResult) sheetResult.classList.add('is-generated');
-
+        return;
       } else {
-        if (existsMsg) existsMsg.style.display = 'none';
-        if (createSheetBtn) createSheetBtn.style.display = 'inline-flex';
-        if (submitBtn) submitBtn.style.display = 'block';
-        if (exitBtn) exitBtn.style.display = 'none';
+        // Any new or edited email without an existing sheet restores the clean Create Sheet button!
+        restoreDefaultState();
+      }
 
-        // Hide sheet if it was populated by a historic registered email match
-        if (hiddenLinkInput && hiddenLinkInput.dataset.fromHistory === 'true') {
-          hiddenLinkInput.value = '';
-          hiddenLinkInput.dataset.fromHistory = 'false';
-          if (sheetAnchor) sheetAnchor.href = '#';
-          if (sheetResult) sheetResult.classList.remove('is-generated');
-        }
+      // 3. Non-blocking debounced remote lookup if valid email format
+      if (/^\S+@\S+\.\S+$/.test(email)) {
+        clearTimeout(_dlgEmailDebounceTimer);
+        _dlgEmailDebounceTimer = setTimeout(async () => {
+          try {
+            const res = await fetch(`/api/check-email?email=${encodeURIComponent(email)}`);
+            if (res.ok) {
+              const data = await res.json().catch(() => null);
+              if (data && data.exists && inputEl.value.trim().toLowerCase() === email) {
+                const remoteSheetUrl = data.sheetUrl || getDelegationSheetForEmail(email);
+                if (remoteSheetUrl) {
+                  localStorage.setItem(`dlg_sheet_email_${email}`, remoteSheetUrl);
+                  localStorage.setItem(`submitted_dlg_email_${email}`, remoteSheetUrl);
+                  markEmailAsRegistered(email, 'delegation', { sheetUrl: remoteSheetUrl });
+                  displayExistingSheet(remoteSheetUrl, true);
+                } else {
+                  markEmailAsRegistered(email, 'remote_sync');
+                  if (existsMsg) {
+                    existsMsg.textContent = 'This email has already registered.';
+                    existsMsg.style.display = 'block';
+                  }
+                  if (errEl) errEl.style.display = 'none';
+                  if (createSheetBtn) createSheetBtn.style.display = 'none';
+                  if (submitBtn) submitBtn.style.display = 'none';
+                  if (exitBtn) exitBtn.style.display = 'block';
+                }
+              }
+            }
+          } catch (e) {}
+        }, 300);
       }
     }
 
@@ -7547,15 +7856,21 @@
       const form = document.getElementById('delegation-registration-form');
       const clearBtn = document.getElementById('dlg-clear-data-btn');
 
-      // Clear error message dynamically as the user types & validate real-time
+      // Clear error message dynamically as user types & validate without aggressive errors
       if (e && e.target) {
         const el = e.target;
         let isValid = true;
         let errMsg = '';
 
         if (el.id === 'dlg-email') {
-          isValid = /^\S+@\S+\.\S+$/.test(el.value.trim());
-          errMsg = 'Please enter a valid email address';
+          const val = el.value.trim();
+          // Only show format error if string looks like an attempt at email but is invalid (e.g. contains @ but invalid domain)
+          if (val.includes('@') && val.length > 5) {
+            isValid = /^\S+@\S+\.\S+$/.test(val);
+            errMsg = 'Please enter a valid email address';
+          } else {
+            isValid = true; // don't scream at partial typing
+          }
         } else if (el.id === 'dlg-count') {
           const val = parseInt(el.value, 10);
           isValid = !isNaN(val) && val >= 10 && val <= 18;
@@ -7566,28 +7881,31 @@
           errMsg = 'Please enter a valid 10-digit mobile number';
         } else if (el.type === 'text') {
           isValid = el.value.trim().length > 0;
-          if (el.id === 'dlg-delegation-name') errMsg = 'Delegation Name is required';
+          if (el.id === 'dlg-delegation-name') {
+            errMsg = 'Delegation Name is required';
+            const anchor = document.getElementById('dlg-sheet-anchor');
+            if (anchor && anchor.href && anchor.href !== '#') {
+              const val = el.value.trim();
+              anchor.textContent = val ? `Open Google Sheet: ${val}` : 'Open Google Sheet';
+            }
+          }
           if (el.id === 'dlg-head-name') errMsg = 'Head Delegate Name is required';
         }
 
         const errEl = document.getElementById(el.id + '-error');
-        // Only show real-time error if they are typing an invalid value AND it already had an error (to not annoy them while typing a fresh valid email)
-        // BUT wait, the user requested: "validated as its being entered...if wrong..show error meesage and it shd disappear immedaitely as soon its corrected"
-        if (!isValid && el.value.trim().length > 0) {
-          // We show error if they typed something invalid
+        const existsEl = document.getElementById('dlg-email-exists-msg');
+        const isExistsShown = el.id === 'dlg-email' && existsEl && existsEl.style.display === 'block';
+
+        if (!isValid && el.value.trim().length > 0 && !isExistsShown) {
           el.classList.add('has-error');
           if (errEl) {
             errEl.textContent = errMsg;
             errEl.style.display = 'block';
           }
         } else if (isValid) {
-          el.classList.remove('has-error');
+          if (!isExistsShown) el.classList.remove('has-error');
           if (errEl) errEl.style.display = 'none';
         } else if (el.value.trim().length === 0) {
-          // If they clear the field, remove the error so it doesn't scream at them when empty, 
-          // UNLESS it already had an error from a submit attempt.
-          // Actually, let's just leave the error if it was there, or remove it.
-          // To be safe and less annoying:
           el.classList.remove('has-error');
           if (errEl) errEl.style.display = 'none';
         }
@@ -7597,9 +7915,12 @@
 
       const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
       let hasData = false;
-      inputs.forEach(input => {
-        if (input.value.trim() !== '') hasData = true;
-      });
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value.trim() !== '') {
+          hasData = true;
+          break;
+        }
+      }
 
       clearBtn.style.display = hasData ? 'block' : 'none';
     }
@@ -7615,21 +7936,27 @@
           el.style.display = 'none';
         });
 
-        // Reset sheet generator UI
+        // Reset sheet generator UI & buttons
         const sheetResult = document.getElementById('dlg-sheet-result');
         if (sheetResult) sheetResult.classList.remove('is-generated');
         const sheetLink = document.getElementById('dlg-sheet-link');
         if (sheetLink) sheetLink.value = '';
+        const sheetAnchor = document.getElementById('dlg-sheet-anchor');
+        if (sheetAnchor) sheetAnchor.href = '#';
+
         const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
         if (createSheetBtn) {
+          createSheetBtn.style.display = 'inline-flex';
           createSheetBtn.disabled = false;
           createSheetBtn.innerHTML = '<span>Create Delegation Sheet</span>';
         }
 
-        const emailInput = document.getElementById('dlg-email');
-        if (emailInput) {
-          checkEmailRegistration(emailInput);
-        }
+        const submitBtn = document.getElementById('dlg-submit-btn');
+        if (submitBtn) submitBtn.style.display = 'block';
+        const exitBtn = document.getElementById('dlg-exit-btn');
+        if (exitBtn) exitBtn.style.display = 'none';
+        const existsMsg = document.getElementById('dlg-email-exists-msg');
+        if (existsMsg) existsMsg.style.display = 'none';
 
         toggleDelegationClearBtn();
       }
@@ -7906,62 +8233,72 @@
         return;
       }
 
-      const cleanName = delegationName.toLowerCase().trim().replace(/\s+/g, '_');
       const cleanEmail = email.toLowerCase().trim();
+      const cleanName = delegationName.toLowerCase().trim().replace(/\s+/g, '_');
       const btn = document.getElementById('dlg-create-sheet-btn');
 
-      // 1. Prevent duplicate sheet creation if this delegation/email has already submitted
-      const prevSubmittedLink = (cleanName && localStorage.getItem(`submitted_dlg_${cleanName}`)) ||
-        (cleanEmail && localStorage.getItem(`submitted_dlg_email_${cleanEmail}`));
+      // 1. Strict Email-First Rule: If this email already has a sheet (submitted or active), REUSE IT!
+      // No matter what the delegation name, head name, or other details are!
+      const existingSheetUrl = getDelegationSheetForEmail(cleanEmail);
+      const isSubmitted = isDelegationEmailSubmitted(cleanEmail);
 
-      if (prevSubmittedLink) {
-        const errorEl = document.getElementById('dlg-sheet-error');
-        if (errorEl) {
-          errorEl.innerHTML = `⚠️ A roster sheet has already been submitted for this delegation/email.<br><a href="${prevSubmittedLink}" target="_blank" style="color:var(--accent-color);font-weight:700;text-decoration:underline;">Click to open submitted Google Sheet</a>`;
-          errorEl.style.display = 'block';
-        }
-        if (btn) {
-          btn.innerHTML = '<span>⚠️ Already Submitted</span>';
-          btn.disabled = true;
-        }
-        return;
-      }
+      if (existingSheetUrl || isSubmitted) {
+        const targetUrl = existingSheetUrl || localStorage.getItem(`submitted_dlg_email_${cleanEmail}`);
+        if (targetUrl && targetUrl !== 'registered') {
+          const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+          if (hiddenLinkInput) hiddenLinkInput.value = targetUrl;
 
-      // 2. Reuse existing active sheet for this delegation if already created
-      const activeSheetKey = `active_dlg_sheet_${cleanName}`;
-      const existingActiveSheet = localStorage.getItem(activeSheetKey);
-      if (existingActiveSheet) {
-        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-        if (hiddenLinkInput) hiddenLinkInput.value = existingActiveSheet;
-
-        const resultBox = document.getElementById('dlg-sheet-result');
-        const anchor = document.getElementById('dlg-sheet-anchor');
-        if (resultBox && anchor) {
-          anchor.href = existingActiveSheet;
-          anchor.textContent = `Open Google Sheet: ${delegationName}`;
-          resultBox.classList.add('is-generated');
+          const resultBox = document.getElementById('dlg-sheet-result');
+          const anchor = document.getElementById('dlg-sheet-anchor');
+          if (resultBox && anchor) {
+            anchor.href = targetUrl;
+            anchor.textContent = `Open Google Sheet: ${delegationName || 'Delegation Roster'}`;
+            resultBox.classList.add('is-generated');
+          }
         }
 
-        if (btn) {
-          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-          btn.disabled = false;
+        if (isSubmitted) {
+          const errorEl = document.getElementById('dlg-sheet-error');
+          if (errorEl) {
+            errorEl.innerHTML = `⚠️ This email has already submitted a delegation roster.<br><a href="${targetUrl || '#'}" target="_blank" style="color:var(--accent-color);font-weight:700;text-decoration:underline;">Click to open submitted Google Sheet</a>`;
+            errorEl.style.display = 'block';
+          }
+          if (btn) {
+            btn.innerHTML = '<span>⚠️ Already Submitted</span>';
+            btn.disabled = true;
+          }
+          const existsMsg = document.getElementById('dlg-email-exists-msg');
+          if (existsMsg) {
+            existsMsg.textContent = 'This email has already registered a delegation.';
+            existsMsg.style.display = 'block';
+          }
+          const submitBtn = document.getElementById('dlg-submit-btn');
+          const exitBtn = document.getElementById('dlg-exit-btn');
+          if (submitBtn) submitBtn.style.display = 'none';
+          if (exitBtn) exitBtn.style.display = 'block';
+        } else {
+          if (btn) {
+            btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+            btn.disabled = false;
+          }
         }
-        return;
+        return; // NEVER create a duplicate sheet for the same email!
       }
 
       const gasUrl = "https://script.google.com/macros/s/AKfycbxE1kr1fAjSP4JiNyRQYu-JU9vMk61chP6YGX_rG2n-5M7iTMz4oE1UJpsIfN5d5f1VRw/exec";
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
 
-      // Auto copy the formatted headers & Head of Delegation into user's clipboard immediately
+      // Auto copy formatted headers into user clipboard
       try {
         const clipboardText = headers.join('\t') + '\n' + headRow.join('\t');
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(clipboardText);
         }
-      } catch (e) {
-        console.log('Clipboard notice:', e);
-      }
+      } catch (e) {}
+
+      _isGeneratingDelegationSheet = true;
+      _generatingEmail = cleanEmail;
 
       if (btn) {
         btn.disabled = true;
@@ -7972,76 +8309,101 @@
       if (errorEl) errorEl.style.display = 'none';
 
       let sheetUrl = null;
+      let isExistingRemote = false;
 
-      // Try backend API endpoint
       try {
-        const response = await fetch('/api/create-sheet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            delegationName,
-            delegationType,
-            headName,
-            email,
-            phone
-          })
-        });
-
-        const data = await response.json();
-        if (data && data.sheetUrl && !data.isFallback) {
-          sheetUrl = data.sheetUrl;
-        }
-      } catch (apiErr) {
-        console.log('API notice:', apiErr);
-      }
-
-      // Fallback to Google Apps Script Web App
-      if (!sheetUrl) {
+        // Try backend API endpoint
         try {
-          const payload = JSON.stringify({
-            delegationName,
-            delegationType,
-            headName,
-            email,
-            phone,
-            headers,
-            headRow
-          });
-
-          const response = await fetch(gasUrl, {
+          const response = await fetch('/api/create-sheet', {
             method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: payload
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              delegationName,
+              delegationType,
+              headName,
+              email: cleanEmail,
+              phone
+            })
           });
 
           const data = await response.json();
-          if (data && data.sheetUrl) {
+          if (data && data.sheetUrl && !data.isFallback) {
             sheetUrl = data.sheetUrl;
+            isExistingRemote = !!(data.isExisting || data.duplicate);
           }
-        } catch (gasErr) {
-          console.log('Direct Apps Script notice:', gasErr);
+        } catch (apiErr) {
+          console.log('API notice:', apiErr);
         }
-      }
 
-      // Display sheet ready result
-      const hiddenLinkInput = document.getElementById('dlg-sheet-link');
-      const finalUrl = sheetUrl || `https://docs.google.com/spreadsheets/d/1jel7NFjYw78sDX4P8Bsia0HpozcRcs1SzjpLgY2tw24/copy?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
-      if (hiddenLinkInput) hiddenLinkInput.value = finalUrl;
+        // Fallback to Google Apps Script Web App
+        if (!sheetUrl) {
+          try {
+            const payload = JSON.stringify({
+              delegationName,
+              delegationType,
+              headName,
+              email: cleanEmail,
+              phone,
+              headers,
+              headRow
+            });
 
-      // Save active sheet URL in localStorage to avoid creating duplicates
-      localStorage.setItem(activeSheetKey, finalUrl);
+            const response = await fetch(gasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: payload
+            });
 
-      const resultBox = document.getElementById('dlg-sheet-result');
-      const anchor = document.getElementById('dlg-sheet-anchor');
-      if (resultBox && anchor) {
-        anchor.href = finalUrl;
-        anchor.textContent = `Open Google Sheet: ${delegationName}`;
-        resultBox.classList.add('is-generated');
-      }
+            const data = await response.json();
+            if (data && data.sheetUrl) {
+              sheetUrl = data.sheetUrl;
+              isExistingRemote = !!(data.isExisting || data.duplicate);
+            }
+          } catch (gasErr) {
+            console.log('Direct Apps Script notice:', gasErr);
+          }
+        }
 
-      if (btn) {
-        btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-        btn.disabled = false;
+        // Display sheet ready result
+        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+        const finalUrl = sheetUrl || `https://docs.google.com/spreadsheets/d/1jel7NFjYw78sDX4P8Bsia0HpozcRcs1SzjpLgY2tw24/copy?title=${encodeURIComponent('RNS MUN 26 - ' + delegationName + ' Roster')}`;
+        if (hiddenLinkInput) hiddenLinkInput.value = finalUrl;
+
+        // Save strictly by EMAIL so this email will always reuse this sheet across devices/sessions!
+        localStorage.setItem(`active_dlg_sheet_email_${cleanEmail}`, finalUrl);
+        localStorage.setItem(`dlg_sheet_email_${cleanEmail}`, finalUrl);
+        if (cleanName) localStorage.setItem(`active_dlg_sheet_${cleanName}`, finalUrl);
+
+        const resultBox = document.getElementById('dlg-sheet-result');
+        const anchor = document.getElementById('dlg-sheet-anchor');
+        if (resultBox && anchor) {
+          anchor.href = finalUrl;
+          anchor.textContent = `Open Google Sheet: ${delegationName || 'Delegation Roster'}`;
+          resultBox.classList.add('is-generated');
+        }
+
+        if (isExistingRemote) {
+          localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, finalUrl);
+          markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName, sheetUrl: finalUrl });
+          const existsMsg = document.getElementById('dlg-email-exists-msg');
+          if (existsMsg) {
+            existsMsg.textContent = 'This email has already registered a delegation.';
+            existsMsg.style.display = 'block';
+          }
+          if (btn) {
+            btn.innerHTML = '<span>⚠️ Already Submitted</span>';
+            btn.disabled = true;
+          }
+          const submitBtn = document.getElementById('dlg-submit-btn');
+          const exitBtn = document.getElementById('dlg-exit-btn');
+          if (submitBtn) submitBtn.style.display = 'none';
+          if (exitBtn) exitBtn.style.display = 'block';
+        } else if (btn) {
+          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
+          btn.disabled = false;
+        }
+      } finally {
+        _isGeneratingDelegationSheet = false;
       }
     }
 
@@ -8193,11 +8555,14 @@
         googleSheetLink: sheetLink.value.trim()
       };
 
-      // Save delegation submission state to prevent generating another sheet later
-      const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+      // Save delegation submission state strictly keyed by email
       const cleanEmail = email.value.trim().toLowerCase();
+      const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+      localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, sheetLink.value.trim());
+      localStorage.setItem(`active_dlg_sheet_email_${cleanEmail}`, sheetLink.value.trim());
+      localStorage.setItem(`dlg_sheet_email_${cleanEmail}`, sheetLink.value.trim());
+      markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName, sheetUrl: sheetLink.value.trim() });
       if (cleanName) localStorage.setItem(`submitted_dlg_${cleanName}`, sheetLink.value.trim());
-      if (cleanEmail) localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, sheetLink.value.trim());
 
       // Show Delegation Success Screen
       const dlgCard = document.getElementById('delegation-modal-card');
@@ -8253,6 +8618,27 @@
         return;
       }
       if (!validateStep(3)) {
+        const regCard = document.getElementById('registration-modal-card');
+        if (window.gsap && regCard) {
+          gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
+        }
+        return;
+      }
+
+      // Duplicate Email Safety Guard
+      const reqEmail = document.getElementById('reg-email')?.value.trim().toLowerCase() || '';
+      if (isEmailRegisteredLocal(reqEmail)) {
+        goToStep(1);
+        const emailInput = document.getElementById('reg-email');
+        if (emailInput) {
+          emailInput.classList.add('has-error');
+          emailInput.focus();
+        }
+        const existsMsg = document.getElementById('reg-email-exists-msg');
+        if (existsMsg) {
+          existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+          existsMsg.style.display = 'block';
+        }
         const regCard = document.getElementById('registration-modal-card');
         if (window.gsap && regCard) {
           gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
@@ -8384,6 +8770,15 @@
 
       dispatchSubmission(formPayload)
         .then(() => {
+          // Immediately mark email as registered in local cache
+          if (formPayload.email) {
+            markEmailAsRegistered(formPayload.email, 'individual', {
+              name: formPayload.name,
+              delegateType: formPayload.delegateType,
+              committee1: formPayload.committee1
+            });
+          }
+
           const successOverlay = document.getElementById('success-overlay');
           if (successOverlay) {
             const successTitle = document.getElementById('success-title');
