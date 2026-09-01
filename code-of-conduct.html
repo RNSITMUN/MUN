@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Code of Conduct | RNS MUN '26</title>
+  <title>Code of Conduct | RNSMUN 2026</title>
   <link rel="canonical" href="https://mun-rnsit.vercel.app/code-of-conduct">
-  <meta name="description" content="Official Code of Conduct, rules of procedure, diplomatic decorum, dress code, academic integrity, and disciplinary regulations for RNS MUN 2026.">
+  <meta name="description" content="Official Code of Conduct, rules of procedure, diplomatic decorum, dress code, academic integrity, and disciplinary regulations for RNSMUN 2026.">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mun-rnsit.vercel.app/code-of-conduct">
-  <meta property="og:title" content="Code of Conduct | RNS MUN '26">
-  <meta property="og:description" content="Official Code of Conduct, chamber etiquette, and safety policies for RNS Model United Nations 2026.">
+  <meta property="og:title" content="Code of Conduct | RNSMUN 2026">
+  <meta property="og:description" content="Official Code of Conduct, chamber etiquette, and safety policies for RNSMUN 2026.">
   <meta property="og:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://mun-rnsit.vercel.app/code-of-conduct">
-  <meta property="twitter:title" content="Code of Conduct | RNS MUN '26">
-  <meta property="twitter:description" content="Official Code of Conduct, chamber etiquette, and safety policies for RNS Model United Nations 2026.">
+  <meta property="twitter:title" content="Code of Conduct | RNSMUN 2026">
+  <meta property="twitter:description" content="Official Code of Conduct, chamber etiquette, and safety policies for RNSMUN 2026.">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png">
 
   <!-- Typography -->
@@ -322,15 +322,23 @@
       padding-top: 24px;
       border-top: 2px dashed rgba(0, 0, 0, 0.15);
       display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+    }
+
+    .coc-footer-top-row {
+      display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .coc-doc-footer-text {
       font-size: 0.88rem;
-      color: rgba(0, 0, 0, 0.64);
+      color: rgba(0, 0, 0, 0.68);
       line-height: 1.5;
       margin: 0;
       max-width: 480px;
@@ -346,10 +354,159 @@
       align-items: center;
       gap: 4px;
       transition: color 0.15s ease;
+      cursor: pointer;
     }
 
     .coc-contact-link:hover {
       color: var(--accent-hover);
+    }
+
+    .coc-contacts-section {
+      width: 100%;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .coc-contacts-kicker {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-color);
+    }
+
+    .coc-contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .coc-contact-card {
+      background: #FFFDF9;
+      border: 1.8px solid #000;
+      border-radius: 10px;
+      padding: 11px 13px;
+      box-shadow: 2.5px 2.5px 0 #000;
+      text-decoration: none;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .coc-contact-card:hover {
+      background: #FFF7EB;
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .coc-contact-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .coc-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.94rem;
+      font-weight: 900;
+      color: #000;
+      line-height: 1.2;
+    }
+
+    .contact-role {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .contact-phone-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 3px;
+      width: 100%;
+    }
+
+    .contact-phone-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: rgba(0, 0, 0, 0.88);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s ease;
+    }
+
+    .contact-phone-link:hover {
+      color: var(--accent-color);
+    }
+
+    .contact-phone-link svg {
+      color: var(--accent-color);
+      flex-shrink: 0;
+    }
+
+    .contact-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #FFF7EB;
+      border: 1.2px solid #000;
+      border-radius: 5px;
+      padding: 2px 7px;
+      box-shadow: 1px 1px 0 #000;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #000;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+      flex-shrink: 0;
+    }
+
+    .contact-copy-btn:hover {
+      background: #E5A93C;
+      transform: translate(-0.5px, -0.5px);
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .contact-copy-btn:active {
+      transform: translate(0.5px, 0.5px);
+      box-shadow: 0.5px 0.5px 0 #000;
+    }
+
+    .contact-copy-btn.copied {
+      background: #6C0D2C;
+      color: #FFF7EB;
+      border-color: #6C0D2C;
+    }
+
+    @media (max-width: 720px) {
+      .coc-contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
     }
 
     /* Screen Hidden Print Elements */
@@ -793,8 +950,8 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <a href="/" aria-label="RNS MUN '26 Home">
-      <img src="./assets/Logos/MUN_logo.png" alt="RNS MUN Logo" class="top-left-logo" width="496" height="503">
+    <a href="/" aria-label="RNSMUN 2026 Home">
+      <img src="./assets/Logos/MUN_logo.png" alt="RNSMUN 2026 Logo" class="top-left-logo" width="496" height="503">
     </a>
   </div>
 
@@ -856,7 +1013,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           <span>Print / PDF</span>
         </button>
-        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-action-pill" title="Contact Organizing Committee">
+        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-action-pill" title="Contact Organizing Committee" onclick="handleCocEmailClick(event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           <span>Contact Committee</span>
         </a>
@@ -880,7 +1037,7 @@
     <!-- Official Professional Printable Letterhead (Visible in Print & PDF Only) -->
     <header class="coc-print-letterhead" aria-hidden="true">
       <div class="coc-print-header-top">
-        <img src="./assets/Logos/RNS_MUN_2026_dark.png" alt="RNS MUN 2026" class="coc-print-hero-logo">
+        <img src="./assets/Logos/RNS_MUN_2026_dark.png" alt="RNSMUN 2026" class="coc-print-hero-logo">
         <div class="coc-print-date-badge">October 06 – 07, 2026</div>
       </div>
       <div class="coc-print-rule-bar">
@@ -1164,19 +1321,81 @@
 
       <!-- Document Sign-off & Notice (Screen Only) -->
       <footer class="coc-doc-footer">
-        <p class="coc-doc-footer-text">
-          Any concerns regarding harassment, safety, or inappropriate behaviour should be reported immediately.
-        </p>
-        <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-contact-link">
-          <span>mun@rnsit.ac.in &rarr;</span>
-        </a>
+        <div class="coc-footer-top-row">
+          <p class="coc-doc-footer-text">
+            Any concerns regarding harassment, safety, or inappropriate behaviour should be reported immediately.
+          </p>
+          <a href="mailto:mun@rnsit.ac.in?subject=Report%20to%20Organizing%20Committee%20-%20RNSMUN" class="coc-contact-link" onclick="handleCocEmailClick(event)" aria-label="Send email to mun@rnsit.ac.in">
+            <span>mun@rnsit.ac.in &rarr;</span>
+          </a>
+        </div>
+
+        <!-- Secretariat Contact Details -->
+        <div class="coc-contacts-section">
+          <div class="coc-contacts-kicker">CONTACT</div>
+          <div class="coc-contacts-grid">
+            <!-- Zeyan -->
+            <div class="coc-contact-card">
+              <div class="coc-card-header">
+                <span class="contact-name">Zeyan</span>
+                <span class="contact-role">Head &bull; Delegate Affairs</span>
+              </div>
+              <div class="contact-phone-row">
+                <a href="tel:+919155973955" class="contact-phone-link" title="Call Zeyan (+91 91559 73955)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>+91 91559 73955</span>
+                </a>
+                <button type="button" class="contact-copy-btn" onclick="copyContactNumber(event, '+919155973955', this)" title="Copy phone number" aria-label="Copy phone number for Zeyan">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-btn-txt">Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Adith -->
+            <div class="coc-contact-card">
+              <div class="coc-card-header">
+                <span class="contact-name">Adith</span>
+                <span class="contact-role">Head &bull; Delegate Affairs</span>
+              </div>
+              <div class="contact-phone-row">
+                <a href="tel:+918970262490" class="contact-phone-link" title="Call Adith (+91 89702 62490)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>+91 89702 62490</span>
+                </a>
+                <button type="button" class="contact-copy-btn" onclick="copyContactNumber(event, '+918970262490', this)" title="Copy phone number" aria-label="Copy phone number for Adith">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-btn-txt">Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Aditi -->
+            <div class="coc-contact-card">
+              <div class="coc-card-header">
+                <span class="contact-name">Aditi</span>
+                <span class="contact-role">Charge D'Affaires</span>
+              </div>
+              <div class="contact-phone-row">
+                <a href="tel:+919108080956" class="contact-phone-link" title="Call Aditi (+91 91080 80956)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>+91 91080 80956</span>
+                </a>
+                <button type="button" class="contact-copy-btn" onclick="copyContactNumber(event, '+919108080956', this)" title="Copy phone number" aria-label="Copy phone number for Aditi">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span class="copy-btn-txt">Copy</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
 
       <!-- Official Professional Endorsement Block (Visible in Print & PDF Only) -->
       <div class="coc-print-signoff" aria-hidden="true">
         <div class="coc-print-seal-wrap">
           <div class="coc-print-seal-box">
-            <span class="coc-seal-text">RNS MUN '26</span>
+            <span class="coc-seal-text">RNSMUN'26</span>
             <span class="coc-seal-sub">SECRETARIAT APPROVED</span>
           </div>
           <p class="coc-print-legal">
@@ -1249,6 +1468,71 @@
         });
       });
     });
+
+    // Cross-Device Smart Email Dispatcher (Native Mail App on Mobile / Webmail on Desktop)
+    function handleCocEmailClick(event) {
+      if (event) event.preventDefault();
+      const email = 'mun@rnsit.ac.in';
+      const subject = encodeURIComponent('Report to Organizing Committee - RNSMUN 2026');
+      const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+                       (navigator.maxTouchPoints > 1 && /Macintosh/i.test(navigator.userAgent));
+
+      if (isMobile) {
+        // Native Mail App on iOS / Android
+        window.location.href = `mailto:${email}?subject=${subject}`;
+      } else {
+        // Desktop Webmail (Gmail Compose) with mailto fallback
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${subject}`;
+        const webWindow = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+        if (!webWindow || webWindow.closed || typeof webWindow.closed === 'undefined') {
+          window.location.href = `mailto:${email}?subject=${subject}`;
+        }
+      }
+    }
+
+    // 1-Click Copy Phone Number Handler
+    function copyContactNumber(event, number, btn) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (!number) return;
+      const cleanNum = number.replace(/\s+/g, '');
+
+      const markCopied = () => {
+        if (!btn) return;
+        btn.classList.add('copied');
+        const txtSpan = btn.querySelector('.copy-btn-txt');
+        const originalText = txtSpan ? txtSpan.textContent : 'Copy';
+        if (txtSpan) txtSpan.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          if (txtSpan) txtSpan.textContent = originalText;
+        }, 1600);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanNum).then(markCopied).catch(() => {
+          fallbackCopyText(cleanNum, markCopied);
+        });
+      } else {
+        fallbackCopyText(cleanNum, markCopied);
+      }
+    }
+
+    function fallbackCopyText(text, callback) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        if (callback) callback();
+      } catch (_) {}
+      document.body.removeChild(textarea);
+    }
   </script>
 
   <!-- Topology Shader Background -->

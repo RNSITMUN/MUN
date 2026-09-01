@@ -110,7 +110,7 @@ export default async function handler(req, res) {
           ''  // Comm 2 - Portfolio Preference 3
         ];
 
-    const title = `RNS MUN 26 - ${delegationName.trim()} Roster`;
+    const title = `RNSMUN 2026 - ${delegationName.trim()} Roster`;
 
     // 1. Google Apps Script Webhook URL
     const gasEndpoint =

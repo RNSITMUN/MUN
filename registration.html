@@ -72,7 +72,7 @@
       justify-content: flex-start;
       min-height: 100svh;
       min-height: 100dvh;
-      padding: 96px 20px 40px 20px;
+      padding: 76px 20px 32px 20px;
       box-sizing: border-box;
     }
 
@@ -99,6 +99,523 @@
       margin: 0;
       font-weight: 400;
       line-height: 1.5;
+    }
+
+    /* ================================================= */
+    /* TOP-LEVEL REGISTRATION CHOICE PORTAL */
+    /* ================================================= */
+    .reg-choice-container {
+      width: 100%;
+      max-width: 840px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: auto 0;
+      flex: 1;
+      padding: 10px 0 20px 0;
+      box-sizing: border-box;
+      animation: fadeInChoice 0.3s ease-out;
+    }
+
+    @keyframes fadeInChoice {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reg-choice-header {
+      text-align: center;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reg-choice-kicker {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .reg-choice-main-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.1rem, 5vw, 3.2rem);
+      font-weight: 900;
+      color: #000;
+      margin: 0;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+
+    .reg-choice-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.88rem, 1.8vw, 1.02rem);
+      color: rgba(0, 0, 0, 0.65);
+      margin: 0;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    .reg-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .reg-choice-card {
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 16px;
+      padding: 26px 22px;
+      box-shadow: 4px 4px 0 #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      position: relative;
+      user-select: none;
+      outline: none;
+    }
+
+    .reg-choice-card:hover,
+    .reg-choice-card:focus-visible {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0 #000;
+    }
+
+    .reg-choice-card:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .reg-choice-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .reg-choice-badge {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1.5px solid #000;
+    }
+
+    .reg-choice-badge-ind {
+      background: rgba(108, 13, 44, 0.08);
+      color: #6C0D2C;
+      border-color: #6C0D2C;
+    }
+
+    .reg-choice-badge-dlg {
+      background: #E5A93C;
+      color: #000;
+      border-color: #000;
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .reg-choice-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 0 #000;
+      flex-shrink: 0;
+    }
+
+    .ind-icon {
+      background: #FFF7EB;
+      color: #6C0D2C;
+    }
+
+    .dlg-icon {
+      background: #FFF7EB;
+      color: #E5A93C;
+    }
+
+    .reg-choice-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.32rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #000;
+      margin: 0;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .reg-choice-steps {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: #FFF7EB;
+      border: 1.5px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .step-item {
+      color: #000;
+    }
+
+    .step-arrow {
+      color: #6C0D2C;
+      font-weight: 900;
+    }
+
+    .reg-choice-desc {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .reg-choice-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(0, 0, 0, 0.72);
+      line-height: 1.38;
+      margin: 2px 0 4px 0;
+    }
+
+    .choice-hl-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .choice-hl-item strong {
+      color: #000;
+      font-weight: 800;
+    }
+
+    .hl-bullet {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #6C0D2C;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .reg-choice-card-gold .hl-bullet {
+      color: #B27B1E;
+    }
+
+    .reg-choice-action {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .reg-choice-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 16px;
+      background: #6C0D2C;
+      color: #FFF7EB;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border: 2px solid #000;
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0 #000;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .reg-choice-btn-gold {
+      background: #E5A93C;
+      color: #000;
+    }
+
+    /* Subview Top Navigation */
+    .reg-subview {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeInChoice 0.25s ease-out;
+    }
+
+    #delegation-reg-view {
+      margin: auto 0;
+      flex: 1;
+      justify-content: center;
+      padding: 10px 0 20px 0;
+      box-sizing: border-box;
+    }
+
+    .reg-subview-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 720px;
+      max-width: 100%;
+      margin-bottom: 20px;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .btn-subview-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFDF9;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #000;
+      box-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .btn-subview-back:hover {
+      background: #FFF7EB;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 #000;
+    }
+
+    .btn-subview-back:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 #000;
+    }
+
+    .reg-subview-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .reg-subview-pill-gold {
+      color: #000;
+      background: #E5A93C;
+      border-color: #000;
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .reg-switch-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      color: rgba(0, 0, 0, 0.7);
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .btn-switch-link {
+      background: none;
+      border: none;
+      color: #6C0D2C;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .btn-switch-link:hover {
+      color: #000;
+    }
+
+    .delegation-hub-card {
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 4.5px 4.5px 0 #000;
+      max-width: 720px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .hub-kicker {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1.5px solid #6C0D2C;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .hub-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 900;
+      color: #000;
+      margin: 8px 0 0 0;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .hub-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(0, 0, 0, 0.7);
+      margin: 0;
+      line-height: 1.5;
+      max-width: 540px;
+    }
+
+    .delegation-hub-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hub-primary-btn {
+      flex: 1;
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #E5A93C;
+      color: #000;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 13px 20px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 2.5px 2.5px 0 #000;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .hub-primary-btn:hover {
+      background: #F5B94C;
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .hub-primary-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1.5px 1.5px 0 #000;
+    }
+
+    .hub-secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFF7EB;
+      color: #000;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      box-shadow: 2.5px 2.5px 0 #000;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .hub-secondary-btn:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .delegation-perks-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .perk-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.75);
+      background: #FFF7EB;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .reg-choice-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .reg-choice-card {
+        padding: 22px 18px;
+      }
+      .delegation-hub-card {
+        padding: 24px 18px;
+      }
     }
 
     /* Committees Grid Layout */
@@ -3029,7 +3546,7 @@
       }
 
       .registration-viewport {
-        padding: clamp(68px, 10vh, 88px) max(14px, env(safe-area-inset-right, 14px)) max(50px, calc(30px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
+        padding: clamp(68px, 10vh, 88px) max(14px, env(safe-area-inset-right, 14px)) max(95px, calc(85px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
       }
 
       .registration-header {
@@ -3227,7 +3744,7 @@
       }
 
       .registration-viewport {
-        padding: 65px 12px 40px 12px;
+        padding: 65px 12px 95px 12px;
       }
 
       .registration-title {
@@ -3239,22 +3756,37 @@
       }
 
       .committees-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
 
       .committee-card {
-        padding: 12px 8px;
+        padding: 12px 14px;
         border-width: 2px;
         box-shadow: 2.5px 2.5px 0px var(--text-primary);
-        min-height: 160px;
+        min-height: auto;
         border-radius: 12px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .card-top-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        flex: 1;
+        min-width: 0;
       }
 
       .logo-wrapper {
-        width: 54px;
-        height: 54px;
-        margin-bottom: 6px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 0;
+        flex-shrink: 0;
       }
 
       .committee-logo {
@@ -3263,14 +3795,14 @@
       }
 
       .committee-name {
-        font-size: 0.95rem;
-        margin-bottom: 2px;
+        font-size: 0.98rem;
+        margin-bottom: 1px;
       }
 
       .committee-fullname {
-        font-size: 0.68rem;
+        font-size: 0.72rem;
         line-height: 1.25;
-        margin-bottom: 6px;
+        margin-bottom: 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -3278,14 +3810,16 @@
       }
 
       .card-badge-preview {
-        font-size: 0.62rem;
-        padding: 3px 7px;
-        gap: 3px;
+        font-size: 0.7rem;
+        padding: 6px 10px;
+        gap: 4px;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       .card-badge-preview svg {
-        width: 9px;
-        height: 9px;
+        width: 10px;
+        height: 10px;
       }
 
       .direct-reg-banner {
@@ -3816,180 +4350,327 @@
 
   <!-- Main Content Viewport -->
   <main class="registration-viewport">
-    <div class="registration-header">
-      <h1 class="registration-title">Committees & Registration</h1>
-      <p class="registration-subtitle">Join the debate. Select your preferred committee below to explore its official
-        agenda and register as a delegate.</p>
-      <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
-        target="_blank" rel="noopener noreferrer" class="btn-master-matrix-header"
-        aria-label="Open Master Portfolio Matrix Google Sheet">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="3" y1="9" x2="21" y2="9"></line>
-          <line x1="9" y1="21" x2="9" y2="9"></line>
-        </svg>
-        <span>View Master Portfolio Matrix (All Committees)</span>
-        <svg class="matrix-ext-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="7" y1="17" x2="17" y2="7"></line>
-          <polyline points="7 7 17 7 17 17"></polyline>
-        </svg>
-      </a>
-    </div>
 
-    <!-- Committees Section -->
-    <div class="committees-section">
-      <div class="section-header-wrap">
-        <h2 class="committees-title">Committees</h2>
-        <span class="committees-hint">Click any card to expand profile</span>
+    <!-- 1. TOP-LEVEL CHOICE SCREEN -->
+    <div id="registration-choice-view" class="reg-choice-container">
+      <div class="reg-choice-header">
+        <span class="reg-choice-kicker">★ STEP 1 OF 2 // SELECT PATH</span>
+        <h1 class="reg-choice-main-title">SELECT YOUR REGISTRATION</h1>
+        <p class="reg-choice-subtitle">Choose your registration category to proceed with RNSMUN 2026 applications.</p>
       </div>
 
-      <div class="committees-grid">
-        <!-- 1. UNSC -->
-        <div class="committee-card" data-committee-id="unsc" role="button" tabindex="0"
-          onclick="handleCardClick('unsc', this)" aria-haspopup="dialog"
-          aria-label="UNSC United Nations Security Council Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/2.svg" alt="UNSC Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
+      <div class="reg-choice-grid">
+        <!-- Option 1: Individual Delegate -->
+        <div class="reg-choice-card" onclick="selectRegistrationPath('individual')" role="button" tabindex="0"
+          onkeydown="if(event.key==='Enter') selectRegistrationPath('individual')" aria-label="Register as Individual Delegate">
+          <div class="reg-choice-top">
+            <div class="reg-choice-badge reg-choice-badge-ind">SINGLE DELEGATE PASS</div>
+            <div class="reg-choice-icon ind-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
             </div>
-            <h3 class="committee-name">UNSC</h3>
-            <p class="committee-fullname">United Nations Security Council</p>
           </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
+
+          <div>
+            <h2 class="reg-choice-title">INDIVIDUAL DELEGATE</h2>
+            <div class="reg-choice-steps" style="margin-top: 10px;">
+              <span class="step-item">Choose committee</span>
+              <span class="step-arrow">&rarr;</span>
+              <span class="step-item">Choose portfolios</span>
+              <span class="step-arrow">&rarr;</span>
+              <span class="step-item">Register</span>
+            </div>
+          </div>
+
+          <div class="reg-choice-highlights">
+            <div class="choice-hl-item">
+              <span class="hl-bullet">✓</span>
+              <span><strong>2-Day Full Access</strong> &bull; All 6 committees</span>
+            </div>
+            <div class="choice-hl-item">
+              <span class="hl-bullet">✓</span>
+              <span><strong>Meals Included</strong> &bull; Buffet lunch & high-tea both days</span>
+            </div>
+            <div class="choice-hl-item">
+              <span class="hl-bullet">✓</span>
+              <span><strong>Delegate Kit</strong> &bull; Placard & hard-copy certificate</span>
+            </div>
+          </div>
+
+          <div class="reg-choice-action">
+            <div class="reg-choice-btn">Continue as Individual Delegate &rarr;</div>
+          </div>
         </div>
 
-        <!-- 2. LOK SABHA -->
-        <div class="committee-card" data-committee-id="loksabha" role="button" tabindex="0"
-          onclick="handleCardClick('loksabha', this)" aria-haspopup="dialog"
-          aria-label="LOK SABHA House of the People Indian Parliament Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/5.svg" alt="Lok Sabha Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
+        <!-- Option 2: Delegation (10+ Members) -->
+        <div class="reg-choice-card reg-choice-card-gold" onclick="selectRegistrationPath('delegation')" role="button" tabindex="0"
+          onkeydown="if(event.key==='Enter') selectRegistrationPath('delegation')" aria-label="Register as Group Representation (10+ Members)">
+          <div class="reg-choice-top">
+            <div class="reg-choice-badge reg-choice-badge-dlg">GROUP REPRESENTATION</div>
+            <div class="reg-choice-icon dlg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+              </svg>
             </div>
-            <h3 class="committee-name">LOK SABHA</h3>
-            <p class="committee-fullname">House of the People (Indian Parliament)</p>
           </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
-        </div>
 
-        <!-- 3. DISEC -->
-        <div class="committee-card" data-committee-id="disec" role="button" tabindex="0"
-          onclick="handleCardClick('disec', this)" aria-haspopup="dialog"
-          aria-label="DISEC Disarmament & International Security Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/4.svg" alt="DISEC Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
+          <div>
+            <h2 class="reg-choice-title">DELEGATION — 10+ MEMBERS</h2>
+            <div class="reg-choice-steps" style="margin-top: 10px;">
+              <span class="step-item">Build your roster</span>
+              <span class="step-arrow">&rarr;</span>
+              <span class="step-item">Submit delegation</span>
+              <span class="step-arrow">&rarr;</span>
+              <span class="step-item">Get allocation</span>
             </div>
-            <h3 class="committee-name">DISEC</h3>
-            <p class="committee-fullname">Disarmament & International Security</p>
           </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
-        </div>
 
-        <!-- 4. UNHRC -->
-        <div class="committee-card" data-committee-id="unhrc" role="button" tabindex="0"
-          onclick="handleCardClick('unhrc', this)" aria-haspopup="dialog"
-          aria-label="UNHRC United Nations Human Rights Council Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/3.svg" alt="UNHRC Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
+          <div class="reg-choice-highlights">
+            <div class="choice-hl-item">
+              <span class="hl-bullet">✓</span>
+              <span><strong>10+ Delegates</strong> &bull; Institutional & club delegations</span>
             </div>
-            <h3 class="committee-name">UNHRC</h3>
-            <p class="committee-fullname">United Nations Human Rights Council</p>
+            <div class="choice-hl-item">
+              <span class="hl-bullet">★</span>
+              <span><strong>Flagship Trophy + Cash Prize</strong> &bull; Best Delegation</span>
+            </div>
+            <div class="choice-hl-item">
+              <span class="hl-bullet">✓</span>
+              <span><strong>Priority Allotments</strong> &bull; Live shared Google Sheet roster</span>
+            </div>
           </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
-        </div>
 
-        <!-- 5. UNODC -->
-        <div class="committee-card" data-committee-id="unodc" role="button" tabindex="0"
-          onclick="handleCardClick('unodc', this)" aria-haspopup="dialog"
-          aria-label="UNODC United Nations Office on Drugs and Crime Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/1.svg" alt="UNODC Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
-            </div>
-            <h3 class="committee-name">UNODC</h3>
-            <p class="committee-fullname">United Nations Office on Drugs and Crime</p>
+          <div class="reg-choice-action">
+            <div class="reg-choice-btn reg-choice-btn-gold">Continue as Delegation &rarr;</div>
           </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
-        </div>
-
-        <!-- 6. IP -->
-        <div class="committee-card" data-committee-id="ip" role="button" tabindex="0"
-          onclick="handleCardClick('ip', this)" aria-haspopup="dialog"
-          aria-label="IP International Press Explore Details">
-          <div class="card-top-content">
-            <div class="logo-wrapper">
-              <img src="/RNSMUN_LOGO/6.svg" alt="IP Official Logo" class="committee-logo" width="80" height="80"
-                loading="lazy" decoding="async">
-            </div>
-            <h3 class="committee-name">IP</h3>
-            <p class="committee-fullname">International Press</p>
-          </div>
-          <span class="card-badge-preview">
-            Explore Details
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
         </div>
       </div>
     </div>
 
-    <!-- Direct Registration Banner -->
-    <div class="direct-reg-banner">
-      <div class="banner-text-wrap">
-        <div class="banner-tag-row">
-          <span class="banner-pill-award">★ ₹15,000 PRIZE POOL</span>
-        </div>
-        <h3 class="banner-title">Ready to Represent Your Delegation?</h3>
-        <p class="banner-desc">
-          Groups of 10 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title with an exclusive <strong>₹15,000 cash prize pool</strong>.
-        </p>
+    <!-- 2. INDIVIDUAL DELEGATE SUBVIEW -->
+    <div id="individual-delegate-view" class="reg-subview" style="display: none;">
+      <div class="reg-subview-nav">
+        <button type="button" class="btn-subview-back" onclick="showRegistrationChoice()" aria-label="Back to Registration Options">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Change Option</span>
+        </button>
+        <div class="reg-subview-pill">INDIVIDUAL DELEGATE FLOW</div>
       </div>
-      <div class="banner-btns-container">
-        <button class="banner-btn" onclick="openDelegationRegistrationModal()" aria-label="Register as Delegation (Group Registration)">
-          <span class="banner-btn-main">Register as Delegation</span>
-          <span class="banner-btn-sub">GROUP REGISTRATION (10+ DELEGATES) →</span>
+
+      <div class="registration-header">
+        <h1 class="registration-title">Committees & Registration</h1>
+        <p class="registration-subtitle">Join the debate. Select your preferred committee below to explore its official agenda and register as a delegate.</p>
+        <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
+          target="_blank" rel="noopener noreferrer" class="btn-master-matrix-header"
+          aria-label="Open Master Portfolio Matrix Google Sheet">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <span>View Master Portfolio Matrix (All Committees)</span>
+          <svg class="matrix-ext-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Committees Section -->
+      <div class="committees-section">
+        <div class="section-header-wrap">
+          <h2 class="committees-title">Committees</h2>
+          <span class="committees-hint">Click any card to expand profile</span>
+        </div>
+
+        <div class="committees-grid">
+          <!-- 1. UNSC -->
+          <div class="committee-card" data-committee-id="unsc" role="button" tabindex="0"
+            onclick="handleCardClick('unsc', this)" aria-haspopup="dialog"
+            aria-label="UNSC United Nations Security Council Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/2.svg" alt="UNSC Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">UNSC</h3>
+              <p class="committee-fullname">United Nations Security Council</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+
+          <!-- 2. LOK SABHA -->
+          <div class="committee-card" data-committee-id="loksabha" role="button" tabindex="0"
+            onclick="handleCardClick('loksabha', this)" aria-haspopup="dialog"
+            aria-label="Lok Sabha Indian Parliamentary Committee Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/5.svg" alt="Lok Sabha Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">LOK SABHA</h3>
+              <p class="committee-fullname">House of the People</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+
+          <!-- 3. DISEC -->
+          <div class="committee-card" data-committee-id="disec" role="button" tabindex="0"
+            onclick="handleCardClick('disec', this)" aria-haspopup="dialog"
+            aria-label="DISEC Disarmament & International Security Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/4.svg" alt="DISEC Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">DISEC</h3>
+              <p class="committee-fullname">Disarmament & International Security</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+
+          <!-- 4. UNHRC -->
+          <div class="committee-card" data-committee-id="unhrc" role="button" tabindex="0"
+            onclick="handleCardClick('unhrc', this)" aria-haspopup="dialog"
+            aria-label="UNHRC United Nations Human Rights Council Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/3.svg" alt="UNHRC Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">UNHRC</h3>
+              <p class="committee-fullname">United Nations Human Rights Council</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+
+          <!-- 5. UNODC -->
+          <div class="committee-card" data-committee-id="unodc" role="button" tabindex="0"
+            onclick="handleCardClick('unodc', this)" aria-haspopup="dialog"
+            aria-label="UNODC United Nations Office on Drugs and Crime Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/1.svg" alt="UNODC Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">UNODC</h3>
+              <p class="committee-fullname">United Nations Office on Drugs and Crime</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+
+          <!-- 6. IP -->
+          <div class="committee-card" data-committee-id="ip" role="button" tabindex="0"
+            onclick="handleCardClick('ip', this)" aria-haspopup="dialog"
+            aria-label="IP International Press Explore Details">
+            <div class="card-top-content">
+              <div class="logo-wrapper">
+                <img src="/RNSMUN_LOGO/6.svg" alt="IP Official Logo" class="committee-logo" width="80" height="80"
+                  loading="lazy" decoding="async">
+              </div>
+              <h3 class="committee-name">IP</h3>
+              <p class="committee-fullname">International Press</p>
+            </div>
+            <span class="card-badge-preview">
+              Explore Details
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Switch to Delegation prompt -->
+      <div class="reg-switch-prompt">
+        <span>Registering an institutional delegation of 10+ members?</span>
+        <button type="button" class="btn-switch-link" onclick="selectRegistrationPath('delegation')">
+          Switch to Delegation Registration &rarr;
         </button>
       </div>
     </div>
+
+    <!-- 3. DELEGATION SUBVIEW -->
+    <div id="delegation-reg-view" class="reg-subview" style="display: none;">
+      <div class="reg-subview-nav">
+        <button type="button" class="btn-subview-back" onclick="showRegistrationChoice()" aria-label="Back to Registration Options">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Change Option</span>
+        </button>
+        <div class="reg-subview-pill reg-subview-pill-gold">GROUP REPRESENTATION (10+ MEMBERS)</div>
+      </div>
+
+      <div class="delegation-hub-card">
+        <span class="hub-kicker">★ GROUP REPRESENTATION</span>
+        <h2 class="hub-title">DELEGATION REGISTRATION</h2>
+        <div class="reg-choice-steps" style="margin: 10px 0 14px 0; justify-content: center;">
+          <span class="step-item">Build your roster</span>
+          <span class="step-arrow">&rarr;</span>
+          <span class="step-item">Submit delegation</span>
+          <span class="step-arrow">&rarr;</span>
+          <span class="step-item">Get allocation</span>
+        </div>
+        <p class="hub-subtitle">
+          Groups of 10 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title and flagship award.
+        </p>
+
+        <div class="delegation-hub-actions">
+          <button type="button" class="hub-primary-btn" onclick="openDelegationRegistrationModal()" aria-label="Open Delegation Registration Form">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span>Open Delegation Form</span>
+          </button>
+          <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
+            target="_blank" rel="noopener noreferrer" class="hub-secondary-btn"
+            aria-label="View Master Portfolio Matrix">
+            <span>Master Matrix ↗</span>
+          </a>
+        </div>
+
+        <div class="reg-switch-prompt" style="margin-top: 18px;">
+          <span>Looking to register as an individual delegate?</span>
+          <button type="button" class="btn-switch-link" onclick="selectRegistrationPath('individual')">
+            Switch to Individual Registration &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ================================================= -->
@@ -7858,7 +8539,7 @@
         return;
       }
 
-      const text = `Hey team! Here is our official RNS MUN '26 roster sheet for ${delegationName}.\nPlease fill in your details and portfolio preferences:\n${actualLink}`;
+      const text = `Hey team! Here is our official RNSMUN 2026 roster sheet for ${delegationName}.\nPlease fill in your details and portfolio preferences:\n${actualLink}`;
       const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
@@ -8555,7 +9236,7 @@
             successMsg.innerHTML = `
               <span>Thank you for registering, <strong>${state.delegateName || 'Delegate'}</strong>!</span><br>
               <span>Please complete your delegate fee payment of <strong style="color: var(--gold-accent);">₹999</strong> on the payment portal tab that just opened. Once your payment is verified, you will receive your official registration confirmation and portfolio allotment from our team on your registered email address.</span><br>
-              <em style="font-size: 0.8rem; color: rgba(0,0,0,0.5); display: inline-block; margin-top: 4px;">Thank you for registering with RNS MUN '26.</em>
+              <em style="font-size: 0.8rem; color: rgba(0,0,0,0.5); display: inline-block; margin-top: 4px;">Thank you for registering with RNSMUN 2026.</em>
             `;
           }
 
@@ -8571,6 +9252,74 @@
         console.log('Payment state parsing notice:', err);
       }
     }
+
+    // Top-Level Registration Path Navigation
+    function showRegistrationChoice(updateUrl = true) {
+      const choiceView = document.getElementById('registration-choice-view');
+      const indView = document.getElementById('individual-delegate-view');
+      const dlgView = document.getElementById('delegation-reg-view');
+
+      if (choiceView) choiceView.style.display = 'flex';
+      if (indView) indView.style.display = 'none';
+      if (dlgView) dlgView.style.display = 'none';
+
+      // Close any open modals when navigating back to choice
+      if (typeof closeDelegationRegistrationModal === 'function') closeDelegationRegistrationModal(true);
+      if (typeof closeCommitteeModal === 'function') closeCommitteeModal(true);
+      if (typeof closeRegistrationModal === 'function') closeRegistrationModal(true);
+      if (typeof closeDelegateTypeModal === 'function') closeDelegateTypeModal(true);
+
+      if (updateUrl) {
+        try {
+          history.pushState({ view: 'choice' }, '', window.location.pathname);
+        } catch (e) {}
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectRegistrationPath(path, updateUrl = true, autoOpenModal = false) {
+      const choiceView = document.getElementById('registration-choice-view');
+      const indView = document.getElementById('individual-delegate-view');
+      const dlgView = document.getElementById('delegation-reg-view');
+
+      if (path === 'individual') {
+        if (choiceView) choiceView.style.display = 'none';
+        if (indView) indView.style.display = 'flex';
+        if (dlgView) dlgView.style.display = 'none';
+
+        if (updateUrl) {
+          try {
+            history.pushState({ view: 'individual' }, '', window.location.pathname + '?type=individual');
+          } catch (e) {}
+        }
+      } else if (path === 'delegation') {
+        if (choiceView) choiceView.style.display = 'none';
+        if (indView) indView.style.display = 'none';
+        if (dlgView) dlgView.style.display = 'flex';
+
+        if (updateUrl) {
+          try {
+            history.pushState({ view: 'delegation' }, '', window.location.pathname + '?type=delegation');
+          } catch (e) {}
+        }
+        if (autoOpenModal && typeof openDelegationRegistrationModal === 'function') {
+          setTimeout(openDelegationRegistrationModal, 150);
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('popstate', (e) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const type = urlParams.get('type');
+      if (type === 'delegation' || window.location.hash === '#delegation') {
+        selectRegistrationPath('delegation', false, false);
+      } else if (type === 'individual' || urlParams.get('committee')) {
+        selectRegistrationPath('individual', false, false);
+      } else {
+        showRegistrationChoice(false);
+      }
+    });
 
     // Initialize custom select on page load and check for direct modal links
     function handleInitialPageLoad() {
@@ -8589,13 +9338,14 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('type') === 'delegation' || window.location.hash === '#delegation') {
-        setTimeout(openDelegationRegistrationModal, 150);
+        selectRegistrationPath('delegation', false, false);
         if (window.location.hash) {
           try {
             history.replaceState(null, '', window.location.pathname + (window.location.search || ''));
           } catch (e) {}
         }
-      } else {
+      } else if (urlParams.get('type') === 'individual' || urlParams.get('committee')) {
+        selectRegistrationPath('individual', false, false);
         const committeeParam = urlParams.get('committee');
         if (committeeParam) {
           const cId = committeeParam.toLowerCase().replace(/[\s-_]/g, '');
@@ -8606,6 +9356,8 @@
             }, 150);
           }
         }
+      } else {
+        showRegistrationChoice(false);
       }
     }
 
@@ -9127,7 +9879,7 @@
       <div class="receipt-footer-right">
         <div class="receipt-stamp-placeholder">
           <span class="stamp-line-1">Core Secretariat,</span>
-          <span class="stamp-line-2">RNS MUN 2026</span>
+          <span class="stamp-line-2">RNSMUN 2026</span>
         </div>
       </div>
     </div>
@@ -9205,7 +9957,7 @@
       </tr>
       <tr>
         <th>Best Delegation Trophy Award</th>
-        <td>Eligible for Best Delegation Award (₹15,000 Institutional Prize Pool)</td>
+        <td>Eligible for Flagship Best Delegation Award</td>
       </tr>
       <tr>
         <th>Applicable Registration Fee</th>
@@ -9248,7 +10000,7 @@
       <div class="receipt-footer-right">
         <div class="receipt-stamp-placeholder">
           <span class="stamp-line-1">Core Secretariat,</span>
-          <span class="stamp-line-2">RNS MUN 2026</span>
+          <span class="stamp-line-2">RNSMUN 2026</span>
         </div>
       </div>
     </div>
