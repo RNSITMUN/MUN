@@ -142,7 +142,9 @@ export default async function handler(req, res) {
               success: true,
               sheetUrl: gasData.sheetUrl,
               headers,
-              headRow
+              headRow,
+              isExisting: gasData.isExisting || gasData.duplicate || false,
+              duplicate: gasData.duplicate || false
             });
           }
         } catch (jsonErr) {
@@ -197,6 +199,32 @@ export default async function handler(req, res) {
 
     const sheets = google.sheets({ version: 'v4', auth });
     const drive = google.drive({ version: 'v3', auth });
+
+    // 0. Check if a sheet for this email already exists in Drive
+    if (email && email.trim()) {
+      try {
+        const cleanEmail = email.trim().toLowerCase();
+        const existingList = await drive.files.list({
+          q: `'${cleanEmail}' in writers and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false`,
+          fields: 'files(id, name, webViewLink)',
+          pageSize: 5
+        });
+        const existingSheet = existingList.data.files?.find(f => f.name && f.name.includes('RNS MUN 26'));
+        if (existingSheet && existingSheet.id) {
+          const sheetUrl = `https://docs.google.com/spreadsheets/d/${existingSheet.id}/edit?usp=sharing`;
+          return res.status(200).json({
+            success: true,
+            sheetUrl,
+            spreadsheetId: existingSheet.id,
+            headers,
+            headRow,
+            alreadyExists: true
+          });
+        }
+      } catch (searchErr) {
+        console.warn('Drive search existing sheet notice:', searchErr.message);
+      }
+    }
 
     // 1. Create Spreadsheet
     const createResponse = await sheets.spreadsheets.create({
