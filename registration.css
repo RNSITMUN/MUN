@@ -23,8 +23,9 @@
 
     html.modal-open,
     body.modal-open {
-      overflow: hidden;
-      overscroll-behavior: contain;
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      touch-action: none;
     }
 
     .registration-viewport {
@@ -1163,9 +1164,10 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       opacity: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
+      overflow: hidden;
+      overflow-y: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
     }
 
     .committee-modal-backdrop.active {
@@ -1496,9 +1498,13 @@
       width: 550px;
       max-width: 94vw;
       max-height: calc(100svh - 40px);
+      max-height: calc(100dvh - 40px);
       overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+      overscroll-behavior-y: contain;
+      touch-action: pan-y;
       padding: 26px 26px 36px 26px;
       box-sizing: border-box;
       position: relative;
@@ -4243,10 +4249,12 @@
       .committee-modal-backdrop {
         align-items: center !important;
         justify-content: center !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior-y: contain !important;
-        padding: max(12px, env(safe-area-inset-top, 12px)) 10px calc(max(14px, env(safe-area-inset-bottom, 14px)) + var(--keyboard-height, 0px)) 10px !important;
+        overflow: hidden !important;
+        overflow-y: hidden !important;
+        overscroll-behavior: none !important;
+        overscroll-behavior-y: none !important;
+        touch-action: none !important;
+        padding: max(10px, env(safe-area-inset-top, 10px)) 10px calc(max(12px, env(safe-area-inset-bottom, 12px)) + var(--keyboard-height, 0px)) 10px !important;
       }
 
       #committee-modal-backdrop {
@@ -4267,9 +4275,14 @@
         box-shadow: 4px 4px 0px var(--text-primary);
         max-height: calc(var(--visual-viewport-height, 100dvh) - 18px) !important;
         overflow-y: auto !important;
+        overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+        overscroll-behavior: contain !important;
+        overscroll-behavior-y: contain !important;
+        touch-action: pan-y !important;
         scroll-padding-bottom: 90px !important;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent-color) transparent;
       }
 
       .committee-modal-backdrop.keyboard-open {
@@ -4554,6 +4567,97 @@
         font-size: clamp(0.58rem, 1.8vw, 0.7rem) !important;
         flex-shrink: 0 !important;
       }
+
+      /* Mobile Delegation Roster Card */
+      .neo-roster-card {
+        padding: 14px 12px !important;
+        border-radius: 12px !important;
+        box-shadow: 2.5px 2.5px 0px var(--text-primary) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .neo-roster-header {
+        margin-bottom: 10px !important;
+      }
+
+      .neo-roster-header > div:first-child {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        margin-bottom: 6px !important;
+      }
+
+      .neo-roster-badge {
+        font-size: clamp(0.62rem, 2vw, 0.68rem) !important;
+        padding: 2.5px 7px !important;
+        letter-spacing: 0.04em !important;
+      }
+
+      .roster-status-pill {
+        font-size: clamp(0.60rem, 1.9vw, 0.66rem) !important;
+        padding: 2px 6px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      .neo-roster-title {
+        font-size: 0.90rem !important;
+        margin: 4px 0 3px 0 !important;
+      }
+
+      .neo-roster-desc {
+        font-size: 0.76rem !important;
+        line-height: 1.35 !important;
+      }
+
+      .btn-create-sheet {
+        padding: 10px 14px !important;
+        font-size: 0.84rem !important;
+        min-height: 42px !important;
+        border-radius: 8px !important;
+      }
+
+      .btn-open-roster-sheet {
+        padding: 10px 14px !important;
+        font-size: 0.84rem !important;
+        min-height: 42px !important;
+        border-radius: 8px !important;
+        margin-bottom: 8px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Phone-Friendly 2x2 Grid for Roster Utility Buttons */
+      .roster-actions-strip {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .roster-strip-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        padding: 8px 6px !important;
+        min-height: 34px !important;
+        font-size: 0.72rem !important;
+        box-sizing: border-box !important;
+        white-space: nowrap !important;
+      }
+
+      .roster-strip-btn svg {
+        flex-shrink: 0 !important;
+        width: 13px !important;
+        height: 13px !important;
+      }
     }
 
     /* ================================================= */
@@ -4654,6 +4758,26 @@
         font-size: 0.58rem !important;
       }
 
+      .neo-roster-card {
+        padding: 12px 10px !important;
+      }
+
+      .roster-actions-strip {
+        gap: 5px !important;
+      }
+
+      .roster-strip-btn {
+        padding: 7px 4px !important;
+        font-size: 0.68rem !important;
+        min-height: 32px !important;
+        gap: 4px !important;
+      }
+
+      .roster-strip-btn svg {
+        width: 12px !important;
+        height: 12px !important;
+      }
+
       .committees-grid {
         gap: 6px;
       }
@@ -4697,10 +4821,13 @@
         margin: auto !important;
         padding: 18px 10px 20px 10px;
         box-shadow: 3.5px 3.5px 0px var(--text-primary) !important;
-        max-height: min(94dvh, calc(100dvh - 12px));
-        max-height: min(94svh, calc(100svh - 12px));
+        max-height: min(94dvh, calc(100dvh - 12px)) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+        overscroll-behavior: contain !important;
+        overscroll-behavior-y: contain !important;
+        touch-action: pan-y !important;
       }
 
       .modal-registration-card.in-success-state,
