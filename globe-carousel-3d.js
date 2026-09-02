@@ -268,15 +268,15 @@ function createLightbox(root, userOptions = {}) {
   function ensureOverlay() {
     if (detail) return;
     backdrop = document.createElement("div");
-    backdrop.style.cssText = `position:absolute;inset:0;z-index:${BACKDROP_Z};opacity:0;pointer-events:none;` +
-      "cursor:zoom-out;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);will-change:opacity;" +
+    backdrop.style.cssText = `position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;z-index:${BACKDROP_Z};opacity:0;pointer-events:none;` +
+      "cursor:zoom-out;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);will-change:opacity;" +
       "transition:opacity var(--lb-dur) cubic-bezier(0.16, 1, 0.3, 1)";
     backdrop.addEventListener("click", onBackdropClick);
     backdrop.setAttribute("aria-hidden", "true");
-    root.appendChild(backdrop);
+    document.body.appendChild(backdrop);
 
     detail = document.createElement("div");
-    detail.style.cssText = `position:absolute;z-index:${DETAIL_Z};overflow:hidden;opacity:0;pointer-events:none;` +
+    detail.style.cssText = `position:fixed;z-index:${DETAIL_Z};overflow:hidden;opacity:0;pointer-events:none;` +
       "will-change:transform,opacity;transform-origin:top left";
     detail.setAttribute("role", "dialog");
     detail.setAttribute("aria-modal", "true");
@@ -288,26 +288,26 @@ function createLightbox(root, userOptions = {}) {
     detailImg.decoding = "async";
     detailImg.alt = "";
     detail.appendChild(detailImg);
-    root.appendChild(detail);
+    document.body.appendChild(detail);
   }
 
   function relativeRect(el) {
     const a = el.getBoundingClientRect();
-    const b = root.getBoundingClientRect();
     return {
-      left: a.left - b.left,
-      top: a.top - b.top,
+      left: a.left,
+      top: a.top,
       w: a.width,
       h: a.height
     };
   }
 
   function targetRect(img) {
-    const W = root.clientWidth;
-    const H = root.clientHeight;
+    const W = window.innerWidth || document.documentElement.clientWidth;
+    const H = window.innerHeight || document.documentElement.clientHeight;
     const ar = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
-    const maxW = W * o.openScale;
-    const maxH = H * o.openScale;
+    // Keep within 85% width and 82% height of screen with safe margins so nothing is cut off
+    const maxW = Math.min(W * (W <= 768 ? 0.90 : 0.82), 1080);
+    const maxH = Math.min(H * (W <= 768 ? 0.78 : 0.82), 860);
     let w = maxW;
     let h = w / ar;
     if (h > maxH) {
@@ -315,10 +315,10 @@ function createLightbox(root, userOptions = {}) {
       w = h * ar;
     }
     return {
-      left: (W - w) / 2,
-      top: (H - h) / 2,
-      w,
-      h
+      left: Math.round((W - w) / 2),
+      top: Math.round((H - h) / 2),
+      w: Math.round(w),
+      h: Math.round(h)
     };
   }
 
