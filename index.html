@@ -201,7 +201,15 @@
       -webkit-tap-highlight-color: transparent !important;
     }
 
-    /* When Lightbox is open: Carousel container elevates above all hero lockups */
+    /* When Lightbox is open: Ensure total viewport clarity, hide overlapping sections */
+    body.globe-lightbox-open {
+      overflow: hidden !important;
+    }
+    body.globe-lightbox-open .mun26-editorial-section {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease;
+    }
     body.globe-lightbox-open .carousel-container,
     .carousel-container.lightbox-active {
       z-index: 500 !important;
