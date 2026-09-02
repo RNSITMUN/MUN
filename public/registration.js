@@ -1421,6 +1421,63 @@
       }, true);
     }
 
+    
+    // Validate Internal RNSIT USN or Secret Keyword FRESHER
+    function isValidInternalUSN(val) {
+      if (!val) return false;
+      const clean = val.trim();
+      if (clean.length === 0 || clean.length > 10) return false;
+
+      const lower = clean.toLowerCase();
+      // Allow secret keywords: FRESHER, Fresher, fresher
+      if (lower === 'fresher') {
+        return true;
+      }
+
+      // Must start with: 1RN, 1RX, 1IB, 1rn, 1rx, 1ib
+      const validPrefixes = ['1rn', '1rx', '1ib'];
+      const hasPrefix = validPrefixes.some(p => lower.startsWith(p));
+      if (!hasPrefix) return false;
+
+      // Must be alphanumeric between 4 and 10 characters (e.g. 1RN22CS001)
+      return /^[0-9a-zA-Z]{4,10}$/.test(clean);
+    }
+
+    function updateStep1NextButtonState() {
+      const nextBtn = document.getElementById('reg-step-1-next');
+      if (!nextBtn) return;
+
+      if (currentDelegateType === 'internal') {
+        const usnInput = document.getElementById('reg-usn');
+        const usnVal = usnInput ? usnInput.value.trim() : '';
+        const isValid = isValidInternalUSN(usnVal);
+
+        if (isValid) {
+          nextBtn.disabled = false;
+          nextBtn.removeAttribute('disabled');
+          nextBtn.style.opacity = '1';
+          nextBtn.style.cursor = 'pointer';
+          if (usnInput) {
+            usnInput.classList.remove('has-error');
+            const errEl = document.getElementById('reg-usn-error');
+            if (errEl) errEl.style.display = 'none';
+          }
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.setAttribute('disabled', 'true');
+          nextBtn.style.opacity = '0.45';
+          nextBtn.style.cursor = 'not-allowed';
+        }
+      } else {
+        nextBtn.disabled = false;
+        nextBtn.removeAttribute('disabled');
+        nextBtn.style.opacity = '1';
+        nextBtn.style.cursor = 'pointer';
+        const errEl = document.getElementById('reg-usn-error');
+        if (errEl) errEl.style.display = 'none';
+      }
+    }
+
     function applyDelegateTypeUI(type) {
       currentDelegateType = type;
       const typeHidden = document.getElementById('reg-delegate-type');
@@ -1439,6 +1496,10 @@
       const step5Arrow = document.getElementById('step-arrow-5');
       const step5Ind = document.getElementById('step-indicator-5');
 
+      const usnLabel = document.getElementById('reg-usn-label') || document.querySelector('label[for="reg-usn"]');
+      const usnInput = document.getElementById('reg-usn');
+      const usnErr = document.getElementById('reg-usn-error');
+
       if (type === 'internal') {
         if (institution) {
           institution.value = 'RNS Institute of Technology';
@@ -1447,12 +1508,21 @@
           const errEl = document.getElementById('reg-institution-error');
           if (errEl) errEl.style.display = 'none';
         }
+        if (usnLabel) usnLabel.innerHTML = 'USN / Roll No *';
+        if (usnInput) {
+          usnInput.required = true;
+          usnInput.setAttribute('required', 'true');
+          usnInput.maxLength = 10;
+          usnInput.setAttribute('maxlength', '10');
+          usnInput.placeholder = 'e.g. 1RN22CS001 or FRESHER';
+        }
         if (step1Ind) step1Ind.textContent = 'Delegate Details';
         if (step2Ind) step2Ind.textContent = 'Step 1';
         if (step3Ind) step3Ind.textContent = 'Step 2';
         if (step4Ind) step4Ind.textContent = 'Step 3';
         if (step5Arrow) step5Arrow.style.display = 'none';
         if (step5Ind) step5Ind.style.display = 'none';
+        updateStep1NextButtonState();
       } else {
         if (institution) {
           if (institution.value === 'RNS Institute of Technology') {
@@ -1461,6 +1531,15 @@
           institution.readOnly = false;
           institution.placeholder = 'e.g. College / Institute Name';
         }
+        if (usnLabel) usnLabel.innerHTML = 'USN / Roll No';
+        if (usnInput) {
+          usnInput.required = false;
+          usnInput.removeAttribute('required');
+          usnInput.removeAttribute('maxlength');
+          usnInput.placeholder = '';
+          usnInput.classList.remove('has-error');
+        }
+        if (usnErr) usnErr.style.display = 'none';
         if (step1Ind) step1Ind.textContent = 'Delegate Details';
         if (step2Ind) step2Ind.textContent = 'Step 1';
         if (step3Ind) step3Ind.textContent = 'Step 2';
@@ -1470,6 +1549,7 @@
           step5Ind.style.display = 'inline-block';
           step5Ind.textContent = 'Confirmation';
         }
+        updateStep1NextButtonState();
       }
     }
 
@@ -2045,6 +2125,25 @@
             if (errorEl) errorEl.style.display = 'none';
           }
         });
+
+        // Mandatory USN Validation for Internal Delegates
+        if (currentDelegateType === 'internal') {
+          const usnInput = document.getElementById('reg-usn');
+          const errorEl = document.getElementById('reg-usn-error');
+          const usnVal = usnInput ? usnInput.value.trim() : '';
+
+          if (!isValidInternalUSN(usnVal)) {
+            if (usnInput) usnInput.classList.add('has-error');
+            if (errorEl) {
+              errorEl.textContent = 'Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER (max 10 chars)';
+              errorEl.style.display = 'block';
+            }
+            isValid = false;
+          } else {
+            if (usnInput) usnInput.classList.remove('has-error');
+            if (errorEl) errorEl.style.display = 'none';
+          }
+        }
 
         // Phone validation (strictly 10 digits)
         if (phone) {
@@ -5177,6 +5276,32 @@
     }
 
     // Attach debounced input/change listeners to all draft fields
+    function initUSNInputListener() {
+      const usnInput = document.getElementById('reg-usn');
+      if (!usnInput) return;
+      usnInput.addEventListener('input', () => {
+        if (usnInput.value.length > 10) {
+          usnInput.value = usnInput.value.slice(0, 10);
+        }
+        updateStep1NextButtonState();
+      });
+      usnInput.addEventListener('blur', () => {
+        if (currentDelegateType === 'internal') {
+          const errEl = document.getElementById('reg-usn-error');
+          if (!isValidInternalUSN(usnInput.value.trim())) {
+            usnInput.classList.add('has-error');
+            if (errEl) {
+              errEl.textContent = 'Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER (max 10 chars)';
+              errEl.style.display = 'block';
+            }
+          } else {
+            usnInput.classList.remove('has-error');
+            if (errEl) errEl.style.display = 'none';
+          }
+        }
+      });
+    }
+
     function attachDraftListeners() {
       let saveTimer = null;
       const debouncedSave = () => {
@@ -5243,7 +5368,7 @@
   
 
     // Initialize listeners once DOM is ready
-    const initDraftAutoSave = () => { attachDraftListeners(); initDropzoneDragAndDrop(); };
+    const initDraftAutoSave = () => { attachDraftListeners(); initDropzoneDragAndDrop(); initUSNInputListener(); };
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initDraftAutoSave);
     } else {
@@ -5277,6 +5402,8 @@ Object.assign(window, {
   selectDelegateType,
   closeRegistrationModal,
   goToStep,
+  isValidInternalUSN,
+  updateStep1NextButtonState,
   selectExternalCategory,
   handleProceedToExternalPayment,
   copyExternalUPI,
