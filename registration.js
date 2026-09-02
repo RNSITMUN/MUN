@@ -5376,6 +5376,66 @@
     }
     // End Form Draft Auto-Save
 
+    function openQRPreview(imgElementOrId, titleText) {
+      let imgSrc = '';
+      let altText = 'Enlarged Payment QR Code';
+
+      if (typeof imgElementOrId === 'string') {
+        const el = document.getElementById(imgElementOrId);
+        if (el) {
+          imgSrc = el.currentSrc || el.src;
+          altText = el.alt || altText;
+        }
+      } else if (imgElementOrId && imgElementOrId.src) {
+        imgSrc = imgElementOrId.currentSrc || imgElementOrId.src;
+        altText = imgElementOrId.alt || altText;
+      }
+
+      if (!imgSrc) return;
+
+      const backdrop = document.getElementById('qr-preview-backdrop');
+      const previewImg = document.getElementById('qr-preview-img');
+      const titleEl = document.getElementById('qr-preview-title');
+
+      if (previewImg) {
+        previewImg.src = imgSrc;
+        previewImg.alt = altText;
+      }
+      if (titleEl && titleText) {
+        titleEl.textContent = titleText;
+      }
+
+      if (backdrop) {
+        backdrop.style.display = 'flex';
+        requestAnimationFrame(() => {
+          backdrop.classList.add('is-open');
+        });
+      }
+    }
+
+    function closeQRPreview() {
+      const backdrop = document.getElementById('qr-preview-backdrop');
+      if (backdrop) {
+        backdrop.classList.remove('is-open');
+        setTimeout(() => {
+          if (!backdrop.classList.contains('is-open')) {
+            backdrop.style.display = 'none';
+          }
+        }, 200);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const qrBackdrop = document.getElementById('qr-preview-backdrop');
+        if (qrBackdrop && qrBackdrop.classList.contains('is-open')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeQRPreview();
+        }
+      }
+    });
+
 // Expose all inline-callable functions to global window scope
 Object.assign(window, {
   selectRegistrationPath,
@@ -5426,5 +5486,8 @@ Object.assign(window, {
   handleCommittee2Change,
   handleExternalPaymentScreenshotSelected,
   removeExternalPaymentScreenshot,
-  removeDelegationPaymentScreenshot
+  removeDelegationPaymentScreenshot,
+  openQRPreview,
+  closeQRPreview
 });
+
