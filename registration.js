@@ -1509,6 +1509,13 @@
         if (currentDelegateType === 'internal') {
           if (internalPanel) internalPanel.style.display = 'block';
           if (externalPanel) externalPanel.style.display = 'none';
+          const internalSubmitBtn = document.getElementById('internal-submit-btn');
+          if (internalSubmitBtn) {
+            internalSubmitBtn.disabled = false;
+            internalSubmitBtn.removeAttribute('disabled');
+            internalSubmitBtn.style.opacity = '1';
+            internalSubmitBtn.style.cursor = 'pointer';
+          }
         } else {
           if (internalPanel) internalPanel.style.display = 'none';
           if (externalPanel) externalPanel.style.display = 'block';
@@ -1628,10 +1635,10 @@
       if (internalErr) internalErr.style.display = 'none';
       const internalSubmitBtn = document.getElementById('internal-submit-btn');
       if (internalSubmitBtn) {
-        internalSubmitBtn.disabled = true;
-        internalSubmitBtn.setAttribute('disabled', 'true');
-        internalSubmitBtn.style.opacity = '0.45';
-        internalSubmitBtn.style.cursor = 'not-allowed';
+        internalSubmitBtn.disabled = false;
+        internalSubmitBtn.removeAttribute('disabled');
+        internalSubmitBtn.style.opacity = '1';
+        internalSubmitBtn.style.cursor = 'pointer';
       }
 
       // 2. External screenshot inputs & UI
@@ -4144,6 +4151,14 @@
           }
 
           // Dynamically mount and display success screen
+          // Auto-launch BillDesk portal for internal delegate payment
+          if (currentDelegateType === 'internal') {
+            try {
+              window.open('https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232', '_blank', 'noopener,noreferrer');
+            } catch (err) {
+              console.warn('[BillDesk] Window open blocked by browser, user can click link on success screen');
+            }
+          }
           showSuccessOverlay('Registration Submitted!', successMsgHTML);
         })
         .finally(() => {
