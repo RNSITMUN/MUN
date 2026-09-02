@@ -267,8 +267,19 @@
       user-select: none;
       -webkit-user-select: none;
       position: relative;
-      padding: 4px 10px;
+      padding: 0;
       cursor: default;
+    }
+
+    .globe-hero-logo {
+      display: block;
+      width: clamp(230px, 34vw, 380px);
+      height: auto;
+      max-height: clamp(75px, 12vh, 125px);
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: none;
     }
 
     .mth-text-left {
@@ -584,6 +595,11 @@
     }
 
     @media (max-width: 580px) {
+      .globe-hero-logo {
+        width: clamp(200px, 68vw, 290px);
+        max-height: 85px;
+      }
+
       .globe-hero-title.media-text-hover.is-active .mth-capsule-wrapper {
         width: clamp(96px, 24vw, 140px);
         margin-inline: 6px;
@@ -1714,6 +1730,10 @@
       .globe-hero-title {
         font-size: clamp(1.6rem, 5vw, 2.1rem);
       }
+      .globe-hero-logo {
+        width: clamp(180px, 56vw, 240px);
+        max-height: 62px;
+      }
       .globe-hero-subtitle {
         font-size: 0.74rem;
         margin: 2px 0 0 0;
@@ -1928,7 +1948,7 @@
     <!-- Floating Globe Hero Title -->
     <div class="globe-hero-header">
       <h1 class="globe-hero-title" aria-label="RNSMUN 2026">
-        RNSMUN 2026
+        <img src="./assets/Logos/RNS_MUN_2026_dark.webp" alt="RNSMUN 2026" class="globe-hero-logo" width="2364" height="843" fetchpriority="high">
       </h1>
       <p class="globe-hero-subtitle">
         <span>RNSIT Model United Nations Conference</span>
