@@ -66,10 +66,10 @@ export default async function handler(req, res) {
 
   // ─── Supabase Integration ────────────────────────────────────
   if (!supabase) {
-    console.warn('[submit-delegation] SUPABASE_URL or SUPABASE_KEY not configured in environment.');
-    return res.status(200).json({
-      success: true,
-      message: 'Delegation received (Supabase credentials pending in environment).'
+    console.error('❌ [submit-delegation] SUPABASE_URL or SUPABASE_KEY is missing!');
+    return res.status(500).json({
+      success: false,
+      error: 'Database configuration missing. Please check SUPABASE_URL and SUPABASE_KEY.'
     });
   }
 
