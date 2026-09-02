@@ -4147,30 +4147,39 @@
           screenshotBase64: formPayload.screenshotBase64,
           screenshotFormat: formPayload.screenshotFormat
         })
-      }).then(res => res.json())
-        .then(data => {
-          const cleanEmail = email.value.trim().toLowerCase();
-          const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
-          localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
-          markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
+      })
+      .then(async res => {
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data || !data.success) {
+          const errMsg = data?.error || `Server returned error (${res.status}).`;
+          throw new Error(errMsg);
+        }
+        return data;
+      })
+      .then(data => {
+        // ONLY mark as submitted and show success overlay on true database success!
+        const cleanEmail = email.value.trim().toLowerCase();
+        const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+        localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
+        markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
 
-          showDelegationSuccessOverlay(formPayload.delegationName, formPayload.googleSheetLink);
-        })
-        .catch(err => {
-          console.warn('[Delegation] Supabase submission notice:', err);
-          const cleanEmail = email.value.trim().toLowerCase();
-          const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
-          localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
-          markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
-          showDelegationSuccessOverlay(formPayload.delegationName, formPayload.googleSheetLink);
-        })
-        .finally(() => {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
-            submitBtn.innerHTML = originalBtnHTML;
-          }
-        });
+        showDelegationSuccessOverlay(formPayload.delegationName, formPayload.googleSheetLink);
+      })
+      .catch(err => {
+        console.error('[Delegation] Submission failed:', err);
+        const dlgCard = document.getElementById('delegation-modal-card');
+        if (window.gsap && dlgCard) {
+          gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
+        }
+        alert(err.message || 'Delegation submission failed. Please check your connection and try again.');
+      })
+      .finally(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          submitBtn.innerHTML = originalBtnHTML;
+        }
+      });
     }
 
     function showDelegationSuccessOverlay(delegationName, googleSheetLink) {
@@ -4363,35 +4372,51 @@
           if (data && !data.success) {
             return { success: false, error: data.error || 'Submission failed.' };
           }
+          if (!res.ok) {
+            return { success: false, error: data?.error || `Server returned error (${res.status}).` };
+          }
         } catch (apiErr) {
           console.error('[Registration] Submission error:', apiErr);
+          return { success: false, error: 'Network error or unable to reach server. Please check your connection and try again.' };
         }
-        return { success: true, method: 'local' };
+        return { success: false, error: 'Submission failed. Please check your connection and try again.' };
       }
 
       dispatchSubmission(formPayload)
         .then((result) => {
-          if (result && result.duplicate) {
-            // DO NOT SHOW SUCCESS SCREEN FOR DUPLICATES!
-            if (formPayload.email) markEmailAsRegistered(formPayload.email, 'individual');
-            goToStep(1);
-            const emailInput = document.getElementById('reg-email');
-            if (emailInput) {
-              emailInput.classList.add('has-error');
-              emailInput.focus();
+          // STRICT ERROR CHECK: If not successful, NEVER show success screen, NEVER redirect to BillDesk!
+          if (!result || !result.success) {
+            if (result && result.duplicate) {
+              // Handle duplicate email attempt
+              if (formPayload.email) markEmailAsRegistered(formPayload.email, 'individual');
+              goToStep(1);
+              const emailInput = document.getElementById('reg-email');
+              if (emailInput) {
+                emailInput.classList.add('has-error');
+                emailInput.focus();
+              }
+              const existsMsg = document.getElementById('reg-email-exists-msg');
+              if (existsMsg) {
+                existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+                existsMsg.style.display = 'block';
+              }
+              const regCard = document.getElementById('registration-modal-card');
+              if (window.gsap && regCard) {
+                gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
+              }
+              return;
             }
-            const existsMsg = document.getElementById('reg-email-exists-msg');
-            if (existsMsg) {
-              existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
-              existsMsg.style.display = 'block';
-            }
+
+            // General failure (database error, network drop, etc.)
             const regCard = document.getElementById('registration-modal-card');
             if (window.gsap && regCard) {
               gsap.fromTo(regCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(regCard, { x: 0 }) });
             }
+            alert(result?.error || 'Registration submission failed. Please check your connection and try again.');
             return;
           }
 
+          // ONLY ON CONFIRMED DATABASE SUCCESS:
           // Immediately mark email as registered in local cache
           if (formPayload.email) {
             markEmailAsRegistered(formPayload.email, 'individual', {
@@ -4402,7 +4427,7 @@
           }
 
           // Dynamically mount and display success screen
-          // Auto-launch BillDesk portal for internal delegate payment
+          // Auto-launch BillDesk portal for internal delegate payment ONLY after confirmed database record!
           if (currentDelegateType === 'internal') {
             const billdeskUrl = 'https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232';
             let openedInNewTab = false;
@@ -4423,6 +4448,10 @@
             }
           }
           showSuccessOverlay('Registration Submitted!', successMsgHTML);
+        })
+        .catch((err) => {
+          console.error('[Registration] Unexpected error in submission flow:', err);
+          alert('An unexpected error occurred during submission. Please try again.');
         })
         .finally(() => {
           if (submitBtn) {
