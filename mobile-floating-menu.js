@@ -58,25 +58,25 @@
       </div>
     `;
 
-    // If not already on the registration page, mount the floating "Register" button inside the dock
+    document.body.appendChild(root);
+
+    // If not already on the registration page, mount the discreet floating "Register Now" button
     const isRegPage = currentPath === "/registration" || currentPath.startsWith("/registration");
-    if (!isRegPage) {
+    if (!isRegPage && !document.getElementById("mobileFloatingRegBtn")) {
       const regBtn = document.createElement("a");
       regBtn.href = "/registration";
       regBtn.id = "mobileFloatingRegBtn";
       regBtn.className = "mobile-floating-reg-btn";
-      regBtn.setAttribute("aria-label", "Register for RNSMUN 2026");
+      regBtn.setAttribute("aria-label", "Register Now for RNSMUN 2026");
       regBtn.innerHTML = `
-        <span>Register</span>
+        <span>Register Now</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
       `;
-      root.appendChild(regBtn);
+      document.body.appendChild(regBtn);
     }
-
-    document.body.appendChild(root);
 
   const container = document.getElementById("floatingMenuContainer");
   const toggle = document.getElementById("floatingMenuToggle");

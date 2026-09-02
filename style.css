@@ -571,14 +571,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-  pointer-events: none;
+  pointer-events: auto;
   font-family: 'Outfit', sans-serif;
   display: none;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 16px; /* Guaranteed healthy gap: NEVER sticks together */
-  width: max-content;
-  max-width: calc(100vw - 24px);
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -591,35 +586,31 @@ html.modal-open .mobile-floating-reg-btn {
   visibility: hidden !important;
 }
 
-/* Mobile Floating "Register" Quick Action Button */
+/* Mobile Floating "Register Now" Quick Action Button */
 .mobile-floating-reg-btn {
-  position: relative;
-  bottom: auto;
-  right: auto;
-  z-index: 1;
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  right: 12px;
+  z-index: 9998;
   display: none;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background-color: #6C0D2C;
   color: #FFFFFF !important;
   font-family: 'Outfit', sans-serif;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0 14px;
+  padding: 0 12px;
   height: 33px;
   border-radius: 72px;
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0 #000000;
-  white-space: nowrap;
-  flex-shrink: 0;
+  border: 1.5px solid #000000;
+  box-shadow: 2px 2px 0 #000000;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.25s ease,
-              box-shadow 0.2s ease,
-              max-width 0.3s ease,
-              padding 0.3s ease;
+              box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
 }
@@ -631,35 +622,28 @@ html.modal-open .mobile-floating-reg-btn {
 
 .mobile-floating-reg-btn:active {
   transform: translateY(1px);
-  box-shadow: 1.5px 1.5px 0 #000000;
+  box-shadow: 1px 1px 0 #000000;
 }
 
 .mobile-floating-reg-btn.is-hidden-by-menu {
   opacity: 0 !important;
   pointer-events: none !important;
-  transform: scale(0.85) !important;
-  max-width: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
-  border: none !important;
+  transform: scale(0.9) !important;
 }
 
 @media (max-width: 768px) {
   .mobile-floating-menu-root {
-    display: flex;
+    display: block;
   }
   .mobile-floating-reg-btn {
-    display: inline-flex;
+    display: flex;
   }
 }
 
 @media (max-width: 360px) {
-  .mobile-floating-menu-root {
-    gap: 10px;
-  }
   .mobile-floating-reg-btn {
-    padding: 0 10px;
+    right: 8px;
+    padding: 0 9px;
     font-size: 0.68rem;
     gap: 4px;
   }
