@@ -1707,10 +1707,12 @@
           }
 
           if (submitBtn) {
+            submitBtn.style.display = 'inline-flex';
             submitBtn.disabled = false;
             submitBtn.removeAttribute('disabled');
             submitBtn.style.opacity = '1';
             submitBtn.style.cursor = 'pointer';
+            submitBtn.textContent = 'Submit Registration';
           }
         }).catch(() => {
           // Compression failed — fall back to raw FileReader preview
@@ -1725,10 +1727,12 @@
             fileSizeEl.style.color = '';
           }
           if (submitBtn) {
+            submitBtn.style.display = 'inline-flex';
             submitBtn.disabled = false;
             submitBtn.removeAttribute('disabled');
             submitBtn.style.opacity = '1';
             submitBtn.style.cursor = 'pointer';
+            submitBtn.textContent = 'Submit Registration';
           }
         });
       } else {
@@ -1758,10 +1762,12 @@
       if (err) err.style.display = 'none';
 
       if (submitBtn) {
+        submitBtn.style.display = 'inline-flex';
         submitBtn.disabled = true;
         submitBtn.setAttribute('disabled', 'true');
         submitBtn.style.opacity = '0.45';
         submitBtn.style.cursor = 'not-allowed';
+        submitBtn.textContent = 'Submit Registration';
       }
     }
 
@@ -2751,7 +2757,6 @@
           }
           if (errEl) errEl.style.display = 'none';
           if (createSheetBtn) createSheetBtn.style.display = 'none';
-          if (submitBtn) submitBtn.style.display = 'none';
           if (exitBtn) exitBtn.style.display = 'block';
         } else {
           if (existsMsg) existsMsg.style.display = 'none';
@@ -2824,7 +2829,6 @@
                   existsMsg.style.display = 'block';
                 }
                 if (createSheetBtn) createSheetBtn.style.display = 'none';
-                if (submitBtn) submitBtn.style.display = 'none';
                 if (exitBtn) exitBtn.style.display = 'block';
               } else if (!localSheet) {
                 // Only restore default state if no local sheet was already found
@@ -2941,6 +2945,22 @@
 
         if (step1Panel) step1Panel.style.display = 'none';
         if (step2Panel) step2Panel.style.display = 'block';
+        const submitBtn = document.getElementById('dlg-submit-btn');
+        if (submitBtn) {
+          submitBtn.style.display = 'inline-flex';
+          submitBtn.textContent = 'Submit Registration';
+          const hasScreenshot = !!_compressedScreenshots['delegation'];
+          submitBtn.disabled = !hasScreenshot;
+          if (hasScreenshot) {
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          } else {
+            submitBtn.setAttribute('disabled', 'true');
+            submitBtn.style.opacity = '0.45';
+            submitBtn.style.cursor = 'not-allowed';
+          }
+        }
         if (ind1) {
           ind1.classList.remove('is-active');
           ind1.classList.add('is-completed');
