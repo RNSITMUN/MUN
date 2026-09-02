@@ -4350,7 +4350,7 @@ async function handleRegistrationSubmit(e) {
   // ─── Success message ────
   const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
   const successMsgHTML = currentDelegateType === 'internal'
-    ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been recorded in our system.<br><br><div style="background:#FFF5F5;border:1.5px solid #6C0D2C;border-radius:8px;padding:10px 12px;margin:10px 0;font-size:0.82rem;color:#111;text-align:left;line-height:1.4;"><strong style="color:#6C0D2C;">📌 Note:</strong> Kindly <strong>download your registration confirmation receipt</strong> directly from the BillDesk portal after completing the payment.</div>`
+    ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`
     : `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
   // ─── Direct Supabase Submission ─────────────────────────
