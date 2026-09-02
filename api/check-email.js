@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://mun.rnsit.ac.in',
     'https://www.mun.rnsit.ac.in',
+    'https://mun-rose.vercel.app',
     'https://mun-rnsit.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
@@ -70,18 +71,36 @@ export default async function handler(req, res) {
     // 2. Check in delegations
     const { data: dlgRows, error: dlgError } = await supabase
       .from('delegations')
-      .select('id')
+      .select('id, roster_data, status, delegation_name')
       .ilike('email', email)
+      .order('id', { ascending: false })
       .limit(1);
 
     if (dlgError) {
       console.warn('[check-email] Delegation query notice:', dlgError.message);
     } else if (dlgRows && dlgRows.length > 0) {
+      const row = dlgRows[0];
+      let sheetUrl = '';
+      const rawRoster = row.roster_data;
+      if (Array.isArray(rawRoster) && rawRoster.length > 0) {
+        sheetUrl = typeof rawRoster[0] === 'string' ? rawRoster[0] : (rawRoster[0]?.sheetUrl || '');
+      } else if (typeof rawRoster === 'string') {
+        sheetUrl = rawRoster;
+      }
+
+      // If status is 'Draft Sheet Created', delegate has not submitted payment yet
+      const isSubmitted = row.status !== 'Draft Sheet Created';
+
       return res.status(200).json({
         success: true,
-        exists: true,
+        exists: isSubmitted,
+        isDraft: !isSubmitted,
+        sheetUrl: sheetUrl || undefined,
+        delegationName: row.delegation_name || undefined,
         type: 'delegation',
-        message: "This email address is already registered as a Delegation Head for RNS MUN '26."
+        message: isSubmitted
+          ? "This email address is already registered as a Delegation Head for RNS MUN '26."
+          : "Found your existing roster sheet for this email."
       });
     }
 

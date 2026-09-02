@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
 /* Design System and Variables */
 :root {
   --bg-color: #FFF7EB;
   --text-primary: #000000;
-  --font-sans: 'Outfit', sans-serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Screen-reader only utility — visually hidden but accessible */
@@ -328,18 +330,20 @@ body {
   border-radius: 9999px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
   height: 48px;
+  width: max-content;
   box-sizing: border-box;
   overflow: visible;
   max-width: 95vw;
-  will-change: transform;
+  user-select: none;
+}
+
+.nav-pill.is-animated {
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.35s ease,
-    background 0.35s ease,
-    opacity 0.6s ease;
-  user-select: none;
+    background 0.35s ease;
 }
 
 @supports not (backdrop-filter: blur(12px)) {
@@ -390,12 +394,13 @@ body {
 /* Nav Item Links */
 .nav-item {
   position: relative;
-  color: rgba(0, 0, 0, 0.65);
-  font-family: var(--font-sans);
-  font-size: 0.86rem;
+  color: rgba(0, 0, 0, 0.68);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.88rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  padding: 6px 13px;
+  padding: 6px 14px;
   border-radius: 9999px;
   white-space: nowrap;
   display: flex;
@@ -411,6 +416,7 @@ body {
 .nav-item.active {
   color: #6C0D2C;
   font-weight: 800;
+  letter-spacing: -0.01em;
   background: rgba(108, 13, 44, 0.08);
   z-index: 2;
 }
@@ -517,10 +523,11 @@ body {
 /* Dropdown Menu Item */
 .nav-dropdown-item {
   position: relative;
-  color: rgba(0, 0, 0, 0.7);
-  font-family: var(--font-sans);
+  color: rgba(0, 0, 0, 0.72);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
   padding: 10px 16px;
   border-radius: 12px;
@@ -532,8 +539,8 @@ body {
 
 .nav-dropdown-item.active {
   color: #6C0D2C;
-  font-weight: 600;
-  background: rgba(108, 13, 44, 0.06);
+  font-weight: 800;
+  background: rgba(108, 13, 44, 0.08);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -571,38 +578,108 @@ body {
 }
 
 body.modal-open .mobile-floating-menu-root,
-html.modal-open .mobile-floating-menu-root {
+html.modal-open .mobile-floating-menu-root,
+body.modal-open .mobile-floating-reg-btn,
+html.modal-open .mobile-floating-reg-btn {
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
+}
+
+/* Mobile Floating "Register" Quick Action Button */
+.mobile-floating-reg-btn {
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  right: clamp(10px, 3.5vw, 18px);
+  z-index: 9998;
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background-color: #6C0D2C;
+  color: #FFFFFF !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0 12px;
+  height: 34px;
+  box-sizing: border-box;
+  border-radius: 72px;
+  border: 2px solid #000000;
+  box-shadow: 2.5px 2.5px 0 #000000;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease,
+              box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+
+.mobile-floating-reg-btn svg {
+  stroke: #E5A93C;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobile-floating-reg-btn:active {
+  transform: translateY(1px);
+  box-shadow: 1.5px 1.5px 0 #000000;
+}
+
+.mobile-floating-reg-btn.is-hidden-by-menu {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.9) !important;
 }
 
 @media (max-width: 768px) {
   .mobile-floating-menu-root {
     display: block;
   }
+  .mobile-floating-reg-btn {
+    display: flex;
+  }
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
-  .mobile-floating-menu-root {
+@media (max-width: 360px) {
+  .mobile-floating-reg-btn {
+    right: 8px;
+    padding: 0 10px;
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+}
+
+@media (max-height: 540px) and (orientation: landscape) {
+  .mobile-floating-menu-root,
+  .mobile-floating-reg-btn {
     bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
+  .mobile-floating-reg-btn {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 0.66rem;
+  }
+  .floating-menu-container {
+    height: 30px;
+  }
   .floating-menu-container.is-open {
-    height: 195px;
-    width: 170px;
+    height: min(185px, 82vh);
+    width: 165px;
   }
   .floating-menu-container.is-open .floating-menu-links {
-    padding: 8px 8px 2px 8px;
-    gap: 2px;
+    padding: 6px 8px 1px 8px;
+    gap: 1.5px;
   }
   .floating-menu-item {
-    height: 26px;
-    min-height: 24px;
-    font-size: 0.7rem;
+    max-height: 22px;
+    min-height: 18px;
+    font-size: 0.66rem;
   }
   .floating-menu-container.is-open .floating-menu-bottom-bar {
-    height: 26px;
-    padding: 0 8px 6px 8px;
+    height: 24px;
+    padding: 0 8px 4px 8px;
   }
 }
 
@@ -613,11 +690,12 @@ html.modal-open .mobile-floating-menu-root {
   flex-direction: column;
   justify-content: center;
   width: 96px;
-  height: 33px;
+  height: 34px;
+  box-sizing: border-box;
   border-radius: 72px;
   cursor: pointer;
   border: 2px solid #000000;
-  box-shadow: 3px 3px 0 #000000;
+  box-shadow: 2.5px 2.5px 0 #000000;
   transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     height 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -627,7 +705,7 @@ html.modal-open .mobile-floating-menu-root {
 
 .floating-menu-container.is-open {
   width: clamp(165px, 46vw, 185px);
-  height: 220px;
+  height: clamp(195px, 30vh, 212px);
   border-radius: 18px;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0 #000000;
@@ -691,11 +769,12 @@ html.modal-open .mobile-floating-menu-root {
   pointer-events: auto;
   flex: 1;
   height: auto;
-  padding: 12px 10px 4px 10px;
+  padding: 10px 10px 2px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  gap: 3px;
+  align-items: stretch;
+  gap: 2px;
 }
 
 /* Menu Items with Staggered Slide In */
@@ -703,7 +782,7 @@ html.modal-open .mobile-floating-menu-root {
   text-decoration: none;
   color: #FFF7EB;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.76rem;
+  font-size: clamp(0.70rem, 2.1vw, 0.75rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -712,10 +791,11 @@ html.modal-open .mobile-floating-menu-root {
   justify-content: center;
   text-align: center;
   width: 100%;
-  height: 30px;
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 8px;
+  flex: 1;
+  max-height: 25px;
+  min-height: 21px;
+  padding: 0 8px;
+  border-radius: 6px;
   box-sizing: border-box;
   transform: translateY(8px);
   opacity: 0;
@@ -756,7 +836,7 @@ html.modal-open .mobile-floating-menu-root {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  height: 33px;
+  height: 34px;
   padding: 0;
   box-sizing: border-box;
   cursor: pointer;
@@ -765,9 +845,9 @@ html.modal-open .mobile-floating-menu-root {
 
 .floating-menu-container.is-open .floating-menu-bottom-bar {
   justify-content: center;
-  gap: 8px;
-  height: 30px;
-  padding: 0 10px 8px 10px;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px 6px 10px;
 }
 
 .floating-menu-label {

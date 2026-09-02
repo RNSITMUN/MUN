@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v2';
+const CACHE_NAME = 'mun-cache-v3';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
@@ -37,12 +37,13 @@ self.addEventListener('activate', (e) => {
 
 // Fetch Event - Stale-While-Revalidate Strategy
 self.addEventListener('fetch', (e) => {
-  // Ignore in localhost dev mode, non-GET requests, or third-party/vite internal requests
+  // Ignore in localhost dev mode, API calls, non-GET requests, or third-party/vite internal requests
   if (
     self.location.hostname === 'localhost' ||
     self.location.hostname === '127.0.0.1' ||
     e.request.method !== 'GET' ||
     !e.request.url.startsWith(self.location.origin) ||
+    e.request.url.includes('/api/') ||
     e.request.url.includes('/@') ||
     e.request.url.includes('node_modules')
   ) {

@@ -130,7 +130,7 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800;900&display=swap"></noscript>
 
   <link rel="stylesheet" href="./style.css">
-  <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
+  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.png">
   <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
@@ -201,7 +201,15 @@
       -webkit-tap-highlight-color: transparent !important;
     }
 
-    /* When Lightbox is open: Carousel container elevates above all hero lockups */
+    /* When Lightbox is open: Ensure total viewport clarity, hide overlapping sections */
+    body.globe-lightbox-open {
+      overflow: hidden !important;
+    }
+    body.globe-lightbox-open .mun26-editorial-section {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease;
+    }
     body.globe-lightbox-open .carousel-container,
     .carousel-container.lightbox-active {
       z-index: 500 !important;
@@ -2173,7 +2181,7 @@
 
           <a href="/registration?type=delegation" class="btn-reg-white" aria-label="Register as Delegation">
             <span class="btn-main-txt">Register as Delegation</span>
-            <span class="btn-sub-txt">9+ GROUP &bull; COMPETE FOR THE FLAGSHIP AWARD &rarr;</span>
+            <span class="btn-sub-txt">9+ GROUP &rarr;</span>
           </a>
 
           <button type="button" class="btn-reg-share" id="home-share-btn" onclick="shareConference()" aria-label="Share Conference with Friends">

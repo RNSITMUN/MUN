@@ -1,4 +1,7 @@
 import { supabase, uploadScreenshotToStorage } from './_supabase.js';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 export default async function handler(req, res) {
   // ─── CORS Guard ───────────────────────────────────────────────
@@ -6,6 +9,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://mun.rnsit.ac.in',
     'https://www.mun.rnsit.ac.in',
+    'https://mun-rose.vercel.app',
     'https://mun-rnsit.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
@@ -99,35 +103,55 @@ export default async function handler(req, res) {
       console.log('📸 [submit-registration] Screenshot URL:', screenshotUrl);
     }
 
-    // 3. Insert Registration Record into Supabase PostgreSQL
-    const { data: insertedRecord, error: insertError } = await supabase
-      .from('registrations')
-      .insert([
-        {
-          delegate_type:      clean(delegateType),
-          name:               cleanName,
-          institution:        clean(body.institution),
-          usn:                clean(body.usn),
-          city:               clean(body.city),
-          phone:              clean(phone),
-          email:              cleanEmail,
-          mun_experience:     clean(body.munExperience),
-          experience_count:   clean(body.experienceCount),
-          experience_details: clean(body.experienceDetails),
-          committee1:         clean(body.committee1),
-          portfolio1_1:       clean(body.portfolio1_1),
-          portfolio1_2:       clean(body.portfolio1_2),
-          committee2:         clean(body.committee2),
-          portfolio2_1:       clean(body.portfolio2_1),
-          portfolio2_2:       clean(body.portfolio2_2),
-          ieee_id:            clean(body.ieeeId),
-          payment_amount:     clean(body.paymentAmount),
-          screenshot_url:     screenshotUrl,
-          status:             'Pending Verification'
-        }
-      ])
-      .select('id, created_at')
-      .single();
+    // 3. Insert Registration Record into Supabase PostgreSQL (with automatic retry)
+    const recordPayload = {
+      delegate_type:      clean(delegateType),
+      name:               cleanName,
+      institution:        clean(body.institution),
+      usn:                clean(body.usn),
+      city:               clean(body.city),
+      phone:              clean(phone),
+      email:              cleanEmail,
+      mun_experience:     clean(body.munExperience),
+      experience_count:   clean(body.experienceCount),
+      experience_details: clean(body.experienceDetails),
+      committee1:         clean(body.committee1),
+      portfolio1_1:       clean(body.portfolio1_1),
+      portfolio1_2:       clean(body.portfolio1_2),
+      committee2:         clean(body.committee2),
+      portfolio2_1:       clean(body.portfolio2_1),
+      portfolio2_2:       clean(body.portfolio2_2),
+      ieee_id:            clean(body.ieeeId),
+      payment_amount:     clean(body.paymentAmount) + (body.assignedUpiId ? (' | UPI: ' + clean(body.assignedUpiId)) : ''),
+      screenshot_url:     screenshotUrl,
+      status:             'Pending Verification'
+    };
+
+    let insertedRecord = null;
+    let insertError = null;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const { data, error } = await supabase
+        .from('registrations')
+        .insert([recordPayload])
+        .select('id, created_at')
+        .single();
+
+      if (!error) {
+        insertedRecord = data;
+        insertError = null;
+        break;
+      }
+
+      insertError = error;
+      // If duplicate constraint hit, don't retry
+      if (error.code === '23505') break;
+
+      if (attempt < 3) {
+        console.warn(`[submit-registration] Insert attempt ${attempt} failed: ${error.message}. Retrying...`);
+        await new Promise(r => setTimeout(r, attempt * 350));
+      }
+    }
 
     if (insertError) {
       if (insertError.code === '23505') {
@@ -137,8 +161,21 @@ export default async function handler(req, res) {
           error: "This email address has already been registered for RNS MUN '26."
         });
       }
+
+      // Emergency local persistence backup to guarantee zero data loss
+      try {
+        const backupDir = process.env.VERCEL ? os.tmpdir() : path.join(process.cwd(), '.temp_data');
+        if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+        const backupFile = path.join(backupDir, 'emergency_registrations_backup.json');
+        const existingBackups = fs.existsSync(backupFile) ? JSON.parse(fs.readFileSync(backupFile, 'utf8') || '[]') : [];
+        existingBackups.push({ ...recordPayload, emergency_saved_at: new Date().toISOString(), error: insertError.message });
+        fs.writeFileSync(backupFile, JSON.stringify(existingBackups, null, 2), 'utf8');
+        console.log('🛡️ [submit-registration] Saved to emergency backup file');
+      } catch (e) {}
+
+      const errMsg = insertError.message || insertError.detail || insertError.title || ('Database error ' + (insertError.status || ''));
       console.error('❌ [submit-registration] Supabase insert error:', insertError);
-      return res.status(500).json({ success: false, error: 'Database error: ' + insertError.message });
+      return res.status(500).json({ success: false, error: 'Database error: ' + errMsg });
     }
 
     console.log('✅ [submit-registration] Successfully saved to Supabase! ID:', insertedRecord?.id);

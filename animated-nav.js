@@ -18,26 +18,17 @@ import './anti-scrape.js';
     const navPill = document.querySelector(".nav-pill");
     if (!navPill) return;
 
-    // Build DOM structure if not already built
+    // Build DOM structure without wiping existing items
     if (!navPill.querySelector(".nav-items-wrap")) {
       const items = Array.from(navPill.querySelectorAll(".nav-item"));
 
-      // 1. Horizontal links wrapper (centered pill state)
+      // 1. Horizontal links wrapper
       const wrap = document.createElement("div");
       wrap.className = "nav-items-wrap";
       items.forEach((it) => {
         it.addEventListener("mouseenter", () => {
           prefetchUrl(it.getAttribute("href"));
         }, { passive: true });
-        it.addEventListener("click", (e) => {
-          if (window.innerWidth <= 768) {
-            const href = it.getAttribute("href");
-            if (href && href !== window.location.pathname) {
-              e.preventDefault();
-              window.location.replace(href);
-            }
-          }
-        });
         wrap.appendChild(it);
       });
 
@@ -58,30 +49,21 @@ import './anti-scrape.js';
         </svg>
       `;
 
-      // 3. Dropdown Menu for scrolled top-right state
+      // 3. Dropdown Menu for scrolled state
       const dropdown = document.createElement("div");
       dropdown.className = "nav-dropdown";
       items.forEach((it) => {
         const clone = it.cloneNode(true);
         clone.className = "nav-dropdown-item" + (it.classList.contains("active") ? " active" : "");
-        // Prefetch on hover
         clone.addEventListener("mouseenter", () => {
           prefetchUrl(clone.getAttribute("href"));
         }, { passive: true });
-        clone.addEventListener("click", (e) => {
+        clone.addEventListener("click", () => {
           navPill.classList.remove("is-open");
-          if (window.innerWidth <= 768) {
-            const href = clone.getAttribute("href");
-            if (href && href !== window.location.pathname) {
-              e.preventDefault();
-              window.location.replace(href);
-            }
-          }
         });
         dropdown.appendChild(clone);
       });
 
-      navPill.innerHTML = "";
       navPill.appendChild(wrap);
       navPill.appendChild(collapsedIcon);
       navPill.appendChild(dropdown);
@@ -90,23 +72,6 @@ import './anti-scrape.js';
     const collapsedBtn = navPill.querySelector(".nav-collapsed-icon");
     let isScrolled = false;
     const SCROLL_THRESHOLD = 100;
-    let naturalWidth = 0;
-
-    function measureExpandedWidth() {
-      if (window.innerWidth <= 768) return;
-      const wasScrolled = navPill.classList.contains("nav-scrolled");
-      if (wasScrolled) navPill.classList.remove("nav-scrolled");
-
-      navPill.style.width = "auto";
-      naturalWidth = navPill.offsetWidth;
-
-      if (wasScrolled) {
-        navPill.classList.add("nav-scrolled");
-        navPill.style.width = "48px";
-      } else {
-        navPill.style.width = `${naturalWidth}px`;
-      }
-    }
 
     // Toggle dropdown when clicking collapsed hamburger button
     if (collapsedBtn) {
@@ -139,12 +104,9 @@ import './anti-scrape.js';
       if (scrollY > SCROLL_THRESHOLD && !isScrolled) {
         isScrolled = true;
         navPill.classList.add("nav-scrolled");
-        navPill.style.width = "48px";
       } else if (scrollY <= SCROLL_THRESHOLD && isScrolled) {
         isScrolled = false;
         navPill.classList.remove("nav-scrolled", "is-open");
-        if (!naturalWidth) measureExpandedWidth();
-        navPill.style.width = naturalWidth ? `${naturalWidth}px` : "auto";
       }
     }
 
@@ -159,19 +121,15 @@ import './anti-scrape.js';
       }
     }
 
-    let resizeTimeout = null;
-    function onResize() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        measureExpandedWidth();
-        handleScroll();
-      }, 150);
-    }
+    // Enable smooth transitions only after initial load to prevent glitching on page navigation
+    requestAnimationFrame(() => {
+      handleScroll();
+      requestAnimationFrame(() => {
+        navPill.classList.add("is-animated");
+      });
+    });
 
-    setTimeout(measureExpandedWidth, 50);
-    window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    handleScroll();
   }
 
   if (document.readyState === "loading") {
