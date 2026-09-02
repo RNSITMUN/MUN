@@ -781,13 +781,49 @@
         font-size: 0.72rem;
       }
 
+      /* Mobile Transit Cards: Compact small boxes without images */
+      .transit-banner-wrap {
+        display: none !important;
+      }
+
+      .transit-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
       .transit-card {
-        padding: 18px 16px;
+        padding: 0;
+        border: 2px solid var(--text-primary);
+        border-radius: 12px;
+        box-shadow: 3px 3px 0px var(--text-primary);
+      }
+
+      .transit-card-content {
+        padding: 13px 15px;
+        gap: 10px;
+      }
+
+      .transit-type-label {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+      }
+
+      .transit-hub-name {
+        font-size: 1.06rem;
+        margin-bottom: 4px;
+      }
+
+      .transit-distance-tag {
+        font-size: 0.72rem;
+        padding: 3px 8px;
+        margin-top: 2px;
       }
 
       .transit-link-btn {
-        padding: 11px 14px;
-        font-size: 0.82rem;
+        padding: 9px 12px;
+        font-size: 0.78rem;
+        margin-top: 2px;
       }
 
       .venue-contacts-box {
