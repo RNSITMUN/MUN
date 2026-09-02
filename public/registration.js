@@ -4913,7 +4913,7 @@
       banner.innerHTML = `
         <span class="draft-dot"></span>
         <span>Draft restored &mdash; your entries are back!</span>
-        <button class="draft-dismiss" onclick="clearDraftAndDismissBanner()" aria-label="Dismiss draft">Clear</button>
+        <button type="button" class="draft-dismiss" onclick="clearDraftAndDismissBanner(event)" aria-label="Clear draft">Clear</button>
       `;
 
       // Insert at top of Step 1 panel content
@@ -4934,19 +4934,33 @@
       }, 6000);
     }
 
-    function clearDraftAndDismissBanner() {
+    function clearDraftAndDismissBanner(e) {
+      if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
       clearDraft();
       resetPaymentScreenshotState();
+
       const banner = document.getElementById('draft-restored-banner');
       if (banner) {
-        banner.style.transition = 'opacity 0.3s ease';
+        banner.style.transition = 'opacity 0.2s ease';
         banner.style.opacity = '0';
-        setTimeout(() => banner.remove(), 300);
+        setTimeout(() => banner.remove(), 200);
       }
-      // Completely reset form fields and dependent selects
+
+      // Explicitly wipe individual inputs to guarantee blank state
       const form = document.getElementById('delegate-registration-form');
       if (form) {
-        form.reset();
+        const idsToClear = ['reg-name', 'reg-age', 'reg-usn', 'reg-phone', 'reg-email', 'reg-experience-details', 'reg-exp-count'];
+        idsToClear.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+
+        const city = document.getElementById('reg-city');
+        if (city) city.value = currentDelegateType === 'internal' ? 'Bengaluru' : '';
+
         const institution = document.getElementById('reg-institution');
         if (institution) {
           if (currentDelegateType === 'internal') {
@@ -4957,15 +4971,23 @@
             institution.readOnly = false;
           }
         }
+
         handleExperienceToggle('no');
         const noRadio = document.getElementById('reg-exp-no');
         if (noRadio) noRadio.checked = true;
+
+        const existsMsg = document.getElementById('reg-email-exists-msg');
+        if (existsMsg) existsMsg.style.display = 'none';
 
         form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
         form.querySelectorAll('.error-container').forEach(el => { el.style.display = 'none'; });
 
         setCommittee1Selection('unsc');
         goToStep(1);
+
+        // Focus Full Name so user can start typing cleanly
+        const nameInput = document.getElementById('reg-name');
+        if (nameInput) nameInput.focus();
       }
     }
 
