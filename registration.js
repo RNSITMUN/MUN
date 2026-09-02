@@ -5013,8 +5013,52 @@
       });
     }
 
+    
+    // Native Drag and Drop support for payment screenshot dropzones
+    function initDropzoneDragAndDrop() {
+      const dropzones = [
+        { dropId: 'external-payment-dropzone', inputId: 'reg-external-payment-screenshot', handler: handleExternalPaymentScreenshotSelected },
+        { dropId: 'dlg-payment-dropzone', inputId: 'dlg-payment-screenshot', handler: handleDelegationPaymentScreenshotSelected }
+      ];
+
+      dropzones.forEach(({ dropId, inputId, handler }) => {
+        const dropzone = document.getElementById(dropId);
+        const input = document.getElementById(inputId);
+        if (!dropzone || !input) return;
+
+        ['dragenter', 'dragover'].forEach(evt => {
+          dropzone.addEventListener(evt, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.style.borderColor = 'var(--accent-color)';
+            dropzone.style.backgroundColor = '#FFF5F7';
+          }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(evt => {
+          dropzone.addEventListener(evt, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.style.borderColor = 'var(--text-primary)';
+            dropzone.style.backgroundColor = '#FFFDF9';
+          }, false);
+        });
+
+        dropzone.addEventListener('drop', e => {
+          const files = e.dataTransfer && e.dataTransfer.files;
+          if (files && files.length > 0) {
+            try {
+              input.files = files;
+            } catch (_) {}
+            handler(input);
+          }
+        }, false);
+      });
+    }
+  
+
     // Initialize listeners once DOM is ready
-    const initDraftAutoSave = () => { attachDraftListeners(); };
+    const initDraftAutoSave = () => { attachDraftListeners(); initDropzoneDragAndDrop(); };
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initDraftAutoSave);
     } else {
@@ -5068,5 +5112,7 @@ Object.assign(window, {
   handlePortfolio1Change,
   handlePortfolio2Change,
   handleCommittee2Change,
-  handleExternalPaymentScreenshotSelected
+  handleExternalPaymentScreenshotSelected,
+  removeExternalPaymentScreenshot,
+  removeDelegationPaymentScreenshot
 });
