@@ -3518,7 +3518,15 @@
         return;
       }
 
-      const onCopied = () => showTactileToast('Roster sheet link copied to clipboard!');
+      const onCopied = () => {
+        showTactileToast('Roster sheet link copied to clipboard!');
+        const copyBtnText = document.getElementById('dlg-copy-btn-text');
+        if (copyBtnText) {
+          const orig = copyBtnText.textContent;
+          copyBtnText.textContent = '✓ Copied!';
+          setTimeout(() => { copyBtnText.textContent = orig; }, 2000);
+        }
+      };
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(actualLink).then(onCopied).catch(() => {
@@ -3643,7 +3651,7 @@
         const anchor = document.getElementById('dlg-sheet-anchor');
         if (resultBox && anchor) {
           anchor.href = finalUrl;
-          anchor.textContent = `Open Google Sheet: ${delegationName || 'Delegation Roster'}`;
+          // Anchor href set without breaking structured button HTML
           resultBox.classList.add('is-generated');
         }
 

@@ -646,39 +646,58 @@
           <!-- Google Sheet Integration Section -->
           <div class="form-group">
             <label class="form-label">Delegate Details *</label>
-            <div class="sheet-generator-box">
-              <div class="sheet-generator-header">
-                <span class="sheet-icon">📋</span>
-                <h4 class="sheet-title">Delegation Roster Sheet</h4>
+            <div class="neo-roster-card" id="dlg-roster-container">
+              <!-- Header -->
+              <div class="neo-roster-header">
+                <div class="neo-roster-badge">[ DELEGATION ROSTER SHEET ]</div>
+                <h4 class="neo-roster-title">Official Delegation Roster</h4>
+                <p class="neo-roster-desc">Generate your official pre-formatted Google Sheet to collaborate with your team with live editing access.</p>
               </div>
-              <p class="sheet-desc">Fill the details of all the delegation members</p>
 
-              <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
-                onclick="generateDelegationGoogleSheet()">
+              <!-- Create Sheet Button -->
+              <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn" onclick="generateDelegationGoogleSheet()">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
                 <span>Create Delegation Sheet</span>
               </button>
 
-              <!-- Sheet link result -->
+              <!-- Sheet link result (Reveals when sheet is created) -->
               <div id="dlg-sheet-result" class="sheet-link-result">
-                <div class="sheet-link-card">
-                  <div class="sheet-link-info">
-                    <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
-                      class="sheet-link-text">Open Google Sheet</a>
-                  </div>
-                  <div class="sheet-link-actions" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                    <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterExcel()"
-                      title="Download Microsoft Excel spreadsheet preserving column widths and colors">Excel (.xlsx)</button>
-                    <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
-                      title="Download raw comma-separated values file">CSV</button>
-                    <button type="button" class="sheet-btn-action sheet-btn-whatsapp" onclick="shareDelegationRosterWhatsApp()"
-                      title="Share roster sheet directly into your college delegation WhatsApp group">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px; margin-right: 2px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>WhatsApp
-                    </button>
-                    <button type="button" class="sheet-btn-action" onclick="copyDelegationRosterLink()"
-                      title="Copy roster sheet link to clipboard">Copy Link</button>
-                  </div>
+                <!-- Status Badge -->
+                <div class="roster-status-banner">
+                  <span class="roster-status-dot"></span>
+                  <span>Roster Sheet Generated &amp; Editable</span>
+                </div>
+
+                <!-- Primary Action: Prominent Full-Width Button -->
+                <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer" class="btn-open-roster-sheet">
+                  <span>OPEN GOOGLE ROSTER SHEET</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+
+                <!-- Secondary Action Buttons: Clean Neo-Brutalist Grid -->
+                <div class="roster-action-grid">
+                  <button type="button" class="roster-action-btn" id="dlg-copy-link-btn" onclick="copyDelegationRosterLink()" title="Copy roster sheet link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="dlg-copy-btn-text">Copy Link</span>
+                  </button>
+
+                  <button type="button" class="roster-action-btn roster-action-whatsapp" onclick="shareDelegationRosterWhatsApp()" title="Share to WhatsApp Group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button type="button" class="roster-action-btn" onclick="downloadDelegationRosterExcel()" title="Download Excel (.xlsx)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Excel</span>
+                  </button>
+
+                  <button type="button" class="roster-action-btn" onclick="downloadDelegationRosterCSV()" title="Download CSV">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>CSV</span>
+                  </button>
                 </div>
               </div>
+
               <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
             </div>
             <div id="dlg-sheet-error" class="error-container" aria-live="polite" role="alert">Please click "Create Delegation Sheet" to generate your

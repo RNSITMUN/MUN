@@ -2610,62 +2610,60 @@
       box-shadow: 2px 2px 0px var(--text-primary);
     }
 
-    /* Google Sheet Generator Section */
-    .sheet-generator-box {
-      background: rgba(0, 0, 0, 0.03);
-      border: 2px dashed var(--text-primary);
+        /* Neo-Brutalist Delegation Roster Card */
+    .neo-roster-card {
+      background: #FFFDF9;
+      border: 2.5px solid var(--text-primary);
+      box-shadow: 4px 4px 0px var(--text-primary);
       border-radius: 12px;
-      padding: 16px;
-      margin-top: 4px;
+      padding: 18px 20px;
+      margin-top: 6px;
       box-sizing: border-box;
     }
 
-    .sheet-generator-header {
-      display: flex;
+    .neo-roster-header {
+      margin-bottom: 14px;
+    }
+
+    .neo-roster-badge {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      background: var(--accent-color);
+      color: #FFF7EB;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1.5px solid var(--text-primary);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       margin-bottom: 8px;
     }
 
-    .sheet-icon {
-      font-size: 1.4rem;
-    }
-
-    .sheet-title {
-      font-size: 0.95rem;
-      font-weight: 800;
+    .neo-roster-title {
+      font-size: 1.05rem;
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      margin: 0;
+      margin: 0 0 6px 0;
       color: var(--text-primary);
     }
 
-    .sheet-desc {
+    .neo-roster-desc {
       font-size: 0.82rem;
-      color: rgba(0, 0, 0, 0.65);
-      line-height: 1.4;
-      margin: 0 0 10px 0;
-    }
-
-    .sheet-columns-preview {
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.55);
-      background: var(--bg-color);
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      border-radius: 6px;
-      padding: 6px 10px;
-      margin-bottom: 12px;
-      line-height: 1.35;
+      color: rgba(17, 17, 19, 0.7);
+      line-height: 1.45;
+      margin: 0;
+      font-weight: 500;
     }
 
     .btn-create-sheet {
       width: 100%;
-      background: #0F9D58;
-      color: #FFFFFF;
+      background: var(--accent-color);
+      color: #FFF7EB;
       border: 2px solid var(--text-primary);
       border-radius: 8px;
-      padding: 11px 16px;
+      padding: 12px 18px;
       font-family: var(--font-sans);
       font-size: 0.92rem;
       font-weight: 800;
@@ -2682,7 +2680,7 @@
 
     @media (hover: hover) and (pointer: fine) {
       .btn-create-sheet:hover {
-        background-color: #0b8043;
+        background-color: #851237;
       }
     }
 
@@ -2692,7 +2690,7 @@
     }
 
     .sheet-link-result {
-      margin-top: 10px;
+      margin-top: 14px;
       display: none;
     }
 
@@ -2700,76 +2698,114 @@
       display: block;
     }
 
-    .sheet-link-card {
+    .roster-status-banner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 8px;
-      flex-wrap: wrap;
-      background: #FFFFFF;
-      border: 2px solid #0F9D58;
+      background: rgba(15, 157, 88, 0.1);
+      color: #0d7541;
+      border: 1.5px solid #0F9D58;
       border-radius: 8px;
       padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    .sheet-link-info {
+    .roster-status-dot {
+      width: 8px;
+      height: 8px;
+      background: #0F9D58;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(15, 157, 88, 0.25);
+    }
+
+    .btn-open-roster-sheet {
       display: flex;
       align-items: center;
-      gap: 8px;
-      overflow: hidden;
-      flex: 1;
-    }
-
-    .sheet-link-text {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #0F9D58;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--accent-color);
+      color: #FFF7EB;
+      border: 2.5px solid var(--text-primary);
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       text-decoration: none;
+      box-shadow: 3px 3px 0px var(--text-primary);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      box-sizing: border-box;
+      margin-bottom: 10px;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .sheet-link-text:hover {
-        text-decoration: underline;
+      .btn-open-roster-sheet:hover {
+        background: #851237;
+        color: #FFF7EB;
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0px var(--text-primary);
       }
     }
 
-    .sheet-btn-action {
-      background: transparent;
-      border: 1.5px solid var(--text-primary);
-      border-radius: 6px;
-      padding: 4px 8px;
+    .btn-open-roster-sheet:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--text-primary);
+    }
+
+    .roster-action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      width: 100%;
+    }
+
+    .roster-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #FFFFFF;
+      color: var(--text-primary);
+      border: 2px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 9px 12px;
       font-family: var(--font-sans);
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 800;
       cursor: pointer;
+      box-shadow: 2px 2px 0px var(--text-primary);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease, color 0.15s ease;
+      text-decoration: none;
+      box-sizing: border-box;
       white-space: nowrap;
-      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .sheet-btn-action:hover {
+      .roster-action-btn:hover {
         background: var(--text-primary);
         color: #FFF7EB;
       }
-    }
-
-    .sheet-btn-whatsapp {
-      color: #0F9D58;
-      border-color: #0F9D58;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .sheet-btn-whatsapp:hover {
+      .roster-action-whatsapp:hover {
         background: #25D366 !important;
-        border-color: #25D366 !important;
         color: #FFFFFF !important;
+        border-color: #128C7E !important;
       }
+    }
+
+    .roster-action-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px var(--text-primary);
+    }
     }
 
     /* Delegate Number Input with Integrated Stepper Arrows (10 - 18) */
