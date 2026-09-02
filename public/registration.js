@@ -1349,6 +1349,13 @@
           { scale: 0.92, y: 30, opacity: 0 },
           { scale: 1, y: 0, opacity: 1, duration: 0.35, ease: 'power4.out' }
         );
+        const closeBtn = document.getElementById('type-modal-close');
+        if (closeBtn) {
+          gsap.fromTo(closeBtn,
+            { scale: 0.5, rotation: -90, opacity: 0 },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.4, delay: 0.12, ease: 'back.out(2.5)' }
+          );
+        }
       }
     }
 
@@ -1358,9 +1365,18 @@
       }
       const typeBackdrop = document.getElementById('delegate-type-modal-backdrop');
       const typeCard = document.getElementById('delegate-type-modal-card');
+      const closeBtn = document.getElementById('type-modal-close');
       if (!typeBackdrop || !typeCard) return;
 
       if (window.gsap) {
+        if (closeBtn) {
+          gsap.to(closeBtn, {
+            rotation: 180,
+            scale: 0.72,
+            duration: 0.2,
+            ease: 'power2.in'
+          });
+        }
         gsap.to(typeCard, {
           scale: 0.94,
           y: 20,
@@ -1372,6 +1388,7 @@
             typeBackdrop.style.display = 'none';
             unlockBackgroundScroll();
             gsap.set(typeCard, { clearProps: 'all' });
+            if (closeBtn) gsap.set(closeBtn, { clearProps: 'all' });
             if (typeof callback === 'function') callback();
           }
         });
@@ -2390,6 +2407,13 @@
           { scale: 0.92, y: 30, opacity: 0 },
           { scale: 1, y: 0, opacity: 1, duration: 0.45, ease: 'power4.out' }
         );
+        const closeBtn = document.getElementById('reg-modal-close');
+        if (closeBtn) {
+          gsap.fromTo(closeBtn,
+            { scale: 0.5, rotation: -90, opacity: 0 },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.4, delay: 0.12, ease: 'back.out(2.5)' }
+          );
+        }
       }
     }
 
@@ -2400,21 +2424,31 @@
       }
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
+      const closeBtn = document.getElementById('reg-modal-close');
       closeAllCustomSelects();
       if (!regBackdrop || !regCard) return;
 
       if (window.gsap) {
+        if (closeBtn) {
+          gsap.to(closeBtn, {
+            rotation: 180,
+            scale: 0.72,
+            duration: 0.22,
+            ease: 'power2.in'
+          });
+        }
         gsap.to(regCard, {
-          scale: 0.94,
-          y: 20,
+          scale: 0.93,
+          y: 22,
           opacity: 0,
-          duration: 0.28,
+          duration: 0.26,
           ease: 'power3.in',
           onComplete: () => {
             regBackdrop.classList.remove('active');
             regBackdrop.style.display = 'none';
             unlockBackgroundScroll();
             gsap.set(regCard, { clearProps: 'all' });
+            if (closeBtn) gsap.set(closeBtn, { clearProps: 'all' });
             regCard.classList.remove('in-success-state');
             regCard.style.overflowY = '';
             regCard.style.maxHeight = '';
@@ -2474,6 +2508,13 @@
           { scale: 0.92, y: 30, opacity: 0 },
           { scale: 1, y: 0, opacity: 1, duration: 0.45, ease: 'power4.out' }
         );
+        const closeBtn = document.getElementById('dlg-modal-close');
+        if (closeBtn) {
+          gsap.fromTo(closeBtn,
+            { scale: 0.5, rotation: -90, opacity: 0 },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.4, delay: 0.12, ease: 'back.out(2.5)' }
+          );
+        }
       }
     }
 
@@ -2483,15 +2524,24 @@
       }
       const dlgBackdrop = document.getElementById('delegation-modal-backdrop');
       const dlgCard = document.getElementById('delegation-modal-card');
+      const closeBtn = document.getElementById('dlg-modal-close');
       closeAllCustomSelects();
       if (!dlgBackdrop || !dlgCard) return;
 
       if (window.gsap) {
+        if (closeBtn) {
+          gsap.to(closeBtn, {
+            rotation: 180,
+            scale: 0.72,
+            duration: 0.22,
+            ease: 'power2.in'
+          });
+        }
         gsap.to(dlgCard, {
-          scale: 0.94,
-          y: 20,
+          scale: 0.93,
+          y: 22,
           opacity: 0,
-          duration: 0.28,
+          duration: 0.26,
           ease: 'power3.in',
           onComplete: () => {
             dlgBackdrop.classList.remove('active');
@@ -2499,6 +2549,7 @@
             unlockBackgroundScroll();
             clearDelegationForm();
             gsap.set(dlgCard, { clearProps: 'all' });
+            if (closeBtn) gsap.set(closeBtn, { clearProps: 'all' });
             dlgCard.classList.remove('in-dlg-success-state');
             dlgCard.style.overflowY = '';
             dlgCard.style.maxHeight = '';
