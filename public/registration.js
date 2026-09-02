@@ -4057,7 +4057,7 @@
       // ─── Success message ────
       const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
       const successMsgHTML = currentDelegateType === 'internal'
-        ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been successfully submitted.<br>Please complete the ₹999 payment via the official BillDesk portal if you haven't already. Our secretariat will verify your USN and reach out via email/WhatsApp with your official registration confirmation.`
+        ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been recorded in our system.<br><br><span style="color:#6C0D2C;font-weight:800;font-size:0.95rem;">Taking you to the official RNSIT BillDesk portal to complete your ₹999 payment...</span><br><br><a href="https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent-color);color:#FFF;padding:12px 22px;border-radius:10px;font-weight:900;font-size:0.92rem;text-decoration:none;border:2px solid #000;box-shadow:3px 3px 0 #000;margin-top:6px;text-transform:uppercase;letter-spacing:0.04em;"><span>Open BillDesk Payment Portal ↗</span></a>`
         : `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
       // ─── Direct Supabase Submission ─────────────────────────
@@ -4066,7 +4066,8 @@
           const res = await fetch('/api/submit-registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            keepalive: true
           });
           const data = await res.json().catch(() => null);
           if (res.status === 409 || (data && data.duplicate)) {
@@ -4119,10 +4120,22 @@
           // Dynamically mount and display success screen
           // Auto-launch BillDesk portal for internal delegate payment
           if (currentDelegateType === 'internal') {
+            const billdeskUrl = 'https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232';
+            let openedInNewTab = false;
             try {
-              window.open('https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232', '_blank', 'noopener,noreferrer');
+              const newTab = window.open(billdeskUrl, '_blank');
+              if (newTab && !newTab.closed && typeof newTab.closed !== 'undefined') {
+                openedInNewTab = true;
+              }
             } catch (err) {
-              console.warn('[BillDesk] Window open blocked by browser, user can click link on success screen');
+              console.warn('[BillDesk] New tab blocked, redirecting directly:', err);
+            }
+
+            // If popup was blocked or prevented by browser security policy, redirect the current window directly!
+            if (!openedInNewTab) {
+              setTimeout(() => {
+                window.location.href = billdeskUrl;
+              }, 400);
             }
           }
           showSuccessOverlay('Registration Submitted!', successMsgHTML);
