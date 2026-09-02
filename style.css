@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
 /* Design System and Variables */
 :root {
   --bg-color: #FFF7EB;
   --text-primary: #000000;
-  --font-sans: 'Outfit', sans-serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Screen-reader only utility — visually hidden but accessible */
@@ -328,18 +330,20 @@ body {
   border-radius: 9999px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
   height: 48px;
+  width: max-content;
   box-sizing: border-box;
   overflow: visible;
   max-width: 95vw;
-  will-change: transform;
+  user-select: none;
+}
+
+.nav-pill.is-animated {
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.35s ease,
-    background 0.35s ease,
-    opacity 0.6s ease;
-  user-select: none;
+    background 0.35s ease;
 }
 
 @supports not (backdrop-filter: blur(12px)) {
@@ -390,12 +394,13 @@ body {
 /* Nav Item Links */
 .nav-item {
   position: relative;
-  color: rgba(0, 0, 0, 0.65);
-  font-family: var(--font-sans);
-  font-size: 0.86rem;
+  color: rgba(0, 0, 0, 0.68);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.88rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  padding: 6px 13px;
+  padding: 6px 14px;
   border-radius: 9999px;
   white-space: nowrap;
   display: flex;
@@ -411,6 +416,7 @@ body {
 .nav-item.active {
   color: #6C0D2C;
   font-weight: 800;
+  letter-spacing: -0.01em;
   background: rgba(108, 13, 44, 0.08);
   z-index: 2;
 }
@@ -517,10 +523,11 @@ body {
 /* Dropdown Menu Item */
 .nav-dropdown-item {
   position: relative;
-  color: rgba(0, 0, 0, 0.7);
-  font-family: var(--font-sans);
+  color: rgba(0, 0, 0, 0.72);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
   padding: 10px 16px;
   border-radius: 12px;
@@ -532,8 +539,8 @@ body {
 
 .nav-dropdown-item.active {
   color: #6C0D2C;
-  font-weight: 600;
-  background: rgba(108, 13, 44, 0.06);
+  font-weight: 800;
+  background: rgba(108, 13, 44, 0.08);
 }
 
 @media (hover: hover) and (pointer: fine) {

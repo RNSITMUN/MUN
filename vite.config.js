@@ -5,6 +5,7 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import submitDelegationHandler from './api/submit-delegation.js';
 import submitRegistrationHandler from './api/submit-registration.js';
 import checkEmailHandler from './api/check-email.js';
+import getExternalQrHandler from './api/get-external-qr.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -55,6 +56,9 @@ const cleanUrlsPlugin = () => ({
       }
       if (url === '/api/check-email') {
         return handleApiRequest(checkEmailHandler);
+      }
+      if (url === '/api/get-external-qr') {
+        return handleApiRequest(getExternalQrHandler);
       }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
@@ -114,7 +118,13 @@ export default defineConfig({
         '**/*.tmp',
         '**/*.part',
         '**/node_modules/**',
-        '**/shoe-finder/**'
+        '**/shoe-finder/**',
+        '**/Payment_delegation/**',
+        '**/public/Payment_delegation/**',
+        '**/Payment_external/**',
+        '**/public/Payment_external/**',
+        '**/Payment_internal/**',
+        '**/public/Payment_internal/**'
       ]
     }
   },

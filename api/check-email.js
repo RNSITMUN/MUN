@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://mun.rnsit.ac.in',
     'https://www.mun.rnsit.ac.in',
+    'https://mun-rose.vercel.app',
     'https://mun-rnsit.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',

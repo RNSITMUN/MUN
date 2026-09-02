@@ -2935,8 +2935,12 @@
 
     .modal-registration-card.in-success-state .reg-form-header,
     .modal-registration-card.in-success-state .wizard-stepper,
+    .modal-registration-card.in-success-state .registration-stepper,
     .modal-registration-card.in-success-state #delegate-registration-form,
     .modal-registration-card.in-dlg-success-state .reg-form-header,
+    .modal-registration-card.in-dlg-success-state .wizard-stepper,
+    .modal-registration-card.in-dlg-success-state .registration-stepper,
+    .modal-registration-card.in-dlg-success-state #dlg-wizard-stepper,
     .modal-registration-card.in-dlg-success-state #delegation-registration-form {
       display: none !important;
     }
@@ -5088,164 +5092,269 @@
         <p class="reg-form-subtitle">Register your institution's delegation and generate your delegate roster sheet</p>
       </div>
 
+      <!-- Delegation Stepper Header -->
+      <div class="registration-stepper" id="dlg-wizard-stepper" style="margin-bottom: 20px;">
+        <span class="step-indicator is-active" id="dlg-step-indicator-1">1. Roster Details</span>
+        <span class="step-arrow" id="dlg-step-arrow-2">&rarr;</span>
+        <span class="step-indicator" id="dlg-step-indicator-2">2. Fee & Verification</span>
+      </div>
+
       <form id="delegation-registration-form" novalidate onsubmit="handleDelegationSubmit(event)"
         oninput="toggleDelegationClearBtn(event)" onchange="toggleDelegationClearBtn(event)">
 
-        <!-- Matrix Reference Banner for Delegations -->
-        <div class="delegation-matrix-banner">
-          <div>
-            <strong>Official Portfolio Matrix:</strong> Review available countries, characters & press portfolios across all 6 committees.
-          </div>
-          <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
-            target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-all">
-            <span>Open Master Matrix</span>
-            <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
-            </svg>
-          </a>
-        </div>
-
-        <!-- 1. Name of the Delegation -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-delegation-name">Name of the Delegation *</label>
-          <input type="text" id="dlg-delegation-name" class="form-input"
-            placeholder="e.g. RNSIT MUN Society / St. Joseph's Delegation" autocomplete="organization" autocapitalize="words" spellcheck="false" required>
-          <div id="dlg-delegation-name-error" class="error-container" aria-live="polite" role="alert">Delegation name is required</div>
-        </div>
-
-        <!-- 2. Name of Head of Delegation -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-head-name">Name of Head of Delegation *</label>
-          <input type="text" id="dlg-head-name" class="form-input" placeholder="e.g. Rahul Sharma" autocomplete="name" autocapitalize="words" spellcheck="false" required>
-          <div id="dlg-head-name-error" class="error-container" aria-live="polite" role="alert">Head of Delegation name is required</div>
-        </div>
-
-        <!-- 3. Phone Number of Head of Delegation -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-phone">Phone Number of Head of Delegation *</label>
-          <input type="tel" id="dlg-phone" class="form-input" placeholder="e.g. 9876543210" maxlength="10" inputmode="numeric" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
-          <div id="dlg-phone-error" class="error-container" aria-live="polite" role="alert">Valid 10-digit phone number is required</div>
-        </div>
-
-        <!-- 4. Email ID of Head of Delegation -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com"
-              autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"
-              oninput="checkEmailRegistration(this)" onkeyup="checkEmailRegistration(this)" onchange="checkEmailRegistration(this)"
-              onpaste="setTimeout(() => checkEmailRegistration(this), 0)" oncut="setTimeout(() => checkEmailRegistration(this), 0)"
-              required style="flex: 1;">
-            <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()"
-              style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear
-              Data</button>
-          </div>
-          <div id="dlg-email-error" class="error-container" aria-live="polite" role="alert">Valid email address is required</div>
-          <div id="dlg-email-exists-msg" class="error-container" aria-live="polite" role="alert"
-            style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
-        </div>
-
-        <!-- 5. Number of Delegates in Delegation (9 - 18 with direct typing & stepper arrows) -->
-        <div class="form-group">
-          <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (9 – 18)</label>
-          <div class="delegate-number-input-wrap">
-            <input type="number" id="dlg-count" class="form-input delegate-number-input" min="9" max="18" value="9"
-              placeholder="9" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
-              required>
-            <div class="delegate-number-steppers">
-              <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)"
-                aria-label="Increase number of delegates" title="Increase">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-              </button>
-              <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)"
-                aria-label="Decrease number of delegates" title="Decrease">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
+        <!-- STEP 1: Roster & Details -->
+        <div class="wizard-step-panel is-active" id="dlg-wizard-step-1">
+          <!-- Matrix Reference Banner for Delegations -->
+          <div class="delegation-matrix-banner">
+            <div>
+              <strong>Official Portfolio Matrix:</strong> Review available countries, characters & press portfolios across all 6 committees.
             </div>
+            <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
+              target="_blank" rel="noopener noreferrer" class="matrix-pill-btn matrix-pill-all">
+              <span>Open Master Matrix</span>
+              <svg class="matrix-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
           </div>
-          <div id="dlg-count-error" class="error-container" aria-live="polite" role="alert">Number of delegates must be between 9 and 18</div>
-        </div>
 
-        <!-- 6. Internal or External Radio -->
-        <div class="form-group">
-          <label class="form-label">Delegation Category *</label>
-          <div class="radio-group">
-            <label class="radio-card-label" for="dlg-type-internal">
-              <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal"
-                onchange="updateRosterPreview()" required>
-              <span>Internal (RNSIT)</span>
-            </label>
-            <label class="radio-card-label" for="dlg-type-external">
-              <input type="radio" id="dlg-type-external" name="dlg-type" value="external"
-                onchange="updateRosterPreview()" required checked>
-              <span>External</span>
-            </label>
+          <!-- 1. Name of the Delegation -->
+          <div class="form-group">
+            <label class="form-label" for="dlg-delegation-name">Name of the Delegation *</label>
+            <input type="text" id="dlg-delegation-name" class="form-input"
+              placeholder="e.g. RNSIT MUN Society / St. Joseph's Delegation" autocomplete="organization" autocapitalize="words" spellcheck="false" required>
+            <div id="dlg-delegation-name-error" class="error-container" aria-live="polite" role="alert">Delegation name is required</div>
           </div>
-          <div id="dlg-type-error" class="error-container" aria-live="polite" role="alert">Please select Internal or External</div>
-        </div>
 
-        <!-- Google Sheet Integration Section -->
-        <div class="form-group">
-          <label class="form-label">Delegate Details *</label>
-          <div class="sheet-generator-box">
-            <div class="sheet-generator-header">
-              <span class="sheet-icon">📋</span>
-              <h4 class="sheet-title">Delegation Roster Sheet</h4>
+          <!-- 2. Name of Head of Delegation -->
+          <div class="form-group">
+            <label class="form-label" for="dlg-head-name">Name of Head of Delegation *</label>
+            <input type="text" id="dlg-head-name" class="form-input" placeholder="e.g. Rahul Sharma" autocomplete="name" autocapitalize="words" spellcheck="false" required>
+            <div id="dlg-head-name-error" class="error-container" aria-live="polite" role="alert">Head of Delegation name is required</div>
+          </div>
+
+          <!-- 3. Phone Number of Head of Delegation -->
+          <div class="form-group">
+            <label class="form-label" for="dlg-phone">Phone Number of Head of Delegation *</label>
+            <input type="tel" id="dlg-phone" class="form-input" placeholder="e.g. 9876543210" maxlength="10" inputmode="numeric" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
+            <div id="dlg-phone-error" class="error-container" aria-live="polite" role="alert">Valid 10-digit phone number is required</div>
+          </div>
+
+          <!-- 4. Email ID of Head of Delegation -->
+          <div class="form-group">
+            <label class="form-label" for="dlg-email">Email ID of Head of Delegation *</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="email" id="dlg-email" class="form-input" placeholder="rahul.head@example.com"
+                autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"
+                oninput="checkEmailRegistration(this)" onkeyup="checkEmailRegistration(this)" onchange="checkEmailRegistration(this)"
+                onpaste="setTimeout(() => checkEmailRegistration(this), 0)" oncut="setTimeout(() => checkEmailRegistration(this), 0)"
+                required style="flex: 1;">
+              <button type="button" id="dlg-clear-data-btn" class="btn-wizard-back" onclick="clearDelegationForm()"
+                style="padding: 0 16px; min-height: 48px; border-radius: 12px; display: none;" title="Clear Data">Clear
+                Data</button>
             </div>
-            <p class="sheet-desc">Fill the details of all the delegation members</p>
+            <div id="dlg-email-error" class="error-container" aria-live="polite" role="alert">Valid email address is required</div>
+            <div id="dlg-email-exists-msg" class="error-container" aria-live="polite" role="alert"
+              style="color: #ffb74d; border-left-color: #ffb74d; display: none;">This email has already registered.</div>
+          </div>
 
-            <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
-              onclick="generateDelegationGoogleSheet()">
-              <span>Create Delegation Sheet</span>
-            </button>
-
-            <!-- Sheet link result -->
-            <div id="dlg-sheet-result" class="sheet-link-result">
-              <div class="sheet-link-card">
-                <div class="sheet-link-info">
-                  <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
-                    class="sheet-link-text">Open Google Sheet</a>
-                </div>
-                <div class="sheet-link-actions" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterExcel()"
-                    title="Download Microsoft Excel spreadsheet preserving column widths and colors">Excel (.xlsx)</button>
-                  <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
-                    title="Download raw comma-separated values file">CSV</button>
-                  <button type="button" class="sheet-btn-action sheet-btn-whatsapp" onclick="shareDelegationRosterWhatsApp()"
-                    title="Share roster sheet directly into your college delegation WhatsApp group">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px; margin-right: 2px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>WhatsApp
-                  </button>
-                  <button type="button" class="sheet-btn-action" onclick="copyDelegationRosterLink()"
-                    title="Copy roster sheet link to clipboard">Copy Link</button>
-                </div>
+          <!-- 5. Number of Delegates in Delegation (9 - 18 with direct typing & stepper arrows) -->
+          <div class="form-group">
+            <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (9 – 18)</label>
+            <div class="delegate-number-input-wrap">
+              <input type="number" id="dlg-count" class="form-input delegate-number-input" min="9" max="18" value="9"
+                placeholder="9" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
+                required>
+              <div class="delegate-number-steppers">
+                <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)"
+                  aria-label="Increase number of delegates" title="Increase">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                </button>
+                <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)"
+                  aria-label="Decrease number of delegates" title="Decrease">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
               </div>
             </div>
-            <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
+            <div id="dlg-count-error" class="error-container" aria-live="polite" role="alert">Number of delegates must be between 9 and 18</div>
           </div>
-          <div id="dlg-sheet-error" class="error-container" aria-live="polite" role="alert">Please click "Create Delegation Sheet" to generate your
-            delegation sheet</div>
+
+          <!-- 6. Internal or External Radio -->
+          <div class="form-group">
+            <label class="form-label">Delegation Category *</label>
+            <div class="radio-group">
+              <label class="radio-card-label" for="dlg-type-internal">
+                <input type="radio" id="dlg-type-internal" name="dlg-type" value="internal"
+                  onchange="updateRosterPreview()" required>
+                <span>Internal (RNSIT)</span>
+              </label>
+              <label class="radio-card-label" for="dlg-type-external">
+                <input type="radio" id="dlg-type-external" name="dlg-type" value="external"
+                  onchange="updateRosterPreview()" required checked>
+                <span>External</span>
+              </label>
+            </div>
+            <div id="dlg-type-error" class="error-container" aria-live="polite" role="alert">Please select Internal or External</div>
+          </div>
+
+          <!-- Google Sheet Integration Section -->
+          <div class="form-group">
+            <label class="form-label">Delegate Details *</label>
+            <div class="sheet-generator-box">
+              <div class="sheet-generator-header">
+                <span class="sheet-icon">📋</span>
+                <h4 class="sheet-title">Delegation Roster Sheet</h4>
+              </div>
+              <p class="sheet-desc">Fill the details of all the delegation members</p>
+
+              <button type="button" class="btn-create-sheet" id="dlg-create-sheet-btn"
+                onclick="generateDelegationGoogleSheet()">
+                <span>Create Delegation Sheet</span>
+              </button>
+
+              <!-- Sheet link result -->
+              <div id="dlg-sheet-result" class="sheet-link-result">
+                <div class="sheet-link-card">
+                  <div class="sheet-link-info">
+                    <a id="dlg-sheet-anchor" href="#" target="_blank" rel="noopener noreferrer"
+                      class="sheet-link-text">Open Google Sheet</a>
+                  </div>
+                  <div class="sheet-link-actions" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterExcel()"
+                      title="Download Microsoft Excel spreadsheet preserving column widths and colors">Excel (.xlsx)</button>
+                    <button type="button" class="sheet-btn-action" onclick="downloadDelegationRosterCSV()"
+                      title="Download raw comma-separated values file">CSV</button>
+                    <button type="button" class="sheet-btn-action sheet-btn-whatsapp" onclick="shareDelegationRosterWhatsApp()"
+                      title="Share roster sheet directly into your college delegation WhatsApp group">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px; margin-right: 2px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>WhatsApp
+                    </button>
+                    <button type="button" class="sheet-btn-action" onclick="copyDelegationRosterLink()"
+                      title="Copy roster sheet link to clipboard">Copy Link</button>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="dlg-sheet-link" name="googleSheetLink" value="">
+            </div>
+            <div id="dlg-sheet-error" class="error-container" aria-live="polite" role="alert">Please click "Create Delegation Sheet" to generate your
+              delegation sheet</div>
+          </div>
+
+          <!-- Step 1 Button Row -->
+          <div style="display: flex; gap: 12px; margin-top: 22px;">
+            <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()"
+              style="display: none; flex: 1;">Exit</button>
+            <button type="button" class="submit-btn" id="dlg-step1-next-btn" onclick="handleDelegationStep1Proceed()"
+              style="flex: 1; opacity: 0.5; cursor: not-allowed;" disabled>
+              Next: Payment & Verification →
+            </button>
+          </div>
         </div>
 
-        <!-- Non-Refundable Policy Notice -->
-        <div class="neo-note-callout"
-          style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 14px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
-          <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
-          <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
-        </div>
+        <!-- STEP 2: Fee Payment & Verification -->
+        <div class="wizard-step-panel" id="dlg-wizard-step-2" style="display: none;">
+          <!-- Delegation Fee Payment (Dynamic QR & UPI) -->
+          <div class="neo-qr-card" style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 20px 16px; text-align: center; margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 10px; border-radius: 999px;">
+                SCAN VIA GOOGLE PAY / PHONEPE / PAYTM / ANY UPI
+              </span>
+              <span id="dlg-payment-tier-badge" style="font-size: 0.74rem; font-weight: 900; letter-spacing: 0.06em; color: var(--accent-color);">
+                [ <span id="dlg-payment-count-label">9</span> DELEGATES ]
+              </span>
+            </div>
 
-        <!-- Submit Buttons -->
-        <div style="display: flex; gap: 12px; margin-top: 20px;">
-          <button type="button" class="btn-wizard-back" id="dlg-exit-btn" onclick="exitDelegationForm()"
-            style="display: none; flex: 1;">Exit</button>
-          <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1;">Submit Delegation
-            Registration</button>
+            <!-- Dynamic QR Image Box -->
+            <div style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
+              <img id="dlg-payment-qr-img" src="/Payment_delegation/del 9.jpeg" alt="Delegation Payment QR Code" width="180" height="180" style="display: block; border-radius: 4px; object-fit: contain;">
+            </div>
+
+            <!-- UPI ID Box with Tactile Copy Button -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 340px; margin: 0 auto; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; box-shadow: 2px 2px 0px var(--text-primary); padding: 6px 10px;">
+              <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <span style="font-size: 0.72rem; font-weight: 800; color: rgba(0,0,0,0.45); text-transform: uppercase;">UPI ID:</span>
+                <span style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="dlg-upi-id-text">
+                  koushikr955@okhdfcbank
+                </span>
+              </div>
+              <button type="button" id="dlg-copy-upi-btn" onclick="copyDelegationUPI()" style="background: var(--accent-color); color: #FFF7EB; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans); transition: all 0.15s ease; flex-shrink: 0;">
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Non-Refundable Policy Notice -->
+          <div class="neo-note-callout"
+            style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+            <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
+            <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
+          </div>
+
+          <!-- Screenshot Upload Box -->
+          <div class="form-group" style="margin-bottom: 22px;">
+            <label class="form-label" for="dlg-payment-screenshot"
+              style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Please upload the screenshot of your payment *</span>
+              <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[ PROOF OF TRANSFER ]</span>
+            </label>
+
+            <div class="file-upload-dropzone" id="dlg-payment-dropzone"
+              onclick="document.getElementById('dlg-payment-screenshot').click()"
+              style="background: #FFFDF9; border: 2.5px dashed var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+
+              <input type="file" id="dlg-payment-screenshot" accept="image/*" style="display: none;"
+                onchange="handleDelegationPaymentScreenshotSelected(this)">
+
+              <div id="dlg-dropzone-empty-state">
+                <div style="font-size: 0.92rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">
+                  Click or Drag to Upload Payment Screenshot
+                </div>
+                <div style="font-size: 0.76rem; font-weight: 600; color: rgba(0,0,0,0.5);">
+                  Supports PNG, JPG, JPEG, WEBP (Max 10MB)
+                </div>
+              </div>
+
+              <div id="dlg-dropzone-file-state"
+                style="display: none; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; padding: 10px 14px;">
+                <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                  <img id="dlg-screenshot-preview-thumb" src="" alt="Thumbnail"
+                    style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--text-primary); flex-shrink: 0;">
+                  <div style="text-align: left; min-width: 0;">
+                    <div id="dlg-screenshot-file-name"
+                      style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      screenshot.png
+                    </div>
+                    <div id="dlg-screenshot-file-size"
+                      style="font-size: 0.74rem; font-weight: 700; color: var(--accent-color);">
+                      Ready to Submit
+                    </div>
+                  </div>
+                </div>
+                <button type="button" onclick="event.stopPropagation(); removeDelegationPaymentScreenshot();"
+                  style="background: #E63946; color: #FFFFFF; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans);">
+                  Remove
+                </button>
+              </div>
+
+            </div>
+            <div id="dlg-payment-screenshot-error" class="error-container" aria-live="polite" role="alert">Payment screenshot is required to submit delegation registration</div>
+          </div>
+
+          <!-- Step 2 Navigation Buttons -->
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button type="button" class="btn-wizard-back" id="dlg-step2-back-btn" onclick="goToDelegationStep(1)" style="flex: 1;">
+              ← Back to Roster
+            </button>
+            <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1.5; opacity: 0.45; cursor: not-allowed;" disabled>
+              Submit Delegation Registration
+            </button>
+          </div>
         </div>
       </form>
 
@@ -5743,113 +5852,53 @@
               </div>
               <p
                 style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
-                Subsidized delegate registration pass for RNS Institute of Technology students. Scan the QR code or copy
-                the UPI ID below to complete your payment.
+                Subsidized delegate registration pass for RNS Institute of Technology students. Click the official RNSIT BillDesk portal link below to complete your ₹999 payment, then upload your transaction receipt.
               </p>
             </div>
 
-            <!-- QR Code & UPI ID Card -->
+            <!-- BillDesk Payment Gateway Card -->
             <div class="neo-qr-card"
-              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 20px 16px; text-align: center; margin-bottom: 18px;">
+              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; margin-bottom: 18px;">
               <div
                 style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;">
-                SCAN VIA GOOGLE PAY / PHONEPE / PAYTM / ANY UPI
+                OFFICIAL RNSIT PAYMENT GATEWAY
               </div>
 
-              <!-- QR Code Display Box -->
-              <div
-                style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
-                <img id="internal-upi-qr"
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D999%26cu%3DINR"
-                  alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.02em;">
+                RNS Institute of Technology Collect
               </div>
+              <p style="font-size: 0.8rem; color: rgba(17, 17, 19, 0.68); font-weight: 500; margin-bottom: 16px; line-height: 1.4;">
+                Pay securely using UPI, Credit/Debit Card, or Net Banking on the official college BillDesk portal.
+              </p>
 
-              <!-- UPI ID Box with Tactile Copy Button -->
-              <div
-                style="display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 330px; margin: 0 auto; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; box-shadow: 2px 2px 0px var(--text-primary); padding: 6px 10px;">
-                <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
-                  <span
-                    style="font-size: 0.72rem; font-weight: 800; color: rgba(0,0,0,0.45); text-transform: uppercase;">UPI
-                    ID:</span>
-                  <span
-                    style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                    id="internal-upi-id-text">
-                    mun@rnsit.ac.in
-                  </span>
-                </div>
-                <button type="button" id="copy-upi-btn" onclick="copyInternalUPI()"
-                  style="background: var(--accent-color); color: #FFF7EB; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans); transition: all 0.15s ease; flex-shrink: 0;">
-                  Copy
-                </button>
-              </div>
-            </div>
+              <!-- Primary BillDesk Action Button -->
+              <a href="https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232" target="_blank" rel="noopener noreferrer"
+                class="billdesk-portal-btn"
+                style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 360px; background: var(--accent-color); color: #FFF7EB; border: 2.5px solid var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 10px; padding: 12px 18px; font-size: 0.92rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; transition: all 0.15s ease; font-family: var(--font-sans);">
+                <span>Pay ₹999 via BillDesk Portal</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
 
-            <!-- Screenshot Upload Box -->
-            <div class="form-group" style="margin-bottom: 22px;">
-              <label class="form-label" for="reg-payment-screenshot"
-                style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Payment Screenshot
-                  *</span>
-                <span
-                  style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
-                  PROOF OF ₹999 TRANSFER ]</span>
-              </label>
-
-              <div class="file-upload-dropzone" id="payment-dropzone"
-                onclick="document.getElementById('reg-payment-screenshot').click()"
-                style="background: #FFFDF9; border: 2.5px dashed var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
-
-                <input type="file" id="reg-payment-screenshot" accept="image/*" style="display: none;"
-                  onchange="handlePaymentScreenshotSelected(this)">
-
-                <div id="dropzone-empty-state">
-                  <div
-                    style="font-size: 0.92rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">
-                    Click or Drag to Upload Screenshot
-                  </div>
-                  <div style="font-size: 0.76rem; font-weight: 600; color: rgba(0,0,0,0.5);">
-                    Supports PNG, JPG, JPEG, WEBP (Max 10MB)
-                  </div>
-                </div>
-
-                <div id="dropzone-file-state"
-                  style="display: none; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; padding: 10px 14px;">
-                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-                    <img id="screenshot-preview-thumb" src="" alt="Thumbnail"
-                      style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--text-primary); flex-shrink: 0;">
-                    <div style="text-align: left; min-width: 0;">
-                      <div id="screenshot-file-name"
-                        style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        screenshot.png
-                      </div>
-                      <div id="screenshot-file-size"
-                        style="font-size: 0.74rem; font-weight: 700; color: var(--accent-color);">
-                        Ready to Submit
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button" onclick="event.stopPropagation(); removePaymentScreenshot();"
-                    style="background: #E63946; color: #FFFFFF; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans);">
-                    Remove
-                  </button>
-                </div>
-
-              </div>
-              <div id="reg-payment-screenshot-error" class="error-container" aria-live="polite" role="alert">Payment screenshot is required to submit
+              <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; font-size: 0.74rem; font-weight: 700; color: rgba(17, 17, 19, 0.55);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>SSL 256-Bit Encrypted &bull; Direct RNSIT Account Credit</span>
               </div>
             </div>
 
             <!-- Non-Refundable Policy Notice -->
             <div class="neo-note-callout"
-              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 10px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 12px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
               <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
               <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
             </div>
 
-            <!-- Submit Button (Disabled until screenshot is uploaded) -->
+            <!-- Submit Button (Directly Enabled for Internal Delegates) -->
             <div class="wizard-btn-row">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
-              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn" disabled>
+              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn">
                 Submit Internal Delegate Registration
               </button>
             </div>
@@ -7538,6 +7587,27 @@
 
     function selectDelegateType(type) {
       currentDelegateType = type;
+
+      // Clear any prior draft of a different delegate type so it doesn't cross-contaminate
+      const rawDraft = sessionStorage.getItem(DRAFT_KEY);
+      if (rawDraft) {
+        try {
+          const parsed = JSON.parse(rawDraft);
+          if (parsed && parsed['_delegateType'] !== type) {
+            clearDraft();
+          }
+        } catch (e) { clearDraft(); }
+      }
+
+      applyDelegateTypeUI(type);
+
+      closeDelegateTypeModal(() => {
+        openRegistrationModal(selectedCommitteeForReg, type);
+      }, true);
+    }
+
+    function applyDelegateTypeUI(type) {
+      currentDelegateType = type;
       const typeHidden = document.getElementById('reg-delegate-type');
       if (typeHidden) typeHidden.value = type;
 
@@ -7547,56 +7617,45 @@
       }
 
       const institution = document.getElementById('reg-institution');
-      if (institution) {
-        if (type === 'internal') {
+      const step1Ind = document.getElementById('step-indicator-1');
+      const step2Ind = document.getElementById('step-indicator-2');
+      const step3Ind = document.getElementById('step-indicator-3');
+      const step4Ind = document.getElementById('step-indicator-4');
+      const step5Arrow = document.getElementById('step-arrow-5');
+      const step5Ind = document.getElementById('step-indicator-5');
+
+      if (type === 'internal') {
+        if (institution) {
           institution.value = 'RNS Institute of Technology';
           institution.readOnly = true;
           institution.classList.remove('has-error');
           const errEl = document.getElementById('reg-institution-error');
           if (errEl) errEl.style.display = 'none';
-
-          // Update stepper labels for internal (4 steps)
-          const step1Ind = document.getElementById('step-indicator-1');
-          const step2Ind = document.getElementById('step-indicator-2');
-          const step3Ind = document.getElementById('step-indicator-3');
-          const step4Ind = document.getElementById('step-indicator-4');
-          const step5Arrow = document.getElementById('step-arrow-5');
-          const step5Ind = document.getElementById('step-indicator-5');
-          if (step1Ind) step1Ind.textContent = 'Delegate Details';
-          if (step2Ind) step2Ind.textContent = 'Step 1';
-          if (step3Ind) step3Ind.textContent = 'Step 2';
-          if (step4Ind) step4Ind.textContent = 'Step 3';
-          if (step5Arrow) step5Arrow.style.display = 'none';
-          if (step5Ind) step5Ind.style.display = 'none';
-        } else {
+        }
+        if (step1Ind) step1Ind.textContent = 'Delegate Details';
+        if (step2Ind) step2Ind.textContent = 'Step 1';
+        if (step3Ind) step3Ind.textContent = 'Step 2';
+        if (step4Ind) step4Ind.textContent = 'Step 3';
+        if (step5Arrow) step5Arrow.style.display = 'none';
+        if (step5Ind) step5Ind.style.display = 'none';
+      } else {
+        if (institution) {
           if (institution.value === 'RNS Institute of Technology') {
             institution.value = '';
           }
           institution.readOnly = false;
           institution.placeholder = 'e.g. College / Institute Name';
-
-          // Update stepper labels for external (5 steps)
-          const step1Ind = document.getElementById('step-indicator-1');
-          const step2Ind = document.getElementById('step-indicator-2');
-          const step3Ind = document.getElementById('step-indicator-3');
-          const step4Ind = document.getElementById('step-indicator-4');
-          const step5Arrow = document.getElementById('step-arrow-5');
-          const step5Ind = document.getElementById('step-indicator-5');
-          if (step1Ind) step1Ind.textContent = 'Delegate Details';
-          if (step2Ind) step2Ind.textContent = 'Step 1';
-          if (step3Ind) step3Ind.textContent = 'Step 2';
-          if (step4Ind) step4Ind.textContent = 'Step 3';
-          if (step5Arrow) step5Arrow.style.display = 'inline';
-          if (step5Ind) {
-            step5Ind.style.display = 'inline-block';
-            step5Ind.textContent = 'Confirmation';
-          }
+        }
+        if (step1Ind) step1Ind.textContent = 'Delegate Details';
+        if (step2Ind) step2Ind.textContent = 'Step 1';
+        if (step3Ind) step3Ind.textContent = 'Step 2';
+        if (step4Ind) step4Ind.textContent = 'Step 3';
+        if (step5Arrow) step5Arrow.style.display = 'inline';
+        if (step5Ind) {
+          step5Ind.style.display = 'inline-block';
+          step5Ind.textContent = 'Confirmation';
         }
       }
-
-      closeDelegateTypeModal(() => {
-        openRegistrationModal(selectedCommitteeForReg);
-      }, true);
     }
 
     // ==========================================
@@ -8499,11 +8558,15 @@
         tierBadge.textContent = (isIEEEMember ? '[ IEEE AFFILIATED PASS ]' : '[ EXTERNAL DELEGATE PASS ]');
       }
 
+      updateExternalPaymentQR();
       goToStep(5);
     }
 
 
-    function openRegistrationModal(preferredCommitteeId = 'unsc') {
+    function openRegistrationModal(preferredCommitteeId = 'unsc', forceType = null) {
+      if (forceType) {
+        currentDelegateType = forceType;
+      }
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
 
@@ -8511,7 +8574,7 @@
       resetPaymentScreenshotState();
 
       // Check if a saved draft exists in sessionStorage
-      const restored = restoreDraft();
+      const restored = restoreDraft(forceType || currentDelegateType);
       if (!restored) {
         setCommittee1Selection(preferredCommitteeId);
       } else {
@@ -8522,6 +8585,9 @@
           checkIndividualEmailRegistration(emailInput);
         }
       }
+
+      // Re-apply delegate type UI strictly
+      applyDelegateTypeUI(currentDelegateType);
 
       goToStep(1);
 
@@ -8600,6 +8666,7 @@
       dlgBackdrop.style.display = 'flex';
       lockBackgroundScroll();
       stepDelegateCount(0);
+      goToDelegationStep(1);
 
       // Only restore email if generation was actively in-flight
       if (_isGeneratingDelegationSheet && _generatingEmail) {
@@ -8885,7 +8952,13 @@
             createSheetBtn.disabled = false;
             createSheetBtn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
           }
-          if (submitBtn) submitBtn.style.display = 'block';
+          const nextBtn = document.getElementById('dlg-step1-next-btn');
+          if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.removeAttribute('disabled');
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+          }
           if (exitBtn) exitBtn.style.display = 'none';
         }
       };
@@ -8958,8 +9031,8 @@
           }
         } else if (el.id === 'dlg-count') {
           const val = parseInt(el.value, 10);
-          isValid = !isNaN(val) && val >= 10 && val <= 18;
-          errMsg = 'Number of delegates must be between 10 and 18';
+          isValid = !isNaN(val) && val >= 9 && val <= 18;
+          errMsg = 'Number of delegates must be between 9 and 18';
         } else if (el.type === 'tel' || el.id === 'dlg-phone') {
           const digits = el.value.replace(/[^0-9]/g, '');
           isValid = digits.length === 10;
@@ -9010,6 +9083,165 @@
       clearBtn.style.display = hasData ? 'block' : 'none';
     }
 
+    function goToDelegationStep(step) {
+      if (step === 2) {
+        if (!validateDelegationFields()) {
+          const dlgCard = document.getElementById('delegation-modal-card');
+          if (window.gsap && dlgCard) {
+            gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
+          }
+          return;
+        }
+
+        const sheetLink = document.getElementById('dlg-sheet-link');
+        const sheetErr = document.getElementById('dlg-sheet-error');
+        if (!sheetLink || !sheetLink.value.trim()) {
+          if (sheetErr) sheetErr.style.display = 'block';
+          const dlgCard = document.getElementById('delegation-modal-card');
+          if (window.gsap && dlgCard) {
+            gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
+          }
+          return;
+        } else {
+          if (sheetErr) sheetErr.style.display = 'none';
+        }
+
+        updateDelegationPaymentQR();
+
+        const step1Panel = document.getElementById('dlg-wizard-step-1');
+        const step2Panel = document.getElementById('dlg-wizard-step-2');
+        const ind1 = document.getElementById('dlg-step-indicator-1');
+        const ind2 = document.getElementById('dlg-step-indicator-2');
+
+        if (step1Panel) step1Panel.style.display = 'none';
+        if (step2Panel) step2Panel.style.display = 'block';
+        if (ind1) {
+          ind1.classList.remove('is-active');
+          ind1.classList.add('is-completed');
+        }
+        if (ind2) {
+          ind2.classList.add('is-active');
+        }
+      } else {
+        const step1Panel = document.getElementById('dlg-wizard-step-1');
+        const step2Panel = document.getElementById('dlg-wizard-step-2');
+        const ind1 = document.getElementById('dlg-step-indicator-1');
+        const ind2 = document.getElementById('dlg-step-indicator-2');
+
+        if (step1Panel) step1Panel.style.display = 'block';
+        if (step2Panel) step2Panel.style.display = 'none';
+        if (ind1) {
+          ind1.classList.add('is-active');
+          ind1.classList.remove('is-completed');
+        }
+        if (ind2) {
+          ind2.classList.remove('is-active');
+        }
+      }
+
+      const dlgCard = document.getElementById('delegation-modal-card');
+      if (dlgCard) dlgCard.scrollTop = 0;
+    }
+
+    function handleDelegationStep1Proceed() {
+      goToDelegationStep(2);
+    }
+
+    function handleDelegationPaymentScreenshotSelected(input) {
+      const file = input.files && input.files[0];
+      const submitBtn = document.getElementById('dlg-submit-btn');
+      const emptyState = document.getElementById('dlg-dropzone-empty-state');
+      const fileState = document.getElementById('dlg-dropzone-file-state');
+      const fileNameEl = document.getElementById('dlg-screenshot-file-name');
+      const fileSizeEl = document.getElementById('dlg-screenshot-file-size');
+      const previewThumb = document.getElementById('dlg-screenshot-preview-thumb');
+      const err = document.getElementById('dlg-payment-screenshot-error');
+
+      if (file) {
+        if (fileNameEl) fileNameEl.textContent = file.name;
+        if (fileSizeEl) {
+          fileSizeEl.textContent = 'Compressing…';
+          fileSizeEl.style.color = '#888';
+        }
+        if (emptyState) emptyState.style.display = 'none';
+        if (fileState) fileState.style.display = 'flex';
+        if (err) err.style.display = 'none';
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.setAttribute('disabled', 'true');
+          submitBtn.style.opacity = '0.55';
+          submitBtn.style.cursor = 'not-allowed';
+        }
+
+        compressScreenshot(file).then(result => {
+          _compressedScreenshots['delegation'] = result.dataUrl;
+          if (previewThumb) previewThumb.src = result.dataUrl;
+          if (fileSizeEl) {
+            const savedPct = result.originalKB > 0
+              ? Math.round((1 - result.compressedKB / result.originalKB) * 100)
+              : 0;
+            fileSizeEl.textContent = `${result.compressedKB} KB · saved ${savedPct}% (was ${result.originalKB} KB)`;
+            fileSizeEl.style.color = '#0F9D58';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        }).catch(() => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            if (previewThumb) previewThumb.src = e.target.result;
+            _compressedScreenshots['delegation'] = e.target.result;
+          };
+          reader.readAsDataURL(file);
+          if (fileSizeEl) {
+            fileSizeEl.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB (raw)`;
+            fileSizeEl.style.color = '';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+          }
+        });
+      } else {
+        removeDelegationPaymentScreenshot();
+      }
+    }
+
+    function removeDelegationPaymentScreenshot() {
+      delete _compressedScreenshots['delegation'];
+      _compressedScreenshots['delegation'] = null;
+
+      const input = document.getElementById('dlg-payment-screenshot');
+      const submitBtn = document.getElementById('dlg-submit-btn');
+      const emptyState = document.getElementById('dlg-dropzone-empty-state');
+      const fileState = document.getElementById('dlg-dropzone-file-state');
+      const fileNameEl = document.getElementById('dlg-screenshot-file-name');
+      const fileSizeEl = document.getElementById('dlg-screenshot-file-size');
+      const previewThumb = document.getElementById('dlg-screenshot-preview-thumb');
+      const err = document.getElementById('dlg-payment-screenshot-error');
+
+      if (input) input.value = '';
+      if (emptyState) emptyState.style.display = 'block';
+      if (fileState) fileState.style.display = 'none';
+      if (fileNameEl) fileNameEl.textContent = '';
+      if (fileSizeEl) fileSizeEl.textContent = '';
+      if (previewThumb) previewThumb.src = '';
+      if (err) err.style.display = 'none';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.style.opacity = '0.45';
+        submitBtn.style.cursor = 'not-allowed';
+      }
+    }
+
     function clearDelegationForm() {
       _isGeneratingDelegationSheet = false;
       _generatingEmail = '';
@@ -9028,7 +9260,7 @@
         inputs.forEach(i => { i.value = ''; });
 
         const countInput = document.getElementById('dlg-count');
-        if (countInput) countInput.value = '10';
+        if (countInput) countInput.value = '9';
 
         const typeExternal = document.getElementById('dlg-type-external');
         if (typeExternal) typeExternal.checked = true;
@@ -9051,20 +9283,227 @@
           createSheetBtn.innerHTML = '<span>Create Delegation Sheet</span>';
         }
 
-        const submitBtn = document.getElementById('dlg-submit-btn');
-        if (submitBtn) submitBtn.style.display = 'block';
+        const nextBtn = document.getElementById('dlg-step1-next-btn');
+        if (nextBtn) {
+          nextBtn.disabled = true;
+          nextBtn.setAttribute('disabled', 'true');
+          nextBtn.style.opacity = '0.5';
+          nextBtn.style.cursor = 'not-allowed';
+        }
+
+        removeDelegationPaymentScreenshot();
+
         const exitBtn = document.getElementById('dlg-exit-btn');
         if (exitBtn) exitBtn.style.display = 'none';
         const existsMsg = document.getElementById('dlg-email-exists-msg');
         if (existsMsg) existsMsg.style.display = 'none';
 
         toggleDelegationClearBtn();
+        updateDelegationPaymentQR();
+        goToDelegationStep(1);
       }
     }
 
     function exitDelegationForm() {
       clearDelegationForm();
       closeDelegationRegistrationModal();
+    }
+
+    const DELEGATION_QR_MAP = {
+      9: '/Payment_delegation/del 9.jpeg',
+      10: '/Payment_delegation/del 10.png',
+      11: '/Payment_delegation/del 11.png',
+      12: '/Payment_delegation/del 12.png',
+      13: '/Payment_delegation/del 13.png',
+      14: '/Payment_delegation/del 14.png',
+      15: '/Payment_delegation/del 15.png',
+      16: '/Payment_delegation/del 16.png',
+      17: '/Payment_delegation/del 17.png',
+      18: '/Payment_delegation/del 18.png'
+    };
+
+    function updateDelegationPaymentQR() {
+      const countInput = document.getElementById('dlg-count');
+      let count = parseInt(countInput ? countInput.value : '9', 10);
+      if (isNaN(count) || count < 9) count = 9;
+      if (count > 18) count = 18;
+
+      const qrImg = document.getElementById('dlg-payment-qr-img');
+      const countLabel = document.getElementById('dlg-payment-count-label');
+      if (qrImg && DELEGATION_QR_MAP[count]) {
+        qrImg.src = DELEGATION_QR_MAP[count];
+      }
+      if (countLabel) {
+        countLabel.textContent = count;
+      }
+    }
+
+    function copyDelegationUPI() {
+      const upiText = 'koushikr955@okhdfcbank';
+      const markCopied = () => {
+        const btn = document.getElementById('dlg-copy-upi-btn');
+        if (btn) {
+          btn.textContent = 'COPIED!';
+          btn.style.background = '#0F9D58';
+          setTimeout(() => {
+            btn.textContent = 'COPY';
+            btn.style.background = 'var(--accent-color)';
+          }, 2000);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upiText).then(markCopied).catch(() => {
+          fallbackCopyText(upiText);
+          markCopied();
+        });
+      } else {
+        fallbackCopyText(upiText);
+        markCopied();
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+
+    // ==========================================
+    // EXTERNAL DELEGATE QR & UPI ROTATION ENGINE
+    // Strictly caps presentations to <= 17 per 24h
+    // ==========================================
+    const EXTERNAL_QR_POOL = [
+      { upiId: 'aditimak.2005-1@okhdfcbank', file: 'aditimak.2005-1@okhdfcbank.png' },
+      { upiId: 'koushikr955@okhdfcbank',     file: 'koushikr955@okhdfcbank.png' },
+      { upiId: 'nikhilnayak2005@okicici',    file: 'nikhilnayak2005@okicici.png' },
+      { upiId: 'vamshiganesh274@oksbi',      file: 'vamshiganesh274@oksbi.png' },
+      { upiId: 'wingspawn28-1@okaxis',       file: 'wingspawn28-1@okaxis.png' }
+    ];
+
+    let _currentExternalAssignedUPI = 'aditimak.2005-1@okhdfcbank';
+
+    async function updateExternalPaymentQR() {
+      // 1. Session Pinning: If an account was already assigned during this registration flow, reuse it
+      try {
+        const cached = sessionStorage.getItem('mun26_assigned_ext_qr');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.upiId && parsed.qrUrl) {
+            applyExternalQRUI(parsed.upiId, parsed.qrUrl);
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // 2. Fetch from Backend Rotation Engine (enforces <= 17 appearances per 24h rolling window across all users)
+      try {
+        const resp = await fetch('/api/get-external-qr');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.success && data.upiId && data.qrUrl) {
+            sessionStorage.setItem('mun26_assigned_ext_qr', JSON.stringify({ upiId: data.upiId, qrUrl: data.qrUrl }));
+            applyExternalQRUI(data.upiId, data.qrUrl);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('[External QR] Remote rotation notice:', err);
+      }
+
+      // 3. Resilient Client-Side Fallback Rotation
+      applyClientExternalQRRotation();
+    }
+
+    function applyExternalQRUI(upiId, qrUrl) {
+      _currentExternalAssignedUPI = upiId;
+      const qrImg = document.getElementById('external-upi-qr');
+      const upiText = document.getElementById('external-upi-id-text');
+      if (qrImg) {
+        qrImg.src = qrUrl;
+        qrImg.alt = 'UPI QR: ' + upiId;
+        qrImg.style.objectFit = 'contain';
+      }
+      if (upiText) {
+        upiText.textContent = upiId;
+      }
+    }
+
+    function applyClientExternalQRRotation() {
+      const LOCAL_KEY = 'mun26_ext_qr_impressions';
+      const MAX_PER_24H = 17;
+      const WINDOW_MS = 24 * 60 * 60 * 1000;
+      const now = Date.now();
+
+      let impressions = [];
+      try {
+        const raw = localStorage.getItem(LOCAL_KEY);
+        if (raw) impressions = JSON.parse(raw);
+        impressions = impressions.filter(item => item && (now - item.time) < WINDOW_MS);
+      } catch (e) {
+        impressions = [];
+      }
+
+      const counts = {};
+      EXTERNAL_QR_POOL.forEach(acc => { counts[acc.upiId] = 0; });
+      impressions.forEach(item => {
+        if (item && counts[item.upiId] !== undefined) counts[item.upiId]++;
+      });
+
+      let eligible = EXTERNAL_QR_POOL.filter(acc => counts[acc.upiId] < MAX_PER_24H);
+      let selected;
+      if (eligible.length > 0) {
+        const minCount = Math.min(...eligible.map(acc => counts[acc.upiId]));
+        const candidates = eligible.filter(acc => counts[acc.upiId] === minCount);
+        selected = candidates[Math.floor(Math.random() * candidates.length)];
+      } else {
+        const minCount = Math.min(...EXTERNAL_QR_POOL.map(acc => counts[acc.upiId]));
+        const candidates = EXTERNAL_QR_POOL.filter(acc => counts[acc.upiId] === minCount);
+        selected = candidates[Math.floor(Math.random() * candidates.length)];
+      }
+
+      impressions.push({ upiId: selected.upiId, time: now });
+      try {
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(impressions));
+      } catch (e) {}
+
+      const qrUrl = '/Payment_external/' + selected.file;
+      try {
+        sessionStorage.setItem('mun26_assigned_ext_qr', JSON.stringify({ upiId: selected.upiId, qrUrl }));
+      } catch (e) {}
+
+      applyExternalQRUI(selected.upiId, qrUrl);
+    }
+
+    function copyExternalUPI() {
+      const upiText = _currentExternalAssignedUPI || (document.getElementById('external-upi-id-text')?.textContent.trim()) || 'aditimak.2005-1@okhdfcbank';
+      const markCopied = () => {
+        const btn = document.getElementById('copy-external-upi-btn');
+        if (btn) {
+          btn.textContent = 'COPIED!';
+          btn.style.background = '#0F9D58';
+          setTimeout(() => {
+            btn.textContent = 'COPY';
+            btn.style.background = 'var(--accent-color)';
+          }, 2000);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upiText).then(markCopied).catch(() => {
+          fallbackCopyText(upiText);
+          markCopied();
+        });
+      } else {
+        fallbackCopyText(upiText);
+        markCopied();
+      }
     }
 
     function stepDelegateCount(delta) {
@@ -9081,6 +9520,7 @@
       if (err) err.style.display = 'none';
       input.classList.remove('has-error');
 
+      updateDelegationPaymentQR();
       input.dispatchEvent(new Event('input', { bubbles: true }));
       input.dispatchEvent(new Event('change', { bubbles: true }));
     }
@@ -9099,6 +9539,7 @@
         if (err) err.style.display = 'none';
         input.classList.remove('has-error');
       }
+      updateDelegationPaymentQR();
     }
 
     function validateDelegateCountBlur(input) {
@@ -9112,6 +9553,7 @@
       const err = document.getElementById('dlg-count-error');
       if (err) err.style.display = 'none';
       input.classList.remove('has-error');
+      updateDelegationPaymentQR();
     }
 
     function getDelegationHeaders() {
@@ -9244,7 +9686,7 @@
 
       // Local fallback CSV generator
       const countInput = document.getElementById('dlg-count');
-      const count = Math.min(18, Math.max(10, parseInt(countInput?.value, 10) || 12));
+      const count = Math.min(18, Math.max(9, parseInt(countInput?.value, 10) || 9));
 
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
@@ -9337,7 +9779,7 @@
       const cleanName = delegationName.toLowerCase().trim().replace(/\s+/g, '_');
       const btn = document.getElementById('dlg-create-sheet-btn');
 
-      const gasUrl = "https://script.google.com/macros/s/AKfycbxE1kr1fAjSP4JiNyRQYu-JU9vMk61chP6YGX_rG2n-5M7iTMz4oE1UJpsIfN5d5f1VRw/exec";
+      const gasUrl = "https://script.google.com/macros/s/AKfycbzSNYn2geHn9BCcx0e4lHTGN7As8a2WSbRD1rZL5UrUiPXlXE5KMWqyqcf7c3p7icyU/exec";
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
 
@@ -9446,13 +9888,20 @@
             btn.innerHTML = '<span>⚠️ Already Submitted</span>';
             btn.disabled = true;
           }
-          const submitBtn = document.getElementById('dlg-submit-btn');
+          const nextBtn = document.getElementById('dlg-step1-next-btn');
           const exitBtn = document.getElementById('dlg-exit-btn');
-          if (submitBtn) submitBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
           if (exitBtn) exitBtn.style.display = 'block';
         } else if (btn) {
           btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
           btn.disabled = false;
+          const nextBtn = document.getElementById('dlg-step1-next-btn');
+          if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.removeAttribute('disabled');
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+          }
         }
       } finally {
         _isGeneratingDelegationSheet = false;
@@ -9586,8 +10035,16 @@
         if (sheetErr) sheetErr.style.display = 'none';
       }
 
-      if (hasError) {
+      // Payment Screenshot Validation
+      const screenshotErr = document.getElementById('dlg-payment-screenshot-error');
+      if (!_compressedScreenshots['delegation']) {
+        if (screenshotErr) screenshotErr.style.display = 'block';
+        hasError = true;
+      } else {
+        if (screenshotErr) screenshotErr.style.display = 'none';
+      }
 
+      if (hasError) {
         const dlgCard = document.getElementById('delegation-modal-card');
         if (window.gsap && dlgCard) {
           gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
@@ -9595,8 +10052,8 @@
         return;
       }
 
-      // Construct Payload
-      const payload = {
+      // Construct Payload with Screenshot
+      const formPayload = {
         registrationType: "delegation",
         delegationName: delegationName.value.trim(),
         headName: headName.value.trim(),
@@ -9604,35 +10061,68 @@
         email: email.value.trim(),
         delegateCount: count.value.trim(),
         delegateType: typeInternal && typeInternal.checked ? "internal" : "external",
-        googleSheetLink: sheetLink ? sheetLink.value.trim() : ''
+        googleSheetLink: sheetLink ? sheetLink.value.trim() : '',
+        screenshotBase64: _compressedScreenshots['delegation'] || '',
+        screenshotFormat: (_compressedScreenshots['delegation'] || '').includes('image/webp') ? 'webp' : 'jpeg',
+        paymentAmount: `₹${(parseInt(count.value.trim(), 10) || 9) * 1200}`
       };
 
-      // Send to Supabase Database
+      const submitBtn = document.getElementById('dlg-submit-btn');
+      let originalBtnHTML = '';
+      if (submitBtn) {
+        originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.75';
+        submitBtn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="animation:spin 0.8s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-dashoffset="10" stroke-linecap="round"/></svg>Submitting\u2026</span>`;
+      }
+
+      // Send to Supabase Database via API endpoint
       fetch('/api/submit-delegation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          delegationName: payload.delegationName,
-          delegationType: payload.delegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
-          headName: payload.headName,
-          email: payload.email,
-          phone: payload.phone,
-          memberCount: payload.delegateCount
+          delegationName: formPayload.delegationName,
+          delegationType: formPayload.delegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
+          headName: formPayload.headName,
+          email: formPayload.email,
+          phone: formPayload.phone,
+          memberCount: formPayload.delegateCount,
+          rosterData: formPayload.googleSheetLink,
+          paymentAmount: formPayload.paymentAmount,
+          screenshotBase64: formPayload.screenshotBase64,
+          screenshotFormat: formPayload.screenshotFormat
         })
-      }).catch((err) => console.warn('[Delegation] Supabase submission notice:', err));
+      }).then(res => res.json())
+        .then(data => {
+          const cleanEmail = email.value.trim().toLowerCase();
+          const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+          localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
+          markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
 
-      // Save delegation submission state strictly keyed by email
-      const cleanEmail = email.value.trim().toLowerCase();
-      const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
-      localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
-      markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
-
-      // Show Delegation Success Screen dynamically from inert template
-      showDelegationSuccessOverlay(payload.delegationName, payload.googleSheetLink);
+          showDelegationSuccessOverlay(formPayload.delegationName, formPayload.googleSheetLink);
+        })
+        .catch(err => {
+          console.warn('[Delegation] Supabase submission notice:', err);
+          const cleanEmail = email.value.trim().toLowerCase();
+          const cleanName = delegationName.value.trim().toLowerCase().replace(/\s+/g, '_');
+          localStorage.setItem(`submitted_dlg_email_${cleanEmail}`, 'true');
+          markEmailAsRegistered(cleanEmail, 'delegation', { delegationName: cleanName });
+          showDelegationSuccessOverlay(formPayload.delegationName, formPayload.googleSheetLink);
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.innerHTML = originalBtnHTML;
+          }
+        });
     }
 
     function showDelegationSuccessOverlay(delegationName, googleSheetLink) {
       const dlgCard = document.getElementById('delegation-modal-card');
+      const stepper = document.getElementById('dlg-wizard-stepper');
+      if (stepper) stepper.style.display = 'none';
+
       let successOverlay = document.getElementById('dlg-success-overlay');
       if (!successOverlay) {
         const tmpl = document.getElementById('dlg-success-template');
@@ -9659,6 +10149,9 @@
 
     function handleDelegationSuccessDone() {
       const dlgCard = document.getElementById('delegation-modal-card');
+      const stepper = document.getElementById('dlg-wizard-stepper');
+      if (stepper) stepper.style.display = '';
+
       if (dlgCard) {
         dlgCard.classList.remove('in-dlg-success-state');
         dlgCard.style.overflowY = '';
@@ -9729,16 +10222,6 @@
       const nameInput = document.getElementById('reg-name');
       const delegateName = sanitize(nameInput ? nameInput.value.trim() : 'Delegate');
 
-      if (currentDelegateType === 'internal') {
-        const screenshotInput = document.getElementById('reg-payment-screenshot');
-        const screenshotErr = document.getElementById('reg-payment-screenshot-error');
-        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0 || !_compressedScreenshots['internal']) {
-          if (screenshotErr) screenshotErr.style.display = 'block';
-          return;
-        }
-        if (screenshotErr) screenshotErr.style.display = 'none';
-      }
-
       if (currentDelegateType === 'external') {
         const screenshotInput = document.getElementById('reg-external-payment-screenshot');
         const screenshotErr = document.getElementById('reg-external-payment-screenshot-error');
@@ -9762,22 +10245,23 @@
       const formPayload = {
         delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : isIEEE ? 'External (IEEE Member)' : 'External',
         name:              getVal('reg-name'),
-        institution:       getVal('reg-institution'),
-        usn:               getVal('reg-usn'),
-        city:              getVal('reg-city'),
+        institution:       currentDelegateType === 'internal' ? (getVal('reg-institution') || 'RNS Institute of Technology (RNSIT)') : (getVal('reg-institution') || 'Not Specified'),
+        usn:               getVal('reg-usn') || 'N/A',
+        city:              currentDelegateType === 'internal' ? (getVal('reg-city') || 'Bengaluru') : (getVal('reg-city') || 'Bengaluru'),
         phone:             getVal('reg-phone'),
         email:             getVal('reg-email'),
         munExperience:     getRadioVal('reg-has-experience') === 'yes' ? 'Yes' : 'No',
-        experienceCount:   getVal('reg-exp-count'),
-        experienceDetails: getVal('reg-experience-details'),
+        experienceCount:   getVal('reg-exp-count') || (getRadioVal('reg-has-experience') === 'yes' ? '1+' : '0'),
+        experienceDetails: getVal('reg-experience-details') || (getRadioVal('reg-has-experience') === 'yes' ? 'Experienced Delegate' : 'First-time delegate'),
         committee1:        getSelectText('reg-committee-1'),
         portfolio1_1:      getSelectText('reg-portfolio-1'),
         portfolio1_2:      getSelectText('reg-portfolio-2'),
         committee2:        getSelectText('reg-committee-2'),
         portfolio2_1:      getSelectText('reg-comm2-portfolio-1'),
         portfolio2_2:      getSelectText('reg-comm2-portfolio-2'),
-        ieeeId:            isIEEE ? getVal('reg-ieee-id') : '',
+        ieeeId:            isIEEE ? (getVal('reg-ieee-id') || 'IEEE Member') : '',
         paymentAmount,
+        assignedUpiId:     currentDelegateType === 'external' ? _currentExternalAssignedUPI : '',
         screenshotBase64:  _compressedScreenshots[currentDelegateType] || '',
         screenshotFormat:  (_compressedScreenshots[currentDelegateType] || '').includes('image/webp') ? 'webp' : 'jpeg'
       };
@@ -9799,9 +10283,11 @@
         document.head.appendChild(kf);
       }
 
-      // ─── Success message (used regardless of API result) ────
+      // ─── Success message ────
       const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
-      const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+      const successMsgHTML = currentDelegateType === 'internal'
+        ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been successfully submitted.<br>Please complete the ₹999 payment via the official BillDesk portal if you haven't already. Our secretariat will verify your USN and reach out via email/WhatsApp with your official registration confirmation.`
+        : `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
       // ─── Direct Supabase Submission ─────────────────────────
       async function dispatchSubmission(payload) {
@@ -10509,7 +10995,7 @@
       try { sessionStorage.removeItem(DRAFT_KEY); } catch (e) {}
     }
 
-    function restoreDraft() {
+    function restoreDraft(explicitType = null) {
       let raw;
       try { raw = sessionStorage.getItem(DRAFT_KEY); } catch (e) {}
       if (!raw) return false;
@@ -10522,28 +11008,13 @@
       const hasValue = Object.keys(data).some(k => k !== '_delegateType' && typeof data[k] === 'string' && data[k].trim() !== '');
       if (!hasValue) return false;
 
-      // 1. Restore delegate type if saved
-      if (data['_delegateType']) {
+      // 1. Restore delegate type (giving priority to explicitly chosen type)
+      if (explicitType) {
+        currentDelegateType = explicitType;
+      } else if (data['_delegateType']) {
         currentDelegateType = data['_delegateType'];
-        const typeHidden = document.getElementById('reg-delegate-type');
-        if (typeHidden) typeHidden.value = currentDelegateType;
-        const titleEl = document.getElementById('reg-form-title');
-        if (titleEl) {
-          titleEl.textContent = currentDelegateType === 'internal' ? 'Internal Delegate Registration' : 'External Delegate Registration';
-        }
-        const institution = document.getElementById('reg-institution');
-        if (institution) {
-          if (currentDelegateType === 'internal') {
-            institution.value = 'RNS Institute of Technology';
-            institution.readOnly = true;
-          } else {
-            if (institution.value === 'RNS Institute of Technology' && !data['reg-institution']) {
-              institution.value = '';
-            }
-            institution.readOnly = false;
-          }
-        }
       }
+      applyDelegateTypeUI(currentDelegateType);
 
       // 2. Step 1: Text & simple fields
       const step1TextFields = ['reg-name', 'reg-age', 'reg-institution', 'reg-usn', 'reg-city', 'reg-phone', 'reg-email', 'reg-experience-details', 'reg-ieee-id'];

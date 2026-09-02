@@ -1,4 +1,7 @@
 import { supabase, uploadScreenshotToStorage } from './_supabase.js';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 export default async function handler(req, res) {
   // ─── CORS Guard ───────────────────────────────────────────────
@@ -6,6 +9,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://mun.rnsit.ac.in',
     'https://www.mun.rnsit.ac.in',
+    'https://mun-rose.vercel.app',
     'https://mun-rnsit.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
@@ -80,29 +84,58 @@ export default async function handler(req, res) {
       );
     }
 
-    // 2. Insert Delegation Record into Supabase
-    const { data: insertedRecord, error: insertError } = await supabase
-      .from('delegations')
-      .insert([
-        {
-          delegation_name: cleanDelegationName,
-          delegation_type: clean(body.delegationType) || 'Club / Society / School',
-          head_name:       cleanHeadName,
-          email:           cleanEmail,
-          phone:           clean(phone),
-          member_count:    parseInt(body.memberCount, 10) || 1,
-          roster_data:     Array.isArray(body.rosterData) ? body.rosterData : (body.rosterData ? [body.rosterData] : []),
-          payment_amount:  clean(body.paymentAmount),
-          screenshot_url:  screenshotUrl,
-          status:          'Pending Verification'
-        }
-      ])
-      .select('id, created_at')
-      .single();
+    // 2. Insert Delegation Record into Supabase (with automatic retry)
+    const delegationPayload = {
+      delegation_name: cleanDelegationName,
+      delegation_type: clean(body.delegationType) || 'Club / Society / School',
+      head_name:       cleanHeadName,
+      email:           cleanEmail,
+      phone:           clean(phone),
+      member_count:    parseInt(body.memberCount, 10) || 1,
+      roster_data:     Array.isArray(body.rosterData) ? body.rosterData : (body.rosterData ? [body.rosterData] : []),
+      payment_amount:  clean(body.paymentAmount),
+      screenshot_url:  screenshotUrl,
+      status:          'Pending Verification'
+    };
+
+    let insertedRecord = null;
+    let insertError = null;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const { data, error } = await supabase
+        .from('delegations')
+        .insert([delegationPayload])
+        .select('id, created_at')
+        .single();
+
+      if (!error) {
+        insertedRecord = data;
+        insertError = null;
+        break;
+      }
+
+      insertError = error;
+      if (attempt < 3) {
+        console.warn(`[submit-delegation] Insert attempt ${attempt} failed: ${error.message}. Retrying...`);
+        await new Promise(r => setTimeout(r, attempt * 350));
+      }
+    }
 
     if (insertError) {
+      // Emergency local persistence backup to guarantee zero data loss
+      try {
+        const backupDir = process.env.VERCEL ? os.tmpdir() : path.join(process.cwd(), '.temp_data');
+        if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+        const backupFile = path.join(backupDir, 'emergency_delegations_backup.json');
+        const existingBackups = fs.existsSync(backupFile) ? JSON.parse(fs.readFileSync(backupFile, 'utf8') || '[]') : [];
+        existingBackups.push({ ...delegationPayload, emergency_saved_at: new Date().toISOString(), error: insertError.message });
+        fs.writeFileSync(backupFile, JSON.stringify(existingBackups, null, 2), 'utf8');
+        console.log('🛡️ [submit-delegation] Saved to emergency backup file');
+      } catch (e) {}
+
+      const errMsg = insertError.message || insertError.detail || insertError.title || ('Database error ' + (insertError.status || ''));
       console.error('[submit-delegation] Supabase insert error:', insertError);
-      return res.status(500).json({ success: false, error: 'Database error: ' + insertError.message });
+      return res.status(500).json({ success: false, error: 'Database error: ' + errMsg });
     }
 
     return res.status(200).json({

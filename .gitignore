@@ -12,3 +12,4 @@ lighthouse-report*
 *.key
 *credentials*.json
 service-account*.json
+.temp_data/
