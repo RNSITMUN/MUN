@@ -1019,9 +1019,10 @@
             <div id="reg-institution-error" class="error-container" aria-live="polite" role="alert">College/Institute name is required</div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="reg-usn">USN / Roll No</label>
-            <input type="text" id="reg-usn" class="form-input" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <div class="form-group" id="reg-usn-group">
+            <label class="form-label" for="reg-usn" id="reg-usn-label">USN / Roll No</label>
+            <input type="text" id="reg-usn" class="form-input" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="10">
+            <div id="reg-usn-error" class="error-container" aria-live="polite" role="alert">Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER</div>
           </div>
 
           <div class="form-group">
