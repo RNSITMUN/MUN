@@ -2757,7 +2757,10 @@
           if (existsMsg) existsMsg.style.display = 'none';
           if (createSheetBtn) createSheetBtn.style.display = 'none';
           const statusPill = document.getElementById('dlg-roster-status-pill');
-          if (statusPill) statusPill.style.display = 'inline-flex';
+          if (statusPill) {
+            statusPill.innerHTML = '<span class="roster-status-dot"></span> Live Sheet Active';
+            statusPill.style.display = 'inline-flex';
+          }
           const nextBtn = document.getElementById('dlg-step1-next-btn');
           if (nextBtn) {
             nextBtn.disabled = false;
@@ -2775,8 +2778,19 @@
         return;
       }
 
-      // 2. Default clean state while checking
-      restoreDefaultState();
+      // Check if local cache already has a sheet for this email
+      const localSheet = localStorage.getItem(`dlg_sheet_email_${email}`) ||
+                         localStorage.getItem(`active_dlg_sheet_email_${email}`);
+      if (localSheet && localSheet.includes('docs.google.com/spreadsheets')) {
+        displayExistingSheet(localSheet, false);
+        const statusPill = document.getElementById('dlg-roster-status-pill');
+        if (statusPill) {
+          statusPill.innerHTML = '<span class="roster-status-dot"></span> Restored Sheet';
+          statusPill.style.display = 'inline-flex';
+        }
+      } else {
+        restoreDefaultState();
+      }
 
       // 3. Live remote verification against Google Drive & Google Apps Script
       if (/^\S+@\S+\.\S+$/.test(email)) {
@@ -2788,26 +2802,32 @@
               const data = await res.json().catch(() => null);
               if (inputEl.value.trim().toLowerCase() !== email) return;
 
-              if (data && data.exists) {
-                if (data.sheetUrl) {
-                  // Active sheet exists in Google Drive!
-                  localStorage.setItem(`dlg_sheet_email_${email}`, data.sheetUrl);
+              if (data && data.sheetUrl) {
+                // Roster sheet found for this email! (Either draft or submitted)
+                localStorage.setItem(`dlg_sheet_email_${email}`, data.sheetUrl);
+                localStorage.setItem(`active_dlg_sheet_email_${email}`, data.sheetUrl);
+                const isFullySubmitted = !!(data.exists && !data.isDraft);
+                if (isFullySubmitted) {
                   localStorage.setItem(`submitted_dlg_email_${email}`, data.sheetUrl);
-                  displayExistingSheet(data.sheetUrl, true);
-                } else if (data.type === 'individual') {
-                  if (existsMsg) {
-                    existsMsg.textContent = 'This email is already registered as an Individual Delegate. Please use a different email for your delegation.';
-                    existsMsg.style.display = 'block';
-                  }
-                  if (createSheetBtn) createSheetBtn.style.display = 'none';
-                  if (submitBtn) submitBtn.style.display = 'none';
-                  if (exitBtn) exitBtn.style.display = 'block';
                 }
-              } else {
-                // Email is not in Drive or was deleted -> ensure clean form state
-                localStorage.removeItem(`dlg_sheet_email_${email}`);
-                localStorage.removeItem(`submitted_dlg_email_${email}`);
-                localStorage.removeItem(`active_dlg_sheet_email_${email}`);
+                displayExistingSheet(data.sheetUrl, isFullySubmitted);
+                if (!isFullySubmitted) {
+                  const statusPill = document.getElementById('dlg-roster-status-pill');
+                  if (statusPill) {
+                    statusPill.innerHTML = '<span class="roster-status-dot"></span> Restored Sheet';
+                    statusPill.style.display = 'inline-flex';
+                  }
+                }
+              } else if (data && data.exists && data.type === 'individual') {
+                if (existsMsg) {
+                  existsMsg.textContent = 'This email is already registered as an Individual Delegate. Please use a different email for your delegation.';
+                  existsMsg.style.display = 'block';
+                }
+                if (createSheetBtn) createSheetBtn.style.display = 'none';
+                if (submitBtn) submitBtn.style.display = 'none';
+                if (exitBtn) exitBtn.style.display = 'block';
+              } else if (!localSheet) {
+                // Only restore default state if no local sheet was already found
                 restoreDefaultState();
               }
             }
@@ -3595,6 +3615,50 @@
         }
       } catch (e) {}
 
+      // STRICT ENFORCEMENT: Exactly 1 Google Sheet per email!
+      // Check local storage first
+      let existingSheet = localStorage.getItem(`dlg_sheet_email_${cleanEmail}`) ||
+                          localStorage.getItem(`active_dlg_sheet_email_${cleanEmail}`) ||
+                          localStorage.getItem(`submitted_dlg_email_${cleanEmail}`);
+
+      // Check server database if not in local cache
+      if (!existingSheet) {
+        try {
+          const chk = await fetch(`/api/check-email?email=${encodeURIComponent(cleanEmail)}`);
+          if (chk.ok) {
+            const chkData = await chk.json().catch(() => null);
+            if (chkData && chkData.sheetUrl) {
+              existingSheet = chkData.sheetUrl;
+            }
+          }
+        } catch (e) {}
+      }
+
+      // If sheet already exists: RESTORE IT AND NEVER CREATE A DUPLICATE!
+      if (existingSheet && existingSheet.includes('docs.google.com/spreadsheets')) {
+        console.log('[Delegation] Existing sheet detected for email:', cleanEmail, existingSheet);
+        localStorage.setItem(`dlg_sheet_email_${cleanEmail}`, existingSheet);
+        localStorage.setItem(`active_dlg_sheet_email_${cleanEmail}`, existingSheet);
+        const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+        if (hiddenLinkInput) hiddenLinkInput.value = existingSheet;
+
+        displayExistingSheet(existingSheet, false);
+        const statusPill = document.getElementById('dlg-roster-status-pill');
+        if (statusPill) {
+          statusPill.innerHTML = '<span class="roster-status-dot"></span> Restored Sheet';
+          statusPill.style.display = 'inline-flex';
+        }
+        showTactileToast('Found your existing roster sheet for this email!');
+        const nextBtn = document.getElementById('dlg-step1-next-btn');
+        if (nextBtn) {
+          nextBtn.disabled = false;
+          nextBtn.removeAttribute('disabled');
+          nextBtn.style.opacity = '1';
+          nextBtn.style.cursor = 'pointer';
+        }
+        return;
+      }
+
       _isGeneratingDelegationSheet = true;
       _generatingEmail = cleanEmail;
 
@@ -3671,6 +3735,22 @@
         localStorage.setItem(`active_dlg_sheet_email_${cleanEmail}`, finalUrl);
         localStorage.setItem(`dlg_sheet_email_${cleanEmail}`, finalUrl);
         if (cleanName) localStorage.setItem(`active_dlg_sheet_${cleanName}`, finalUrl);
+
+        // Permanently bind this email to this sheet in Supabase
+        try {
+          fetch('/api/save-draft-sheet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: cleanEmail,
+              sheetUrl: finalUrl,
+              delegationName,
+              headName,
+              phone,
+              delegationType
+            })
+          }).catch(() => {});
+        } catch (e) {}
 
         const resultBox = document.getElementById('dlg-sheet-result');
         const anchor = document.getElementById('dlg-sheet-anchor');

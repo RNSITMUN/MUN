@@ -102,21 +102,44 @@ export default async function handler(req, res) {
     let insertError = null;
 
     for (let attempt = 1; attempt <= 3; attempt++) {
-      const { data, error } = await supabase
+      // Check if draft exists for this email
+      const { data: draftRows } = await supabase
         .from('delegations')
-        .insert([delegationPayload])
-        .select('id, created_at')
-        .single();
+        .select('id')
+        .ilike('email', cleanEmail)
+        .limit(1);
 
-      if (!error) {
-        insertedRecord = data;
-        insertError = null;
-        break;
+      if (draftRows && draftRows.length > 0) {
+        const { data, error } = await supabase
+          .from('delegations')
+          .update(delegationPayload)
+          .eq('id', draftRows[0].id)
+          .select('id, created_at')
+          .single();
+
+        if (!error) {
+          insertedRecord = data;
+          insertError = null;
+          break;
+        }
+        insertError = error;
+      } else {
+        const { data, error } = await supabase
+          .from('delegations')
+          .insert([delegationPayload])
+          .select('id, created_at')
+          .single();
+
+        if (!error) {
+          insertedRecord = data;
+          insertError = null;
+          break;
+        }
+        insertError = error;
       }
 
-      insertError = error;
       if (attempt < 3) {
-        console.warn(`[submit-delegation] Insert attempt ${attempt} failed: ${error.message}. Retrying...`);
+        console.warn(`[submit-delegation] Submission attempt ${attempt} failed: ${insertError.message}. Retrying...`);
         await new Promise(r => setTimeout(r, attempt * 350));
       }
     }
