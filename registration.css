@@ -2806,66 +2806,6 @@
       transform: translate(1px, 1px);
       box-shadow: 1px 1px 0px var(--text-primary);
     }
-    }
-
-    /* Delegate Number Input with Integrated Stepper Arrows (10 - 18) */
-    .delegate-number-input-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-
-    .delegate-number-input {
-      width: 100%;
-      padding-right: 48px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      -moz-appearance: textfield;
-    }
-
-    .delegate-number-input::-webkit-outer-spin-button,
-    .delegate-number-input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    .delegate-number-steppers {
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      bottom: 5px;
-      width: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .stepper-arrow-btn {
-      flex: 1;
-      background: #FFF7EB;
-      border: 1.5px solid var(--text-primary);
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-primary);
-      cursor: pointer;
-      padding: 0;
-      transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .stepper-arrow-btn:hover {
-        background-color: var(--accent-color);
-        color: #FFF7EB;
-      }
-    }
-
-    .stepper-arrow-btn:active {
-      transform: scale(0.92);
-    }
 
     /* Success Screen */
     .success-overlay {

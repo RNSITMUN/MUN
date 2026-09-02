@@ -601,27 +601,9 @@
           <!-- 5. Number of Delegates in Delegation (9 - 18 with direct typing & stepper arrows) -->
           <div class="form-group">
             <label class="form-label" for="dlg-count">Number of Delegates in Delegation * (9 – 18)</label>
-            <div class="delegate-number-input-wrap">
-              <input type="number" id="dlg-count" class="form-input delegate-number-input" min="9" max="18" value="9"
-                placeholder="9" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
-                required>
-              <div class="delegate-number-steppers">
-                <button type="button" class="stepper-arrow-btn stepper-arrow-up" onclick="stepDelegateCount(1)"
-                  aria-label="Increase number of delegates" title="Increase">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="18 15 12 9 6 15"></polyline>
-                  </svg>
-                </button>
-                <button type="button" class="stepper-arrow-btn stepper-arrow-down" onclick="stepDelegateCount(-1)"
-                  aria-label="Decrease number of delegates" title="Decrease">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <input type="number" id="dlg-count" class="form-input" min="9" max="18" value="9"
+              placeholder="e.g. 10" inputmode="numeric" oninput="handleDelegateCountInput(this)" onblur="validateDelegateCountBlur(this)"
+              required>
             <div id="dlg-count-error" class="error-container" aria-live="polite" role="alert">Number of delegates must be between 9 and 18</div>
           </div>
 
