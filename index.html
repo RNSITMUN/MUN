@@ -1299,13 +1299,13 @@
       border-radius: 6px;
     }
 
-    /* Full-Width Registration Banner (Row 2) */
-    .summit-registration-box {
-      background: #6C0D2C;
-      color: #FFF7EB;
+    /* Refined Share Conference Banner */
+    .summit-share-card {
+      background: #FFF7EB;
+      color: #000;
       border: 2px solid #000;
       border-radius: 16px;
-      padding: 22px 26px;
+      padding: 24px 28px;
       box-shadow: 4px 4px 0 #000;
       display: flex;
       align-items: center;
@@ -1314,124 +1314,83 @@
       margin-top: 22px;
     }
 
-    .reg-box-left {
+    .share-card-left {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      max-width: 540px;
+      max-width: 580px;
     }
 
-    .reg-box-tag {
+    .share-card-icon-pill {
       font-family: 'Outfit', sans-serif;
       font-size: 0.66rem;
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background: rgba(229, 169, 60, 0.2);
-      border: 1px solid #E5A93C;
-      color: #E5A93C;
-      padding: 2px 8px;
-      border-radius: 4px;
+      background: rgba(108, 13, 44, 0.08);
+      border: 1px solid #6C0D2C;
+      color: #6C0D2C;
+      padding: 3px 9px;
+      border-radius: 999px;
       width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .reg-box-heading {
+    .share-card-heading {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+      font-size: clamp(1.22rem, 2.2vw, 1.55rem);
       font-weight: 900;
       letter-spacing: -0.02em;
-      color: #FFF7EB;
+      color: #000000;
       margin: 0;
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
-    .reg-box-desc {
+    .share-card-desc {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      color: rgba(255, 247, 235, 0.85);
+      font-size: 0.88rem;
+      color: rgba(0, 0, 0, 0.72);
       margin: 0;
       line-height: 1.45;
     }
 
-    .reg-box-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      min-width: 280px;
+    .share-card-right {
       flex-shrink: 0;
     }
 
-    .btn-reg-gold,
-    .btn-reg-white {
-      display: flex;
+    .btn-share-conference {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border-radius: 10px;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 22px;
+      border-radius: 12px;
       border: 2px solid #000;
-      text-decoration: none;
-      box-shadow: 2.5px 2.5px 0 #000;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
-    }
-
-    .btn-reg-gold {
       background: #E5A93C;
-      color: #000;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .btn-reg-gold:hover {
-        background: #F5B94C;
-        transform: translate(-1px, -1px);
-        box-shadow: 3.5px 3.5px 0 #000;
-      }
-
-      .btn-reg-white:hover {
-        background: #FFFFFF;
-        transform: translate(-1px, -1px);
-        box-shadow: 3.5px 3.5px 0 #000;
-      }
-    }
-
-    .btn-reg-gold:active,
-    .btn-reg-white:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1.5px 1.5px 0 #000;
-    }
-
-    .btn-reg-white {
-      background: #FFF7EB;
-      color: #000;
-    }
-
-    .btn-reg-share {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 2px solid #000;
-      background: #FFF7EB;
-      color: #6C0D2C;
+      color: #000000;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.94rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
       text-decoration: none;
-      box-shadow: 2.5px 2.5px 0 #000;
+      box-shadow: 3px 3px 0 #000;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
       cursor: pointer;
-      font-family: 'Outfit', sans-serif;
       touch-action: manipulation;
-      width: 100%;
+      white-space: nowrap;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .btn-reg-share:hover {
-        background: #F3E4D0;
+      .btn-share-conference:hover {
+        background: #F5B94C;
         transform: translate(-1px, -1px);
-        box-shadow: 3.5px 3.5px 0 #000;
+        box-shadow: 4px 4px 0 #000;
       }
     }
 
-    .btn-reg-share:active {
+    .btn-share-conference:active {
       transform: translate(1px, 1px);
       box-shadow: 1.5px 1.5px 0 #000;
     }
@@ -1529,16 +1488,15 @@
         margin-top: 20px;
       }
 
-      .summit-registration-box {
+      .summit-share-card {
         flex-direction: column;
         align-items: stretch;
-        gap: 20px;
-        padding: 22px 20px;
+        gap: 16px;
+        padding: 20px 18px;
         margin-top: 16px;
       }
 
-      .reg-box-actions {
-        min-width: 0;
+      .btn-share-conference {
         width: 100%;
       }
     }
@@ -1640,35 +1598,19 @@
         align-self: flex-start;
       }
 
-      .summit-registration-box {
-        padding: 20px 16px;
+      .summit-share-card {
+        padding: 18px 16px;
         border-radius: 14px;
-        box-shadow: 4px 4px 0 #000;
-        gap: 16px;
+        gap: 14px;
       }
 
-      .reg-box-heading {
-        font-size: 1.25rem;
+      .share-card-heading {
+        font-size: 1.18rem;
       }
 
-      .reg-box-desc {
+      .share-card-desc {
         font-size: 0.84rem;
         line-height: 1.4;
-      }
-
-      .btn-reg-gold,
-      .btn-reg-white {
-        padding: 11px 14px;
-        border-radius: 10px;
-        box-shadow: 2.5px 2.5px 0 #000;
-      }
-
-      .btn-main-txt {
-        font-size: 0.82rem;
-      }
-
-      .btn-sub-txt {
-        font-size: 0.68rem;
       }
     }
 
@@ -1711,17 +1653,15 @@
         font-size: 0.68rem;
         padding: 3px 6px;
       }
-      .summit-registration-box {
-        padding: 16px 12px;
+      .summit-share-card {
+        padding: 15px 12px;
       }
-      .reg-box-heading {
-        font-size: 1.12rem;
+      .share-card-heading {
+        font-size: 1.08rem;
       }
-      .btn-main-txt {
-        font-size: 0.76rem;
-      }
-      .btn-sub-txt {
-        font-size: 0.64rem;
+      .btn-share-conference {
+        padding: 11px 16px;
+        font-size: 0.88rem;
       }
     }
 
@@ -2187,33 +2127,39 @@
 
       </div>
 
-      <!-- Below Box: Registration Banner -->
-      <div class="summit-registration-box">
-        <div class="reg-box-left">
-          <span class="reg-box-tag">★ REGISTRATIONS LIVE</span>
-          <h4 class="reg-box-heading">Represent at RNSMUN 2026</h4>
-          <p class="reg-box-desc">
-            Direct entry allocations open for individual delegates and 9+ member institutional delegations across all 6 committees.
+      <!-- Below Box: Dedicated Share Conference Banner -->
+      <div class="summit-share-card">
+        <div class="share-card-left">
+          <div class="share-card-icon-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span>SPREAD THE WORD</span>
+          </div>
+          <h4 class="share-card-heading">Invite Friends &amp; Co-Delegates</h4>
+          <p class="share-card-desc">
+            Assemble your delegation or share RNSMUN 2026 with fellow debaters across the circuit.
           </p>
         </div>
 
-        <div class="reg-box-actions">
-          <a href="/registration?type=individual" class="btn-reg-gold" aria-label="Register as Individual Delegate">
-            <span class="btn-main-txt">Register as Delegate</span>
-            <span class="btn-sub-txt" style="font-size: 0.95rem; line-height: 1;">&rarr;</span>
-          </a>
-
-          <a href="/registration?type=delegation" class="btn-reg-white" aria-label="Register as Delegation">
-            <span class="btn-main-txt">Register as Delegation</span>
-            <span class="btn-sub-txt">9+ GROUP &rarr;</span>
-          </a>
-
-          <button type="button" class="btn-reg-share" id="home-share-btn" onclick="shareConference()" aria-label="Share Conference with Friends">
-            <span class="btn-main-txt" style="display: inline-flex; align-items: center; gap: 7px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-              Share Conference
-            </span>
-            <span class="btn-sub-txt" style="font-size: 0.95rem; line-height: 1;">&rarr;</span>
+        <div class="share-card-right">
+          <button type="button" class="btn-share-conference" id="home-share-btn" onclick="shareConference()" aria-label="Share Conference with Friends">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span>Share Conference</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </button>
         </div>
       </div>
@@ -2225,7 +2171,7 @@
     document.documentElement.classList.add('home-page');
 
     // Staggered reveal
-    const reveals = document.querySelectorAll('.summit-dual-grid, .summit-registration-box');
+    const reveals = document.querySelectorAll('.summit-dual-grid, .summit-share-card');
     reveals.forEach(el => el.classList.add('mun26-reveal'));
 
     const obs = new IntersectionObserver((entries) => {
