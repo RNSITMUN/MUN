@@ -578,20 +578,80 @@ body {
 }
 
 body.modal-open .mobile-floating-menu-root,
-html.modal-open .mobile-floating-menu-root {
+html.modal-open .mobile-floating-menu-root,
+body.modal-open .mobile-floating-reg-btn,
+html.modal-open .mobile-floating-reg-btn {
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
+}
+
+/* Mobile Floating "Register Now" Quick Action Button */
+.mobile-floating-reg-btn {
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  right: 12px;
+  z-index: 9998;
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background-color: #6C0D2C;
+  color: #FFFFFF !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0 12px;
+  height: 33px;
+  border-radius: 72px;
+  border: 1.5px solid #000000;
+  box-shadow: 2px 2px 0 #000000;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease,
+              box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+
+.mobile-floating-reg-btn svg {
+  stroke: #E5A93C;
+  transition: transform 0.2s ease;
+}
+
+.mobile-floating-reg-btn:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.mobile-floating-reg-btn.is-hidden-by-menu {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.9) !important;
 }
 
 @media (max-width: 768px) {
   .mobile-floating-menu-root {
     display: block;
   }
+  .mobile-floating-reg-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 360px) {
+  .mobile-floating-reg-btn {
+    right: 8px;
+    padding: 0 9px;
+    font-size: 0.68rem;
+    gap: 4px;
+  }
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
-  .mobile-floating-menu-root {
+  .mobile-floating-menu-root,
+  .mobile-floating-reg-btn {
     bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
   .floating-menu-container.is-open {

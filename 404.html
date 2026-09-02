@@ -35,7 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800&family=Anton&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./style.css">
-  <link rel="icon" type="image/png" href="./assets/Logos/MUN_logo.png">
+  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.png">
   <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
@@ -227,10 +227,8 @@
 
   <!-- Fullscreen Background Video -->
   <div class="video-bg-container">
-    <video autoplay loop muted playsinline class="bg-video" id="rick-video">
-      <source src="/Rick_Roll.mp4" type="video/mp4">
+    <video autoplay loop muted playsinline preload="metadata" class="bg-video" id="rick-video">
       <source src="/404-video.mp4" type="video/mp4">
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-spinning-photo-of-a-globe-loop-42861-large.mp4" type="video/mp4">
     </video>
     <div class="video-shade-overlay"></div>
   </div>
