@@ -5743,114 +5743,48 @@
               </div>
               <p
                 style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
-                Subsidized delegate registration pass for RNS Institute of Technology students. Scan the QR code or copy
-                the UPI ID below to complete your payment.
+                Subsidized delegate registration pass for RNS Institute of Technology students.
               </p>
             </div>
 
-            <!-- QR Code & UPI ID Card -->
-            <div class="neo-qr-card"
-              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 20px 16px; text-align: center; margin-bottom: 18px;">
+            <!-- Important Note: Confirmation Receipt Download -->
+            <div class="neo-note-card"
+              style="background: #FFF5F5; border: 2.5px solid #6C0D2C; box-shadow: 4px 4px 0px #6C0D2C; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 14px;">
               <div
-                style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;">
-                SCAN VIA GOOGLE PAY / PHONEPE / PAYTM / ANY UPI
+                style="background: #6C0D2C; color: #FFF7EB; border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
               </div>
-
-              <!-- QR Code Display Box -->
-              <div
-                style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
-                <img id="internal-upi-qr"
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D999%26cu%3DINR"
-                  alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
-              </div>
-
-              <!-- UPI ID Box with Tactile Copy Button -->
-              <div
-                style="display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 330px; margin: 0 auto; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; box-shadow: 2px 2px 0px var(--text-primary); padding: 6px 10px;">
-                <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
-                  <span
-                    style="font-size: 0.72rem; font-weight: 800; color: rgba(0,0,0,0.45); text-transform: uppercase;">UPI
-                    ID:</span>
-                  <span
-                    style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                    id="internal-upi-id-text">
-                    mun@rnsit.ac.in
-                  </span>
-                </div>
-                <button type="button" id="copy-upi-btn" onclick="copyInternalUPI()"
-                  style="background: var(--accent-color); color: #FFF7EB; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans); transition: all 0.15s ease; flex-shrink: 0;">
-                  Copy
-                </button>
-              </div>
-            </div>
-
-            <!-- Screenshot Upload Box -->
-            <div class="form-group" style="margin-bottom: 22px;">
-              <label class="form-label" for="reg-payment-screenshot"
-                style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Payment Screenshot
-                  *</span>
-                <span
-                  style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
-                  PROOF OF ₹999 TRANSFER ]</span>
-              </label>
-
-              <div class="file-upload-dropzone" id="payment-dropzone"
-                onclick="document.getElementById('reg-payment-screenshot').click()"
-                style="background: #FFFDF9; border: 2.5px dashed var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
-
-                <input type="file" id="reg-payment-screenshot" accept="image/*" style="display: none;"
-                  onchange="handlePaymentScreenshotSelected(this)">
-
-                <div id="dropzone-empty-state">
-                  <div
-                    style="font-size: 0.92rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">
-                    Click or Drag to Upload Screenshot
-                  </div>
-                  <div style="font-size: 0.76rem; font-weight: 600; color: rgba(0,0,0,0.5);">
-                    Supports PNG, JPG, JPEG, WEBP (Max 10MB)
-                  </div>
-                </div>
-
-                <div id="dropzone-file-state"
-                  style="display: none; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 2px solid var(--text-primary); border-radius: 8px; padding: 10px 14px;">
-                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
-                    <img id="screenshot-preview-thumb" src="" alt="Thumbnail"
-                      style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--text-primary); flex-shrink: 0;">
-                    <div style="text-align: left; min-width: 0;">
-                      <div id="screenshot-file-name"
-                        style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        screenshot.png
-                      </div>
-                      <div id="screenshot-file-size"
-                        style="font-size: 0.74rem; font-weight: 700; color: var(--accent-color);">
-                        Ready to Submit
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button" onclick="event.stopPropagation(); removePaymentScreenshot();"
-                    style="background: #E63946; color: #FFFFFF; border: 1.5px solid var(--text-primary); box-shadow: 1.5px 1.5px 0px var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; text-transform: uppercase; font-family: var(--font-sans);">
-                    Remove
-                  </button>
-                </div>
-
-              </div>
-              <div id="reg-payment-screenshot-error" class="error-container" aria-live="polite" role="alert">Payment screenshot is required to submit
+              <div style="font-size: 0.84rem; color: #111113; line-height: 1.5; font-weight: 500;">
+                <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; font-size: 0.8rem;">
+                  ★ Important Note &mdash; Receipt Download:
+                </span>
+                Kindly <strong>download and save your registration confirmation receipt</strong> from the BillDesk portal immediately after completing your payment. You will need this receipt for verification during delegate kit collection and check-in.
               </div>
             </div>
 
             <!-- Non-Refundable Policy Notice -->
             <div class="neo-note-callout"
-              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 10px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
+              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 12px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
               <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
               <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
             </div>
 
-            <!-- Submit Button (Disabled until screenshot is uploaded) -->
+            <!-- Submit Button (The ONLY Clickable Action for Internal Delegates) -->
             <div class="wizard-btn-row">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
-              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn" disabled>
-                Submit Internal Delegate Registration
+              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn"
+                style="flex: 1.5; background: var(--accent-color); color: #FFF7EB; font-weight: 900; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; display: inline-flex; align-items: center; justify-content: center; gap: 8px; opacity: 1; cursor: pointer;">
+                <span>Submit and Pay</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
               </button>
             </div>
 
@@ -7652,6 +7586,13 @@
         if (currentDelegateType === 'internal') {
           if (internalPanel) internalPanel.style.display = 'block';
           if (externalPanel) externalPanel.style.display = 'none';
+          const internalSubmitBtn = document.getElementById('internal-submit-btn');
+          if (internalSubmitBtn) {
+            internalSubmitBtn.disabled = false;
+            internalSubmitBtn.removeAttribute('disabled');
+            internalSubmitBtn.style.opacity = '1';
+            internalSubmitBtn.style.cursor = 'pointer';
+          }
         } else {
           if (internalPanel) internalPanel.style.display = 'none';
           if (externalPanel) externalPanel.style.display = 'block';
@@ -7771,10 +7712,10 @@
       if (internalErr) internalErr.style.display = 'none';
       const internalSubmitBtn = document.getElementById('internal-submit-btn');
       if (internalSubmitBtn) {
-        internalSubmitBtn.disabled = true;
-        internalSubmitBtn.setAttribute('disabled', 'true');
-        internalSubmitBtn.style.opacity = '0.45';
-        internalSubmitBtn.style.cursor = 'not-allowed';
+        internalSubmitBtn.disabled = false;
+        internalSubmitBtn.removeAttribute('disabled');
+        internalSubmitBtn.style.opacity = '1';
+        internalSubmitBtn.style.cursor = 'pointer';
       }
 
       // 2. External screenshot inputs & UI
@@ -9729,16 +9670,6 @@
       const nameInput = document.getElementById('reg-name');
       const delegateName = sanitize(nameInput ? nameInput.value.trim() : 'Delegate');
 
-      if (currentDelegateType === 'internal') {
-        const screenshotInput = document.getElementById('reg-payment-screenshot');
-        const screenshotErr = document.getElementById('reg-payment-screenshot-error');
-        if (!screenshotInput || !screenshotInput.files || screenshotInput.files.length === 0 || !_compressedScreenshots['internal']) {
-          if (screenshotErr) screenshotErr.style.display = 'block';
-          return;
-        }
-        if (screenshotErr) screenshotErr.style.display = 'none';
-      }
-
       if (currentDelegateType === 'external') {
         const screenshotInput = document.getElementById('reg-external-payment-screenshot');
         const screenshotErr = document.getElementById('reg-external-payment-screenshot-error');
@@ -9801,7 +9732,9 @@
 
       // ─── Success message (used regardless of API result) ────
       const typeLabel = currentDelegateType === 'internal' ? 'internal' : 'external';
-      const successMsgHTML = `Thank you for registering, <strong>${delegateName}</strong>!<br>Your ${typeLabel} delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
+      const successMsgHTML = currentDelegateType === 'internal'
+        ? `Thank you for registering, <strong>${delegateName}</strong>!<br>Your internal delegate registration for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>has been recorded in our system.<br><br><div style="background:#FFF5F5;border:1.5px solid #6C0D2C;border-radius:8px;padding:10px 12px;margin:10px 0;font-size:0.82rem;color:#111;text-align:left;line-height:1.4;"><strong style="color:#6C0D2C;">📌 Note:</strong> Kindly <strong>download your registration confirmation receipt</strong> directly from the BillDesk portal after completing the payment.</div>`
+        : `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
       // ─── Direct Supabase Submission ─────────────────────────
       async function dispatchSubmission(payload) {
@@ -9857,6 +9790,25 @@
               delegateType: formPayload.delegateType,
               committee1: formPayload.committee1
             });
+          }
+
+          // Auto-launch BillDesk portal for internal delegate payment
+          if (currentDelegateType === 'internal') {
+            const billdeskUrl = 'https://payments.billdesk.com/bdcollect/bd/rnsiotec/7232';
+            let openedInNewTab = false;
+            try {
+              const newTab = window.open(billdeskUrl, '_blank');
+              if (newTab && !newTab.closed && typeof newTab.closed !== 'undefined') {
+                openedInNewTab = true;
+              }
+            } catch (err) {
+              console.warn('[BillDesk] Window open blocked by browser policy:', err);
+            }
+            if (!openedInNewTab) {
+              setTimeout(() => {
+                window.location.href = billdeskUrl;
+              }, 400);
+            }
           }
 
           // Dynamically mount and display success screen
