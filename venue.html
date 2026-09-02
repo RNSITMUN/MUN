@@ -781,13 +781,14 @@
         font-size: 0.72rem;
       }
 
-      /* Mobile Transit Cards: Compact small boxes without images */
+      /* Mobile Transit Cards: 3 cubes (2 above, 1 below) without images */
       .transit-banner-wrap {
         display: none !important;
       }
 
       .transit-cards-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
         margin-bottom: 28px;
       }
@@ -797,33 +798,66 @@
         border: 2px solid var(--text-primary);
         border-radius: 12px;
         box-shadow: 3px 3px 0px var(--text-primary);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 175px;
+      }
+
+      .transit-card:nth-child(3) {
+        grid-column: 1 / -1;
+        width: calc(50% - 6px);
+        margin: 0 auto;
       }
 
       .transit-card-content {
-        padding: 13px 15px;
-        gap: 10px;
+        padding: 12px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        gap: 6px;
+      }
+
+      .transit-card-top {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
 
       .transit-type-label {
-        font-size: 0.65rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.06em;
         margin-bottom: 2px;
+        line-height: 1.2;
       }
 
       .transit-hub-name {
-        font-size: 1.06rem;
-        margin-bottom: 4px;
+        font-size: clamp(0.85rem, 3.2vw, 0.98rem);
+        margin-bottom: 3px;
+        line-height: 1.2;
+        word-break: break-word;
       }
 
       .transit-distance-tag {
-        font-size: 0.72rem;
-        padding: 3px 8px;
+        font-size: 0.64rem;
+        padding: 3px 5px;
         margin-top: 2px;
+        line-height: 1.2;
+        gap: 3px;
+      }
+
+      .transit-distance-tag svg {
+        flex-shrink: 0;
       }
 
       .transit-link-btn {
-        padding: 9px 12px;
-        font-size: 0.78rem;
-        margin-top: 2px;
+        padding: 7px 8px;
+        font-size: 0.72rem;
+        margin-top: 4px;
+        justify-content: center;
+        gap: 4px;
+        white-space: nowrap;
       }
 
       .venue-contacts-box {
