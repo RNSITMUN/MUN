@@ -528,6 +528,10 @@
       justify-content: center;
       padding: 10px 0 20px 0;
       box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .reg-subview-nav {
@@ -544,13 +548,17 @@
     .btn-subview-back {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       background: #FFFDF9;
       border: 2px solid #000;
-      border-radius: 10px;
-      padding: 8px 14px;
+      border-radius: 999px;
+      padding: 0 14px;
+      height: 38px;
+      min-height: 38px;
+      box-sizing: border-box;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -575,20 +583,27 @@
       font-family: 'Outfit', sans-serif;
       font-size: 0.66rem;
       font-weight: 800;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #6C0D2C;
       background: rgba(108, 13, 44, 0.08);
-      border: 1.5px solid #6C0D2C;
-      padding: 4px 10px;
+      border: 2px solid #6C0D2C;
+      padding: 0 14px;
+      height: 38px;
+      min-height: 38px;
+      box-sizing: border-box;
       border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .reg-subview-pill-gold {
       color: #000;
       background: #E5A93C;
       border-color: #000;
-      box-shadow: 1.5px 1.5px 0 #000;
+      box-shadow: 2px 2px 0 #000;
     }
 
     .reg-switch-prompt {
@@ -756,15 +771,66 @@
     }
 
     @media (max-width: 768px) {
+      .registration-viewport {
+        padding: 68px clamp(12px, 3.5vw, 18px) calc(76px + env(safe-area-inset-bottom, 0px)) clamp(12px, 3.5vw, 18px);
+      }
+      .reg-choice-container {
+        padding: 8px 0 16px 0;
+        max-width: 100%;
+      }
       .reg-choice-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: clamp(14px, 3vw, 18px);
       }
       .reg-choice-card {
-        padding: 22px 18px;
+        padding: clamp(18px, 4vw, 22px) clamp(14px, 3.5vw, 18px);
+        box-shadow: 3.5px 3.5px 0 #000;
+      }
+      .reg-subview-nav {
+        gap: 8px;
+        margin-bottom: 14px;
+        width: 100%;
+      }
+      .btn-subview-back {
+        height: 35px;
+        min-height: 35px;
+        padding: 0 12px;
+        font-size: 0.72rem;
+        flex-shrink: 0;
+      }
+      .reg-subview-pill {
+        height: 35px;
+        min-height: 35px;
+        padding: 0 10px;
+        font-size: 0.63rem;
+        letter-spacing: 0.06em;
       }
       .delegation-hub-card {
-        padding: 24px 18px;
+        padding: clamp(20px, 4vw, 28px) clamp(14px, 3.5vw, 20px);
+        box-shadow: 3.5px 3.5px 0 #000;
+        gap: 14px;
+      }
+      .delegation-hub-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        gap: 12px;
+      }
+      .hub-primary-btn,
+      .hub-secondary-btn {
+        width: 100%;
+        min-width: unset;
+        box-sizing: border-box;
+        min-height: 46px;
+        padding: 12px 18px;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      #delegation-reg-view {
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
       }
     }
 
@@ -2192,38 +2258,35 @@
       box-shadow: 3px 3px 0px var(--text-primary) !important;
     }
 
-    /* Multi-step Wizard Indicator & Step Panels */
+    /* Multi-step Wizard Indicator & Step Panels (Desktop) */
     .wizard-stepper {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-wrap: nowrap;
-      gap: clamp(3px, 1vw, 6px);
-      margin: 8px 0 12px 0;
+      gap: 6px;
+      margin: 6px 0 14px 0;
       user-select: none;
       width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .wizard-stepper::-webkit-scrollbar {
-      display: none;
+      box-sizing: border-box;
+      overflow: visible;
     }
 
     .wizard-step {
       font-family: var(--font-sans);
-      font-size: clamp(0.64rem, 1.6vw, 0.74rem);
+      font-size: clamp(0.66rem, 1.8vw, 0.74rem);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      color: rgba(0, 0, 0, 0.4);
-      padding: 2.5px clamp(4px, 1.2vw, 7px);
-      border-radius: 5px;
+      color: rgba(0, 0, 0, 0.45);
+      padding: 2.5px 7px;
+      border-radius: 6px;
       border: 1.5px solid transparent;
       transition: all 0.2s ease;
       white-space: nowrap;
-      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .wizard-step.is-active {
@@ -2235,14 +2298,77 @@
 
     .wizard-step.is-completed {
       color: var(--accent-color);
-      font-weight: 700;
+      font-weight: 800;
+      border-color: transparent;
     }
 
     .wizard-step-arrow {
-      color: rgba(0, 0, 0, 0.3);
-      font-size: clamp(0.6rem, 1.4vw, 0.74rem);
+      color: rgba(0, 0, 0, 0.35);
+      font-size: clamp(0.64rem, 1.5vw, 0.74rem);
       font-weight: 700;
       flex-shrink: 0;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Delegation Stepper (Desktop) */
+    .registration-stepper,
+    #dlg-wizard-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin: 6px 0 16px 0 !important;
+      user-select: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .registration-stepper .step-indicator,
+    #dlg-wizard-stepper .step-indicator {
+      font-family: var(--font-sans);
+      font-size: clamp(0.64rem, 1.8vw, 0.74rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: rgba(0, 0, 0, 0.45);
+      padding: 2.5px clamp(6px, 1.5vw, 9px);
+      border-radius: 6px;
+      border: 1.5px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .registration-stepper .step-indicator.is-active,
+    #dlg-wizard-stepper .step-indicator.is-active {
+      color: var(--text-primary);
+      background: rgba(108, 13, 44, 0.08);
+      border-color: var(--text-primary);
+      font-weight: 800;
+    }
+
+    .registration-stepper .step-indicator.is-completed,
+    #dlg-wizard-stepper .step-indicator.is-completed {
+      color: var(--accent-color);
+      font-weight: 800;
+      border-color: transparent;
+    }
+
+    .registration-stepper .step-arrow,
+    #dlg-wizard-stepper .step-arrow,
+    #dlg-step-arrow-2 {
+      color: rgba(0, 0, 0, 0.35);
+      font-size: clamp(0.62rem, 1.5vw, 0.74rem);
+      font-weight: 700;
+      flex-shrink: 0;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
     }
 
     .wizard-step-panel {
@@ -4360,6 +4486,74 @@
       .file-upload-dropzone {
         padding: 14px 10px;
       }
+
+      /* External Delegate Stepper on Mobile: Strict Single Horizontal Line */
+      .wizard-stepper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        overflow-x: hidden !important;
+        gap: clamp(1px, 0.7vw, 3px) !important;
+        margin: 6px 0 14px 0 !important;
+        padding: 0 !important;
+      }
+
+      .wizard-step {
+        font-size: clamp(0.51rem, 1.8vw, 0.65rem) !important;
+        padding: 2px clamp(2px, 0.6vw, 4.5px) !important;
+        letter-spacing: 0.01em !important;
+        white-space: nowrap !important;
+        flex-shrink: 1 !important;
+        border-radius: 5px !important;
+      }
+
+      .wizard-step.is-active {
+        font-weight: 800 !important;
+      }
+
+      .wizard-step-arrow {
+        font-size: clamp(0.51rem, 1.7vw, 0.62rem) !important;
+        color: rgba(0, 0, 0, 0.35) !important;
+        flex-shrink: 0 !important;
+        line-height: 1 !important;
+        padding: 0 1px !important;
+      }
+
+      /* Delegation Stepper on Mobile: Single Line */
+      .registration-stepper,
+      #dlg-wizard-stepper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        overflow-x: hidden !important;
+        gap: clamp(3px, 1.2vw, 6px) !important;
+        margin: 6px 0 14px 0 !important;
+      }
+
+      .registration-stepper .step-indicator,
+      #dlg-wizard-stepper .step-indicator {
+        font-size: clamp(0.6rem, 2vw, 0.72rem) !important;
+        padding: 2px clamp(4px, 1.2vw, 8px) !important;
+        white-space: nowrap !important;
+        flex-shrink: 1 !important;
+      }
+
+      .registration-stepper .step-arrow,
+      #dlg-wizard-stepper .step-arrow,
+      #dlg-step-arrow-2 {
+        font-size: clamp(0.58rem, 1.8vw, 0.7rem) !important;
+        flex-shrink: 0 !important;
+      }
     }
 
     /* ================================================= */
@@ -4367,11 +4561,97 @@
     /* ================================================= */
     @media (max-width: 380px) {
       .registration-viewport {
-        padding: 60px 8px 40px 8px;
+        padding: 60px 8px calc(76px + env(safe-area-inset-bottom, 0px)) 8px;
       }
 
       .registration-title {
         font-size: 1.45rem;
+      }
+
+      .reg-choice-card {
+        padding: 16px 12px;
+        box-shadow: 3px 3px 0 #000;
+        gap: 12px;
+      }
+
+      .reg-choice-title {
+        font-size: 1.15rem;
+      }
+
+      .reg-choice-steps {
+        font-size: 0.66rem;
+        padding: 5px 8px;
+        gap: 4px;
+      }
+
+      .reg-choice-highlights {
+        font-size: 0.76rem;
+        gap: 5px;
+      }
+
+      .reg-choice-btn {
+        font-size: 0.78rem;
+        padding: 10px 12px;
+      }
+
+      .reg-subview-nav {
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .btn-subview-back {
+        height: 33px;
+        min-height: 33px;
+        padding: 0 9px;
+        font-size: 0.67rem;
+        gap: 4px;
+      }
+
+      .btn-subview-back svg {
+        width: 13px;
+        height: 13px;
+      }
+
+      .reg-subview-pill {
+        height: 33px;
+        min-height: 33px;
+        padding: 0 8px;
+        font-size: 0.58rem;
+        letter-spacing: 0.04em;
+      }
+
+      .wizard-stepper {
+        gap: 1px !important;
+        margin: 4px 0 10px 0 !important;
+      }
+
+      .wizard-step {
+        font-size: 0.50rem !important;
+        padding: 1.5px 2px !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      .wizard-step-arrow {
+        font-size: 0.50rem !important;
+        padding: 0 !important;
+      }
+
+      .registration-stepper,
+      #dlg-wizard-stepper {
+        gap: 3px !important;
+        margin: 4px 0 10px 0 !important;
+      }
+
+      .registration-stepper .step-indicator,
+      #dlg-wizard-stepper .step-indicator {
+        font-size: 0.58rem !important;
+        padding: 2px 4px !important;
+      }
+
+      .registration-stepper .step-arrow,
+      #dlg-wizard-stepper .step-arrow,
+      #dlg-step-arrow-2 {
+        font-size: 0.58rem !important;
       }
 
       .committees-grid {
@@ -4412,8 +4692,11 @@
       }
 
       .modal-registration-card {
-        width: calc(100vw - 10px);
+        width: calc(100% - 16px) !important;
+        max-width: 360px !important;
+        margin: auto !important;
         padding: 18px 10px 20px 10px;
+        box-shadow: 3.5px 3.5px 0px var(--text-primary) !important;
         max-height: min(94dvh, calc(100dvh - 12px));
         max-height: min(94svh, calc(100svh - 12px));
         -webkit-overflow-scrolling: touch;
