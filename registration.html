@@ -710,8 +710,11 @@
             </div>
 
             <!-- Dynamic QR Image Box -->
-            <div style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
+            <div class="qr-code-display-wrap" style="position: relative; display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
               <img id="dlg-payment-qr-img" src="/Payment_delegation/del 9.jpeg" alt="Delegation Payment QR Code" width="180" height="180" style="display: block; border-radius: 4px; object-fit: contain;">
+              <button type="button" class="qr-expand-btn" onclick="openQRPreview('dlg-payment-qr-img', 'Delegation Payment QR Code')" aria-label="Enlarge payment QR code" title="Tap to enlarge QR code">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+              </button>
             </div>
 
             <!-- UPI ID Box with Tactile Copy Button -->
@@ -1502,11 +1505,14 @@
             </div>
 
             <!-- QR Code Display Box -->
-            <div
-              style="display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
+            <div class="qr-code-display-wrap"
+              style="position: relative; display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
               <img id="external-upi-qr"
                 src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dmun%40rnsit.ac.in%26pn%3DMUNSoc%20RNSIT%26am%3D1200%26cu%3DINR"
                 alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px;">
+              <button type="button" class="qr-expand-btn" onclick="openQRPreview('external-upi-qr', 'UPI Payment QR Code')" aria-label="Enlarge payment QR code" title="Tap to enlarge QR code">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+              </button>
             </div>
 
             <!-- UPI ID Box with Tactile Copy Button -->
@@ -1644,6 +1650,29 @@
       </svg>
     </div>
     <span id="tactile-toast-text" class="toast-message-text">mun@rnsit.ac.in copied to clipboard!</span>
+  </div>
+
+  <!-- Reusable QR Code Enlarge Modal / Lightbox -->
+  <div id="qr-preview-backdrop" class="qr-preview-backdrop" role="dialog" aria-modal="true" aria-label="Enlarged Payment QR Code" onclick="if (event.target === this) closeQRPreview();" style="display: none;">
+    <div class="qr-preview-card" id="qr-preview-card" onclick="event.stopPropagation()">
+      <button type="button" class="qr-preview-close-btn" id="qr-preview-close-btn" onclick="closeQRPreview()" aria-label="Close enlarged QR code">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="qr-preview-header">
+        <span class="qr-preview-badge">★ SCAN TO PAY</span>
+        <h4 class="qr-preview-title" id="qr-preview-title">Payment QR Code</h4>
+      </div>
+
+      <div class="qr-preview-img-wrap">
+        <img id="qr-preview-img" src="" alt="Enlarged Payment QR Code" />
+      </div>
+
+      <p class="qr-preview-hint">Tap ✕ or click outside to close</p>
+    </div>
   </div>
 
   <script type="module" src="./topology-background.js"></script>
