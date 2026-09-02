@@ -665,21 +665,21 @@ html.modal-open .mobile-floating-reg-btn {
     height: 30px;
   }
   .floating-menu-container.is-open {
-    height: min(220px, 82vh);
-    width: 170px;
+    height: min(185px, 82vh);
+    width: 165px;
   }
   .floating-menu-container.is-open .floating-menu-links {
-    padding: 8px 8px 2px 8px;
-    gap: 2px;
+    padding: 6px 8px 1px 8px;
+    gap: 1.5px;
   }
   .floating-menu-item {
-    max-height: 25px;
-    min-height: 20px;
-    font-size: 0.68rem;
+    max-height: 22px;
+    min-height: 18px;
+    font-size: 0.66rem;
   }
   .floating-menu-container.is-open .floating-menu-bottom-bar {
-    height: 26px;
-    padding: 0 8px 6px 8px;
+    height: 24px;
+    padding: 0 8px 4px 8px;
   }
 }
 
@@ -704,8 +704,8 @@ html.modal-open .mobile-floating-reg-btn {
 }
 
 .floating-menu-container.is-open {
-  width: clamp(170px, 48vw, 195px);
-  height: clamp(245px, 42vh, 270px);
+  width: clamp(165px, 46vw, 185px);
+  height: clamp(195px, 30vh, 212px);
   border-radius: 18px;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0 #000000;
@@ -769,12 +769,12 @@ html.modal-open .mobile-floating-reg-btn {
   pointer-events: auto;
   flex: 1;
   height: auto;
-  padding: 14px 10px 4px 10px;
+  padding: 10px 10px 2px 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: stretch;
-  gap: 3px;
+  gap: 2px;
 }
 
 /* Menu Items with Staggered Slide In */
@@ -782,7 +782,7 @@ html.modal-open .mobile-floating-reg-btn {
   text-decoration: none;
   color: #FFF7EB;
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(0.72rem, 2.2vw, 0.78rem);
+  font-size: clamp(0.70rem, 2.1vw, 0.75rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -792,10 +792,10 @@ html.modal-open .mobile-floating-reg-btn {
   text-align: center;
   width: 100%;
   flex: 1;
-  max-height: 32px;
-  min-height: 24px;
+  max-height: 25px;
+  min-height: 21px;
   padding: 0 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   box-sizing: border-box;
   transform: translateY(8px);
   opacity: 0;
@@ -845,9 +845,9 @@ html.modal-open .mobile-floating-reg-btn {
 
 .floating-menu-container.is-open .floating-menu-bottom-bar {
   justify-content: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 10px 8px 10px;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px 6px 10px;
 }
 
 .floating-menu-label {
