@@ -2575,6 +2575,20 @@
       } catch (e) {}
     }
 
+        function clearRegisteredEmailLocal(email) {
+      if (!email) return;
+      const clean = String(email).trim().toLowerCase();
+      try {
+        localStorage.removeItem(`submitted_ind_email_${clean}`);
+        localStorage.removeItem(`submitted_dlg_email_${clean}`);
+        const regMap = getRegisteredEmailsMap();
+        if (regMap[clean]) {
+          delete regMap[clean];
+          localStorage.setItem(REG_EMAILS_KEY, JSON.stringify(regMap));
+        }
+      } catch (e) {}
+    }
+
     // Background asynchronous remote check (cached, non-blocking)
     const _emailRemoteCheckCache = new Map();
     async function checkEmailRemote(email) {
@@ -2591,6 +2605,11 @@
             _emailRemoteCheckCache.set(clean, true);
             markEmailAsRegistered(clean, 'remote_sync');
             return true;
+          } else if (data && !data.exists) {
+            // Database confirmed email is free & available! Clear any stale test cache
+            _emailRemoteCheckCache.set(clean, false);
+            clearRegisteredEmailLocal(clean);
+            return false;
           }
         }
       } catch (e) {}
@@ -2633,12 +2652,18 @@
         clearTimeout(_indEmailDebounceTimer);
         _indEmailDebounceTimer = setTimeout(async () => {
           const exists = await checkEmailRemote(email);
-          if (exists && inputEl.value.trim().toLowerCase() === email) {
-            inputEl.classList.add('has-error');
-            if (errEl) errEl.style.display = 'none';
-            if (existsMsg) {
-              existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
-              existsMsg.style.display = 'block';
+          if (inputEl.value.trim().toLowerCase() === email) {
+            if (exists) {
+              inputEl.classList.add('has-error');
+              if (errEl) errEl.style.display = 'none';
+              if (existsMsg) {
+                existsMsg.textContent = "This email address has already been registered for RNS MUN '26. Each delegate may only register once.";
+                existsMsg.style.display = 'block';
+              }
+            } else {
+              // Database confirms email is available: dismiss error and clear highlight!
+              inputEl.classList.remove('has-error');
+              if (existsMsg) existsMsg.style.display = 'none';
             }
           }
         }, 300);
