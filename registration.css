@@ -2610,19 +2610,19 @@
       box-shadow: 2px 2px 0px var(--text-primary);
     }
 
-        /* Neo-Brutalist Delegation Roster Card */
+        /* Neo-Brutalist Minimal Delegation Roster Card */
     .neo-roster-card {
       background: #FFFDF9;
       border: 2.5px solid var(--text-primary);
-      box-shadow: 4px 4px 0px var(--text-primary);
+      box-shadow: 3.5px 3.5px 0px var(--text-primary);
       border-radius: 12px;
-      padding: 18px 20px;
+      padding: 16px 18px;
       margin-top: 6px;
       box-sizing: border-box;
     }
 
     .neo-roster-header {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .neo-roster-badge {
@@ -2630,29 +2630,51 @@
       align-items: center;
       background: var(--accent-color);
       color: #FFF7EB;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 4px;
       border: 1.5px solid var(--text-primary);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+    }
+
+    .roster-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #0d7541;
+      background: rgba(15, 157, 88, 0.1);
+      border: 1px solid rgba(15, 157, 88, 0.35);
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .roster-status-dot {
+      width: 7px;
+      height: 7px;
+      background: #0F9D58;
+      border-radius: 50%;
+      display: inline-block;
     }
 
     .neo-roster-title {
-      font-size: 1.05rem;
+      font-size: 0.96rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
-      margin: 0 0 6px 0;
+      letter-spacing: 0.02em;
+      margin: 6px 0 4px 0;
       color: var(--text-primary);
     }
 
     .neo-roster-desc {
-      font-size: 0.82rem;
-      color: rgba(17, 17, 19, 0.7);
-      line-height: 1.45;
+      font-size: 0.8rem;
+      color: rgba(17, 17, 19, 0.68);
+      line-height: 1.4;
       margin: 0;
       font-weight: 500;
     }
@@ -2663,15 +2685,15 @@
       color: #FFF7EB;
       border: 2px solid var(--text-primary);
       border-radius: 8px;
-      padding: 12px 18px;
+      padding: 11px 16px;
       font-family: var(--font-sans);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       cursor: pointer;
-      box-shadow: 3px 3px 0px var(--text-primary);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
+      box-shadow: 2.5px 2.5px 0px var(--text-primary);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2690,7 +2712,7 @@
     }
 
     .sheet-link-result {
-      margin-top: 14px;
+      margin-top: 6px;
       display: none;
     }
 
@@ -2698,54 +2720,27 @@
       display: block;
     }
 
-    .roster-status-banner {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(15, 157, 88, 0.1);
-      color: #0d7541;
-      border: 1.5px solid #0F9D58;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 12px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .roster-status-dot {
-      width: 8px;
-      height: 8px;
-      background: #0F9D58;
-      border-radius: 50%;
-      display: inline-block;
-      box-shadow: 0 0 0 2px rgba(15, 157, 88, 0.25);
-    }
-
     .btn-open-roster-sheet {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
       background: var(--accent-color);
       color: #FFF7EB;
-      border: 2.5px solid var(--text-primary);
-      border-radius: 10px;
-      padding: 13px 18px;
+      border: 2px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 11px 16px;
       font-family: var(--font-sans);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       text-decoration: none;
-      box-shadow: 3px 3px 0px var(--text-primary);
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      box-shadow: 2.5px 2.5px 0px var(--text-primary);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
       box-sizing: border-box;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -2753,7 +2748,7 @@
         background: #851237;
         color: #FFF7EB;
         transform: translate(-1px, -1px);
-        box-shadow: 4px 4px 0px var(--text-primary);
+        box-shadow: 3.5px 3.5px 0px var(--text-primary);
       }
     }
 
@@ -2762,49 +2757,50 @@
       box-shadow: 1px 1px 0px var(--text-primary);
     }
 
-    .roster-action-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+    .roster-actions-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       width: 100%;
     }
 
-    .roster-action-btn {
+    .roster-strip-btn {
+      flex: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       background: #FFFFFF;
       color: var(--text-primary);
-      border: 2px solid var(--text-primary);
-      border-radius: 8px;
-      padding: 9px 12px;
+      border: 1.5px solid var(--text-primary);
+      border-radius: 6px;
+      padding: 7px 4px;
       font-family: var(--font-sans);
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 2px 2px 0px var(--text-primary);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease, color 0.15s ease;
+      box-shadow: 1.5px 1.5px 0px var(--text-primary);
+      transition: all 0.1s ease;
+      white-space: nowrap;
       text-decoration: none;
       box-sizing: border-box;
-      white-space: nowrap;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .roster-action-btn:hover {
+      .roster-strip-btn:hover {
         background: var(--text-primary);
         color: #FFF7EB;
       }
-      .roster-action-whatsapp:hover {
+      .roster-strip-whatsapp:hover {
         background: #25D366 !important;
         color: #FFFFFF !important;
         border-color: #128C7E !important;
       }
     }
 
-    .roster-action-btn:active {
+    .roster-strip-btn:active {
       transform: translate(1px, 1px);
-      box-shadow: 1px 1px 0px var(--text-primary);
+      box-shadow: 0.5px 0.5px 0px var(--text-primary);
     }
 
     /* Success Screen */

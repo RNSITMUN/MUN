@@ -2714,9 +2714,11 @@
       // Helper to restore the default clean state of "Create Delegation Sheet" button & form
       const restoreDefaultState = () => {
         if (createSheetBtn) {
-          createSheetBtn.style.display = 'inline-flex';
+          createSheetBtn.style.display = 'flex';
           createSheetBtn.disabled = false;
           createSheetBtn.innerHTML = '<span>Create Delegation Sheet</span>';
+          const statusPill = document.getElementById('dlg-roster-status-pill');
+          if (statusPill) statusPill.style.display = 'none';
         }
         if (submitBtn) submitBtn.style.display = 'block';
         if (exitBtn) exitBtn.style.display = 'none';
@@ -2753,11 +2755,9 @@
           if (exitBtn) exitBtn.style.display = 'block';
         } else {
           if (existsMsg) existsMsg.style.display = 'none';
-          if (createSheetBtn) {
-            createSheetBtn.style.display = 'inline-flex';
-            createSheetBtn.disabled = false;
-            createSheetBtn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-          }
+          if (createSheetBtn) createSheetBtn.style.display = 'none';
+          const statusPill = document.getElementById('dlg-roster-status-pill');
+          if (statusPill) statusPill.style.display = 'inline-flex';
           const nextBtn = document.getElementById('dlg-step1-next-btn');
           if (nextBtn) {
             nextBtn.disabled = false;
@@ -3697,8 +3697,9 @@
           if (nextBtn) nextBtn.style.display = 'none';
           if (exitBtn) exitBtn.style.display = 'block';
         } else if (btn) {
-          btn.innerHTML = '<span>✓ Delegation Sheet Ready</span>';
-          btn.disabled = false;
+          btn.style.display = 'none';
+          const statusPill = document.getElementById('dlg-roster-status-pill');
+          if (statusPill) statusPill.style.display = 'inline-flex';
           const nextBtn = document.getElementById('dlg-step1-next-btn');
           if (nextBtn) {
             nextBtn.disabled = false;
