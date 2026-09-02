@@ -5053,5 +5053,20 @@ Object.assign(window, {
   copyExternalUPI,
   handleSuccessDone,
   printRegistrationReceipt,
-  clearDraftAndDismissBanner
+  clearDraftAndDismissBanner,
+  handleDelegationSubmit,
+  toggleDelegationClearBtn,
+  checkEmailRegistration,
+  handleDelegateCountInput,
+  validateDelegateCountBlur,
+  updateRosterPreview,
+  handleDelegationPaymentScreenshotSelected,
+  handleRegistrationSubmit,
+  checkIndividualEmailRegistration,
+  handleExperienceToggle,
+  handleConferenceCountChange,
+  handlePortfolio1Change,
+  handlePortfolio2Change,
+  handleCommittee2Change,
+  handleExternalPaymentScreenshotSelected
 });
