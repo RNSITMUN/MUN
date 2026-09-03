@@ -240,6 +240,13 @@
       will-change: opacity, transform;
     }
 
+    /* PC Only: Push hero lockup down slightly for comfortable breathing room below navigation */
+    @media (min-width: 900px) {
+      .globe-hero-header {
+        top: clamp(90px, 11.5vh, 112px) !important;
+      }
+    }
+
     /* Fade out and slide down hero details when image is opened, so the image is 100% visible above everything */
     body.globe-lightbox-open .globe-hero-header {
       opacity: 0 !important;
@@ -2310,9 +2317,10 @@
     async function shareConference() {
       const shareData = {
         title: "RNSMUN 2026 | 06–07 October 2026",
-        text: "Join RNSMUN 2026 Model United Nations Conference in Bengaluru! Allocations are now open for delegates and 9+ institutional delegations:",
-        url: window.location.origin + "/registration"
+        text: "Join RNSMUN 2026 Model United Nations Conference in Bengaluru! Allocations are now open for delegates and 9+ institutional delegations:\n",
+        url: "https://mun.rnsit.ac.in/"
       };
+      const fullShareText = `${shareData.text}\n${shareData.url}`;
 
       const toast = document.getElementById('home-share-toast');
       const showToast = (msg) => {
@@ -2336,13 +2344,13 @@
 
       function copyUrlFallback() {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(shareData.url).then(() => {
-            showToast('Link copied! Ready to paste into WhatsApp/IG');
+          navigator.clipboard.writeText(fullShareText).then(() => {
+            showToast('Invitation & link copied! Ready to paste into WhatsApp/IG');
           }).catch(() => {
-            prompt('Copy registration link:', shareData.url);
+            prompt('Copy invitation:', fullShareText);
           });
         } else {
-          prompt('Copy registration link:', shareData.url);
+          prompt('Copy invitation:', fullShareText);
         }
       }
     }

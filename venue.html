@@ -524,10 +524,16 @@
       cursor: pointer;
     }
 
-    .transit-link-btn:hover {
-      background: var(--accent-color);
-      color: #FFF7EB;
-      box-shadow: 3px 3px 0px var(--text-primary);
+    .transit-btn-mobile-text {
+      display: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .transit-link-btn:hover {
+        background: var(--accent-color);
+        color: #FFF7EB;
+        box-shadow: 3px 3px 0px var(--text-primary);
+      }
     }
 
     /* Attendee Logistics & FAQ Strip */
@@ -865,8 +871,16 @@
         font-size: 0.72rem;
         margin-top: 4px;
         justify-content: center;
-        gap: 4px;
+        gap: 5px;
         white-space: nowrap;
+      }
+
+      .transit-btn-desktop-text {
+        display: none !important;
+      }
+
+      .transit-btn-mobile-text {
+        display: inline !important;
       }
 
       .venue-contacts-box {
@@ -994,7 +1008,8 @@
               <p class="transit-hub-meta">Direct South Western Railway lines connecting from Majestic &amp; Mysuru.</p>
             </div>
             <a href="https://maps.app.goo.gl/D3iZRbX6kBdAs8dN6" target="_blank" rel="noopener noreferrer" class="transit-link-btn" title="View Kengeri Railway Station on Google Maps">
-              <span>View Route on Maps</span>
+              <span class="transit-btn-desktop-text">View Route on Maps</span>
+              <span class="transit-btn-mobile-text">Maps</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
           </div>
@@ -1016,7 +1031,8 @@
               <p class="transit-hub-meta">Namma Metro Purple Line directly linked to Majestic, Indiranagar &amp; Whitefield.</p>
             </div>
             <a href="https://maps.app.goo.gl/UqYERxbgVV54VqWD6" target="_blank" rel="noopener noreferrer" class="transit-link-btn" title="View Rajarajeshwari Nagar Metro Station on Google Maps">
-              <span>View Route on Maps</span>
+              <span class="transit-btn-desktop-text">View Route on Maps</span>
+              <span class="transit-btn-mobile-text">Maps</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
           </div>
@@ -1038,7 +1054,8 @@
               <p class="transit-hub-meta">BMTC bus stop located 4 mins away from the RNSIT campus.</p>
             </div>
             <a href="https://maps.app.goo.gl/fFAt4LmNqPboqK4x7" target="_blank" rel="noopener noreferrer" class="transit-link-btn" title="View Channasandra Bus Stop on Google Maps">
-              <span>View Route on Maps</span>
+              <span class="transit-btn-desktop-text">View Route on Maps</span>
+              <span class="transit-btn-mobile-text">Maps</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
           </div>
