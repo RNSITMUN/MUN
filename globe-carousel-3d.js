@@ -333,8 +333,17 @@ function createLightbox(root, userOptions = {}) {
     close();
   }
 
+  function preventScroll(e) {
+    if (current) {
+      e.preventDefault();
+    }
+  }
+
   function onKeyDown(e) {
     if (e.key === "Escape" && current) close();
+    if (current && ["Space", " ", "PageUp", "PageDown", "End", "Home", "ArrowUp", "ArrowDown"].includes(e.key)) {
+      e.preventDefault();
+    }
   }
 
   document.addEventListener("keydown", onKeyDown);
@@ -348,13 +357,16 @@ function createLightbox(root, userOptions = {}) {
     ensureOverlay();
     if (!detail || !detailImg || !backdrop) return;
 
-    document.body.classList.add("globe-lightbox-open");
-    root.classList.add("lightbox-active");
-
     const start = relativeRect(el);
     current = el;
     returnFocusTo = document.activeElement ?? null;
     const dur = o.respectReducedMotion && prefersReducedMotion() ? 0 : 420;
+
+    document.documentElement.classList.add("globe-lightbox-open");
+    document.body.classList.add("globe-lightbox-open");
+    root.classList.add("lightbox-active");
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
 
     detail.style.setProperty("--lb-dur", `${dur}ms`);
     backdrop.style.setProperty("--lb-dur", `${dur}ms`);
@@ -403,6 +415,9 @@ function createLightbox(root, userOptions = {}) {
   function close(animate = true) {
     if (!current || !detail || !backdrop) return;
 
+    window.removeEventListener("wheel", preventScroll);
+    window.removeEventListener("touchmove", preventScroll);
+
     const el = current;
     backdrop.style.opacity = "0";
     backdrop.style.pointerEvents = "none";
@@ -413,6 +428,7 @@ function createLightbox(root, userOptions = {}) {
     returnFocusTo = null;
 
     if (!animate) {
+      document.documentElement.classList.remove("globe-lightbox-open");
       document.body.classList.remove("globe-lightbox-open");
       root.classList.remove("lightbox-active");
       detail.style.transition = "none";
@@ -437,6 +453,7 @@ function createLightbox(root, userOptions = {}) {
     detail.style.opacity = "0";
 
     closeTimer = setTimeout(() => {
+      document.documentElement.classList.remove("globe-lightbox-open");
       document.body.classList.remove("globe-lightbox-open");
       root.classList.remove("lightbox-active");
       if (detail) {
@@ -898,7 +915,16 @@ export function createSphereOrbit(root, userOptions = {}) {
   build();
   start();
 
-  ro = new ResizeObserver(() => {
+  let lastObservedW = 0;
+  let lastObservedH = 0;
+  ro = new ResizeObserver(entries => {
+    if (lightbox?.openElement) return;
+    const entry = entries[0];
+    const newW = entry ? Math.round(entry.contentRect.width) : root.clientWidth;
+    const newH = entry ? Math.round(entry.contentRect.height) : root.clientHeight;
+    if (Math.abs(newW - lastObservedW) < 25 && Math.abs(newH - lastObservedH) < 25) return;
+    lastObservedW = newW;
+    lastObservedH = newH;
     lightbox?.close(false);
     updateDimensions();
     if (!o.interactive) layout();

@@ -201,9 +201,14 @@
       -webkit-tap-highlight-color: transparent !important;
     }
 
-    /* When Lightbox is open: Ensure total viewport clarity, hide overlapping sections */
-    body.globe-lightbox-open {
+    /* When Lightbox is open: Ensure total viewport clarity, freeze background scroll */
+    html.globe-lightbox-open,
+    body.globe-lightbox-open,
+    html.home-page.globe-lightbox-open,
+    html.home-page.globe-lightbox-open body {
       overflow: hidden !important;
+      overscroll-behavior: none !important;
+      touch-action: none !important;
     }
     body.globe-lightbox-open .mun26-editorial-section {
       opacity: 0 !important;
@@ -523,12 +528,20 @@
       letter-spacing: 0.04em;
     }
 
+    .hero-btn-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
     .hero-register-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      margin-top: 5px;
       background: #E5A93C;
       color: #000000;
       font-family: 'Outfit', sans-serif;
@@ -564,6 +577,51 @@
 
     .hero-register-btn:hover svg {
       transform: translateX(2.5px);
+    }
+
+    .hero-brochure-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #111113;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 7px 20px;
+      border: 1.8px solid #000000;
+      border-radius: 9999px;
+      box-shadow: 2.5px 2.5px 0 #000000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hero-brochure-btn:hover {
+        background: #6C0D2C;
+        color: #FFF7EB;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0 #000000;
+      }
+      .hero-brochure-btn:hover svg {
+        stroke: #FFF7EB;
+        transform: translateY(1.5px);
+      }
+    }
+
+    .hero-brochure-btn:active {
+      transform: translate(1.5px, 1.5px);
+      box-shadow: 1px 1px 0 #000000;
+    }
+
+    .hero-brochure-btn svg {
+      transition: transform 0.18s ease, stroke 0.15s ease;
     }
 
     @media (max-width: 480px) {
@@ -1697,10 +1755,14 @@
       .hpm-val, .hpm-val-internal {
         font-size: 0.78rem;
       }
-      .hero-register-btn {
-        padding: 5px 16px;
-        font-size: 0.72rem;
+      .hero-btn-row {
+        gap: 8px;
         margin-top: 3px;
+      }
+      .hero-register-btn,
+      .hero-brochure-btn {
+        padding: 5px 15px;
+        font-size: 0.72rem;
       }
     }
 
@@ -1726,10 +1788,14 @@
       .hpm-val, .hpm-val-internal {
         font-size: 0.74rem;
       }
-      .hero-register-btn {
-        padding: 4px 14px;
-        font-size: 0.68rem;
+      .hero-btn-row {
+        gap: 6px;
         margin-top: 2px;
+      }
+      .hero-register-btn,
+      .hero-brochure-btn {
+        padding: 4px 13px;
+        font-size: 0.68rem;
       }
     }
 
@@ -1923,13 +1989,24 @@
           <span>&bull;</span>
           <span>Includes meals, kit & certificates</span>
         </p>
-        <a href="/registration" class="hero-register-btn" aria-label="Register for RNSMUN 2026">
-          <span>REGISTER</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </a>
+        <div class="hero-btn-row">
+          <a href="/assets/broucher/RNS%20MUN%202026-%20ConferenceBrochure.pdf" target="_blank" rel="noopener noreferrer" class="hero-brochure-btn" aria-label="View RNSMUN 2026 Conference Brochure (PDF)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <polyline points="9 15 12 18 15 15"></polyline>
+            </svg>
+            <span>BROCHURE</span>
+          </a>
+          <a href="/registration" class="hero-register-btn" aria-label="Register for RNSMUN 2026">
+            <span>REGISTER</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
 
