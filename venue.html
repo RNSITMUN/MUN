@@ -159,11 +159,17 @@
       letter-spacing: 0.04em;
     }
 
-    .venue-action-pill:hover {
-      background: var(--accent-color);
-      color: #FFF7EB;
-      transform: translate(-1px, -1px);
-      box-shadow: 3.5px 3.5px 0px var(--text-primary);
+    @media (hover: hover) and (pointer: fine) {
+      .venue-action-pill:hover {
+        background: var(--accent-color);
+        color: #FFF7EB;
+        transform: translate(-1px, -1px);
+        box-shadow: 3.5px 3.5px 0px var(--text-primary);
+      }
+
+      .venue-action-pill.primary:hover {
+        background: var(--accent-hover);
+      }
     }
 
     .venue-action-pill:active {
@@ -176,8 +182,10 @@
       color: #FFF7EB;
     }
 
-    .venue-action-pill.primary:hover {
-      background: var(--accent-hover);
+    .venue-action-pill.copied {
+      background: #16a34a !important;
+      color: #FFFFFF !important;
+      border-color: var(--text-primary) !important;
     }
 
     /* Main Showcase: Split Hero Card */
@@ -770,15 +778,8 @@
         font-size: 0.8rem;
       }
 
-      .venue-map-frame {
-        min-height: 240px;
-      }
-
-      .venue-map-caption {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-        font-size: 0.72rem;
+      .venue-map-side {
+        display: none !important;
       }
 
       /* Mobile Transit Cards: 3 cubes (2 above, 1 below) without images */
@@ -916,7 +917,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
           <span>Open Google Maps</span>
         </a>
-        <button type="button" class="venue-action-pill" onclick="copyVenueAddress()" title="Copy official campus address">
+        <button type="button" class="venue-action-pill" onclick="copyVenueAddress(this)" title="Copy official campus address">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           <span>Copy Address</span>
         </button>
@@ -1012,7 +1013,7 @@
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 <span>5.1 km &bull; 10–15 mins by auto/cab</span>
               </div>
-              <p class="transit-hub-meta">Namma Metro Purple Line directly linked to Majestic, MG Road &amp; Whitefield.</p>
+              <p class="transit-hub-meta">Namma Metro Purple Line directly linked to Majestic, Indiranagar &amp; Whitefield.</p>
             </div>
             <a href="https://maps.app.goo.gl/UqYERxbgVV54VqWD6" target="_blank" rel="noopener noreferrer" class="transit-link-btn" title="View Rajarajeshwari Nagar Metro Station on Google Maps">
               <span>View Route on Maps</span>
@@ -1034,7 +1035,7 @@
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 <span>~400 meters &bull; 4 mins walk</span>
               </div>
-              <p class="transit-hub-meta">BMTC bus stop located directly outside the RNSIT campus main entrance.</p>
+              <p class="transit-hub-meta">BMTC bus stop located 4 mins away from the RNSIT campus.</p>
             </div>
             <a href="https://maps.app.goo.gl/fFAt4LmNqPboqK4x7" target="_blank" rel="noopener noreferrer" class="transit-link-btn" title="View Channasandra Bus Stop on Google Maps">
               <span>View Route on Maps</span>
@@ -1074,12 +1075,25 @@
 
   <script>
     // Copy Address Handler
-    function copyVenueAddress() {
+    function copyVenueAddress(btn) {
       const address = "RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru, Karnataka- 560098";
+      const span = btn ? btn.querySelector('span') : null;
+      const originalText = span ? span.textContent : null;
+
       navigator.clipboard.writeText(address).then(() => {
         showToast("Address copied to clipboard!");
+        if (btn && span) {
+          span.textContent = "COPIED!";
+          btn.classList.add('copied');
+          setTimeout(() => {
+            span.textContent = originalText;
+            btn.classList.remove('copied');
+            btn.blur();
+          }, 2000);
+        }
       }).catch(() => {
         showToast("Address copied!");
+        if (btn) btn.blur();
       });
     }
 

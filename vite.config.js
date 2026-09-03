@@ -123,6 +123,7 @@ export default defineConfig({
         '**/public/Payment_delegation/**',
         '**/Payment_external/**',
         '**/public/Payment_external/**',
+        '**/*.pdf',
         '**/Payment_internal/**',
         '**/public/Payment_internal/**'
       ]
