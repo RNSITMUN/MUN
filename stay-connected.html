@@ -283,6 +283,13 @@
       box-shadow: 2.5px 2.5px 0 #000;
     }
 
+    .person-header-row {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      width: 100%;
+    }
+
     .person-role-badge {
       display: inline-block;
       font-size: 0.65rem;
@@ -454,86 +461,160 @@
       .contact-card {
         position: relative;
         z-index: 12;
-        max-width: 380px;
-        padding: clamp(6px, 1vh, 9px) 12px;
+        width: 100%;
+        max-width: 410px;
+        padding: 13px 15px;
         margin: 0;
-        border: 2px solid #000;
-        border-radius: 12px;
-        box-shadow: 3px 3px 0 #000;
+        border: 2.5px solid #000;
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 #000;
+        box-sizing: border-box;
+      }
+
+      .contact-card-inner {
+        gap: 10px;
       }
 
       .contact-icon-wrap {
-        width: 32px;
-        height: 32px;
-        border-radius: 7px;
+        width: 40px;
+        height: 40px;
+        border-radius: 9px;
+        border: 2px solid #000;
+        box-shadow: 2px 2px 0 #000;
+        flex-shrink: 0;
       }
 
       .contact-icon-wrap svg {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
       }
 
       .contact-email-link {
-        font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+        font-size: clamp(0.92rem, 3vw, 1.05rem);
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        overflow: visible;
+        text-overflow: clip;
       }
 
       .copy-btn {
-        padding: 5px 10px;
-        font-size: 0.72rem;
-        border-radius: 7px;
+        padding: 7px 14px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        border-radius: 8px;
+        border: 2px solid #000;
+        box-shadow: 2.5px 2.5px 0 #000;
+        flex-shrink: 0;
+      }
+
+      .copy-btn svg {
+        width: 14px;
+        height: 14px;
       }
 
       .contact-people-grid {
         position: relative;
         z-index: 12;
-        grid-template-columns: 1fr;
-        max-width: 380px;
-        gap: clamp(6px, 1vh, 8px);
-        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 410px;
+        margin-top: 6px;
+        background: #FFFDF9;
+        border: 2.5px solid #000;
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 #000;
+        overflow: hidden;
+        gap: 0;
       }
 
       .person-contact-card {
         position: relative;
         z-index: 12;
-        padding: clamp(7px, 1vh, 10px) 12px;
-        border: 2px solid #000;
-        border-radius: 12px;
-        box-shadow: 3px 3px 0 #000;
+        padding: 9px 12px;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
         min-height: unset;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        transition: background-color 0.15s ease;
       }
 
-      .person-role-badge {
-        font-size: 0.6rem;
-        padding: 2px 6px;
-        border-radius: 4px;
-        margin-bottom: 2px;
+      .person-contact-card:last-child {
+        border-bottom: none;
+      }
+
+      .person-contact-card:active {
+        background: rgba(0, 0, 0, 0.03);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .person-header-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 6px;
       }
 
       .person-name {
-        font-size: clamp(1rem, 3vw, 1.12rem);
-        margin: 0 0 4px 0;
+        font-size: 1.02rem;
+        font-weight: 900;
+        margin: 0;
         line-height: 1;
+        letter-spacing: -0.01em;
+        color: #000;
+      }
+
+      .person-role-badge {
+        font-size: 0.58rem;
+        padding: 2.5px 6.5px;
+        border-radius: 4px;
+        margin: 0;
+        letter-spacing: 0.06em;
       }
 
       .person-phone-row {
-        padding: 4px 8px;
-        border: 1.5px solid #000;
-        border-radius: 7px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 8px;
+        margin: 0;
       }
 
       .person-phone-link {
-        font-size: 0.78rem;
+        font-size: 0.84rem;
+        font-weight: 800;
+        color: #000;
+        font-family: 'Outfit', sans-serif;
+        letter-spacing: 0.01em;
       }
 
       .person-phone-link svg {
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
+        color: #6C0D2C;
       }
 
       .person-copy-btn {
-        padding: 3px 8px;
+        padding: 3.5px 9px;
         font-size: 0.68rem;
+        font-weight: 800;
+        border: 1.5px solid #000;
         border-radius: 5px;
+        box-shadow: 1.5px 1.5px 0 #000;
+        background: #E5A93C;
       }
 
       #crowd-canvas {
@@ -560,11 +641,11 @@
       }
 
       .contact-card {
-        padding: 6px 10px;
+        padding: 8px 11px;
       }
 
       .contact-email-link {
-        font-size: 0.88rem;
+        font-size: 0.94rem;
       }
 
       .copy-btn span {
@@ -572,7 +653,7 @@
       }
 
       .copy-btn {
-        padding: 4px 8px;
+        padding: 5px 9px;
       }
 
       .person-contact-card {
@@ -713,13 +794,15 @@
         </div>
       </a>
 
-      <!-- 3 Side-by-Side Contact Person Cards -->
+      <!-- 3 Contact Persons (Single Unified Neobrutalist Box on Mobile, 3-Col Grid on Desktop) -->
       <div class="contact-people-grid">
         
         <!-- 1. Zeyan -->
         <div class="person-contact-card">
-          <div class="person-role-badge">Head - Delegate Affairs</div>
-          <h3 class="person-name">Zeyan</h3>
+          <div class="person-header-row">
+            <h3 class="person-name">Zeyan</h3>
+            <div class="person-role-badge">Head - Delegate Affairs</div>
+          </div>
           <div class="person-phone-row">
             <a href="tel:+919155973955" class="person-phone-link" aria-label="Call Zeyan (+91 91559 73955)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -735,8 +818,10 @@
 
         <!-- 2. Adith -->
         <div class="person-contact-card">
-          <div class="person-role-badge">Head - Delegate Affairs</div>
-          <h3 class="person-name">Adith</h3>
+          <div class="person-header-row">
+            <h3 class="person-name">Adith</h3>
+            <div class="person-role-badge">Head - Delegate Affairs</div>
+          </div>
           <div class="person-phone-row">
             <a href="tel:+918970262490" class="person-phone-link" aria-label="Call Adith (+91 89702 62490)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -752,8 +837,10 @@
 
         <!-- 3. Aditi -->
         <div class="person-contact-card">
-          <div class="person-role-badge">Charge D'Affaires</div>
-          <h3 class="person-name">Aditi</h3>
+          <div class="person-header-row">
+            <h3 class="person-name">Aditi</h3>
+            <div class="person-role-badge">Charge D'Affaires</div>
+          </div>
           <div class="person-phone-row">
             <a href="tel:+919108080956" class="person-phone-link" aria-label="Call Aditi (+91 91080 80956)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
