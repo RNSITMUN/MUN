@@ -480,12 +480,73 @@
       background: transparent;
       border: none;
       overflow: visible;
+      position: relative;
+    }
+
+    .table-scroll-hint {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+      padding: 4px 10px;
+      background: rgba(108, 13, 44, 0.06);
+      border-radius: 6px;
+      border: 1px solid rgba(108, 13, 44, 0.15);
+    }
+
+    .table-scroll-affordance {
+      display: none;
     }
 
     .table-responsive {
       width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
       padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(108, 13, 44, 0.4) rgba(0, 0, 0, 0.05);
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      height: 6px;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: rgba(108, 13, 44, 0.35);
+      border-radius: 4px;
+    }
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color);
+    }
+
+    @media (max-width: 900px) {
+      .table-scroll-hint {
+        display: inline-flex;
+      }
+      .table-scroll-affordance {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 8px;
+        width: 32px;
+        background: linear-gradient(to right, rgba(255, 247, 235, 0), rgba(108, 13, 44, 0.18));
+        pointer-events: none;
+        border-radius: 0 8px 8px 0;
+        transition: opacity 0.25s ease;
+        z-index: 20;
+      }
+      .table-container.is-scrolled-end .table-scroll-affordance {
+        opacity: 0;
+      }
     }
 
     table.data-table {
@@ -891,6 +952,13 @@
     .nowrap { white-space: nowrap; }
 
     @media (max-width: 768px) {
+      header.admin-header {
+        padding: 0.75rem 1rem;
+      }
+      main.admin-main {
+        padding: 1rem 0.75rem;
+        gap: 1rem;
+      }
       .controls-panel {
         flex-direction: column;
         align-items: stretch;
@@ -1041,8 +1109,12 @@
       </div>
 
       <!-- Table Container -->
-      <div class="table-container">
-        <div class="table-responsive">
+      <div class="table-container" id="table-main-container">
+        <div class="table-scroll-hint">
+          <span>⇄ Swipe table sideways to view more columns</span>
+        </div>
+        <div class="table-scroll-affordance" id="table-scroll-affordance" aria-hidden="true"></div>
+        <div class="table-responsive" id="table-responsive-wrapper">
           
           <!-- Tab 1: Individuals Table -->
           <table class="data-table" id="table-individuals">
@@ -1244,6 +1316,18 @@
           closeRosterModal();
         }
       });
+
+      // Horizontal table scroll affordance listener
+      const tableWrapper = document.getElementById('table-responsive-wrapper');
+      const tableContainer = document.getElementById('table-main-container');
+      if (tableWrapper && tableContainer) {
+        const checkScrollEnd = () => {
+          const atEnd = tableWrapper.scrollLeft + tableWrapper.clientWidth >= tableWrapper.scrollWidth - 10;
+          tableContainer.classList.toggle('is-scrolled-end', atEnd);
+        };
+        tableWrapper.addEventListener('scroll', checkScrollEnd, { passive: true });
+        window.addEventListener('resize', checkScrollEnd, { passive: true });
+      }
     }
 
     // ─── Authentication Handlers ──────────────────────────────────
@@ -1382,7 +1466,7 @@
       const totalInd = rawRegistrations.length;
       const totalDlg = rawDelegations.length;
 
-      const internalCount = rawRegistrations.filter(r => (r.delegate_type || '').toLowerCase() === 'internal').length;
+      const internalCount = rawRegistrations.filter(r => (r.delegate_type || '').toLowerCase().startsWith('internal')).length;
       const externalCount = totalInd - internalCount;
 
       const pendingCount = 
@@ -1462,7 +1546,11 @@
           // Status filter
           if (statusFilter !== 'all' && item.status !== statusFilter) return false;
           // Delegate type filter
-          if (typeFilter !== 'all' && (item.delegate_type || '').toLowerCase() !== typeFilter) return false;
+          if (typeFilter !== 'all') {
+            const isInternal = (item.delegate_type || '').toLowerCase().startsWith('internal');
+            if (typeFilter === 'internal' && !isInternal) return false;
+            if (typeFilter === 'external' && isInternal) return false;
+          }
           // Search query
           if (searchQuery) {
             const match =
@@ -1557,7 +1645,7 @@
         const tr = document.createElement('tr');
 
         // Delegate type badge
-        const isInternal = (item.delegate_type || '').toLowerCase() === 'internal';
+        const isInternal = (item.delegate_type || '').toLowerCase().startsWith('internal');
         const typeBadge = `<span class="badge ${isInternal ? 'badge-internal' : 'badge-external'}">${isInternal ? 'Internal' : 'External'}</span>`;
 
         // WhatsApp Phone
