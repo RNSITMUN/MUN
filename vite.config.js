@@ -6,6 +6,9 @@ import submitDelegationHandler from './api/submit-delegation.js';
 import submitRegistrationHandler from './api/submit-registration.js';
 import checkEmailHandler from './api/check-email.js';
 import getExternalQrHandler from './api/get-external-qr.js';
+import adminConfigHandler from './api/admin-config.js';
+import adminRegistrationsHandler from './api/admin-registrations.js';
+import adminUpdateStatusHandler from './api/admin-update-status.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -60,6 +63,15 @@ const cleanUrlsPlugin = () => ({
       if (url === '/api/get-external-qr') {
         return handleApiRequest(getExternalQrHandler);
       }
+      if (url === '/api/admin-config') {
+        return handleApiRequest(adminConfigHandler);
+      }
+      if (url === '/api/admin-registrations') {
+        return handleApiRequest(adminRegistrationsHandler);
+      }
+      if (url === '/api/admin-update-status') {
+        return handleApiRequest(adminUpdateStatusHandler);
+      }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
       
@@ -80,6 +92,8 @@ const cleanUrlsPlugin = () => ({
           req.url = '/code-of-conduct.html';
         } else if (url === '/venue' || url === '/location') {
           req.url = '/venue.html';
+        } else if (url === '/admin') {
+          req.url = '/admin.html';
         } else if (url === '/404') {
           req.url = '/404.html' + req.url.substring(4);
         } else if (url !== '/' && url !== '') {
@@ -140,6 +154,7 @@ export default defineConfig({
         channels: resolve(process.cwd(), 'channels.html'),
         coc: resolve(process.cwd(), 'code-of-conduct.html'),
         venue: resolve(process.cwd(), 'venue.html'),
+        admin: resolve(process.cwd(), 'admin.html'),
         error: resolve(process.cwd(), '404.html')
       }
     }

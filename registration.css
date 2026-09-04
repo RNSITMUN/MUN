@@ -5167,4 +5167,209 @@
       .form-group {
         margin-bottom: 8px;
       }
-    }
+    }
+
+/* ==========================================================================
+   RNS MUN '26 - Shared Registration & Component Stylesheet (registration.css)
+   Tokens: Cream (#FFF7EB), Text (#000000), Maroon Accent (#6C0D2C), Gold (#E5A93C)
+   Neo-brutalist tactile aesthetic: 2px solid #000 borders & 3px 3px 0 #000 hard shadows
+   ========================================================================== */
+
+:root {
+  --bg-color: #FFF7EB;
+  --text-primary: #000000;
+  --accent-color: #6C0D2C;
+  --accent-hover: #520921;
+  --gold-accent: #E5A93C;
+  --gold-hover: #d49526;
+  --card-bg: #FFFFFF;
+  --font-sans: 'Outfit', sans-serif;
+}
+
+/* ── Form Inputs & Groups ─────────────────────────────────────────────────── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.form-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  background: #FFFDF9;
+  border: 2px solid var(--text-primary);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 2.5px 2.5px 0px var(--text-primary);
+  background: #FFFFFF;
+}
+
+/* ── Chunky Tactile Buttons ───────────────────────────────────────────────── */
+.submit-btn,
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border: 2px solid var(--text-primary);
+  border-radius: 9px;
+  padding: 11px 18px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px var(--text-primary);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.submit-btn:hover,
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--text-primary);
+}
+
+.submit-btn:active,
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--text-primary);
+}
+
+.submit-btn:disabled,
+.btn-primary:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  transform: none !important;
+  box-shadow: 2px 2px 0px var(--text-primary) !important;
+}
+
+/* Secondary Button with Hard Shadow */
+.btn-secondary,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary);
+  border-radius: 8px;
+  box-shadow: 2.5px 2.5px 0px var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+}
+
+.btn-secondary:hover,
+.btn-outline:hover {
+  background: #FFF7EB;
+  transform: translate(-1px, -1px);
+  box-shadow: 3.5px 3.5px 0px var(--text-primary);
+}
+
+.btn-secondary:active,
+.btn-outline:active {
+  transform: translate(1.5px, 1.5px);
+  box-shadow: 1px 1px 0px var(--text-primary);
+}
+
+/* ── Pill-Shaped Badges ───────────────────────────────────────────────────── */
+.type-badge,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 3px 9px;
+  width: max-content;
+  line-height: 1.25;
+  border: 1.5px solid var(--text-primary);
+  box-shadow: 1.5px 1.5px 0px var(--text-primary);
+}
+
+.type-badge-internal,
+.badge-internal {
+  background: rgba(108, 13, 44, 0.1);
+  color: var(--accent-color);
+  border: 1.5px solid var(--text-primary);
+}
+
+.type-badge-external,
+.badge-external {
+  background: #FFFDF9;
+  color: var(--text-primary);
+  border: 1.5px solid var(--text-primary);
+}
+
+.receipt-status-badge {
+  border: 2px solid var(--text-primary);
+  background: var(--gold-accent) !important;
+  color: var(--text-primary) !important;
+  font-weight: 900;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  box-shadow: 2px 2px 0px var(--text-primary);
+}
+
+/* ── Tactile Neo-Brutalist Cards ──────────────────────────────────────────── */
+.bento-card,
+.tactile-card {
+  background: #FFFFFF;
+  border: 2px solid var(--text-primary);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0px var(--text-primary);
+  padding: 1.25rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
