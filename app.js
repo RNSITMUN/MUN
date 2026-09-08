@@ -38,8 +38,8 @@ const galleryData = [];
 for (let i = 0; i < 30; i++) {
   const localIndex = i + 1;
   galleryData.push({
-    src: `./globe/${localIndex}.webp?v=3`,
-    fallback: `./globe/${localIndex}.jpeg?v=3`,
+    src: `./globe/${localIndex}.webp?v=4`,
+    fallback: `./globe/${localIndex}.jpeg?v=4`,
     alt: `Globe Image ${localIndex}`
   });
 }
