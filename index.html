@@ -984,6 +984,120 @@
       letter-spacing: 0.04em;
     }
 
+    /* WHAT IS MUN? EXPLAINER SECTION */
+    .what-mun-block {
+      width: 100%;
+      margin-bottom: 28px;
+    }
+
+    .what-mun-card {
+      background: #FFFDF9;
+      border: 2.5px solid #000;
+      border-radius: 18px;
+      box-shadow: 5px 5px 0 #000;
+      padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 52px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .what-mun-card::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      right: 32px;
+      font-size: 14rem;
+      font-weight: 900;
+      color: rgba(108, 13, 44, 0.055);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .what-mun-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.07);
+      border: 1.5px solid rgba(108, 13, 44, 0.25);
+      padding: 4px 12px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .what-mun-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.35rem, 2.8vw, 1.95rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #000;
+      margin: 0;
+      line-height: 1.18;
+      max-width: 820px;
+    }
+
+    .what-mun-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+      font-weight: 900;
+      color: #6C0D2C;
+      margin: 0;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .what-mun-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 720px;
+    }
+
+    .what-mun-body p {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.72);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .what-mun-body strong {
+      font-weight: 800;
+      color: #000;
+    }
+
+    .what-mun-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .what-mun-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #000;
+      background: #FFF7EB;
+      border: 1.8px solid #000;
+      border-radius: 8px;
+      padding: 5px 13px;
+      box-shadow: 2px 2px 0 #000;
+      letter-spacing: 0.01em;
+    }
+
+    /* Mobile-only heading above the card — hidden on desktop */
+    .what-mun-mobile-heading {
+      display: none;
+    }
+
     /* WHY RNS MUN'26? FEATURE SECTION */
     .why-mun-block {
       display: flex;
@@ -1175,7 +1289,75 @@
       }
 
       .why-mun-block {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
+      }
+
+      .what-mun-block {
+        margin-bottom: 22px;
+      }
+
+      /* Show the outside heading on mobile, hide inner pill */
+      .what-mun-mobile-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #6C0D2C;
+        margin: 0 0 8px 1px;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .what-mun-mobile-heading::before {
+        content: '';
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #6C0D2C;
+        flex-shrink: 0;
+        border-radius: 2px;
+      }
+
+      .what-mun-label {
+        display: none;
+      }
+
+      .what-mun-card {
+        padding: 22px 20px;
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 #000;
+        gap: 10px;
+      }
+
+      .what-mun-card::before {
+        font-size: 9rem;
+        right: 16px;
+        top: -4px;
+      }
+
+      .what-mun-heading {
+        font-size: clamp(1.15rem, 4vw, 1.35rem);
+      }
+
+      .what-mun-tagline {
+        font-size: clamp(1.3rem, 5vw, 1.65rem);
+      }
+
+      .what-mun-body p {
+        font-size: clamp(0.86rem, 3vw, 0.95rem);
+      }
+
+      .what-mun-pills {
+        gap: 6px;
+      }
+
+      .what-mun-pill {
+        font-size: 0.72rem;
+        padding: 4px 10px;
       }
     }
 
@@ -1643,8 +1825,8 @@
 
       .summit-dual-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
-        margin-top: 20px;
+        gap: 10px;
+        margin-top: 8px;
       }
 
       .delegate-experience-box {
@@ -2160,6 +2342,24 @@
   <section class="mun26-editorial-section" id="mun26" aria-labelledby="summit-heading">
     <div class="mun26-editorial-wrap">
       <h2 id="summit-heading" class="sr-only">Summit Details</h2>
+
+      <!-- WHAT IS MUN? EXPLAINER SECTION -->
+      <div class="what-mun-block" id="what-is-mun">
+        <p class="what-mun-mobile-heading">So, What's MUN All About?</p>
+        <div class="what-mun-card">
+          <div class="what-mun-label">SO, WHAT'S MUN ALL ABOUT?</div>
+          <h2 class="what-mun-heading">Ever wondered what it's like to be a diplomat or step into the shoes of a world
+            leader for&nbsp;2&nbsp;days?</h2>
+          <p class="what-mun-tagline">That's MUN.</p>
+          <div class="what-mun-body">
+            <p>You represent a country, debate real-world issues, defend your side, challenge others, negotiate, and try
+              to reach a solution.</p>
+            <p>It's basically <strong>debate + diplomacy + strategy</strong> + a little chaos, and you don't need to be
+              an expert to get started. Just bring your ideas, confidence, and willingness to speak up.</p>
+          </div>
+
+        </div>
+      </div>
 
       <!-- WHY RNSMUN 2026? FEATURE SECTION -->
       <div class="why-mun-block">

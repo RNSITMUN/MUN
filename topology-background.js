@@ -220,11 +220,11 @@
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
       -1, -1,
-       1, -1,
-      -1,  1,
-      -1,  1,
-       1, -1,
-       1,  1
+      1, -1,
+      -1, 1,
+      -1, 1,
+      1, -1,
+      1, 1
     ]), gl.STATIC_DRAW);
 
     const aPosition = gl.getAttribLocation(program, 'aPosition');
@@ -244,7 +244,7 @@
     gl.uniform3f(uColorLoc, 0.0, 0.0, 0.0); // Black/charcoal lines matching neo-brutalist theme
 
     // Initial opacity based on device capability
-    const baseOpacity = (isMobileDevice || lowEndDevice) ? 0.045 : 0.060;
+    const baseOpacity = (isMobileDevice || lowEndDevice) ? 0.065 : 0.065;
     gl.uniform1f(uOpacityLoc, baseOpacity);
 
     let width = 0;

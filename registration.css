@@ -2982,18 +2982,20 @@
     .modal-registration-card.in-dlg-success-state {
       height: auto !important;
       min-height: unset !important;
-      max-height: min(88dvh, calc(100svh - 32px)) !important;
+      max-height: min(90dvh, calc(100svh - 24px)) !important;
       width: 100% !important;
       max-width: 480px !important;
       box-sizing: border-box !important;
-      padding: clamp(24px, 5vw, 32px) clamp(18px, 4vw, 26px) !important;
+      padding: clamp(28px, 5vw, 36px) clamp(18px, 4vw, 26px) clamp(24px, 4vw, 30px) !important;
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
-      justify-content: center !important;
+      justify-content: flex-start !important;
       margin: auto !important;
+      scrollbar-width: none !important;
     }
 
     .modal-registration-card.in-success-state .reg-form-header,
@@ -4539,17 +4541,19 @@
       .modal-registration-card.in-dlg-success-state {
         height: auto !important;
         min-height: unset !important;
-        max-height: min(90dvh, calc(100svh - 24px)) !important;
+        max-height: min(92dvh, calc(100svh - 16px)) !important;
         width: 100% !important;
         max-width: 440px !important;
         box-sizing: border-box !important;
-        padding: clamp(20px, 4.5vw, 26px) clamp(16px, 3.8vw, 22px) !important;
+        padding: clamp(20px, 4.5vw, 26px) clamp(16px, 3.8vw, 22px) clamp(20px, 3.5vw, 26px) !important;
         border-radius: 16px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         overflow-y: auto !important;
+        overscroll-behavior: contain;
+        scrollbar-width: none !important;
         margin: auto !important;
       }
 
