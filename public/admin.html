@@ -974,6 +974,17 @@
       transform: translate(-1px, -1px);
       box-shadow: 2.5px 2.5px 0px #000000;
     }
+    .btn-action-mail.is-sent {
+      background: #D1FAE5;
+      color: #065F46;
+      border-color: #000000;
+    }
+    .btn-action-mail.is-sent:hover {
+      background: #059669;
+      color: #FFF7EB;
+      transform: translate(-1px, -1px);
+      box-shadow: 2.5px 2.5px 0px #000000;
+    }
 
     /* Template View Container */
     #container-templates {
@@ -2420,6 +2431,37 @@
       });
     }
 
+    // ─── Sent Mail Tracking Helpers ───────────────────────────────
+    function getSentMailStore() {
+      try {
+        return JSON.parse(localStorage.getItem('rns_mun_sent_mail_history') || '{}');
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function isRecordMailSent(id, type) {
+      if (!id) return false;
+      const store = getSentMailStore();
+      const key = `${type || 'individual'}_${String(id)}`;
+      return !!store[key];
+    }
+
+    function markRecordMailSent(id, type) {
+      if (!id) return;
+      const store = getSentMailStore();
+      const key = `${type || 'individual'}_${String(id)}`;
+      store[key] = {
+        sentAt: new Date().toISOString(),
+        timestamp: Date.now()
+      };
+      try {
+        localStorage.setItem('rns_mun_sent_mail_history', JSON.stringify(store));
+      } catch (e) {
+        console.warn('Failed to save sent mail history to localStorage:', e);
+      }
+    }
+
     // ─── Render Individual Table ──────────────────────────────────
     function renderIndividualTable(items) {
       const tbody = document.getElementById('tbody-individuals');
@@ -2434,6 +2476,7 @@
 
       items.forEach(item => {
         const tr = document.createElement('tr');
+        const isSent = isRecordMailSent(item.id, 'individual');
 
         // Delegate type badge
         const isInternal = (item.delegate_type || '').toLowerCase().startsWith('internal');
@@ -2496,8 +2539,8 @@
             ${formatDateTime(item.created_at)}
           </td>
           <td style="text-align: center;">
-            <button type="button" class="btn-action-mail" onclick="openSendMailModal('${item.id}', 'individual')">
-              ✉️ Send Mail
+            <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'individual')" title="${isSent ? 'Mail sent to delegate. Click to send another email.' : 'Send Mail'}">
+              ${isSent ? '✅ Sent Mail' : '✉️ Send Mail'}
             </button>
           </td>
         `;
@@ -2520,6 +2563,7 @@
 
       items.forEach(item => {
         const tr = document.createElement('tr');
+        const isSent = isRecordMailSent(item.id, 'delegation');
 
         const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
         const phoneHtml = item.phone ? `
@@ -2577,8 +2621,8 @@
             ${formatDateTime(item.created_at)}
           </td>
           <td style="text-align: center;">
-            <button type="button" class="btn-action-mail" onclick="openSendMailModal('${item.id}', 'delegation')">
-              ✉️ Send Mail
+            <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to delegation. Click to send another email.' : 'Send Mail'}">
+              ${isSent ? '✅ Sent Mail' : '✉️ Send Mail'}
             </button>
           </td>
         `;
@@ -4300,7 +4344,9 @@
         const data = await res.json();
         if (data.success) {
           showToast(`Email dispatched to ${recipient}!`, 'success');
+          markRecordMailSent(modalTargetRecord.id, modalTargetType);
           closeSendMailModal();
+          applyFilters();
         } else {
           showToast(`Failed to send email: ${data.error || 'Check Google Script logs'}`, 'error');
         }
