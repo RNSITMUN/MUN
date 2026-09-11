@@ -9,6 +9,7 @@ import getExternalQrHandler from './api/get-external-qr.js';
 import adminConfigHandler from './api/admin-config.js';
 import adminRegistrationsHandler from './api/admin-registrations.js';
 import adminUpdateStatusHandler from './api/admin-update-status.js';
+import sendMailHandler from './api/send-mail.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -71,6 +72,9 @@ const cleanUrlsPlugin = () => ({
       }
       if (url === '/api/admin-update-status') {
         return handleApiRequest(adminUpdateStatusHandler);
+      }
+      if (url === '/api/send-mail') {
+        return handleApiRequest(sendMailHandler);
       }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
