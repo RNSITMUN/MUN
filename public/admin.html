@@ -1573,9 +1573,9 @@
             <button type="button" class="btn btn-outline btn-sm" onclick="sendQuickPingTestEmail()">
               ⚡ Send Ping Test Mail
             </button>
-            <a class="btn btn-outline btn-sm" href="/scripts/google-apps-script-mailer.gs" target="_blank" download="google-apps-script-mailer.gs" title="Download Apps Script code">
-              📄 View Apps Script Code
-            </a>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openAppsScriptModal()" title="View, copy, or download Google Apps Script code">
+              📜 View Apps Script Code
+            </button>
           </div>
         </div>
 
@@ -1939,6 +1939,59 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Modal 4: Google Apps Script Code & Setup Modal -->
+  <div class="modal-overlay" id="apps-script-modal">
+    <div class="lightbox-modal" style="width: 840px; max-width: 95vw;">
+      <div class="modal-header">
+        <div class="modal-title">📜 Google Apps Script Web App Code & Setup</div>
+        <button class="modal-close" onclick="closeAppsScriptModal()">&times;</button>
+      </div>
+
+      <div style="padding: 1.25rem; overflow-y: auto; max-height: 75vh; display: flex; flex-direction: column; gap: 1rem; background: #FFFDF9;">
+        
+        <!-- Step by Step Setup Box -->
+        <div style="background: #FFFFFF; border: 1.5px solid #000000; border-radius: 8px; padding: 1rem; box-shadow: 2px 2px 0px #000000;">
+          <h4 style="margin: 0 0 0.5rem 0; color: #6C0D2C; font-weight: 800; font-size: 0.95rem;">⚡ 1-Minute Deployment Guide (for muntechnical@gmail.com)</h4>
+          <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.82rem; line-height: 1.5; color: #333333;">
+            <li>Log in to Google using <strong>muntechnical@gmail.com</strong>.</li>
+            <li>Open <a href="https://script.google.com" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">script.google.com</a> and click <strong>New project</strong>.</li>
+            <li>Replace all existing code in <code>Code.gs</code> by clicking <strong>📋 Copy Script to Clipboard</strong> below.</li>
+            <li>Click <strong>Deploy</strong> &rarr; <strong>New deployment</strong> &rarr; Select type <strong>Web app</strong> (gear icon).</li>
+            <li>Set <em>Execute as</em>: <strong>Me (muntechnical@gmail.com)</strong> and <em>Who has access</em>: <strong>Anyone</strong>.</li>
+            <li>Click <strong>Deploy</strong>, grant permissions (Authorize access), and copy the <strong>Web App URL</strong> (ends in <code>/exec</code>).</li>
+            <li>Paste the URL into the Webhook URL field in the <em>Mail Templates</em> tab and click <strong>💾 Save Webhook URL</strong>.</li>
+          </ol>
+        </div>
+
+        <!-- Code Box Header with Quick Actions -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+          <span style="font-size: 0.85rem; font-weight: 800; color: #000000;">📄 Source Code (scripts/google-apps-script-mailer.gs)</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-gold btn-sm" onclick="copyAppsScriptCode()" id="btn-copy-apps-script" style="font-weight: 800;">
+              📋 Copy Script to Clipboard
+            </button>
+            <a class="btn btn-outline btn-sm" href="/scripts/google-apps-script-mailer.gs" target="_blank" download="google-apps-script-mailer.gs" style="text-decoration: none;">
+              📥 Download .gs File
+            </a>
+          </div>
+        </div>
+
+        <!-- Code Block -->
+        <div style="position: relative;">
+          <pre style="margin: 0; padding: 1.1rem; background: #1E1E1E; color: #E0E0E0; border: 2px solid #000000; border-radius: 8px; font-family: Consolas, Monaco, 'Courier New', monospace; font-size: 0.78rem; line-height: 1.45; overflow-x: auto; max-height: 350px; box-shadow: 2px 2px 0px #000000; white-space: pre;"><code id="apps-script-code-text"></code></pre>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between;">
+        <a href="https://script.google.com/home/start" target="_blank" class="btn btn-outline btn-sm" style="text-decoration: none;">
+          🌐 Open Google Apps Script Console &rarr;
+        </a>
+        <button class="btn btn-maroon btn-sm" onclick="closeAppsScriptModal()">Close</button>
+      </div>
     </div>
   </div>
 
@@ -4346,6 +4399,179 @@
       const sizes = ['B', 'KB', 'MB'];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    // ─── APPS SCRIPT CODE VIEWER MODAL ────────────────────────────
+    const APPS_SCRIPT_SOURCE_CODE = `/**
+ * =========================================================================
+ * RNS MUN '26 - Google Apps Script Email Automation Web App
+ * =========================================================================
+ * 
+ * Instructions for Deployment (using muntechnical@gmail.com):
+ * 1. Log in to Google with: muntechnical@gmail.com
+ * 2. Go to script.google.com and paste this entire code into Code.gs.
+ * 3. Click "Deploy" -> "New deployment".
+ * 4. Select Type: "Web app".
+ * 5. Set:
+ *    - Description: "RNS MUN Mailer"
+ *    - Execute as: "Me (muntechnical@gmail.com)"
+ *    - Who has access: "Anyone"
+ * 6. Click "Deploy", click "Authorize access", and copy the Web App URL.
+ * 7. Paste that Web App URL into the RNS MUN Admin Dashboard under the "Mail Templates" tab.
+ * 
+ * -> All emails will be sent directly from muntechnical@gmail.com with
+ *    Sender Name: "RNS MUN Secretariat"
+ *    Reply-To: "mun@rnsit.ac.in"
+ * =========================================================================
+ */
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000); // Wait up to 10 seconds for concurrency lock
+    
+    var data;
+    if (e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (parseErr) {
+        return createJsonResponse({ success: false, error: 'Invalid JSON payload: ' + parseErr.message }, 400);
+      }
+    } else if (e.parameter) {
+      data = e.parameter;
+    } else {
+      return createJsonResponse({ success: false, error: 'Empty request payload' }, 400);
+    }
+
+    var to = (data.recipient || data.to || '').trim();
+    var subject = (data.subject || 'Notice from RNS MUN \\'26').trim();
+    var htmlBody = data.htmlBody || data.body || '<p>No content provided</p>';
+    var senderName = data.senderName || 'RNS MUN Secretariat';
+    var replyTo = (data.replyTo || 'mun@rnsit.ac.in').trim();
+
+    if (!to || !to.includes('@')) {
+      return createJsonResponse({ success: false, error: 'Valid recipient email is required' }, 400);
+    }
+
+    // Process file attachments (if any)
+    var emailAttachments = [];
+    if (data.attachments && Array.isArray(data.attachments)) {
+      for (var i = 0; i < data.attachments.length; i++) {
+        var att = data.attachments[i];
+        if (att && att.base64 && att.name) {
+          try {
+            // Strip data URI header if present (e.g., "data:image/png;base64,")
+            var base64Data = att.base64;
+            var mimeType = att.mimeType || 'application/octet-stream';
+            
+            if (base64Data.indexOf(';base64,') !== -1) {
+              var parts = base64Data.split(';base64,');
+              mimeType = parts[0].replace('data:', '') || mimeType;
+              base64Data = parts[1];
+            }
+            
+            var decodedBlob = Utilities.newBlob(Utilities.base64Decode(base64Data), mimeType, att.name);
+            emailAttachments.push(decodedBlob);
+          } catch (attErr) {
+            Logger.log('Attachment parsing error for ' + att.name + ': ' + attErr.message);
+          }
+        }
+      }
+    }
+
+    // Build Mail Options
+    var mailOptions = {
+      name: senderName,
+      replyTo: replyTo,
+      htmlBody: htmlBody
+    };
+
+    if (emailAttachments.length > 0) {
+      mailOptions.attachments = emailAttachments;
+    }
+
+    // Create plain text fallback by stripping HTML tags
+    var plainText = htmlBody.replace(/<[^>]*>?/gm, ' ').replace(/\\\\s+/g, ' ').trim();
+
+    // Send email using GmailApp
+    GmailApp.sendEmail(to, subject, plainText, mailOptions);
+
+    var senderEmail = 'muntechnical@gmail.com';
+    try { senderEmail = Session.getActiveUser().getEmail() || senderEmail; } catch(err){}
+
+    return createJsonResponse({
+      success: true,
+      message: 'Email successfully sent to ' + to,
+      recipient: to,
+      sender: senderEmail,
+      senderName: senderName,
+      replyTo: replyTo,
+      subject: subject,
+      attachmentCount: emailAttachments.length,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    Logger.log('Error sending email: ' + error.toString());
+    return createJsonResponse({
+      success: false,
+      error: error.message || error.toString()
+    }, 500);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet(e) {
+  var activeUser = 'unknown';
+  try { activeUser = Session.getActiveUser().getEmail(); } catch(err){}
+  return createJsonResponse({
+    success: true,
+    status: 'RNS MUN Google Apps Script Mailer is operational.',
+    executingAccount: activeUser,
+    senderName: 'RNS MUN Secretariat',
+    replyTo: 'mun@rnsit.ac.in',
+    version: '1.2.0',
+    timestamp: new Date().toISOString()
+  });
+}
+
+function createJsonResponse(obj, statusCode) {
+  var output = ContentService.createTextOutput(JSON.stringify(obj));
+  output.setMimeType(ContentService.MimeType.JSON);
+  return output;
+}`;
+
+    function openAppsScriptModal() {
+      const modal = document.getElementById('apps-script-modal');
+      const codeEl = document.getElementById('apps-script-code-text');
+      if (codeEl) {
+        codeEl.textContent = APPS_SCRIPT_SOURCE_CODE;
+      }
+      if (modal) {
+        modal.classList.add('active');
+      }
+    }
+
+    function closeAppsScriptModal() {
+      const modal = document.getElementById('apps-script-modal');
+      if (modal) {
+        modal.classList.remove('active');
+      }
+    }
+
+    function copyAppsScriptCode() {
+      navigator.clipboard.writeText(APPS_SCRIPT_SOURCE_CODE).then(() => {
+        const btn = document.getElementById('btn-copy-apps-script');
+        if (btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '✅ Copied to Clipboard!';
+          setTimeout(() => { btn.innerHTML = originalText; }, 2500);
+        }
+        showToast('Apps Script code copied to clipboard!', 'success');
+      }).catch(err => {
+        showToast('Could not copy automatically. Please select and copy code manually.', 'error');
+      });
     }
   </script>
 </body>
