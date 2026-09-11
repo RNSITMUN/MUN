@@ -1082,6 +1082,7 @@
       gap: 0.35rem;
       box-shadow: 2px 2px 0px #000000;
       transition: all 0.15s ease;
+      position: relative;
     }
     .template-card-item:hover {
       transform: translate(-1px, -1px);
@@ -1106,6 +1107,33 @@
       font-size: 0.88rem;
       font-weight: 800;
       color: #000000;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .btn-card-delete {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: #991B1B;
+      padding: 0.15rem 0.35rem;
+      font-size: 0.78rem;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      transition: all 0.15s ease;
+    }
+    .btn-card-delete:hover {
+      background: #FEE2E2;
+      border-color: #EF4444;
+      color: #DC2626;
+      opacity: 1;
+      transform: scale(1.1);
     }
 
     .template-card-subj {
@@ -1617,13 +1645,18 @@
           <div class="template-main-editor">
             
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 240px;">
                 <input type="text" id="tpl-name" class="form-input" placeholder="Template Name (e.g., Payment Confirmation)" style="font-weight: 800; font-size: 1rem; padding: 0.5rem 0.85rem;" oninput="onTemplateMetaChanged()">
               </div>
               
-              <div class="view-toggle-wrap">
-                <button type="button" class="view-toggle-btn active" id="btn-view-code" onclick="toggleEditorView('code')">HTML Code</button>
-                <button type="button" class="view-toggle-btn" id="btn-view-preview" onclick="toggleEditorView('preview')">Live Preview</button>
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline btn-sm" style="color: #991B1B; border-color: #EF4444;" onclick="deleteCurrentTemplate()" title="Delete this template">
+                  🗑️ Delete
+                </button>
+                <div class="view-toggle-wrap">
+                  <button type="button" class="view-toggle-btn active" id="btn-view-code" onclick="toggleEditorView('code')">HTML Code</button>
+                  <button type="button" class="view-toggle-btn" id="btn-view-preview" onclick="toggleEditorView('preview')">Live Preview</button>
+                </div>
               </div>
             </div>
 
@@ -3373,9 +3406,12 @@
 
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
-      if (stored) {
+      if (stored !== null) {
         try {
           mailTemplates = JSON.parse(stored);
+          if (!Array.isArray(mailTemplates)) {
+            mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
+          }
         } catch (e) {
           mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
         }
@@ -3389,10 +3425,15 @@
 
       renderTemplateList();
 
-      if (!activeTemplateId && mailTemplates.length > 0) {
-        selectTemplateForEditing(mailTemplates[0].id);
-      } else if (activeTemplateId) {
-        selectTemplateForEditing(activeTemplateId);
+      if (mailTemplates.length > 0) {
+        if (!activeTemplateId || !mailTemplates.some(t => t.id === activeTemplateId)) {
+          selectTemplateForEditing(mailTemplates[0].id);
+        } else {
+          selectTemplateForEditing(activeTemplateId);
+        }
+      } else {
+        activeTemplateId = null;
+        clearTemplateEditor();
       }
     }
 
@@ -3499,6 +3540,17 @@
       if (!container) return;
 
       container.innerHTML = '';
+      if (mailTemplates.length === 0) {
+        container.innerHTML = `
+          <div style="padding: 1.25rem 0.85rem; text-align: center; color: #666; font-size: 0.8rem; background: #FFFDF9; border: 1.5px dashed #999; border-radius: 8px;">
+            <div style="font-size: 1.4rem; margin-bottom: 0.35rem;">📭</div>
+            <div style="font-weight: 800; color: #111; margin-bottom: 0.25rem;">No Templates Left</div>
+            <div style="font-size: 0.72rem; color: #555;">Click <strong>➕ New</strong> to create one, or restore presets below.</div>
+          </div>
+        `;
+        return;
+      }
+
       mailTemplates.forEach(tpl => {
         const card = document.createElement('div');
         card.className = `template-card-item ${tpl.id === activeTemplateId ? 'active' : ''}`;
@@ -3506,10 +3558,15 @@
 
         card.innerHTML = `
           <div class="template-card-top">
-            <span class="template-card-name">${escapeHtml(tpl.name)}</span>
-            <span class="badge ${tpl.isPreset ? 'badge-internal' : 'badge-external'}" style="font-size: 0.62rem; padding: 0.15rem 0.45rem;">
-              ${tpl.isPreset ? 'Preset' : 'Custom'}
-            </span>
+            <span class="template-card-name" title="${escapeHtml(tpl.name)}">${escapeHtml(tpl.name)}</span>
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+              <span class="badge ${tpl.isPreset ? 'badge-internal' : 'badge-external'}" style="font-size: 0.62rem; padding: 0.15rem 0.45rem;">
+                ${tpl.isPreset ? 'Preset' : 'Custom'}
+              </span>
+              <button type="button" class="btn-card-delete" title="Delete &quot;${escapeHtml(tpl.name)}&quot;" onclick="deleteTemplateById('${tpl.id}', event)">
+                🗑️
+              </button>
+            </div>
           </div>
           <div class="template-card-subj">
             ${escapeHtml(tpl.subject || 'No subject')}
@@ -3522,17 +3579,50 @@
     function selectTemplateForEditing(id) {
       activeTemplateId = id;
       const tpl = mailTemplates.find(t => t.id === id);
-      if (!tpl) return;
+      if (!tpl) {
+        if (mailTemplates.length > 0) {
+          activeTemplateId = mailTemplates[0].id;
+          return selectTemplateForEditing(activeTemplateId);
+        } else {
+          activeTemplateId = null;
+          renderTemplateList();
+          clearTemplateEditor();
+          return;
+        }
+      }
 
       renderTemplateList();
 
-      document.getElementById('tpl-name').value = tpl.name || '';
-      document.getElementById('tpl-subject').value = tpl.subject || '';
-      document.getElementById('tpl-html-body').value = tpl.body || '';
+      const nameInput = document.getElementById('tpl-name');
+      const subjInput = document.getElementById('tpl-subject');
+      const bodyInput = document.getElementById('tpl-html-body');
+      if (nameInput) nameInput.value = tpl.name || '';
+      if (subjInput) subjInput.value = tpl.subject || '';
+      if (bodyInput) bodyInput.value = tpl.body || '';
 
       tplAttachments = Array.isArray(tpl.attachments) ? JSON.parse(JSON.stringify(tpl.attachments)) : [];
       renderTemplateAttachments();
       updateLivePreview();
+    }
+
+    function clearTemplateEditor() {
+      const nameInput = document.getElementById('tpl-name');
+      const subjInput = document.getElementById('tpl-subject');
+      const bodyInput = document.getElementById('tpl-html-body');
+      if (nameInput) nameInput.value = '';
+      if (subjInput) subjInput.value = '';
+      if (bodyInput) bodyInput.value = '';
+
+      tplAttachments = [];
+      renderTemplateAttachments();
+
+      const iframe = document.getElementById('tpl-preview-iframe');
+      if (iframe) {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write('<!DOCTYPE html><html><body style="font-family:sans-serif;padding:40px;text-align:center;color:#888;background:#FFFDF9;"><h3>No Template Selected</h3><p>Create a template using ➕ New or click "Restore Default Presets".</p></body></html>');
+        doc.close();
+      }
     }
 
     function onTemplateMetaChanged() {
@@ -3636,7 +3726,15 @@
       const iframe = document.getElementById('tpl-preview-iframe');
       if (!iframe) return;
 
-      const rawHtml = document.getElementById('tpl-html-body').value;
+      const rawHtml = document.getElementById('tpl-html-body')?.value || '';
+      if (!rawHtml && mailTemplates.length === 0) {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write('<!DOCTYPE html><html><body style="font-family:sans-serif;padding:40px;text-align:center;color:#888;background:#FFFDF9;"><h3>No Template Selected</h3><p>Create a template using ➕ New or click "Restore Default Presets".</p></body></html>');
+        doc.close();
+        return;
+      }
+
       const preset = document.getElementById('tpl-test-sample-preset')?.value || document.getElementById('preview-sample-select')?.value || 'confirmed_delegate';
 
       // Keep sample selector synced
@@ -3741,8 +3839,15 @@
     }
 
     function saveCurrentTemplate() {
+      if (!activeTemplateId) {
+        showToast('Please create or select a template first.', 'error');
+        return;
+      }
       const tpl = mailTemplates.find(t => t.id === activeTemplateId);
-      if (!tpl) return;
+      if (!tpl) {
+        showToast('Selected template not found.', 'error');
+        return;
+      }
 
       tpl.name = document.getElementById('tpl-name').value.trim() || 'Untitled Template';
       tpl.subject = document.getElementById('tpl-subject').value;
@@ -3798,6 +3903,10 @@
     }
 
     function duplicateCurrentTemplate() {
+      if (!activeTemplateId) {
+        showToast('Please select a template to duplicate.', 'error');
+        return;
+      }
       const tpl = mailTemplates.find(t => t.id === activeTemplateId);
       if (!tpl) return;
 
@@ -3813,19 +3922,42 @@
       showToast('Template duplicated.', 'success');
     }
 
-    function deleteCurrentTemplate() {
-      const tpl = mailTemplates.find(t => t.id === activeTemplateId);
+    function deleteTemplateById(id, e) {
+      if (e) {
+        e.stopPropagation();
+      }
+      const tpl = mailTemplates.find(t => t.id === id);
       if (!tpl) return;
 
-      if (!confirm(`Are you sure you want to delete template "${tpl.name}"?`)) return;
+      const confirmMsg = `Are you sure you want to delete template "${tpl.name}"?`;
+      if (!confirm(confirmMsg)) return;
 
-      mailTemplates = mailTemplates.filter(t => t.id !== activeTemplateId);
-      if (mailTemplates.length === 0) {
-        mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
-      }
+      const deletedIndex = mailTemplates.findIndex(t => t.id === id);
+      mailTemplates = mailTemplates.filter(t => t.id !== id);
       saveTemplatesToStorage();
-      selectTemplateForEditing(mailTemplates[0].id);
-      showToast('Template deleted.', 'info');
+
+      if (mailTemplates.length === 0) {
+        activeTemplateId = null;
+        clearTemplateEditor();
+        renderTemplateList();
+        showToast(`Template "${tpl.name}" deleted.`, 'info');
+      } else {
+        if (activeTemplateId === id) {
+          const nextIndex = Math.min(deletedIndex, mailTemplates.length - 1);
+          selectTemplateForEditing(mailTemplates[nextIndex].id);
+        } else {
+          renderTemplateList();
+        }
+        showToast(`Template "${tpl.name}" deleted.`, 'info');
+      }
+    }
+
+    function deleteCurrentTemplate() {
+      if (!activeTemplateId) {
+        showToast('No active template selected to delete.', 'error');
+        return;
+      }
+      deleteTemplateById(activeTemplateId);
     }
 
     function resetTemplatesToDefault() {
@@ -4161,6 +4293,14 @@
       if (!select) return;
 
       select.innerHTML = '';
+      if (mailTemplates.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'No templates available (create one first)';
+        select.appendChild(opt);
+        return;
+      }
+
       mailTemplates.forEach(tpl => {
         const opt = document.createElement('option');
         opt.value = tpl.id;
@@ -4168,17 +4308,28 @@
         select.appendChild(opt);
       });
 
-      if (activeTemplateId) {
+      if (activeTemplateId && mailTemplates.some(t => t.id === activeTemplateId)) {
         select.value = activeTemplateId;
+      } else if (mailTemplates.length > 0) {
+        select.value = mailTemplates[0].id;
       }
     }
 
     function onModalTemplateSelectChange() {
       const select = document.getElementById('send-mail-template-select');
       const tplId = select ? select.value : mailTemplates[0]?.id;
-      const tpl = mailTemplates.find(t => t.id === tplId) || mailTemplates[0];
+      const tpl = mailTemplates.find(t => t.id === tplId) || (mailTemplates.length > 0 ? mailTemplates[0] : null);
 
-      if (!tpl || !modalTargetRecord) return;
+      if (!tpl || !modalTargetRecord) {
+        const subjectInput = document.getElementById('send-mail-subject');
+        if (subjectInput) subjectInput.value = '';
+        const codeTextarea = document.getElementById('modal-code-textarea');
+        if (codeTextarea) codeTextarea.value = '<p>No template selected.</p>';
+        modalAttachments = [];
+        renderModalAttachments();
+        updateModalMailPreview();
+        return;
+      }
 
       const tokenData = buildTokenDataFromRecord(modalTargetRecord, modalTargetType);
       
