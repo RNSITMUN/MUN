@@ -1616,7 +1616,12 @@
         } else {
           if (internalPanel) internalPanel.style.display = 'none';
           if (externalPanel) externalPanel.style.display = 'block';
+          updateExternalPaymentQR();
         }
+      }
+
+      if (targetStep === 5 && currentDelegateType === 'external') {
+        updateExternalPaymentQR();
       }
 
       currentStep = targetStep;
@@ -3376,7 +3381,7 @@
     let _currentExternalAssignedUPI = 'aditimak.2005-1@okhdfcbank';
 
     async function updateExternalPaymentQR() {
-      // 1. Session Pinning: If an account was already assigned during this registration flow, reuse it
+      // 1. Session Pinning: If an account was already assigned during this registration flow, reuse it immediately
       try {
         const cached = sessionStorage.getItem('mun26_assigned_ext_qr');
         if (cached) {
@@ -3388,7 +3393,10 @@
         }
       } catch (e) {}
 
-      // 2. Fetch from Backend Rotation Engine (enforces <= 17 appearances per 24h rolling window across all users)
+      // 2. Instant Zero-Flicker Synchronous Rotation: Apply client rotation immediately so the UI is NEVER blank or stale
+      applyClientExternalQRRotation();
+
+      // 3. Background Sync with Server Rotation Engine (enforces <= 17 appearances per 24h rolling window globally)
       try {
         const resp = await fetch('/api/get-external-qr');
         if (resp.ok) {
@@ -3396,15 +3404,11 @@
           if (data && data.success && data.upiId && data.qrUrl) {
             sessionStorage.setItem('mun26_assigned_ext_qr', JSON.stringify({ upiId: data.upiId, qrUrl: data.qrUrl }));
             applyExternalQRUI(data.upiId, data.qrUrl);
-            return;
           }
         }
       } catch (err) {
         console.warn('[External QR] Remote rotation notice:', err);
       }
-
-      // 3. Resilient Client-Side Fallback Rotation
-      applyClientExternalQRRotation();
     }
 
     function applyExternalQRUI(upiId, qrUrl) {
