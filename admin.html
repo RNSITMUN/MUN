@@ -2614,10 +2614,10 @@
 
         // Optimistic state update in local cache
         if (type === 'individual') {
-          const item = rawRegistrations.find(r => r.id === id);
+          const item = rawRegistrations.find(r => String(r.id) === String(id));
           if (item) item.status = newStatus;
         } else {
-          const item = rawDelegations.find(d => d.id === id);
+          const item = rawDelegations.find(d => String(d.id) === String(id));
           if (item) item.status = newStatus;
         }
 
@@ -2666,7 +2666,7 @@
 
     // ─── Roster Modal ──────────────────────────────────────────────
     function openRosterModal(delegationId) {
-      const delegation = rawDelegations.find(d => d.id === delegationId);
+      const delegation = rawDelegations.find(d => String(d.id) === String(delegationId));
       if (!delegation) return;
 
       const title = document.getElementById('roster-title');
@@ -4058,8 +4058,8 @@
 
       modalTargetType = recordType;
       modalTargetRecord = recordType === 'individual'
-        ? rawRegistrations.find(r => r.id === recordId)
-        : rawDelegations.find(d => d.id === recordId);
+        ? rawRegistrations.find(r => String(r.id) === String(recordId))
+        : rawDelegations.find(d => String(d.id) === String(recordId));
 
       if (!modalTargetRecord) {
         showToast('Could not find record details.', 'error');
