@@ -531,24 +531,6 @@
       letter-spacing: -0.02em;
     }
 
-    .hpm-footnote {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.58);
-      letter-spacing: 0.02em;
-    }
-
-    .hpm-footnote span:first-child {
-      color: #6C0D2C;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
 
     .hero-btn-row {
       display: inline-flex;
@@ -726,9 +708,6 @@
         font-size: 0.92rem;
       }
 
-      .hpm-footnote {
-        font-size: 0.65rem;
-      }
 
       .hero-register-btn {
         font-size: 0.74rem;
@@ -1847,6 +1826,38 @@
       }
     }
 
+    /* Mobile devices only: WHY RNSMUN 2026 heading above Awards & Recognition, with 4 cards below */
+    @media (max-width: 768px) {
+      .why-mun-block {
+        display: contents;
+      }
+
+      .what-mun-block {
+        order: 1;
+      }
+
+      .why-mun-header {
+        order: 2;
+        margin-bottom: -18px;
+      }
+
+      .summit-dual-grid {
+        order: 3;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .why-mun-grid {
+        order: 4;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .summit-share-card {
+        order: 5;
+      }
+    }
+
     @media (max-width: 580px) {
       .mun26-editorial-section {
         padding: 38px max(14px, env(safe-area-inset-right, 14px)) max(105px, calc(90px + env(safe-area-inset-bottom, 0px))) max(14px, env(safe-area-inset-left, 14px));
@@ -2299,11 +2310,6 @@
             <span class="hpm-val-internal">₹999</span>
           </span>
         </div>
-        <p class="hpm-footnote">
-          <span>Ends Sept 15</span>
-          <span>&bull;</span>
-          <span>Includes meals, kit & certificates</span>
-        </p>
         <div class="hero-btn-row">
           <button type="button" class="hero-brochure-btn" id="hero-brochure-btn" onclick="openBrochureModal(event)"
             aria-label="Open RNSMUN 2026 Conference Brochure">
@@ -2723,13 +2729,13 @@
           <span class="brochure-page-indicator" id="brochure-page-count">15 Pages</span>
         </div>
         <div class="brochure-header-actions">
-          <button type="button" class="brochure-tool-btn" onclick="zoomOutBrochure()" title="Zoom Out"
+          <button type="button" class="brochure-tool-btn" id="brochure-zoom-out" onclick="zoomOutBrochure()" title="Zoom Out"
             aria-label="Zoom Out">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
           </button>
-          <button type="button" class="brochure-tool-btn" onclick="zoomInBrochure()" title="Zoom In"
+          <button type="button" class="brochure-tool-btn" id="brochure-zoom-in" onclick="zoomInBrochure()" title="Zoom In"
             aria-label="Zoom In">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="12" y1="5" x2="12" y2="19"></line>

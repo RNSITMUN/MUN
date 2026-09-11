@@ -1,5 +1,9 @@
 /* ─── RNSMUN 2026 In-Website Brochure PDF Modal (Ultra-Fast for PC & Mobile) ─── */
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html.brochure-modal-open,
 body.brochure-modal-open,
 html.home-page.brochure-modal-open,
@@ -140,18 +144,33 @@ html.home-page.brochure-modal-open body {
   box-shadow: 1.8px 1.8px 0px #000000;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.08s ease;
+  transition: background-color 0.12s ease, transform 0.08s ease, box-shadow 0.08s ease, opacity 0.12s ease;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.brochure-tool-btn:hover {
+@media (hover: hover) and (pointer: fine) {
+  .brochure-tool-btn:not(:disabled):not(.is-disabled):hover {
+    background: #E5A93C;
+    transform: translate(-1px, -1px);
+    box-shadow: 2.2px 2.2px 0px #000000;
+  }
+}
+
+.brochure-tool-btn:not(:disabled):not(.is-disabled):active {
   background: #E5A93C;
-  transform: translate(-1px, -1px);
-  box-shadow: 2.2px 2.2px 0px #000000;
-}
-
-.brochure-tool-btn:active {
   transform: translate(1px, 1px);
   box-shadow: 0.8px 0.8px 0px #000000;
+}
+
+.brochure-tool-btn:disabled,
+.brochure-tool-btn.is-disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: 1px 1px 0px #000000;
+  transform: none !important;
+  background: #EFEFEF !important;
 }
 
 .brochure-download-btn {
@@ -194,10 +213,11 @@ html.home-page.brochure-modal-open body {
   padding: 20px 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   background: #FFF7EB;
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
 }
 
 .brochure-loading-state {
@@ -233,8 +253,12 @@ html.home-page.brochure-modal-open body {
   flex-direction: column;
   align-items: center;
   gap: 22px !important;
-  width: 100%;
+  width: var(--page-width, 720px);
+  max-width: none;
+  margin: 0 auto;
   box-sizing: border-box;
+  will-change: width;
+  transition: width 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 .brochure-page-slot {
@@ -242,12 +266,11 @@ html.home-page.brochure-modal-open body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: var(--page-width, 720px);
+  max-width: 100%;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box;
   transform: none !important;
-  transition: max-width 0.14s ease-out;
 }
 
 .brochure-canvas-wrap {
@@ -301,6 +324,15 @@ html.home-page.brochure-modal-open body {
   box-shadow: 0 0 0 1.5px #6C0D2C;
 }
 
+.brochure-pdf-link-num {
+  background: transparent;
+}
+
+.brochure-pdf-link-num:hover {
+  background: rgba(229, 169, 60, 0.32);
+  box-shadow: 0 0 0 1.5px #E5A93C;
+}
+
 .brochure-page-number {
   font-family: 'Outfit', sans-serif;
   font-size: 0.70rem;
@@ -347,12 +379,17 @@ html.home-page.brochure-modal-open body {
 
   .brochure-pages-container {
     gap: 16px !important;
-    width: 100% !important;
+    width: var(--page-width, 100%) !important;
+    max-width: none !important;
+    min-width: unset !important;
+    margin: 0 auto;
+    transition: width 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);
   }
 
   .brochure-page-slot {
     width: 100% !important;
-    max-width: var(--page-width, 100%) !important;
+    max-width: 100% !important;
+    transition: none !important;
   }
 
   .brochure-canvas {
@@ -364,6 +401,15 @@ html.home-page.brochure-modal-open body {
 
   .brochure-tool-btn#brochure-zoom-in,
   .brochure-tool-btn#brochure-zoom-out {
-    display: none;
+    display: inline-flex;
+    padding: 5px 8px;
   }
+}
+
+.brochure-modal-body.is-pinching .brochure-pages-container {
+  transition: none !important;
+}
+
+.brochure-modal-body.is-pinching .brochure-page-slot {
+  transition: none !important;
 }

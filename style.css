@@ -71,6 +71,10 @@ summary,
   touch-action: manipulation;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   overscroll-behavior-x: none;
