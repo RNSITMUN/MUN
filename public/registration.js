@@ -4301,10 +4301,14 @@
       const getRadioVal = (name) => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
       const getSelectText = (id) => { const el = document.getElementById(id); return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''; };
 
-      const isIEEE = currentDelegateType === 'external' && document.getElementById('ieee-yes-btn')?.classList.contains('selected');
+      const enteredIeeeId = getVal('reg-ieee-id');
+      const isIEEE = currentDelegateType === 'external' && (isIEEEMember === true || externalCategory === 'ieee' || Boolean(enteredIeeeId));
       const paymentAmount = currentDelegateType === 'internal'
         ? '₹999'
-        : isIEEE ? '₹1,149 (IEEE)' : '₹1,200 (Early Bird) / ₹1,349 (Standard)';
+        : isIEEE ? '₹1,200 (IEEE)' : '₹1,200 (External)';
+
+      const displayedUpi = (document.getElementById('external-upi-id-text')?.textContent || '').trim();
+      const resolvedExternalUpi = _currentExternalAssignedUPI || (displayedUpi && displayedUpi !== 'mun@rnsit.ac.in' ? displayedUpi : 'aditimak.2005-1@okhdfcbank');
 
       const formPayload = {
         delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : isIEEE ? 'External (IEEE Member)' : 'External',
@@ -4323,9 +4327,9 @@
         committee2:        getSelectText('reg-committee-2'),
         portfolio2_1:      getSelectText('reg-comm2-portfolio-1'),
         portfolio2_2:      getSelectText('reg-comm2-portfolio-2'),
-        ieeeId:            isIEEE ? (getVal('reg-ieee-id') || 'IEEE Member') : '',
+        ieeeId:            enteredIeeeId || (isIEEE ? 'IEEE Member' : ''),
         paymentAmount,
-        assignedUpiId:     currentDelegateType === 'external' ? _currentExternalAssignedUPI : '',
+        assignedUpiId:     currentDelegateType === 'external' ? resolvedExternalUpi : '',
         screenshotBase64:  _compressedScreenshots[currentDelegateType] || '',
         screenshotFormat:  (_compressedScreenshots[currentDelegateType] || '').includes('image/webp') ? 'webp' : 'jpeg'
       };
@@ -4359,8 +4363,7 @@
           const res = await fetch('/api/submit-registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            keepalive: true
+            body: JSON.stringify(payload)
           });
           const data = await res.json().catch(() => null);
           if (res.status === 409 || (data && data.duplicate)) {
@@ -4377,7 +4380,7 @@
           }
         } catch (apiErr) {
           console.error('[Registration] Submission error:', apiErr);
-          return { success: false, error: 'Network error or unable to reach server. Please check your connection and try again.' };
+          return { success: false, error: apiErr?.message ? `Network/submission error: ${apiErr.message}` : 'Network error or unable to reach server. Please check your connection and try again.' };
         }
         return { success: false, error: 'Submission failed. Please check your connection and try again.' };
       }
@@ -4386,6 +4389,13 @@
         .then((result) => {
           // STRICT ERROR CHECK: If not successful, NEVER show success screen, NEVER redirect to BillDesk!
           if (!result || !result.success) {
+            // Restore submit button state so user can retry
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+              if (originalBtnHTML) submitBtn.innerHTML = originalBtnHTML;
+            }
+
             if (result && result.duplicate) {
               // Handle duplicate email attempt
               if (formPayload.email) markEmailAsRegistered(formPayload.email, 'individual');

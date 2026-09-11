@@ -121,7 +121,7 @@ export default async function handler(req, res) {
       committee2:         clean(body.committee2),
       portfolio2_1:       clean(body.portfolio2_1),
       portfolio2_2:       clean(body.portfolio2_2),
-      ieee_id:            clean(body.ieeeId),
+      ieee_id:            clean(body.ieeeId || body.ieee_id),
       payment_amount:     clean(body.paymentAmount) + (body.assignedUpiId ? (' | UPI: ' + clean(body.assignedUpiId)) : ''),
       screenshot_url:     screenshotUrl,
       status:             'Pending Verification'
