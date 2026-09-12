@@ -87,10 +87,12 @@ export default async function handler(req, res) {
       });
     }
 
+    const preparedHtml = htmlBody.replace(/src=["']\/?assets\//g, 'src="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/');
+
     const payload = {
       recipient: recipient.trim(),
       subject: (subject || "Notice from RNS MUN '26").trim(),
-      htmlBody: htmlBody,
+      htmlBody: preparedHtml,
       from: 'mun@rnsit.ac.in',
       senderName: senderName || 'RNS MUN Secretariat',
       replyTo: replyTo || 'mun@rnsit.ac.in',

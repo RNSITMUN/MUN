@@ -1281,7 +1281,6 @@
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
       padding-bottom: 0.5rem;
       scrollbar-width: thin;
       scrollbar-color: rgba(108, 13, 44, 0.4) rgba(0, 0, 0, 0.05);
@@ -1323,6 +1322,79 @@
         opacity: 0;
       }
     }
+
+    /* ── Sticky top scrollbar mirror ───────────────────────────── */
+    .table-top-scroll-mirror-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      width: 100%;
+      background: #FFF7EB;
+      border-bottom: 1.5px solid rgba(108,13,44,0.15);
+      padding: 3px 0 2px 0;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .table-top-scroll-mirror {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      height: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(108,13,44,0.5) rgba(0,0,0,0.06);
+    }
+    .table-top-scroll-mirror::-webkit-scrollbar {
+      height: 8px;
+    }
+    .table-top-scroll-mirror::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+    .table-top-scroll-mirror::-webkit-scrollbar-thumb {
+      background: rgba(108,13,44,0.45);
+      border-radius: 4px;
+    }
+    .table-top-scroll-mirror::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color);
+    }
+    .table-top-scroll-inner {
+      height: 1px;
+    }
+    /* Floating nudge arrows */
+    .tbl-scroll-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      background: #6C0D2C;
+      color: #FFF7EB;
+      border: 2px solid #000000;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000000;
+      font-size: 1.1rem;
+      font-weight: 900;
+      line-height: 1;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .tbl-scroll-arrow:hover {
+      background: #E5A93C;
+      color: #000000;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 3px 3px 0px #000000;
+    }
+    .tbl-scroll-arrow.visible {
+      display: flex;
+    }
+    #tbl-arrow-left  { left: 8px; }
+    #tbl-arrow-right { right: 8px; }
 
     table.data-table {
       width: 100%;
@@ -1736,7 +1808,7 @@
       gap: 0.35rem;
       cursor: pointer;
       box-shadow: 1.5px 1.5px 0px #000000;
-      transition: all 0.15s ease;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
       white-space: nowrap;
     }
     .btn-action-mail:hover {
@@ -1746,15 +1818,30 @@
       box-shadow: 2.5px 2.5px 0px #000000;
     }
     .btn-action-mail.is-sent {
-      background: #D1FAE5;
-      color: #065F46;
-      border-color: #000000;
+      background: #059669;
+      color: #ffffff;
+      border-color: #047857;
+      box-shadow: 1.5px 1.5px 0px #047857;
+    }
+    .btn-action-mail.is-sent .mail-sent-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #A7F3D0;
+      flex-shrink: 0;
     }
     .btn-action-mail.is-sent:hover {
-      background: #059669;
-      color: #FFF7EB;
+      background: #047857;
+      color: #ffffff;
       transform: translate(-1px, -1px);
-      box-shadow: 2.5px 2.5px 0px #000000;
+      box-shadow: 2.5px 2.5px 0px #065F46;
+    }
+    .btn-action-mail.is-sent:hover::after {
+      content: ' (send again)';
+      font-size: 0.68rem;
+      font-weight: 600;
+      opacity: 0.85;
     }
 
     /* Template View Container */
@@ -2433,7 +2520,7 @@
               </svg>
               <span>Mail Templates</span>
             </span>
-            <span class="tab-badge" id="badge-count-templates">4</span>
+            <span class="tab-badge" id="badge-count-templates">2</span>
           </button>
         </div>
 
@@ -2480,6 +2567,11 @@
           <span>⇄ Swipe table sideways to view more columns</span>
         </div>
         <div class="table-scroll-affordance" id="table-scroll-affordance" aria-hidden="true"></div>
+        <div class="table-top-scroll-mirror-wrap" id="table-top-mirror-wrap">
+          <div class="table-top-scroll-mirror" id="table-top-mirror">
+            <div class="table-top-scroll-inner" id="table-top-mirror-inner"></div>
+          </div>
+        </div>
         <div class="table-responsive" id="table-responsive-wrapper">
           
           <!-- Tab 1: Individuals Table -->
@@ -2606,12 +2698,6 @@
             <div id="template-list-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
               <!-- Populated dynamically by JS -->
             </div>
-
-            <div style="margin-top: auto; padding-top: 1rem; border-top: 1.5px solid #000000; display: flex; flex-direction: column; gap: 0.5rem;">
-              <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.75rem;" onclick="resetTemplatesToDefault()">
-                🔄 Restore Default Presets
-              </button>
-            </div>
           </div>
 
           <!-- Right: Main Template Editor & Previewer -->
@@ -2679,9 +2765,16 @@
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{name}}')">{{name}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{email}}')">{{email}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{phone}}')">{{phone}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{committee1}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 700;">{{committee1}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{portfolio1_1}}')">{{portfolio1_1}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{portfolio1_2}}')">{{portfolio1_2}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{committee2}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 700;">{{committee2}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{portfolio2_1}}')">{{portfolio2_1}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{portfolio2_2}}')">{{portfolio2_2}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{committee}}')">{{committee}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{portfolio}}')">{{portfolio}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{institution}}')">{{institution}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{delegation_name}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 700;">{{delegation_name}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{status}}')">{{status}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{amount}}')">{{amount}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{type}}')">{{type}}</button>
@@ -3595,7 +3688,7 @@
           </td>
           <td style="text-align: center;">
             <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'individual')" title="${isSent ? 'Mail sent to delegate. Click to send another email.' : 'Send Mail'}">
-              ${isSent ? '✅ Sent Mail' : '✉️ Send Mail'}
+              ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
             </button>
           </td>
         `;
@@ -3679,7 +3772,7 @@
           </td>
           <td style="text-align: center;">
             <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to delegation. Click to send another email.' : 'Send Mail'}">
-              ${isSent ? '✅ Sent Mail' : '✉️ Send Mail'}
+              ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
             </button>
           </td>
         `;
@@ -4378,57 +4471,114 @@
     const DEFAULT_MAIL_TEMPLATES = [
       {
         id: 'tpl-welcome-confirmed',
-        name: 'Payment Confirmed & Delegate Welcome Kit',
+        name: 'Delegate Mail',
         isPreset: true,
-        subject: "Registration Confirmed - Welcome to RNS MUN '26 | {{name}}",
+        subject: "Welcome to RNS MUN 2026 – Registration & Payment Confirmed!",
         body: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #222; margin: 0; padding: 20px; line-height: 1.6; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #111113; margin: 0; padding: 24px 16px; line-height: 1.6; }
     .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #6C0D2C; color: #FFF7EB; padding: 28px 24px; text-align: center; border-bottom: 2px solid #000000; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
-    .header p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.9; color: #E5A93C; font-weight: 600; }
-    .content { padding: 28px 24px; }
-    .greeting { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #6C0D2C; }
-    .details-box { background: #FFF7EB; border: 2px solid #000000; border-radius: 8px; padding: 18px; margin: 20px 0; box-shadow: 2px 2px 0px #000000; }
-    .details-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); font-size: 14px; }
-    .details-row:last-child { border-bottom: none; }
-    .details-label { font-weight: 700; color: #555; }
-    .details-val { font-weight: 700; color: #000; text-align: right; }
-    .cta-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 15px; padding: 12px 24px; border: 2px solid #000000; border-radius: 6px; box-shadow: 3px 3px 0px #000000; margin: 16px 0; text-align: center; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px 20px 18px 20px; text-align: center; border-bottom: 2px solid #000000; }
+    .header-logo { display: block; margin: 0 auto; max-width: 290px; width: 100%; height: auto; border: 0; }
+    .header p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.95; color: #E5A93C; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; }
+    .content { padding: 28px 24px; font-size: 15px; color: #222222; }
+    .salutation { font-size: 18px; font-weight: 700; color: #6C0D2C; margin-bottom: 12px; }
+    .highlight-box { background: #FFFDF9; border-left: 4px solid #E5A93C; border-top: 1px solid #E5D7C3; border-right: 1px solid #E5D7C3; border-bottom: 1px solid #E5D7C3; border-radius: 4px; padding: 12px 16px; margin: 20px 0; font-size: 14px; }
+    .highlight-box strong { color: #6C0D2C; }
+    .pref-summary-box { background: #FFFDF9; border: 1.5px solid #000000; border-radius: 12px; padding: 18px; margin: 22px 0; }
+    .pref-summary-title { color: #6C0D2C; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .pref-summary-hr { border: 0; border-top: 1.5px solid #000000; margin: 0 0 14px 0; }
+    .pref-card { background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+    .pref-card:last-child { margin-bottom: 0; }
+    .pref-badge { display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+    .pref-row { font-size: 14px; line-height: 1.75; color: #222222; margin-bottom: 4px; }
+    .pref-row:last-child { margin-bottom: 0; }
+    .pref-label { color: #333333; font-weight: 600; }
+    .pref-val { font-weight: 700; color: #000000; }
+    .contacts-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 14.5px; }
+    .contact-item { padding: 4px 0; font-weight: 600; }
+    .contact-item a { color: #6C0D2C; text-decoration: none; font-weight: 700; }
+    .contact-divider { border: 0; border-top: 1px dashed #D5C7B4; margin: 6px 0; }
+    .signoff { margin-top: 24px; font-size: 14.5px; line-height: 1.5; color: #333333; }
+    .logo-wrap { margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #EEEEEE; }
+    .logo-wrap img { display: block; max-width: 120px; height: auto; border: 0; }
+    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>RNS MUN '26</h1>
-      <p>Official Delegate Registration Confirmation</p>
+      <img src="/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;">
+      <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
-      <div class="greeting">Greetings, {{name}}!</div>
-      <p>We are delighted to confirm that your registration and payment for <strong>RNS MUN '26</strong> have been verified successfully.</p>
+      <div class="salutation">Dear {{name}},</div>
+      <p>Greetings from the RNSIT MUN Society!</p>
+      <p>Thank you for registering for RNS MUN 2026. We are happy to inform you that your registration and payment have been successfully received and verified.</p>
       
-      <div class="details-box">
-        <div class="details-row"><span class="details-label">Delegate Name:</span><span class="details-val">{{name}}</span></div>
-        <div class="details-row"><span class="details-label">Registered Email:</span><span class="details-val">{{email}}</span></div>
-        <div class="details-row"><span class="details-label">Institution:</span><span class="details-val">{{institution}}</span></div>
-        <div class="details-row"><span class="details-label">Committee 1:</span><span class="details-val">{{committee}}</span></div>
-        <div class="details-row"><span class="details-label">Portfolios Chosen:</span><span class="details-val">{{portfolio}}</span></div>
-        <div class="details-row"><span class="details-label">Verified Amount:</span><span class="details-val" style="color: #047857;">{{amount}}</span></div>
-        <div class="details-row"><span class="details-label">Status:</span><span class="details-val" style="color: #047857;">✅ {{status}}</span></div>
+      <div class="pref-summary-box" style="background: #FFFDF9; border: 1.5px solid #000000; border-radius: 12px; padding: 18px; margin: 22px 0;">
+        <div class="pref-summary-title" style="color: #6C0D2C; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;">
+          SUBMITTED PREFERENCES SUMMARY
+        </div>
+        <div class="pref-summary-hr" style="border-top: 1.5px solid #000000; margin: 0 0 14px 0; height: 0;"></div>
+
+        <div class="pref-card" style="background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px;">
+          <div class="pref-badge" style="display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px;">
+            COMMITTEE PREFERENCE 1
+          </div>
+          <div style="font-size: 14px; line-height: 1.75; color: #222222;">
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Committee: </span><strong style="color: #000000; font-weight: 700;">{{committee1}}</strong></div>
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Portfolio Pref 1: </span><strong style="color: #000000; font-weight: 700;">{{portfolio1_1}}</strong></div>
+            <div><span style="color: #333333; font-weight: 600;">Portfolio Pref 2: </span><strong style="color: #000000; font-weight: 700;">{{portfolio1_2}}</strong></div>
+          </div>
+        </div>
+
+        <div class="pref-card" style="background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px;">
+          <div class="pref-badge" style="display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px;">
+            COMMITTEE PREFERENCE 2
+          </div>
+          <div style="font-size: 14px; line-height: 1.75; color: #222222;">
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Committee: </span><strong style="color: #000000; font-weight: 700;">{{committee2}}</strong></div>
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Portfolio Pref 1: </span><strong style="color: #000000; font-weight: 700;">{{portfolio2_1}}</strong></div>
+            <div><span style="color: #333333; font-weight: 600;">Portfolio Pref 2: </span><strong style="color: #000000; font-weight: 700;">{{portfolio2_2}}</strong></div>
+          </div>
+        </div>
       </div>
 
-      <p>Please find attached the official delegate handbook, code of conduct, and committee schedule. Matrix allotments will be communicated shortly.</p>
-      
-      <div style="text-align: center;">
-        <a href="https://chat.whatsapp.com/sample" class="cta-btn">Join Official Delegate WhatsApp Group</a>
+      <div class="highlight-box">
+        <strong>Important Update:</strong> Your committee and portfolio allotments will be shared via email 6 to 8 days prior to the conference.
       </div>
 
-      <p style="margin-top: 20px; font-size: 14px;">If you have any questions regarding your committee or travel arrangements, feel free to reach out to the Secretariat.</p>
+      <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
+      
+      <div class="contacts-box">
+        <div class="contact-item">Zeyan: <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
+        <div class="contact-item">Adith: <a href="tel:+918970262490">+91 89702 62490</a></div>
+      </div>
+
+      <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
+
+      <div class="signoff">
+        Warm regards,<br>
+        <strong>Core Secretariat of RNS MUN 2026</strong><br>
+        RNSIT MUN Society
+      </div>
+
+      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5;">
+        The MUN buzz? Right here &rarr;<br>
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
+      </p>
+
+      <div class="logo-wrap">
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
+          <img src="/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;">
+        </a>
+      </div>
     </div>
     <div class="footer">
       <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Channasandra, Bengaluru - 560098<br>Email: mun@rnsit.ac.in</p>
@@ -4439,240 +4589,104 @@
         attachments: []
       },
       {
-        id: 'tpl-payment-query',
-        name: 'Payment Screenshot Query / Action Required',
+        id: 'tpl-delegation-confirmed',
+        name: 'Delegation Mail',
         isPreset: true,
-        subject: "Action Required: Payment Verification for RNS MUN '26 | {{name}}",
+        subject: "Welcome to RNS MUN 2026 – Registration & Payment Confirmed!",
         body: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #222; margin: 0; padding: 20px; line-height: 1.6; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #111113; margin: 0; padding: 24px 16px; line-height: 1.6; }
     .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #991B1B; color: #FFF7EB; padding: 24px; text-align: center; border-bottom: 2px solid #000000; }
-    .header h1 { margin: 0; font-size: 22px; font-weight: 800; }
-    .content { padding: 28px 24px; }
-    .alert-box { background: #FEE2E2; border: 2px solid #991B1B; border-radius: 8px; padding: 16px; margin: 16px 0; color: #991B1B; font-weight: 600; font-size: 14px; }
-    .details-box { background: #FFF7EB; border: 1.5px solid #000000; border-radius: 8px; padding: 14px; margin: 16px 0; font-size: 14px; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 16px; text-align: center; font-size: 12px; color: #666; }
+    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px 20px 18px 20px; text-align: center; border-bottom: 2px solid #000000; }
+    .header-logo { display: block; margin: 0 auto; max-width: 290px; width: 100%; height: auto; border: 0; }
+    .header p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.95; color: #E5A93C; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; }
+    .content { padding: 28px 24px; font-size: 15px; color: #222222; }
+    .salutation { font-size: 18px; font-weight: 700; color: #6C0D2C; margin-bottom: 12px; }
+    .highlight-box { background: #FFFDF9; border-left: 4px solid #E5A93C; border-top: 1px solid #E5D7C3; border-right: 1px solid #E5D7C3; border-bottom: 1px solid #E5D7C3; border-radius: 4px; padding: 12px 16px; margin: 20px 0; font-size: 14px; }
+    .highlight-box strong { color: #6C0D2C; }
+    .pref-summary-box { background: #FFFDF9; border: 1.5px solid #000000; border-radius: 12px; padding: 18px; margin: 22px 0; }
+    .pref-summary-title { color: #6C0D2C; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .pref-summary-hr { border: 0; border-top: 1.5px solid #000000; margin: 0 0 14px 0; }
+    .pref-card { background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+    .pref-card:last-child { margin-bottom: 0; }
+    .pref-badge { display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+    .contacts-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 14.5px; }
+    .contact-item { padding: 4px 0; font-weight: 600; }
+    .contact-item a { color: #6C0D2C; text-decoration: none; font-weight: 700; }
+    .contact-divider { border: 0; border-top: 1px dashed #D5C7B4; margin: 6px 0; }
+    .signoff { margin-top: 24px; font-size: 14.5px; line-height: 1.5; color: #333333; }
+    .logo-wrap { margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #EEEEEE; }
+    .logo-wrap img { display: block; max-width: 120px; height: auto; border: 0; }
+    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Payment Verification Notice</h1>
+      <img src="/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;">
+      <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
-      <p>Dear <strong>{{name}}</strong>,</p>
+      <div class="salutation">Dear {{name}},</div>
+      <p>Greetings from the RNSIT MUN Society!</p>
+      <p>Thank you for registering your delegation (<strong>{{delegation_name}}</strong>) for RNS MUN 2026. We are happy to inform you that your registration and payment have been successfully received and verified.</p>
       
-      <div class="alert-box">
-        ⚠️ We encountered an issue while verifying your registration payment for RNS MUN '26.
-      </div>
+      <div class="pref-summary-box" style="background: #FFFDF9; border: 1.5px solid #000000; border-radius: 12px; padding: 18px; margin: 22px 0;">
+        <div class="pref-summary-title" style="color: #6C0D2C; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;">
+          DELEGATION SUMMARY
+        </div>
+        <div class="pref-summary-hr" style="border-top: 1.5px solid #000000; margin: 0 0 14px 0; height: 0;"></div>
 
-      <p>Your payment screenshot appears unclear or the transaction reference (UTR number) could not be verified with our bank records.</p>
-      
-      <div class="details-box">
-        <div><strong>Registration ID:</strong> {{registration_id}}</div>
-        <div><strong>Recorded Amount:</strong> {{amount}}</div>
-        <div><strong>Selected Committee:</strong> {{committee}}</div>
-      </div>
-
-      <p><strong>Next Steps:</strong> Please reply directly to this email with:</p>
-      <ol style="padding-left: 20px; font-size: 14px;">
-        <li>A clear screenshot showing the 12-digit UPI / Bank UTR Reference Number.</li>
-        <li>Date and timestamp of the transaction.</li>
-        <li>Sender UPI ID or Account Holder Name.</li>
-      </ol>
-
-      <p>Thank you for your prompt cooperation.</p>
-      <p style="margin-top: 20px;">Warm regards,<br><strong>Finance Committee</strong><br>RNS MUN '26 Secretariat</p>
-    </div>
-    <div class="footer">
-      <p>RNS Institute of Technology · mun@rnsit.ac.in</p>
-    </div>
-  </div>
-</body>
-</html>`,
-        attachments: []
-      },
-      {
-        id: 'tpl-portfolio-allocation',
-        name: 'Official Matrix & Portfolio Allotment',
-        isPreset: true,
-        subject: "Official Portfolio Allotment: {{committee}} - RNS MUN '26",
-        body: `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #222; margin: 0; padding: 20px; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px; text-align: center; border-bottom: 2px solid #000000; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 800; }
-    .header p { margin: 6px 0 0 0; color: #E5A93C; font-weight: 700; font-size: 14px; }
-    .content { padding: 28px 24px; }
-    .allotment-card { background: #FFF7EB; border: 2px solid #000000; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; box-shadow: 3px 3px 0px #000000; }
-    .allotment-label { font-size: 12px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; color: #666; }
-    .allotment-val { font-size: 22px; font-weight: 800; color: #6C0D2C; margin: 6px 0 12px 0; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 16px; text-align: center; font-size: 12px; color: #666; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>RNS MUN '26</h1>
-      <p>Official Committee Matrix Allotment</p>
-    </div>
-    <div class="content">
-      <p>Greetings Delegate <strong>{{name}}</strong>,</p>
-      <p>The Executive Board and Secretariat are pleased to announce your official portfolio allotment for the upcoming edition of RNS MUN:</p>
-      
-      <div class="allotment-card">
-        <div class="allotment-label">Assigned Committee</div>
-        <div class="allotment-val">{{committee}}</div>
-        
-        <div class="allotment-label">Allocated Country / Portfolio</div>
-        <div class="allotment-val" style="color: #047857;">{{portfolio}}</div>
-      </div>
-
-      <p><strong>Preparation Guidelines:</strong></p>
-      <ul style="padding-left: 20px; font-size: 14px;">
-        <li>Review your committee Background Guide attached or hosted on our portal.</li>
-        <li>Position Papers must be submitted before the prescribed deadline.</li>
-        <li>Western / Indian Formal attire is mandatory on conference days.</li>
-      </ul>
-
-      <p style="margin-top: 24px;">We look forward to an exhilarating session of diplomatic debate and deliberation!</p>
-      <p>Best regards,<br><strong>Executive Board & Secretariat</strong><br>RNS MUN '26</p>
-    </div>
-    <div class="footer">
-      <p>RNS Institute of Technology · mun@rnsit.ac.in</p>
-    </div>
-  </div>
-</body>
-</html>`,
-        attachments: []
-      },
-      {
-        id: 'tpl-delegation-roster-confirmation',
-        name: 'Delegation Confirmation & Roster Sheet',
-        isPreset: true,
-        subject: "Official Delegation Confirmation & Roster: {{institution}} - RNS MUN '26",
-        body: `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #222; margin: 0; padding: 20px; line-height: 1.6; }
-    .container { max-width: 650px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #6C0D2C; color: #FFF7EB; padding: 26px 24px; text-align: center; border-bottom: 2px solid #000000; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 800; }
-    .header p { margin: 6px 0 0 0; color: #E5A93C; font-weight: 700; font-size: 14px; }
-    .content { padding: 28px 24px; }
-    .delegation-summary { background: #FFF7EB; border: 2px solid #000000; border-radius: 8px; padding: 16px; margin: 16px 0; box-shadow: 2px 2px 0px #000000; }
-    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
-    .summary-item { padding: 4px 0; }
-    .summary-label { font-weight: 700; color: #555; }
-    .summary-val { font-weight: 800; color: #000; }
-    .attachment-notice { background: #D1FAE5; border: 1.5px solid #065F46; border-radius: 8px; padding: 12px 16px; margin: 16px 0; color: #065F46; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .cta-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 14px; padding: 12px 24px; border: 2px solid #000000; border-radius: 6px; box-shadow: 3px 3px 0px #000000; margin: 12px 0; text-align: center; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>RNS MUN '26</h1>
-      <p>Official Delegation Confirmation & Roster Allotment</p>
-    </div>
-    <div class="content">
-      <p>Greetings <strong>{{name}}</strong>,</p>
-      <p>We are pleased to officially confirm the registration of <strong>{{institution}}</strong> for <strong>RNS Model United Nations 2026</strong>. Your delegation payment and roster have been verified.</p>
-      
-      <div class="delegation-summary">
-        <div class="summary-grid">
-          <div class="summary-item"><span class="summary-label">Delegation / Institution:</span><br><span class="summary-val">{{institution}}</span></div>
-          <div class="summary-item"><span class="summary-label">Head of Delegation:</span><br><span class="summary-val">{{name}}</span></div>
-          <div class="summary-item"><span class="summary-label">Delegation Strength:</span><br><span class="summary-val">{{roster_count}} Delegates</span></div>
-          <div class="summary-item"><span class="summary-label">Verification Status:</span><br><span class="summary-val" style="color: #047857;">✅ {{status}}</span></div>
-          <div class="summary-item"><span class="summary-label">Total Verified Fees:</span><br><span class="summary-val" style="color: #047857;">{{amount}}</span></div>
-          <div class="summary-item"><span class="summary-label">Registration ID:</span><br><span class="summary-val">{{registration_id}}</span></div>
+        <div class="pref-card" style="background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px; margin-bottom: 0;">
+          <div class="pref-badge" style="display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px;">
+            DELEGATION DETAILS
+          </div>
+          <div style="font-size: 14px; line-height: 1.75; color: #222222;">
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Delegation Name: </span><strong style="color: #000000; font-weight: 700;">{{delegation_name}}</strong></div>
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Head Delegate: </span><strong style="color: #000000; font-weight: 700;">{{name}}</strong></div>
+            <div style="margin-bottom: 4px;"><span style="color: #333333; font-weight: 600;">Institution: </span><strong style="color: #000000; font-weight: 700;">{{institution}}</strong></div>
+            <div><span style="color: #333333; font-weight: 600;">Delegation Size: </span><strong style="color: #000000; font-weight: 700;">{{roster_count}} Delegates</strong></div>
+          </div>
         </div>
       </div>
 
-      <h3 style="color: #6C0D2C; margin: 20px 0 10px 0;">Official Delegation Roster & Committee Matrix:</h3>
-      {{roster_table}}
-
-      <div class="attachment-notice">
-        <span>📎</span>
-        <span><strong>Official Roster Attached:</strong> Your complete delegation roster sheet has been attached to this email as a CSV spreadsheet for your records.</span>
+      <div class="highlight-box">
+        <strong>Important Update:</strong> Your committee and portfolio allotments will be shared via email 6 to 8 days prior to the conference.
       </div>
 
-      <p><strong>Next Steps for Delegation Heads:</strong></p>
-      <ul style="padding-left: 20px; font-size: 13.5px;">
-        <li>Ensure all delegates have reviewed their background guides and rules of procedure.</li>
-        <li>Position papers must be submitted by each individual delegate before the conference deadline.</li>
-        <li>Join the official Head of Delegation WhatsApp channel below for real-time logistics and registration desk updates.</li>
-      </ul>
-
-      <div style="text-align: center;">
-        <a href="https://chat.whatsapp.com/sample-delegation" class="cta-btn">Join Delegation Heads WhatsApp Desk</a>
-      </div>
-
-      <p style="margin-top: 24px;">For any queries or roster adjustments, please reply directly to this email.</p>
-      <p>Best regards,<br><strong>Executive Secretariat & Delegate Affairs</strong><br>RNS MUN '26</p>
-    </div>
-    <div class="footer">
-      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology · mun@rnsit.ac.in</p>
-    </div>
-  </div>
-</body>
-</html>`,
-        attachments: []
-      },
-      {
-        id: 'tpl-general-broadcast',
-        name: 'General Delegate Announcement',
-        isPreset: true,
-        subject: "Important Update for Delegates - RNS MUN '26",
-        body: `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #222; margin: 0; padding: 20px; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px; text-align: center; border-bottom: 2px solid #000000; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 800; }
-    .content { padding: 28px 24px; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 16px; text-align: center; font-size: 12px; color: #666; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>RNS MUN '26</h1>
-      <p style="color: #E5A93C; margin: 4px 0 0 0; font-weight: 700;">Secretariat Circular</p>
-    </div>
-    <div class="content">
-      <p>Dear <strong>{{name}}</strong>,</p>
-      <p>This is an official announcement from the Secretariat regarding important updates for all registered delegates and delegations.</p>
+      <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
       
-      <div style="background: #FFF7EB; border: 1.5px solid #000000; border-radius: 8px; padding: 16px; margin: 16px 0;">
-        <h4 style="margin: 0 0 8px 0; color: #6C0D2C;">Key Highlights:</h4>
-        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
-          <li>Conference Itinerary and reporting times have been released.</li>
-          <li>Bring a valid institutional Photo ID card and registration confirmation email.</li>
-          <li>Contact details of Committee rapporteurs are available on our official channel.</li>
-        </ul>
+      <div class="contacts-box">
+        <div class="contact-item">Zeyan: <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
+        <div class="contact-item">Adith: <a href="tel:+918970262490">+91 89702 62490</a></div>
       </div>
 
-      <p>Should you require any assistance, please do not hesitate to contact our delegate affairs team.</p>
-      <p style="margin-top: 24px;">Sincerely,<br><strong>Secretariat</strong><br>RNS MUN '26</p>
+      <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
+
+      <div class="signoff">
+        Warm regards,<br>
+        <strong>Core Secretariat of RNS MUN 2026</strong><br>
+        RNSIT MUN Society
+      </div>
+
+      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5;">
+        The MUN buzz? Right here &rarr;<br>
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
+      </p>
+
+      <div class="logo-wrap">
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
+          <img src="/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;">
+        </a>
+      </div>
     </div>
     <div class="footer">
-      <p>RNS Model United Nations · RNSIT Bengaluru · mun@rnsit.ac.in</p>
+      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Channasandra, Bengaluru - 560098<br>Email: mun@rnsit.ac.in</p>
     </div>
   </div>
 </body>
@@ -4736,19 +4750,24 @@
       }
     }
 
+    const TEMPLATES_VERSION = 'v21_delegation_mail_template';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
-      if (stored !== null) {
+      const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
+      if (stored !== null && storedVersion === TEMPLATES_VERSION) {
         try {
           mailTemplates = JSON.parse(stored);
-          if (!Array.isArray(mailTemplates)) {
+          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed')) {
             mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
+            saveTemplatesToStorage();
           }
         } catch (e) {
           mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
+          saveTemplatesToStorage();
         }
       } else {
         mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
+        localStorage.setItem('rns_mun_mail_templates_version', TEMPLATES_VERSION);
         saveTemplatesToStorage();
       }
 
@@ -4877,7 +4896,7 @@
           <div style="padding: 1.25rem 0.85rem; text-align: center; color: #666; font-size: 0.8rem; background: #FFFDF9; border: 1.5px dashed #999; border-radius: 8px;">
             <div style="font-size: 1.4rem; margin-bottom: 0.35rem;">📭</div>
             <div style="font-weight: 800; color: #111; margin-bottom: 0.25rem;">No Templates Left</div>
-            <div style="font-size: 0.72rem; color: #555;">Click <strong>➕ New</strong> to create one, or restore presets below.</div>
+            <div style="font-size: 0.72rem; color: #555;">Click <strong>➕ New</strong> to create one.</div>
           </div>
         `;
         return;
@@ -5001,8 +5020,15 @@
           email: 'priya.patel@example.com',
           phone: '+91 98450 12345',
           committee: 'UNHRC (Human Rights Council)',
-          portfolio: 'Federal Republic of Germany',
+          portfolio: 'Federal Republic of Germany / Japan',
+          committee1: 'UNHRC',
+          portfolio1_1: 'Federal Republic of Germany',
+          portfolio1_2: 'Japan',
+          committee2: 'UNODC',
+          portfolio2_1: 'Kingdom of Norway',
+          portfolio2_2: 'Federative Republic of Brazil',
           institution: 'PES University, Bengaluru',
+          delegation_name: 'PES MUN Delegation',
           status: 'Pending Verification',
           amount: '₹600',
           type: 'External',
@@ -5015,7 +5041,8 @@
       } else if (preset === 'delegation_head') {
         const sampleDelegation = {
           id: 'dlg-sample-99',
-          delegation_name: 'RV College of Engineering Delegation',
+          delegation_name: 'RVCE MUN Delegation',
+          institution: 'RV College of Engineering',
           delegation_type: 'College / University',
           head_name: 'Dr. Rajiv Mehta',
           email: 'rajiv.mehta@rvce.edu.in',
@@ -5040,9 +5067,16 @@
         name: 'Aarav Sharma',
         email: 'aarav.sharma@example.com',
         phone: '+91 98765 43210',
-        committee: 'UNSC (United Nations Security Council)',
-        portfolio: 'Federation of Russia (Delegate 1) / France (Delegate 2)',
+        committee: 'UNSC — United Nations Security Council',
+        portfolio: "People's Republic of China / Kingdom of Bahrain",
+        committee1: 'UNSC — United Nations Security Council',
+        portfolio1_1: "People's Republic of China",
+        portfolio1_2: 'Kingdom of Bahrain',
+        committee2: "DISEC — Disarmament & Int'l Security",
+        portfolio2_1: 'United Kingdom of Great Britain and Northern Ireland',
+        portfolio2_2: 'Japan',
         institution: 'RNS Institute of Technology',
+        delegation_name: 'RNSIT MUN Delegation',
         status: 'Confirmed',
         amount: '₹600',
         type: 'Internal (RNSIT)',
@@ -5604,7 +5638,7 @@
 
       // If opening for delegation, pre-select delegation roster template if available
       if (modalTargetType === 'delegation') {
-        const dlgTpl = mailTemplates.find(t => t.id === 'tpl-delegation-roster-confirmation');
+        const dlgTpl = mailTemplates.find(t => t.id === 'tpl-delegation-confirmed' || t.id === 'tpl-delegation-roster-confirmation');
         const select = document.getElementById('send-mail-template-select');
         if (dlgTpl && select) {
           select.value = dlgTpl.id;
@@ -5853,14 +5887,28 @@
 
     function buildTokenDataFromRecord(item, type) {
       if (type === 'individual') {
-        const p1 = [item.portfolio1_1, item.portfolio1_2].filter(Boolean).join(', ');
+        const c1 = item.committee1 || item.committee_pref_1 || item.committee_1 || item.committee || 'None selected';
+        const p1_1 = item.portfolio1_1 || item.portfolio_pref_1_1 || item.portfolio_1_1 || item.portfolio1 || item.portfolio || 'None';
+        const p1_2 = item.portfolio1_2 || item.portfolio_pref_1_2 || item.portfolio_1_2 || item.portfolio2 || 'None';
+        const c2 = item.committee2 || item.committee_pref_2 || item.committee_2 || 'None selected';
+        const p2_1 = item.portfolio2_1 || item.portfolio_pref_2_1 || item.portfolio_2_1 || item.portfolio3 || 'None';
+        const p2_2 = item.portfolio2_2 || item.portfolio_pref_2_2 || item.portfolio_2_2 || item.portfolio4 || 'None';
+        const p1 = [p1_1, p1_2].filter(p => p && p !== 'None').join(', ') || p1_1;
+
         return {
           name: item.name || 'Delegate',
           email: item.email || '',
           phone: item.phone || '',
           committee: item.committee1 || item.committee2 || 'Assigned Committee',
           portfolio: p1 || item.portfolio2_1 || 'General Matrix',
+          committee1: c1,
+          portfolio1_1: p1_1,
+          portfolio1_2: p1_2,
+          committee2: c2,
+          portfolio2_1: p2_1,
+          portfolio2_2: p2_2,
           institution: item.institution || 'Institutional Representative',
+          delegation_name: item.delegation_name || item.institution || 'Individual Delegation',
           status: item.status || 'Pending Verification',
           amount: item.payment_amount || '₹600',
           type: item.delegate_type || 'Individual',
@@ -5884,7 +5932,14 @@
           phone: item.phone || '',
           committee: 'All Delegation Committees',
           portfolio: `Delegation Size: ${memberCount} Delegates`,
-          institution: item.delegation_name || 'Delegation',
+          committee1: 'Delegation Committees',
+          portfolio1_1: `Allotted to ${memberCount} delegates`,
+          portfolio1_2: 'See matrix sheet',
+          committee2: 'Secondary Committees',
+          portfolio2_1: 'Delegation Roster',
+          portfolio2_2: 'See matrix sheet',
+          institution: item.institution || item.delegation_name || 'Delegation Institution',
+          delegation_name: item.delegation_name || 'Delegation',
           status: item.status || 'Pending Verification',
           amount: item.payment_amount || '₹5400',
           type: item.delegation_type || 'Delegation',
@@ -5908,7 +5963,21 @@
         '{{phone}}': data.phone || '',
         '{{committee}}': data.committee || '',
         '{{portfolio}}': data.portfolio || '',
+        '{{committee1}}': data.committee1 || '',
+        '{{committee_pref_1}}': data.committee1 || '',
+        '{{portfolio1_1}}': data.portfolio1_1 || '',
+        '{{portfolio_pref_1_1}}': data.portfolio1_1 || '',
+        '{{portfolio1_2}}': data.portfolio1_2 || '',
+        '{{portfolio_pref_1_2}}': data.portfolio1_2 || '',
+        '{{committee2}}': data.committee2 || '',
+        '{{committee_pref_2}}': data.committee2 || '',
+        '{{portfolio2_1}}': data.portfolio2_1 || '',
+        '{{portfolio_pref_2_1}}': data.portfolio2_1 || '',
+        '{{portfolio2_2}}': data.portfolio2_2 || '',
+        '{{portfolio_pref_2_2}}': data.portfolio2_2 || '',
         '{{institution}}': data.institution || '',
+        '{{delegation_name}}': data.delegation_name || data.institution || '',
+        '{{delegation}}': data.delegation_name || data.institution || '',
         '{{status}}': data.status || '',
         '{{amount}}': data.amount || '',
         '{{type}}': data.type || '',
@@ -6108,6 +6177,104 @@ function createJsonResponse(obj, statusCode) {
         showToast('Could not copy automatically. Please select and copy code manually.', 'error');
       });
     }
+  </script>
+  <!-- Floating horizontal scroll arrows -->
+  <button class="tbl-scroll-arrow" id="tbl-arrow-left"  aria-label="Scroll table left"  title="Scroll left">&#8592;</button>
+  <button class="tbl-scroll-arrow" id="tbl-arrow-right" aria-label="Scroll table right" title="Scroll right">&#8594;</button>
+
+  <script>
+    (function () {
+      const NUDGE = 260;
+      // Simple flag — no RAF, no lock queue. Synchronous assignment = zero lag.
+      let isSyncing = false;
+
+      function initTableScrollSync() {
+        const wrapper       = document.getElementById('table-responsive-wrapper');
+        const mirror        = document.getElementById('table-top-mirror');
+        const inner         = document.getElementById('table-top-mirror-inner');
+        const arrowL        = document.getElementById('tbl-arrow-left');
+        const arrowR        = document.getElementById('tbl-arrow-right');
+        const tableContainer= document.getElementById('table-main-container');
+
+        if (!wrapper || !mirror || !inner) return;
+
+        // ── Width sync ──────────────────────────────────────────────
+        function syncInnerWidth() {
+          inner.style.width = wrapper.scrollWidth + 'px';
+        }
+
+        // ── Arrow visibility ─────────────────────────────────────────
+        function updateArrows() {
+          if (!tableContainer) return;
+          const rect      = tableContainer.getBoundingClientRect();
+          const inView    = rect.top < window.innerHeight && rect.bottom > 0;
+          const canScroll = wrapper.scrollWidth > wrapper.clientWidth + 4;
+          if (inView && canScroll) {
+            arrowL.classList.toggle('visible', wrapper.scrollLeft > 4);
+            arrowR.classList.toggle('visible', wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - 4);
+          } else {
+            arrowL.classList.remove('visible');
+            arrowR.classList.remove('visible');
+          }
+        }
+
+        // ── Instant bidirectional sync ───────────────────────────────
+        // mirror → wrapper: user drags the top scrollbar
+        mirror.addEventListener('scroll', () => {
+          if (isSyncing) return;
+          isSyncing = true;
+          wrapper.scrollLeft = mirror.scrollLeft;
+          updateArrows();
+          isSyncing = false;
+        }, { passive: true });
+
+        // wrapper → mirror: user scrolls the actual table
+        wrapper.addEventListener('scroll', () => {
+          if (isSyncing) return;
+          isSyncing = true;
+          mirror.scrollLeft = wrapper.scrollLeft;
+          updateArrows();
+          isSyncing = false;
+        }, { passive: true });
+
+        // ── Arrow buttons (smooth nudge + hold) ──────────────────────
+        function nudge(dir) {
+          // Use smooth only on arrow press, not during scroll sync
+          wrapper.scrollBy({ left: dir * NUDGE, behavior: 'smooth' });
+        }
+        let holdTimer = null;
+        function startHold(dir) { nudge(dir); holdTimer = setInterval(() => nudge(dir), 180); }
+        function stopHold()      { clearInterval(holdTimer); holdTimer = null; }
+
+        arrowL.addEventListener('mousedown', () => startHold(-1));
+        arrowR.addEventListener('mousedown', () => startHold(1));
+        ['mouseup', 'mouseleave'].forEach(ev => {
+          arrowL.addEventListener(ev, stopHold);
+          arrowR.addEventListener(ev, stopHold);
+        });
+
+        // ── Initial setup ────────────────────────────────────────────
+        syncInnerWidth();
+        updateArrows();
+
+        // Watch table width changes (data load, resize)
+        const ro = new ResizeObserver(() => { syncInnerWidth(); updateArrows(); });
+        ro.observe(wrapper);
+        wrapper.querySelectorAll('table').forEach(t => ro.observe(t));
+
+        // Watch DOM mutations (rows added after data fetch)
+        const mo = new MutationObserver(() => { syncInnerWidth(); updateArrows(); });
+        mo.observe(wrapper, { childList: true, subtree: true });
+
+        window.addEventListener('scroll', updateArrows, { passive: true });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTableScrollSync);
+      } else {
+        initTableScrollSync();
+      }
+    })();
   </script>
 </body>
 </html>
