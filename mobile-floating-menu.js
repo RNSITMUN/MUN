@@ -18,6 +18,15 @@
     if (currentPath === "/contact") currentPath = "/stay-connected";
     if (currentPath === "/teams") currentPath = "/team";
 
+    // Create Backdrop Element for background blur
+    let backdrop = document.getElementById("mobileFloatingMenuBackdrop");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.id = "mobileFloatingMenuBackdrop";
+      backdrop.className = "mobile-floating-menu-backdrop";
+      document.body.appendChild(backdrop);
+    }
+
     // Create Root Element
     const root = document.createElement("div");
     root.id = "floatingMenuRoot";
@@ -88,19 +97,35 @@
     if (nextState === isOpen) return;
     isOpen = nextState;
     const regBtn = document.getElementById("mobileFloatingRegBtn");
+    const bDrop = document.getElementById("mobileFloatingMenuBackdrop");
     if (isOpen) {
       container.classList.add("is-open");
+      if (bDrop) bDrop.classList.add("is-active");
       if (regBtn) regBtn.classList.add("is-hidden-by-menu");
       try {
         window.history.pushState({ munFloatingMenu: true }, "", window.location.href);
       } catch (err) {}
     } else {
       container.classList.remove("is-open");
+      if (bDrop) bDrop.classList.remove("is-active");
       if (regBtn) regBtn.classList.remove("is-hidden-by-menu");
       if (!isClosingFromPop && window.history.state && window.history.state.munFloatingMenu) {
         window.history.back();
       }
     }
+  }
+
+  // Close when tapping on backdrop
+  if (backdrop) {
+    const closeBackdrop = (e) => {
+      if (isOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu(false);
+      }
+    };
+    backdrop.addEventListener("click", closeBackdrop);
+    backdrop.addEventListener("touchstart", closeBackdrop, { passive: false });
   }
 
   // Intercept back button to close floating menu if open

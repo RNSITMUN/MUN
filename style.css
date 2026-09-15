@@ -569,6 +569,34 @@ body {
 /* ========================================================
    LIQUID MORPH FLOATING MENU (Mobile Phones Only ≤ 768px)
    ======================================================== */
+/* Mobile Floating Menu Background Blur Backdrop */
+.mobile-floating-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0.35s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-floating-menu-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (min-width: 769px) {
+  .mobile-floating-menu-backdrop {
+    display: none !important;
+  }
+}
+
 .mobile-floating-menu-root {
   position: fixed;
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
@@ -581,6 +609,8 @@ body {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+body.modal-open .mobile-floating-menu-backdrop,
+html.modal-open .mobile-floating-menu-backdrop,
 body.modal-open .mobile-floating-menu-root,
 html.modal-open .mobile-floating-menu-root,
 body.modal-open .mobile-floating-reg-btn,
