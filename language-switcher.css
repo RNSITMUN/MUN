@@ -116,8 +116,8 @@ body.mun-lang-ru {
   align-items: center;
   gap: 5px;
   background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: #111113;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
@@ -130,10 +130,10 @@ body.mun-lang-ru {
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.2s ease,
-              border-color 0.2s ease,
+              border-color 0.25s ease,
               color 0.2s ease;
   outline: none;
   box-sizing: border-box;
@@ -141,20 +141,25 @@ body.mun-lang-ru {
 
 .mun-lang-btn:hover {
   background: #FFFFFF;
-  border-color: rgba(0, 0, 0, 0.25);
-  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.14);
+  border-color: rgba(108, 13, 44, 0.35);
+  box-shadow: 0 10px 30px 0 rgba(108, 13, 44, 0.1);
   transform: translateY(-1px);
 }
 
 .mun-lang-btn:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.98);
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
 }
 
-.mun-lang-btn.is-active {
-  background: #6C0D2C;
-  color: #FFFFFF;
+.mun-lang-btn.is-open {
+  background: #FFFFFF;
   border-color: #6C0D2C;
+  box-shadow: 0 0 0 3px rgba(108, 13, 44, 0.12), 0 10px 30px 0 rgba(108, 13, 44, 0.14);
+}
+
+.mun-lang-btn.is-open .mun-lang-globe-icon {
+  color: #6C0D2C;
+  transform: scale(1.08);
 }
 
 .mun-lang-globe-icon {
@@ -163,12 +168,14 @@ body.mun-lang-ru {
   justify-content: center;
   flex-shrink: 0;
   opacity: 0.85;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
 }
 
 .mun-lang-flag {
   font-size: 0.95rem;
   line-height: 1;
   display: inline-block;
+  transition: transform 0.2s ease;
 }
 
 .mun-lang-code {
@@ -179,37 +186,42 @@ body.mun-lang-ru {
 .mun-lang-chevron {
   display: inline-flex;
   align-items: center;
-  opacity: 0.6;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.65;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, color 0.2s ease;
 }
 
 .mun-lang-btn.is-open .mun-lang-chevron {
-  transform: rotate(180deg);
+  transform: rotate(180deg) scale(1.1);
+  opacity: 1;
+  color: #6C0D2C;
 }
 
-/* 4. Compact & Clean Dropdown Menu */
+/* 4. Compact, Sleek & Organic Dropdown Menu */
 .mun-lang-modal {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   right: 0;
-  width: 165px;
+  width: 175px;
   background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 12px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
-  padding: 4px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(108, 13, 44, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 20px 44px -10px rgba(108, 13, 44, 0.14),
+              0 10px 20px -5px rgba(0, 0, 0, 0.08),
+              0 0 0 1px rgba(229, 169, 60, 0.12);
+  padding: 5px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-6px) scale(0.96);
+  transform: translateY(-8px) scale(0.94);
   transform-origin: top right;
-  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.18s;
+  transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.32s;
   pointer-events: none;
   z-index: 10001;
   box-sizing: border-box;
+  will-change: transform, opacity;
 }
 
 .mun-lang-modal.is-open {
@@ -226,11 +238,13 @@ body.mun-lang-ru {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  max-height: 260px;
+  max-height: 280px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(108, 13, 44, 0.5) transparent;
+  scrollbar-color: rgba(108, 13, 44, 0.4) transparent;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mun-lang-list::-webkit-scrollbar {
@@ -238,7 +252,7 @@ body.mun-lang-ru {
 }
 
 .mun-lang-list::-webkit-scrollbar-thumb {
-  background: rgba(108, 13, 44, 0.5);
+  background: rgba(108, 13, 44, 0.4);
   border-radius: 3px;
 }
 
@@ -246,26 +260,42 @@ body.mun-lang-ru {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 9px;
-  border-radius: 7px;
+  padding: 7px 10px;
+  border-radius: 9px;
   background: transparent;
   cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition: background-color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   color: #111113;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mun-lang-item:hover {
-  background: rgba(108, 13, 44, 0.08);
+  background: rgba(108, 13, 44, 0.07);
   color: #6C0D2C;
+  transform: translateX(2px);
+}
+
+.mun-lang-item:active {
+  transform: scale(0.97);
+  background: rgba(108, 13, 44, 0.12);
 }
 
 .mun-lang-item.is-selected {
   background: #6C0D2C;
   color: #FFFFFF;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(108, 13, 44, 0.28);
+}
+
+.mun-lang-item.is-selected:hover {
+  background: #580a24;
+  color: #FFFFFF;
+  transform: none;
 }
 
 .mun-lang-item-flag {
@@ -279,12 +309,12 @@ body.mun-lang-ru {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
 }
 
 .mun-lang-item-check {
   display: none;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 900;
   margin-left: auto;
   flex-shrink: 0;
@@ -292,6 +322,13 @@ body.mun-lang-ru {
 
 .mun-lang-item.is-selected .mun-lang-item-check {
   display: inline-block;
+  color: #F3C77C;
+  animation: checkPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Mobile Backdrop Overlay */
@@ -299,13 +336,14 @@ body.mun-lang-ru {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s;
   -webkit-tap-highlight-color: transparent;
 }
 
