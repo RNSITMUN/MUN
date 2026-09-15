@@ -1,6 +1,7 @@
 /**
  * RNSMUN 2026 - Multilingual Global Language Switcher
  * Curated Diplomatic Cadence, Entity Protection, RTL Support & Desktop Nav-Pill Docking
+ * Full Elimination of Google Translate Top Banners & Toolbars
  */
 
 (function () {
@@ -197,8 +198,33 @@
   }
 
   /**
-   * 2. Curated Diplomatic Tone Refinement
-   * Replaces robotic direct translations of key headings and slogans with native diplomatic phrasing.
+   * 2. Proactive Google Translate Banner Suppression
+   * Ensures no top iframe bar or layout shift occurs on mobile or PC.
+   */
+  function suppressGoogleBanner() {
+    if (document.body.style.top && document.body.style.top !== "0px") {
+      document.body.style.top = "0px";
+    }
+    if (document.documentElement.style.top && document.documentElement.style.top !== "0px") {
+      document.documentElement.style.top = "0px";
+    }
+
+    const iframes = document.querySelectorAll(
+      "iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[id*=':'][id*='container'], .goog-te-banner-frame"
+    );
+    iframes.forEach((frame) => {
+      frame.style.display = "none";
+      frame.style.visibility = "hidden";
+      frame.style.height = "0px";
+      frame.style.width = "0px";
+      frame.style.position = "absolute";
+      frame.style.top = "-9999px";
+      frame.style.left = "-9999px";
+    });
+  }
+
+  /**
+   * 3. Curated Diplomatic Tone Refinement
    */
   function applyDiplomaticPhrasing(langCode) {
     if (!langCode || langCode === "en") return;
@@ -296,7 +322,11 @@
       select.value = langCode;
       select.dispatchEvent(new Event("change"));
       updateUI(langCode);
-      setTimeout(() => applyDiplomaticPhrasing(langCode), 300);
+      setTimeout(() => {
+        applyDiplomaticPhrasing(langCode);
+        suppressGoogleBanner();
+        updateWidgetPosition();
+      }, 300);
     } else {
       window.location.reload();
     }
@@ -358,6 +388,7 @@
 
     // Apply brand and proper-noun shielding
     applyBrandProtection();
+    suppressGoogleBanner();
 
     const currentCode = getSavedLang();
     const currentLang = SUPPORTED_LANGS.find((l) => l.code === currentCode) || SUPPORTED_LANGS[0];
@@ -478,8 +509,15 @@
     }
 
     // Dynamic positioning handlers
-    window.addEventListener("resize", updateWidgetPosition, { passive: true });
-    window.addEventListener("scroll", updateWidgetPosition, { passive: true });
+    window.addEventListener("resize", () => {
+      updateWidgetPosition();
+      suppressGoogleBanner();
+    }, { passive: true });
+
+    window.addEventListener("scroll", () => {
+      updateWidgetPosition();
+      suppressGoogleBanner();
+    }, { passive: true });
 
     const navPill = document.querySelector(".nav-pill");
     if (window.ResizeObserver && navPill) {
@@ -489,16 +527,20 @@
     // Safeguard dynamically created modals and popups
     const observer = new MutationObserver(() => {
       applyBrandProtection();
+      suppressGoogleBanner();
       updateWidgetPosition();
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] });
 
     // Initialize Google Translate
     initGoogleTranslateEngine();
 
     // Apply diplomatic cadence after initial boot
     if (currentCode !== "en") {
-      setTimeout(() => applyDiplomaticPhrasing(currentCode), 600);
+      setTimeout(() => {
+        applyDiplomaticPhrasing(currentCode);
+        suppressGoogleBanner();
+      }, 600);
     }
   }
 

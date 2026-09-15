@@ -3,38 +3,47 @@
    Docked Beside Navigation Bar for PC / Desktop, Adaptive Mobile
    ========================================================================== */
 
-/* 1. Complete Reset of Google Translate Artifacts & Layout Shifts */
+/* 1. Complete Suppression of Google Translate Top Banner, Iframes & Layout Shifts */
 .goog-te-banner-frame,
 .goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe.goog-te-banner-frame.skiptranslate,
+iframe[id^=":"][id*="container"],
+iframe.skiptranslate,
 #goog-gt-tt,
 .goog-te-balloon-frame,
 .goog-tooltip,
 .goog-tooltip:hover,
-.goog-te-spinner-pos {
+.goog-te-spinner-pos,
+.skiptranslate.goog-te-gadget,
+#google_translate_element {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
-  height: 0 !important;
-  width: 0 !important;
+  height: 0px !important;
+  width: 0px !important;
+  max-height: 0px !important;
+  min-height: 0px !important;
+  border: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  z-index: -99999 !important;
 }
 
+html,
 body {
   top: 0px !important;
   position: static !important;
+  margin-top: 0px !important;
+  padding-top: 0px !important;
 }
 
 .goog-text-highlight {
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
-}
-
-#google_translate_element {
-  display: none !important;
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
 }
 
 /* 2. Global Typography & Glyph Rendering Across International Languages */
