@@ -88,7 +88,11 @@ body.mun-lang-ru {
   font-family: var(--mun-font-base);
   user-select: none;
   -webkit-user-select: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease,
+              transform 0.3s ease,
+              left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              right 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              top 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Base Button */

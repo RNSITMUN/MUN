@@ -337,11 +337,20 @@
 
     if (window.innerWidth > 768 && navPill) {
       const isScrolled = navPill.classList.contains("nav-scrolled");
-      const rect = navPill.getBoundingClientRect();
 
       if (!isScrolled) {
-        widget.style.top = `${rect.top}px`;
-        widget.style.left = `${rect.right + 10}px`;
+        const wrap = navPill.querySelector(".nav-items-wrap");
+        let navWidth = 0;
+        if (wrap && wrap.offsetWidth > 0) {
+          navWidth = wrap.offsetWidth + 12;
+        } else if (navPill.offsetWidth > 48) {
+          navWidth = navPill.offsetWidth;
+        } else {
+          navWidth = 650;
+        }
+
+        widget.style.top = "24px";
+        widget.style.left = `calc(50% + ${Math.round(navWidth / 2) + 10}px)`;
         widget.style.right = "auto";
         widget.style.transform = "none";
       } else {
@@ -470,6 +479,27 @@
       updateWidgetPosition();
       suppressGoogleBanner();
     }, { passive: true });
+
+    // Synchronize directly with nav-pill transitions and size changes
+    const navPill = document.querySelector(".nav-pill");
+    if (navPill) {
+      navPill.addEventListener("transitionend", updateWidgetPosition, { passive: true });
+      navPill.addEventListener("transitionrun", updateWidgetPosition, { passive: true });
+
+      const navClassObserver = new MutationObserver(() => {
+        updateWidgetPosition();
+      });
+      navClassObserver.observe(navPill, { attributes: true, attributeFilter: ["class"] });
+
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+          updateWidgetPosition();
+        });
+        ro.observe(navPill);
+        const wrap = navPill.querySelector(".nav-items-wrap");
+        if (wrap) ro.observe(wrap);
+      }
+    }
 
     // Safe childList-only mutation observer to handle dynamically opened modals without infinite loops
     let isObserverWorking = false;
