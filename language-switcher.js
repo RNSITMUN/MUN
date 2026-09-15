@@ -478,17 +478,26 @@
       </button>
 
       <div id="munLangModal" class="mun-lang-modal" role="dialog" aria-modal="true" aria-label="Select Language">
-        <ul class="mun-lang-list">
-          ${SUPPORTED_LANGS.map(
-            (lang) => `
-            <li class="mun-lang-item ${lang.code === currentCode ? "is-selected" : ""}" data-lang="${lang.code}">
-              <span class="mun-lang-item-flag">${lang.flag}</span>
-              <span class="mun-lang-item-native">${lang.native}</span>
-              <span class="mun-lang-item-check">✓</span>
-            </li>
-          `
-          ).join("")}
-        </ul>
+        <!-- Warm Cream Base Background Layer -->
+        <div class="mun-lang-modal-bg"></div>
+
+        <!-- Deep Wine Red Liquid Expanding Circle Wave -->
+        <div class="mun-lang-liquid-circle"></div>
+
+        <!-- Language Items Wrapper -->
+        <div class="mun-lang-list-wrap">
+          <ul class="mun-lang-list">
+            ${SUPPORTED_LANGS.map(
+              (lang, idx) => `
+              <li class="mun-lang-item ${lang.code === currentCode ? "is-selected" : ""}" data-lang="${lang.code}" style="--item-index: ${idx}">
+                <span class="mun-lang-item-flag">${lang.flag}</span>
+                <span class="mun-lang-item-native">${lang.native}</span>
+                <span class="mun-lang-item-check">✓</span>
+              </li>
+            `
+            ).join("")}
+          </ul>
+        </div>
       </div>
     `;
 
