@@ -1,6 +1,6 @@
 /* ==========================================================================
-   RNSMUN 2026 - Multilingual Global Language Switcher (Neobrutalist Theme)
-   Diplomatic Tone, Clean Typography & Protected Brand Architecture
+   RNSMUN 2026 - Multilingual Global Language Switcher
+   Docked Beside Navigation Bar for PC / Desktop, Adaptive Mobile
    ========================================================================== */
 
 /* 1. Complete Reset of Google Translate Artifacts & Layout Shifts */
@@ -72,75 +72,61 @@ body.mun-lang-ru {
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-/* RTL Support for Arabic */
-html[dir="rtl"] .mun-lang-widget {
-  right: auto;
-  left: 140px;
-}
-
-html[dir="rtl"] .mun-lang-modal {
-  right: auto;
-  left: 0;
-  transform-origin: top left;
-}
-
-html[dir="rtl"] .mun-lang-item-left {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .mun-lang-item-names {
-  text-align: right;
-}
-
-/* 3. Language Switcher Floating Badge (Neobrutalist Design) */
+/* 3. Language Switcher Widget Container */
 .mun-lang-widget {
   position: fixed;
-  top: 24px;
-  right: 140px;
   z-index: 10000;
   font-family: var(--mun-font-base);
   user-select: none;
   -webkit-user-select: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Base Button */
 .mun-lang-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #FFFDF9;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #111113;
-  border: 2px solid #000000;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
-  padding: 6px 14px;
+  padding: 0 14px;
+  height: 48px;
   font-family: inherit;
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 2.5px 2.5px 0px #000000;
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.15s ease,
-              color 0.15s ease;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease;
   outline: none;
+  box-sizing: border-box;
 }
 
 .mun-lang-btn:hover {
-  transform: translate(-1.5px, -1.5px);
-  box-shadow: 4px 4px 0px #000000;
-  background: #FFE873;
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.14);
+  transform: translateY(-1px);
 }
 
 .mun-lang-btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px #000000;
+  transform: translateY(1px);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
 }
 
 .mun-lang-btn.is-active {
   background: #6C0D2C;
   color: #FFFFFF;
-  border-color: #000000;
+  border-color: #6C0D2C;
 }
 
 .mun-lang-globe-icon {
@@ -148,22 +134,24 @@ html[dir="rtl"] .mun-lang-item-names {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .mun-lang-flag {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1;
   display: inline-block;
 }
 
 .mun-lang-code {
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.06em;
 }
 
 .mun-lang-chevron {
   display: inline-flex;
   align-items: center;
+  opacity: 0.6;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -174,13 +162,15 @@ html[dir="rtl"] .mun-lang-item-names {
 /* 4. Dropdown Menu Modal Card */
 .mun-lang-modal {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   right: 0;
-  width: 290px;
-  background: #FFFDF9;
-  border: 2.5px solid #000000;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(0, 0, 0, 0.14);
   border-radius: 16px;
-  box-shadow: 6px 6px 0px #000000;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 12px;
   opacity: 0;
   visibility: hidden;
@@ -206,7 +196,7 @@ html[dir="rtl"] .mun-lang-item-names {
   justify-content: space-between;
   padding-bottom: 8px;
   margin-bottom: 8px;
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
 }
 
 .mun-lang-modal-title {
@@ -229,8 +219,8 @@ html[dir="rtl"] .mun-lang-item-names {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-height: 320px;
+  gap: 3px;
+  max-height: 300px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -238,7 +228,7 @@ html[dir="rtl"] .mun-lang-item-names {
 }
 
 .mun-lang-list::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 .mun-lang-list::-webkit-scrollbar-thumb {
@@ -250,9 +240,9 @@ html[dir="rtl"] .mun-lang-item-names {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 7px 10px;
   border-radius: 8px;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
   transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
@@ -260,15 +250,15 @@ html[dir="rtl"] .mun-lang-item-names {
 }
 
 .mun-lang-item:hover {
-  background: #FFF3B0;
-  border-color: #000000;
+  background: rgba(108, 13, 44, 0.08);
+  border-color: rgba(108, 13, 44, 0.2);
   transform: translateX(2px);
 }
 
 .mun-lang-item.is-selected {
   background: #6C0D2C;
   color: #FFFFFF;
-  border-color: #000000;
+  border-color: #6C0D2C;
   font-weight: 800;
 }
 
@@ -279,7 +269,7 @@ html[dir="rtl"] .mun-lang-item-names {
 }
 
 .mun-lang-item-flag {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1;
 }
 
@@ -290,7 +280,7 @@ html[dir="rtl"] .mun-lang-item-names {
 }
 
 .mun-lang-item-native {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 800;
   line-height: 1.2;
 }
@@ -314,9 +304,9 @@ html[dir="rtl"] .mun-lang-item-names {
 .mun-lang-reset-btn {
   width: 100%;
   margin-top: 8px;
-  padding: 6px;
+  padding: 7px;
   background: #F4F4F5;
-  border: 1.5px solid #000000;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.72rem;
@@ -325,35 +315,30 @@ html[dir="rtl"] .mun-lang-item-names {
   letter-spacing: 0.05em;
   color: #444444;
   cursor: pointer;
-  box-shadow: 1.5px 1.5px 0px #000000;
   transition: all 0.15s ease;
 }
 
 .mun-lang-reset-btn:hover {
   background: #E4E4E7;
   color: #111113;
-  transform: translate(-1px, -1px);
-  box-shadow: 2px 2px 0px #000000;
 }
 
 /* 5. Responsive Adaptation */
-@media (max-width: 900px) {
-  .mun-lang-widget {
-    top: 20px;
-    right: 70px;
-  }
-}
-
 @media (max-width: 768px) {
   .mun-lang-widget {
     top: 14px;
-    right: 64px;
+    right: 58px;
+    left: auto !important;
   }
 
   .mun-lang-btn {
-    padding: 4px 10px;
+    height: 38px;
+    padding: 0 10px;
     font-size: 0.74rem;
     gap: 4px;
+    background: #FFFDF9;
+    border: 1.5px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
   }
 
   .mun-lang-modal {
@@ -365,11 +350,11 @@ html[dir="rtl"] .mun-lang-item-names {
 @media (max-width: 480px) {
   .mun-lang-widget {
     top: 12px;
-    right: 58px;
+    right: 54px;
   }
 
   .mun-lang-modal {
-    right: -48px;
+    right: -46px;
     width: 250px;
   }
 }

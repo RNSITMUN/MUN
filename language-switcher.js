@@ -1,6 +1,6 @@
 /**
  * RNSMUN 2026 - Multilingual Global Language Switcher
- * Curated Diplomatic Cadence, Entity Protection & Smooth Internationalization
+ * Curated Diplomatic Cadence, Entity Protection, RTL Support & Desktop Nav-Pill Docking
  */
 
 (function () {
@@ -186,7 +186,6 @@
       });
     });
 
-    // Also protect specific brand name spans if found
     const textNodesToProtect = ["UNSC", "Lok Sabha", "DISEC", "UNHRC", "UNODC", "IP", "RNSIT", "MUNSoc", "RNS MUN", "₹999", "₹1,200", "₹1,349", "₹10,000"];
     const badges = document.querySelectorAll(".venue-meta-tag, .hpm-tag, .nav-item, .floating-menu-item span, .hpm-lbl");
     badges.forEach(el => {
@@ -322,6 +321,38 @@
     });
   }
 
+  /**
+   * Dynamically aligns the Language Switcher right beside the centered .nav-pill on PC
+   */
+  function updateWidgetPosition() {
+    const widget = document.getElementById("munLangWidgetRoot");
+    const navPill = document.querySelector(".nav-pill");
+    if (!widget) return;
+
+    if (window.innerWidth > 768 && navPill) {
+      const isScrolled = navPill.classList.contains("nav-scrolled");
+      const rect = navPill.getBoundingClientRect();
+
+      if (!isScrolled) {
+        widget.style.top = `${rect.top}px`;
+        widget.style.left = `${rect.right + 12}px`;
+        widget.style.right = "auto";
+        widget.style.transform = "none";
+      } else {
+        widget.style.top = "24px";
+        widget.style.left = "auto";
+        widget.style.right = "84px";
+        widget.style.transform = "none";
+      }
+    } else {
+      // Mobile (< 768px)
+      widget.style.top = "14px";
+      widget.style.right = "58px";
+      widget.style.left = "auto";
+      widget.style.transform = "none";
+    }
+  }
+
   function mountLanguageWidget() {
     if (document.getElementById("munLangWidgetRoot")) return;
 
@@ -347,7 +378,7 @@
     widget.innerHTML = `
       <button type="button" id="munLangToggleBtn" class="mun-lang-btn" aria-label="Change Language" aria-expanded="false">
         <span class="mun-lang-globe-icon" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="2" y1="12" x2="22" y2="12"></line>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -390,6 +421,11 @@
     `;
 
     document.body.appendChild(widget);
+
+    // Initial position calculation
+    updateWidgetPosition();
+    setTimeout(updateWidgetPosition, 100);
+    setTimeout(updateWidgetPosition, 400);
 
     const toggleBtn = document.getElementById("munLangToggleBtn");
     const modal = document.getElementById("munLangModal");
@@ -441,9 +477,19 @@
       });
     }
 
-    // Set up MutationObserver to safeguard dynamically created modals and popups
+    // Dynamic positioning handlers
+    window.addEventListener("resize", updateWidgetPosition, { passive: true });
+    window.addEventListener("scroll", updateWidgetPosition, { passive: true });
+
+    const navPill = document.querySelector(".nav-pill");
+    if (window.ResizeObserver && navPill) {
+      new ResizeObserver(updateWidgetPosition).observe(navPill);
+    }
+
+    // Safeguard dynamically created modals and popups
     const observer = new MutationObserver(() => {
       applyBrandProtection();
+      updateWidgetPosition();
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
