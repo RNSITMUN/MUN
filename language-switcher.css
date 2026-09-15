@@ -1,0 +1,318 @@
+/* ==========================================================================
+   RNSMUN 2026 - Multilingual Global Language Switcher (Neobrutalist Theme)
+   ========================================================================== */
+
+/* 1. Reset Google Translate Artifacts & Layout Shifts */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+#google_translate_element {
+  display: none !important;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+/* 2. Language Switcher Floating Badge */
+.mun-lang-widget {
+  position: fixed;
+  top: 24px;
+  right: 140px;
+  z-index: 10000;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mun-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFFDF9;
+  color: #111113;
+  border: 2px solid #000000;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2.5px 2.5px 0px #000000;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.15s ease,
+              color 0.15s ease;
+  outline: none;
+}
+
+.mun-lang-btn:hover {
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 4px 4px 0px #000000;
+  background: #FFE873;
+}
+
+.mun-lang-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+.mun-lang-btn.is-active {
+  background: #6C0D2C;
+  color: #FFFFFF;
+  border-color: #000000;
+}
+
+.mun-lang-globe-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mun-lang-flag {
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+.mun-lang-code {
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.mun-lang-chevron {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mun-lang-btn.is-open .mun-lang-chevron {
+  transform: rotate(180deg);
+}
+
+/* 3. Dropdown Menu Modal Card */
+.mun-lang-modal {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background: #FFFDF9;
+  border: 2.5px solid #000000;
+  border-radius: 16px;
+  box-shadow: 6px 6px 0px #000000;
+  padding: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.22s;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+.mun-lang-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mun-lang-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.12);
+}
+
+.mun-lang-modal-title {
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6C0D2C;
+}
+
+.mun-lang-modal-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #666666;
+}
+
+.mun-lang-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #6C0D2C transparent;
+}
+
+.mun-lang-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.mun-lang-list::-webkit-scrollbar-thumb {
+  background: #6C0D2C;
+  border-radius: 4px;
+}
+
+.mun-lang-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+  color: #111113;
+}
+
+.mun-lang-item:hover {
+  background: #FFF3B0;
+  border-color: #000000;
+  transform: translateX(2px);
+}
+
+.mun-lang-item.is-selected {
+  background: #6C0D2C;
+  color: #FFFFFF;
+  border-color: #000000;
+  font-weight: 800;
+}
+
+.mun-lang-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mun-lang-item-flag {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.mun-lang-item-names {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.mun-lang-item-native {
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.mun-lang-item-english {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.mun-lang-item-check {
+  display: none;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.mun-lang-item.is-selected .mun-lang-item-check {
+  display: block;
+}
+
+.mun-lang-reset-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px;
+  background: #F4F4F5;
+  border: 1.5px solid #000000;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #444444;
+  cursor: pointer;
+  box-shadow: 1.5px 1.5px 0px #000000;
+  transition: all 0.15s ease;
+}
+
+.mun-lang-reset-btn:hover {
+  background: #E4E4E7;
+  color: #111113;
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px #000000;
+}
+
+/* 4. Responsive Adaptation */
+@media (max-width: 900px) {
+  .mun-lang-widget {
+    top: 20px;
+    right: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mun-lang-widget {
+    top: 14px;
+    right: 64px;
+  }
+
+  .mun-lang-btn {
+    padding: 4px 10px;
+    font-size: 0.74rem;
+    gap: 4px;
+  }
+
+  .mun-lang-modal {
+    right: -40px;
+    width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mun-lang-widget {
+    top: 12px;
+    right: 58px;
+  }
+
+  .mun-lang-modal {
+    right: -48px;
+    width: 250px;
+  }
+}
