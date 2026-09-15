@@ -279,38 +279,158 @@ body.mun-lang-ru {
   display: inline-block;
 }
 
-/* 5. Responsive Adaptation */
+/* Mobile Backdrop Overlay */
+.mun-lang-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mun-lang-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (min-width: 769px) {
+  .mun-lang-backdrop {
+    display: none !important;
+  }
+}
+
+/* 5. Responsive Adaptation & Mobile Precision */
 @media (max-width: 768px) {
   .mun-lang-widget {
-    top: 14px;
-    right: 58px;
+    top: max(14px, env(safe-area-inset-top, 14px)) !important;
+    right: max(60px, calc(env(safe-area-inset-right, 0px) + 56px)) !important;
     left: auto !important;
+    transform: none !important;
   }
 
   .mun-lang-btn {
     height: 38px;
+    min-height: 38px;
     padding: 0 10px;
     font-size: 0.74rem;
     gap: 4px;
-    background: #FFFDF9;
-    border: 1.5px solid #000000;
-    box-shadow: 2px 2px 0px #000000;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 9999px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mun-lang-btn:active {
+    transform: scale(0.96);
+    background: #FFFFFF;
   }
 
   .mun-lang-modal {
+    position: absolute;
+    top: calc(100% + 6px);
     right: 0;
-    width: 155px;
+    left: auto;
+    width: 160px;
+    max-height: min(320px, calc(100svh - 100px));
+    max-height: min(320px, calc(100dvh - 100px));
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.14);
+  }
+
+  .mun-lang-list {
+    max-height: 240px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .mun-lang-item {
+    padding: 7px 10px;
+    font-size: 0.8rem;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .mun-lang-widget {
-    top: 12px;
-    right: 54px;
+    top: max(10px, env(safe-area-inset-top, 10px)) !important;
+    right: max(48px, calc(env(safe-area-inset-right, 0px) + 46px)) !important;
+    left: auto !important;
+  }
+
+  .mun-lang-btn {
+    height: 34px;
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 0.70rem;
+    gap: 3px;
+  }
+
+  .mun-lang-globe-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .mun-lang-flag {
+    font-size: 0.85rem;
+  }
+
+  .mun-lang-code {
+    font-size: 0.68rem;
   }
 
   .mun-lang-modal {
-    right: 0;
-    width: 150px;
+    width: 152px;
   }
+}
+
+@media (max-width: 360px) {
+  .mun-lang-widget {
+    top: max(8px, env(safe-area-inset-top, 8px)) !important;
+    right: max(42px, calc(env(safe-area-inset-right, 0px) + 40px)) !important;
+  }
+
+  .mun-lang-btn {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 6px;
+    font-size: 0.66rem;
+  }
+
+  .mun-lang-modal {
+    width: 145px;
+  }
+}
+
+/* RTL Mobile Alignment */
+html[dir="rtl"] .mun-lang-widget,
+body.mun-lang-rtl .mun-lang-widget {
+  left: max(60px, calc(env(safe-area-inset-left, 0px) + 56px)) !important;
+  right: auto !important;
+}
+
+@media (max-width: 520px) {
+  html[dir="rtl"] .mun-lang-widget,
+  body.mun-lang-rtl .mun-lang-widget {
+    left: max(48px, calc(env(safe-area-inset-left, 0px) + 46px)) !important;
+    right: auto !important;
+  }
+}
+
+html[dir="rtl"] .mun-lang-modal,
+body.mun-lang-rtl .mun-lang-modal {
+  left: 0 !important;
+  right: auto !important;
+  transform-origin: top left !important;
 }

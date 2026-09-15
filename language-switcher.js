@@ -360,10 +360,11 @@
         widget.style.transform = "none";
       }
     } else {
-      widget.style.top = "14px";
-      widget.style.right = "58px";
-      widget.style.left = "auto";
-      widget.style.transform = "none";
+      // Clear desktop inline styles so responsive CSS rules with env(safe-area-inset) manage mobile perfectly
+      widget.style.top = "";
+      widget.style.right = "";
+      widget.style.left = "";
+      widget.style.transform = "";
     }
   }
 
@@ -382,6 +383,25 @@
     }
     if (currentCode !== "en") {
       document.body.classList.add(`mun-lang-${currentCode}`);
+    }
+
+    // Mobile Backdrop for instant outside tap dismiss
+    let backdrop = document.getElementById("munLangBackdrop");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.id = "munLangBackdrop";
+      backdrop.className = "mun-lang-backdrop";
+      document.body.appendChild(backdrop);
+
+      const closeBackdrop = (e) => {
+        if (isOpen) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleMenu(false);
+        }
+      };
+      backdrop.addEventListener("click", closeBackdrop);
+      backdrop.addEventListener("touchstart", closeBackdrop, { passive: false });
     }
 
     const widget = document.createElement("div");
@@ -433,14 +453,17 @@
 
     function toggleMenu(state) {
       isOpen = typeof state === "boolean" ? state : !isOpen;
+      const bDrop = document.getElementById("munLangBackdrop");
       if (isOpen) {
         modal.classList.add("is-open");
         toggleBtn.classList.add("is-open");
         toggleBtn.setAttribute("aria-expanded", "true");
+        if (bDrop) bDrop.classList.add("is-active");
       } else {
         modal.classList.remove("is-open");
         toggleBtn.classList.remove("is-open");
         toggleBtn.setAttribute("aria-expanded", "false");
+        if (bDrop) bDrop.classList.remove("is-active");
       }
     }
 
@@ -454,6 +477,12 @@
         toggleMenu(false);
       }
     });
+
+    document.addEventListener("touchstart", (e) => {
+      if (isOpen && !widget.contains(e.target)) {
+        toggleMenu(false);
+      }
+    }, { passive: true });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -475,8 +504,11 @@
       suppressGoogleBanner();
     }, { passive: true });
 
+    // Performance-optimized scroll listener (avoids mobile style thrashing)
     window.addEventListener("scroll", () => {
-      updateWidgetPosition();
+      if (window.innerWidth > 768) {
+        updateWidgetPosition();
+      }
       suppressGoogleBanner();
     }, { passive: true });
 
