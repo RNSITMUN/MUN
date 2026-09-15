@@ -18,21 +18,27 @@ import './anti-scrape.js';
     const navPill = document.querySelector(".nav-pill");
     if (!navPill) return;
 
-    // Build DOM structure without wiping existing items
-    if (!navPill.querySelector(".nav-items-wrap")) {
-      const items = Array.from(navPill.querySelectorAll(".nav-item"));
+    let wrap = navPill.querySelector(".nav-items-wrap");
+    const items = wrap
+      ? Array.from(wrap.querySelectorAll(".nav-item"))
+      : Array.from(navPill.querySelectorAll(".nav-item"));
 
-      // 1. Horizontal links wrapper
-      const wrap = document.createElement("div");
+    // If wrap is not already in static HTML, wrap items without empty-frame glitch
+    if (!wrap && items.length > 0) {
+      wrap = document.createElement("div");
       wrap.className = "nav-items-wrap";
-      items.forEach((it) => {
-        it.addEventListener("mouseenter", () => {
-          prefetchUrl(it.getAttribute("href"));
-        }, { passive: true });
-        wrap.appendChild(it);
-      });
+      wrap.append(...items);
+      navPill.prepend(wrap);
+    }
 
-      // 2. Collapsed Hamburger / Close button
+    items.forEach((it) => {
+      it.addEventListener("mouseenter", () => {
+        prefetchUrl(it.getAttribute("href"));
+      }, { passive: true });
+    });
+
+    // 2. Collapsed Hamburger / Close button
+    if (!navPill.querySelector(".nav-collapsed-icon")) {
       const collapsedIcon = document.createElement("button");
       collapsedIcon.type = "button";
       collapsedIcon.className = "nav-collapsed-icon";
@@ -48,8 +54,11 @@ import './anti-scrape.js';
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       `;
+      navPill.appendChild(collapsedIcon);
+    }
 
-      // 3. Dropdown Menu for scrolled state
+    // 3. Dropdown Menu for scrolled state
+    if (!navPill.querySelector(".nav-dropdown")) {
       const dropdown = document.createElement("div");
       dropdown.className = "nav-dropdown";
       items.forEach((it) => {
@@ -63,9 +72,6 @@ import './anti-scrape.js';
         });
         dropdown.appendChild(clone);
       });
-
-      navPill.appendChild(wrap);
-      navPill.appendChild(collapsedIcon);
       navPill.appendChild(dropdown);
     }
 

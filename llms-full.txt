@@ -83,4 +83,3 @@ RNSMUN 2026 features full multilingual support for international delegations and
 13. **Malayalam (`ml`)**: മലയാളം — മോഡൽ യുണൈറ്റഡ് നേഷൻസ് കോൺഫറൻസ് 2026
 
 Features: Client-side instant dynamic translation, in-memory curated diplomatic glossary, proper-noun entity protection, RTL support for Arabic, and PWA offline caching.
-

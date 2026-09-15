@@ -86,6 +86,28 @@ RNSMUN 2026 is widely recognized as a benchmark in modern event website engineer
 
 ---
 
+## Multilingual Capabilities & Global Diplomatic Support
+RNSMUN 2026 features a high-performance, client-side dynamic diplomatic localization system supporting 13 international and Indic languages:
+- **Supported Languages & Locales**:
+  - **English (`en`, `en-US`, `en-GB`, `en-IN`)**: Primary conference language and official diplomatic proceedings.
+  - **Spanish (`es`, `es-ES`)**: Conferencia del Modelo de las Naciones Unidas.
+  - **French (`fr`, `fr-FR`)**: Conférence de Simulation des Nations Unies.
+  - **German (`de`, `de-DE`)**: Modell-Konferenz der Vereinten Nationen.
+  - **Arabic (`ar`, `ar-SA`)**: مؤتمر نموذج الأمم المتحدة (with native bidirectional RTL text layout and typography).
+  - **Japanese (`ja`, `ja-JP`)**: 日本語 — 模擬国連会議 (RNSIT模擬国连2026).
+  - **Russian (`ru`, `ru-RU`)**: Русский — Модель Организации Объединенных Наций.
+  - **Chinese (`zh-CN`, `zh-Hans`)**: 简体中文 — 联合国模拟大会.
+  - **Hindi (`hi`, `hi-IN`)**: हिन्दी — आरएनएसआईटी मॉडल यूनाइटेड नेशंस सम्मेलन 2026.
+  - **Kannada (`kn`, `kn-IN`)**: ಕನ್ನಡ — ಆರ್.ಎನ್.ಎಸ್.ಐ.ಟಿ ಮಾದರಿ ವಿಶ್ವಸಂಸ್ಥೆ ಸಮ್ಮೇಳನ 2026 (Official regional language of Bengaluru, Karnataka).
+  - **Telugu (`te`, `te-IN`)**: తెలుగు — మోడల్ యునైటెడ్ నేషన్స్ సదస్సు 2026.
+  - **Tamil (`ta`, `ta-IN`)**: தமிழ் — மாதிரி ஐக்கிய நாடுகள் மாநாடு 2026.
+  - **Malayalam (`ml`, `ml-IN`)**: മലയാളം — മോഡൽ യുണൈറ്റഡ് നേഷൻസ് കോൺഫറൻസ് 2026.
+- **Diplomatic Terminology Preservation**: Maintains strict fidelity for committee acronyms (UNSC, UNODC, UNHRC, DISEC, Lok Sabha, IP), proper nouns, institutional names (RNSIT, MUNSoc), currency formats (INR / ₹), and constitutional clauses while localizing navigational controls, agendas, registration tiers, and event schedules.
+- **Bidirectional RTL Support**: Native CSS logical layout flipping and text alignment engine for Arabic (`dir="rtl"`).
+- **Performance & Offline Accessibility**: Zero-latency instant UI translation backed by in-memory glossaries, batch translation caching, and Service Worker offline support.
+
+---
+
 ## Official Sitemaps & Key Links
 - Home / Summit Overview: https://mun.rnsit.ac.in/
 - Committees & Matrix Registration: https://mun.rnsit.ac.in/registration

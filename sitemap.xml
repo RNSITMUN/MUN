@@ -9,6 +9,18 @@
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/"/>
   </url>
 
   <url>
@@ -18,6 +30,18 @@
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/registration"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/registration"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/registration"/>
   </url>
 
   <url>
@@ -27,6 +51,18 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/venue"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/venue"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/venue"/>
   </url>
 
   <url>
@@ -36,6 +72,18 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/team"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/team"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/team"/>
   </url>
 
   <url>
@@ -45,6 +93,18 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/code-of-conduct"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/code-of-conduct"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/code-of-conduct"/>
   </url>
 
   <url>
@@ -54,6 +114,18 @@
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/past-events"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/past-events"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/past-events"/>
   </url>
 
   <url>
@@ -63,6 +135,18 @@
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/stay-connected"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/stay-connected"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/stay-connected"/>
   </url>
 
   <url>
@@ -72,6 +156,18 @@
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mun.rnsit.ac.in/channels"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="kn" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="te" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="ta" href="https://mun.rnsit.ac.in/channels"/>
+    <xhtml:link rel="alternate" hreflang="ml" href="https://mun.rnsit.ac.in/channels"/>
   </url>
 
 </urlset>
