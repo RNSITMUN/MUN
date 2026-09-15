@@ -1,14 +1,16 @@
 /* ==========================================================================
    RNSMUN 2026 - Multilingual Global Language Switcher (Neobrutalist Theme)
+   Diplomatic Tone, Clean Typography & Protected Brand Architecture
    ========================================================================== */
 
-/* 1. Reset Google Translate Artifacts & Layout Shifts */
+/* 1. Complete Reset of Google Translate Artifacts & Layout Shifts */
 .goog-te-banner-frame,
 .goog-te-banner-frame.skiptranslate,
 #goog-gt-tt,
 .goog-te-balloon-frame,
 .goog-tooltip,
-.goog-tooltip:hover {
+.goog-tooltip:hover,
+.goog-te-spinner-pos {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -35,13 +37,68 @@ body {
   left: -9999px;
 }
 
-/* 2. Language Switcher Floating Badge */
+/* 2. Global Typography & Glyph Rendering Across International Languages */
+:root {
+  --mun-font-base: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+html[lang="ar"],
+body.mun-lang-ar {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, 'Noto Sans Arabic', Arial, sans-serif !important;
+}
+
+html[lang="hi"],
+body.mun-lang-hi {
+  font-family: 'Outfit', 'Noto Sans Devanagari', 'Segoe UI', sans-serif !important;
+}
+
+html[lang="kn"],
+body.mun-lang-kn {
+  font-family: 'Outfit', 'Noto Sans Kannada', 'Tunga', 'Segoe UI', sans-serif !important;
+}
+
+html[lang="ja"],
+body.mun-lang-ja {
+  font-family: 'Outfit', 'Hiragino Sans', 'Meiryo', 'Yu Gothic', 'Noto Sans JP', sans-serif !important;
+}
+
+html[lang="zh-CN"],
+body.mun-lang-zh-CN {
+  font-family: 'Outfit', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif !important;
+}
+
+html[lang="ru"],
+body.mun-lang-ru {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* RTL Support for Arabic */
+html[dir="rtl"] .mun-lang-widget {
+  right: auto;
+  left: 140px;
+}
+
+html[dir="rtl"] .mun-lang-modal {
+  right: auto;
+  left: 0;
+  transform-origin: top left;
+}
+
+html[dir="rtl"] .mun-lang-item-left {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .mun-lang-item-names {
+  text-align: right;
+}
+
+/* 3. Language Switcher Floating Badge (Neobrutalist Design) */
 .mun-lang-widget {
   position: fixed;
   top: 24px;
   right: 140px;
   z-index: 10000;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--mun-font-base);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -114,12 +171,12 @@ body {
   transform: rotate(180deg);
 }
 
-/* 3. Dropdown Menu Modal Card */
+/* 4. Dropdown Menu Modal Card */
 .mun-lang-modal {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  width: 280px;
+  width: 290px;
   background: #FFFDF9;
   border: 2.5px solid #000000;
   border-radius: 16px;
@@ -279,7 +336,7 @@ body {
   box-shadow: 2px 2px 0px #000000;
 }
 
-/* 4. Responsive Adaptation */
+/* 5. Responsive Adaptation */
 @media (max-width: 900px) {
   .mun-lang-widget {
     top: 20px;

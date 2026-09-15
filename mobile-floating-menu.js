@@ -45,6 +45,9 @@
               `;
             })
             .join("")}
+          <button type="button" class="floating-menu-item notranslate" id="mobileMenuLangTrigger" style="transition-delay: 0.38s; background: none; border: none; font-family: inherit; font-size: inherit; color: inherit; width: 100%; text-align: left; cursor: pointer; padding: 0;">
+            <span>🌐 Language / Idioma</span>
+          </button>
         </nav>
 
         <!-- Bottom toggle bar -->
@@ -139,6 +142,19 @@
       toggleMenu(false);
     }
   });
+
+  // Language Trigger from inside mobile menu
+  const langTrigger = document.getElementById("mobileMenuLangTrigger");
+  if (langTrigger) {
+    langTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMenu(false);
+      setTimeout(() => {
+        const toggleBtn = document.getElementById("munLangToggleBtn");
+        if (toggleBtn) toggleBtn.click();
+      }, 150);
+    });
+  }
 
   // Handle menu item clicks: On mobile, replace location to avoid multi-page back loops
   const items = container.querySelectorAll(".floating-menu-item");
