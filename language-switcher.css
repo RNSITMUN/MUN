@@ -324,6 +324,7 @@ body.mun-lang-ru {
 /* 5. Responsive Adaptation & Mobile Precision */
 @media (max-width: 768px) {
   .mun-lang-widget {
+    position: absolute !important;
     top: max(14px, env(safe-area-inset-top, 14px)) !important;
     right: max(60px, calc(env(safe-area-inset-right, 0px) + 56px)) !important;
     left: auto !important;
@@ -379,6 +380,7 @@ body.mun-lang-ru {
 
 @media (max-width: 520px) {
   .mun-lang-widget {
+    position: absolute !important;
     top: max(10px, env(safe-area-inset-top, 10px)) !important;
     right: max(48px, calc(env(safe-area-inset-right, 0px) + 46px)) !important;
     left: auto !important;
@@ -412,6 +414,7 @@ body.mun-lang-ru {
 
 @media (max-width: 360px) {
   .mun-lang-widget {
+    position: absolute !important;
     top: max(8px, env(safe-area-inset-top, 8px)) !important;
     right: max(42px, calc(env(safe-area-inset-right, 0px) + 40px)) !important;
   }

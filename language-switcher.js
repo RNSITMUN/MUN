@@ -384,6 +384,7 @@
     if (!widget) return;
 
     if (window.innerWidth > 768 && navPill) {
+      widget.style.position = "fixed";
       const isScrolled = navPill.classList.contains("nav-scrolled");
 
       if (!isScrolled) {
@@ -408,7 +409,8 @@
         widget.style.transform = "none";
       }
     } else {
-      // Clear desktop inline styles so responsive CSS rules with env(safe-area-inset) manage mobile perfectly
+      // Clear desktop inline styles so responsive CSS rules with position: absolute & env(safe-area-inset) manage mobile perfectly
+      widget.style.position = "";
       widget.style.top = "";
       widget.style.right = "";
       widget.style.left = "";
