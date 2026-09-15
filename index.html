@@ -2347,6 +2347,7 @@
   <script>
     if (sessionStorage.getItem("hasVisited") === "true") {
       document.getElementById("preloader").style.display = "none";
+      document.documentElement.classList.add("visited-site");
     }
   </script>
 
@@ -2399,6 +2400,7 @@
             setTimeout(() => {
               if (preloaderEl) preloaderEl.classList.add("exit");
               sessionStorage.setItem("hasVisited", "true");
+              document.documentElement.classList.add("visited-site");
               // Reveal nav after preloader begins exit
               document.querySelector('.nav-pill')?.classList.add('nav-ready');
               document.querySelector('.mobile-floating-menu-root')?.classList.add('nav-ready');
@@ -2413,25 +2415,27 @@
       });
     })();
   </script>
-  <!-- Hide nav during preloader, reveal after -->
+  <!-- Hide nav only during initial first-time preloader, reveal after -->
   <style>
-    .nav-pill {
+    html:not(.visited-site) .nav-pill {
       opacity: 0;
       pointer-events: none;
     }
 
-    .nav-pill.nav-ready {
+    .nav-pill.nav-ready,
+    html.visited-site .nav-pill {
       opacity: 1;
       pointer-events: auto;
     }
 
-    .mobile-floating-menu-root {
+    html:not(.visited-site) .mobile-floating-menu-root {
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease 0.3s;
     }
 
-    .mobile-floating-menu-root.nav-ready {
+    .mobile-floating-menu-root.nav-ready,
+    html.visited-site .mobile-floating-menu-root {
       opacity: 1;
       pointer-events: auto;
     }

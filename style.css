@@ -342,9 +342,7 @@ body {
 }
 
 .nav-pill.is-animated {
-  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+  transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.35s ease,
     background 0.35s ease;
@@ -358,6 +356,15 @@ body {
 
 /* Scrolled state: moved to top-right, compact 48px circle */
 @media (min-width: 769px) {
+  .nav-pill.is-animated.nav-scrolled {
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s ease,
+      background 0.35s ease;
+  }
+
   .nav-pill.nav-scrolled {
     left: calc(100% - 24px);
     transform: translateX(-100%);
@@ -435,6 +442,11 @@ body {
     color: #6C0D2C;
     background: rgba(108, 13, 44, 0.12);
   }
+}
+
+.nav-item:active {
+  background: rgba(108, 13, 44, 0.12);
+  color: #6C0D2C;
 }
 
 /* Hide Past Events from Navbar */
@@ -973,7 +985,6 @@ body {
 
 
 /* Tactile Touch Feedback (Active Tap Scaling) */
-.nav-item:active,
 .action-button:active,
 .sound-toggle-btn:active,
 #sound-btn:active,
