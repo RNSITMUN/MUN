@@ -3016,8 +3016,8 @@
           }
         } else if (el.id === 'dlg-count') {
           const val = parseInt(el.value, 10);
-          isValid = !isNaN(val) && val >= 9 && val <= 18;
-          errMsg = 'Number of delegates must be between 9 and 18';
+          isValid = !isNaN(val) && val >= 9 && val <= 25;
+          errMsg = 'Number of delegates must be between 9 and 25';
         } else if (el.type === 'tel' || el.id === 'dlg-phone') {
           const digits = el.value.replace(/[^0-9]/g, '');
           isValid = digits.length === 10;
@@ -3327,12 +3327,12 @@
       const countInput = document.getElementById('dlg-count');
       let count = parseInt(countInput ? countInput.value : '9', 10);
       if (isNaN(count) || count < 9) count = 9;
-      if (count > 18) count = 18;
+      if (count > 25) count = 25;
 
       const qrImg = document.getElementById('dlg-payment-qr-img');
       const countLabel = document.getElementById('dlg-payment-count-label');
-      if (qrImg && DELEGATION_QR_MAP[count]) {
-        qrImg.src = DELEGATION_QR_MAP[count];
+      if (qrImg) {
+        qrImg.src = DELEGATION_QR_MAP[count] || DELEGATION_QR_MAP[18] || '/Payment_delegation/del 9.jpeg';
       }
       if (countLabel) {
         countLabel.textContent = count;
@@ -3503,7 +3503,7 @@
       if (isNaN(val)) val = 9;
       val += delta;
       if (val < 9) val = 9;
-      if (val > 18) val = 18;
+      if (val > 25) val = 25;
       input.value = val;
 
       const err = document.getElementById('dlg-count-error');
@@ -3519,9 +3519,9 @@
       if (!input) return;
       const err = document.getElementById('dlg-count-error');
       const val = parseInt(input.value, 10);
-      if (input.value.trim() && (isNaN(val) || val < 9 || val > 18)) {
+      if (input.value.trim() && (isNaN(val) || val < 9 || val > 25)) {
         if (err) {
-          err.textContent = 'Number of delegates must be between 9 and 18';
+          err.textContent = 'Number of delegates must be between 9 and 25';
           err.style.display = 'block';
         }
         input.classList.add('has-error');
@@ -3537,8 +3537,8 @@
       let val = parseInt(input.value, 10);
       if (isNaN(val) || val < 9) {
         input.value = 9;
-      } else if (val > 18) {
-        input.value = 18;
+      } else if (val > 25) {
+        input.value = 25;
       }
       const err = document.getElementById('dlg-count-error');
       if (err) err.style.display = 'none';
@@ -3676,7 +3676,7 @@
 
       // Local fallback CSV generator
       const countInput = document.getElementById('dlg-count');
-      const count = Math.min(18, Math.max(9, parseInt(countInput?.value, 10) || 9));
+      const count = Math.min(25, Math.max(9, parseInt(countInput?.value, 10) || 9));
 
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
@@ -4010,14 +4010,14 @@
         }
       });
 
-      // Validate Count (9 - 18 delegates limit)
+      // Validate Count (9 - 25 delegates limit)
       if (count) {
         const err = document.getElementById('dlg-count-error');
         const countVal = parseInt(count.value, 10);
-        if (!count.value.trim() || isNaN(countVal) || countVal < 9 || countVal > 18) {
+        if (!count.value.trim() || isNaN(countVal) || countVal < 9 || countVal > 25) {
           count.classList.add('has-error');
           if (err) {
-            err.textContent = 'Number of delegates must be between 9 and 18';
+            err.textContent = 'Number of delegates must be between 9 and 25';
             err.style.display = 'block';
           }
           hasError = true;
