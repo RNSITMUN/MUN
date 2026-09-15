@@ -95,17 +95,17 @@ body.mun-lang-ru {
 .mun-lang-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: #111113;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
-  padding: 0 14px;
+  padding: 0 12px;
   height: 48px;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -168,28 +168,29 @@ body.mun-lang-ru {
   transform: rotate(180deg);
 }
 
-/* 4. Dropdown Menu Modal Card */
+/* 4. Compact & Clean Dropdown Menu */
 .mun-lang-modal {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   right: 0;
-  width: 280px;
+  width: 165px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(0, 0, 0, 0.14);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 4px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px) scale(0.96);
+  transform: translateY(-6px) scale(0.96);
   transform-origin: top right;
-  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.22s;
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.18s;
   pointer-events: none;
   z-index: 10001;
+  box-sizing: border-box;
 }
 
 .mun-lang-modal.is-open {
@@ -199,137 +200,79 @@ body.mun-lang-ru {
   pointer-events: auto;
 }
 
-.mun-lang-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
-}
-
-.mun-lang-modal-title {
-  font-size: 0.76rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6C0D2C;
-}
-
-.mun-lang-modal-sub {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #666666;
-}
-
 .mun-lang-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  max-height: 300px;
+  gap: 2px;
+  max-height: 260px;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #6C0D2C transparent;
+  scrollbar-color: rgba(108, 13, 44, 0.5) transparent;
 }
 
 .mun-lang-list::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 .mun-lang-list::-webkit-scrollbar-thumb {
-  background: #6C0D2C;
-  border-radius: 4px;
+  background: rgba(108, 13, 44, 0.5);
+  border-radius: 3px;
 }
 
 .mun-lang-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 7px 10px;
-  border-radius: 8px;
-  border: 1px solid transparent;
+  gap: 8px;
+  padding: 6px 9px;
+  border-radius: 7px;
   background: transparent;
   cursor: pointer;
-  transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+  transition: background 0.12s ease, color 0.12s ease;
   color: #111113;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .mun-lang-item:hover {
   background: rgba(108, 13, 44, 0.08);
-  border-color: rgba(108, 13, 44, 0.2);
-  transform: translateX(2px);
+  color: #6C0D2C;
 }
 
 .mun-lang-item.is-selected {
   background: #6C0D2C;
   color: #FFFFFF;
-  border-color: #6C0D2C;
-  font-weight: 800;
-}
-
-.mun-lang-item-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-weight: 700;
 }
 
 .mun-lang-item-flag {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   line-height: 1;
-}
-
-.mun-lang-item-names {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
+  flex-shrink: 0;
 }
 
 .mun-lang-item-native {
-  font-size: 0.82rem;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.mun-lang-item-english {
-  font-size: 0.68rem;
-  font-weight: 600;
-  opacity: 0.75;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
 }
 
 .mun-lang-item-check {
   display: none;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 900;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .mun-lang-item.is-selected .mun-lang-item-check {
-  display: block;
-}
-
-.mun-lang-reset-btn {
-  width: 100%;
-  margin-top: 8px;
-  padding: 7px;
-  background: #F4F4F5;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #444444;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.mun-lang-reset-btn:hover {
-  background: #E4E4E7;
-  color: #111113;
+  display: inline-block;
 }
 
 /* 5. Responsive Adaptation */
@@ -351,8 +294,8 @@ body.mun-lang-ru {
   }
 
   .mun-lang-modal {
-    right: -40px;
-    width: 260px;
+    right: 0;
+    width: 155px;
   }
 }
 
@@ -363,7 +306,7 @@ body.mun-lang-ru {
   }
 
   .mun-lang-modal {
-    right: -46px;
-    width: 250px;
+    right: 0;
+    width: 150px;
   }
 }

@@ -425,29 +425,17 @@
       </button>
 
       <div id="munLangModal" class="mun-lang-modal" role="dialog" aria-modal="true" aria-label="Select Language">
-        <div class="mun-lang-modal-header">
-          <span class="mun-lang-modal-title">Global Languages</span>
-          <span class="mun-lang-modal-sub">10 Options</span>
-        </div>
         <ul class="mun-lang-list">
           ${SUPPORTED_LANGS.map(
             (lang) => `
             <li class="mun-lang-item ${lang.code === currentCode ? "is-selected" : ""}" data-lang="${lang.code}">
-              <div class="mun-lang-item-left">
-                <span class="mun-lang-item-flag">${lang.flag}</span>
-                <div class="mun-lang-item-names">
-                  <span class="mun-lang-item-native">${lang.native}</span>
-                  <span class="mun-lang-item-english">${lang.name}</span>
-                </div>
-              </div>
+              <span class="mun-lang-item-flag">${lang.flag}</span>
+              <span class="mun-lang-item-native">${lang.native}</span>
               <span class="mun-lang-item-check">✓</span>
             </li>
           `
           ).join("")}
         </ul>
-        <button type="button" id="munLangResetBtn" class="mun-lang-reset-btn">
-          Reset to English
-        </button>
       </div>
     `;
 
@@ -460,7 +448,6 @@
 
     const toggleBtn = document.getElementById("munLangToggleBtn");
     const modal = document.getElementById("munLangModal");
-    const resetBtn = document.getElementById("munLangResetBtn");
     let isOpen = false;
 
     function toggleMenu(state) {
@@ -500,13 +487,6 @@
         toggleMenu(false);
       });
     });
-
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        setLanguage("en");
-        toggleMenu(false);
-      });
-    }
 
     // Dynamic positioning handlers
     window.addEventListener("resize", () => {
