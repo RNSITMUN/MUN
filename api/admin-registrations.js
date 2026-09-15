@@ -197,6 +197,22 @@ export default async function handler(req, res) {
       }
     }
 
+    // ─── Fetch Shared Mail Logs from Supabase ───────────────────
+    let mailLogs = [];
+    try {
+      const { data: logsData, error: logsError } = await privilegedClient
+        .from('mail_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(500);
+
+      if (!logsError && logsData) {
+        mailLogs = logsData;
+      }
+    } catch (logErr) {
+      console.warn('⚠️ [admin-registrations] Non-blocking error fetching mail_logs:', logErr.message);
+    }
+
     // ─── Calculate Summary Stats ────────────────────────────────
     const stats = {
       totalIndividuals: registrations.length,
@@ -214,6 +230,7 @@ export default async function handler(req, res) {
       stats,
       registrations,
       delegations,
+      mailLogs,
       user: {
         id: adminUser.id,
         email: adminUser.email

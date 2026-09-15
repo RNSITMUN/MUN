@@ -115,3 +115,34 @@ CREATE POLICY "Allow select for qr_rotations" ON public.qr_rotations
     FOR SELECT TO anon, service_role
     USING (true);
 
+-- 7. Create 'mail_logs' Table (Shared Team-Wide Mail History)
+CREATE TABLE IF NOT EXISTS public.mail_logs (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    recipient TEXT NOT NULL,
+    recipient_name TEXT,
+    record_type TEXT DEFAULT 'individual' NOT NULL,
+    record_id TEXT,
+    template_id TEXT,
+    template_name TEXT,
+    subject TEXT,
+    status TEXT DEFAULT 'sent' NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_mail_logs_created_at ON public.mail_logs (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_mail_logs_record ON public.mail_logs (record_type, record_id);
+CREATE INDEX IF NOT EXISTS idx_mail_logs_recipient ON public.mail_logs (LOWER(recipient));
+
+ALTER TABLE public.mail_logs ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow anonymous inserts to mail_logs" ON public.mail_logs;
+CREATE POLICY "Allow anonymous inserts to mail_logs" ON public.mail_logs
+    FOR INSERT TO anon, service_role
+    WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow select for mail_logs" ON public.mail_logs;
+CREATE POLICY "Allow select for mail_logs" ON public.mail_logs
+    FOR SELECT TO anon, service_role
+    USING (true);
+
+
