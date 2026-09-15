@@ -136,9 +136,9 @@ export default async function handler(req, res) {
 
     // ─── Record to Supabase Shared Mail Logs Table ───────────────
     try {
-      if (supabase) {
+      if (supabase && responseData.success !== false) {
         const { recipientName, recordType, recordId, templateId, templateName } = req.body || {};
-        await supabase.from('mail_logs').insert([{
+        const { error: insertError } = await supabase.from('mail_logs').insert([{
           recipient: recipient.trim(),
           recipient_name: (recipientName || '').trim(),
           record_type: (recordType || 'individual').trim(),
@@ -148,6 +148,10 @@ export default async function handler(req, res) {
           subject: (subject || "Notice from RNS MUN '26").trim(),
           status: 'sent'
         }]);
+
+        if (insertError) {
+          console.warn('⚠️ [send-mail] Supabase insert error:', insertError.message);
+        }
       }
     } catch (dbErr) {
       console.warn('⚠️ [send-mail] Non-blocking error writing to mail_logs:', dbErr.message);
