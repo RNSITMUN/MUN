@@ -1,7 +1,7 @@
 /**
  * RNSMUN 2026 - Multilingual Global Language Switcher
  * Curated Diplomatic Cadence, Entity Protection, RTL Support & Desktop Nav-Pill Docking
- * Full Elimination of Google Translate Top Banners & Toolbars
+ * Zero-Loop Safe Mutation Architecture
  */
 
 (function () {
@@ -18,7 +18,6 @@
     { code: "kn", name: "Kannada", native: "ಕನ್ನಡ", flag: "🇮🇳", dir: "ltr" }
   ];
 
-  // Curated Diplomatic & Authentic Terminology Glossary
   const DIPLOMATIC_GLOSSARY = {
     es: {
       "Model United Nations Conference": "Conferencia del Modelo de las Naciones Unidas",
@@ -157,11 +156,7 @@
     }
   };
 
-  /**
-   * 1. Brand & Sensitive Entity Protection
-   * Ensures logos, acronyms (UNSC, DISEC), currency (₹), proper nouns, and handles never get mangled.
-   */
-  function applyBrandProtection() {
+  function applyBrandProtection(root = document) {
     const protectSelectors = [
       ".top-left-logo-container",
       ".top-right-logo-container",
@@ -181,31 +176,20 @@
     ];
 
     protectSelectors.forEach((sel) => {
-      document.querySelectorAll(sel).forEach((el) => {
-        el.classList.add("notranslate");
-        el.setAttribute("translate", "no");
+      root.querySelectorAll(sel).forEach((el) => {
+        if (!el.classList.contains("notranslate")) {
+          el.classList.add("notranslate");
+          el.setAttribute("translate", "no");
+        }
       });
-    });
-
-    const textNodesToProtect = ["UNSC", "Lok Sabha", "DISEC", "UNHRC", "UNODC", "IP", "RNSIT", "MUNSoc", "RNS MUN", "₹999", "₹1,200", "₹1,349", "₹10,000"];
-    const badges = document.querySelectorAll(".venue-meta-tag, .hpm-tag, .nav-item, .floating-menu-item span, .hpm-lbl");
-    badges.forEach(el => {
-      if (textNodesToProtect.includes(el.textContent.trim())) {
-        el.classList.add("notranslate");
-        el.setAttribute("translate", "no");
-      }
     });
   }
 
-  /**
-   * 2. Proactive Google Translate Banner Suppression
-   * Ensures no top iframe bar or layout shift occurs on mobile or PC.
-   */
   function suppressGoogleBanner() {
-    if (document.body.style.top && document.body.style.top !== "0px") {
+    if (document.body && document.body.style.top && document.body.style.top !== "0px") {
       document.body.style.top = "0px";
     }
-    if (document.documentElement.style.top && document.documentElement.style.top !== "0px") {
+    if (document.documentElement && document.documentElement.style.top && document.documentElement.style.top !== "0px") {
       document.documentElement.style.top = "0px";
     }
 
@@ -213,25 +197,23 @@
       "iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[id*=':'][id*='container'], .goog-te-banner-frame"
     );
     iframes.forEach((frame) => {
-      frame.style.display = "none";
-      frame.style.visibility = "hidden";
-      frame.style.height = "0px";
-      frame.style.width = "0px";
-      frame.style.position = "absolute";
-      frame.style.top = "-9999px";
-      frame.style.left = "-9999px";
+      if (frame.style.display !== "none") {
+        frame.style.display = "none";
+        frame.style.visibility = "hidden";
+        frame.style.height = "0px";
+        frame.style.width = "0px";
+        frame.style.position = "absolute";
+        frame.style.top = "-9999px";
+        frame.style.left = "-9999px";
+      }
     });
   }
 
-  /**
-   * 3. Curated Diplomatic Tone Refinement
-   */
   function applyDiplomaticPhrasing(langCode) {
     if (!langCode || langCode === "en") return;
     const glossary = DIPLOMATIC_GLOSSARY[langCode];
     if (!glossary) return;
 
-    // Subtitle tagline
     const subtitleSpans = document.querySelectorAll(".globe-hero-subtitle span");
     subtitleSpans.forEach((span) => {
       const text = span.textContent.trim();
@@ -240,7 +222,6 @@
       }
     });
 
-    // Early Bird tags & labels
     document.querySelectorAll(".hpm-tag, .qr-preview-badge").forEach((el) => {
       const txt = el.textContent.replace("★", "").trim();
       if (glossary[txt]) {
@@ -292,7 +273,6 @@
     const hostname = window.location.hostname;
     const langObj = SUPPORTED_LANGS.find((l) => l.code === langCode) || SUPPORTED_LANGS[0];
 
-    // Handle RTL
     if (langObj.dir === "rtl") {
       document.documentElement.setAttribute("dir", "rtl");
       document.body.classList.add("mun-lang-rtl", "mun-lang-ar");
@@ -301,8 +281,7 @@
       document.body.classList.remove("mun-lang-rtl", "mun-lang-ar");
     }
 
-    // Set active language class for font stacks
-    SUPPORTED_LANGS.forEach(l => document.body.classList.remove(`mun-lang-${l.code}`));
+    SUPPORTED_LANGS.forEach((l) => document.body.classList.remove(`mun-lang-${l.code}`));
     if (!isEnglish) {
       document.body.classList.add(`mun-lang-${langCode}`);
     }
@@ -351,9 +330,6 @@
     });
   }
 
-  /**
-   * Dynamically aligns the Language Switcher right beside the centered .nav-pill on PC
-   */
   function updateWidgetPosition() {
     const widget = document.getElementById("munLangWidgetRoot");
     const navPill = document.querySelector(".nav-pill");
@@ -365,7 +341,7 @@
 
       if (!isScrolled) {
         widget.style.top = `${rect.top}px`;
-        widget.style.left = `${rect.right + 12}px`;
+        widget.style.left = `${rect.right + 10}px`;
         widget.style.right = "auto";
         widget.style.transform = "none";
       } else {
@@ -375,7 +351,6 @@
         widget.style.transform = "none";
       }
     } else {
-      // Mobile (< 768px)
       widget.style.top = "14px";
       widget.style.right = "58px";
       widget.style.left = "auto";
@@ -386,14 +361,12 @@
   function mountLanguageWidget() {
     if (document.getElementById("munLangWidgetRoot")) return;
 
-    // Apply brand and proper-noun shielding
     applyBrandProtection();
     suppressGoogleBanner();
 
     const currentCode = getSavedLang();
     const currentLang = SUPPORTED_LANGS.find((l) => l.code === currentCode) || SUPPORTED_LANGS[0];
 
-    // Set initial direction & classes
     if (currentLang.dir === "rtl") {
       document.documentElement.setAttribute("dir", "rtl");
       document.body.classList.add("mun-lang-rtl", "mun-lang-ar");
@@ -441,7 +414,6 @@
 
     document.body.appendChild(widget);
 
-    // Initial position calculation
     updateWidgetPosition();
     setTimeout(updateWidgetPosition, 100);
     setTimeout(updateWidgetPosition, 400);
@@ -488,7 +460,7 @@
       });
     });
 
-    // Dynamic positioning handlers
+    // Window events
     window.addEventListener("resize", () => {
       updateWidgetPosition();
       suppressGoogleBanner();
@@ -499,23 +471,33 @@
       suppressGoogleBanner();
     }, { passive: true });
 
-    const navPill = document.querySelector(".nav-pill");
-    if (window.ResizeObserver && navPill) {
-      new ResizeObserver(updateWidgetPosition).observe(navPill);
-    }
-
-    // Safeguard dynamically created modals and popups
-    const observer = new MutationObserver(() => {
-      applyBrandProtection();
-      suppressGoogleBanner();
-      updateWidgetPosition();
+    // Safe childList-only mutation observer to handle dynamically opened modals without infinite loops
+    let isObserverWorking = false;
+    const observer = new MutationObserver((mutations) => {
+      if (isObserverWorking) return;
+      isObserverWorking = true;
+      try {
+        for (const m of mutations) {
+          if (m.addedNodes && m.addedNodes.length > 0) {
+            m.addedNodes.forEach((node) => {
+              if (node.nodeType === 1) {
+                applyBrandProtection(node);
+              }
+            });
+          }
+        }
+        suppressGoogleBanner();
+        updateWidgetPosition();
+      } finally {
+        setTimeout(() => { isObserverWorking = false; }, 150);
+      }
     });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] });
 
-    // Initialize Google Translate
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Initialize Google Translate Engine
     initGoogleTranslateEngine();
 
-    // Apply diplomatic cadence after initial boot
     if (currentCode !== "en") {
       setTimeout(() => {
         applyDiplomaticPhrasing(currentCode);
