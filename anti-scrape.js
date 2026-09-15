@@ -45,16 +45,14 @@
     });
   }
 
-  // 3. Inject Anti-AI Crawler Meta Tag dynamically
+  // 3. Configure Robots Discovery Meta Tag dynamically
   function injectRobotsDefense() {
     let robotsMeta = document.querySelector('meta[name="robots"]');
     if (!robotsMeta) {
       robotsMeta = document.createElement('meta');
       robotsMeta.name = 'robots';
-      robotsMeta.content = 'noai, noimageai, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+      robotsMeta.content = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
       document.head.appendChild(robotsMeta);
-    } else if (!robotsMeta.content.includes('noai')) {
-      robotsMeta.content += ', noai, noimageai';
     }
   }
 

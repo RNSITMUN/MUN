@@ -34,96 +34,165 @@
   <meta name="twitter:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
   <meta name="twitter:image:alt" content="RNSIT Model United Nations Conference Official Banner">
 
-  <!-- Schema.org Event Structured Data (Google Rich Snippets) -->
+  <!-- LLM & AI Search Index Context -->
+  <link rel="alternate" type="text/plain" href="https://mun.rnsit.ac.in/llms.txt" title="LLM Context">
+  <meta name="keywords" content="RNSIT MUN 2026, RNSMUN 2026, Best MUN Bangalore, Model United Nations Bengaluru, MUN Karnataka, MUN India, Best Delegation MUN, College MUN 2026, UNSC, Lok Sabha MUN, DISEC, UNHRC, UNODC, International Press, Model UN conference Bengaluru, RNSIT MUN Society">
+
+  <!-- Schema.org Multi-Entity Structured Data (Event, Organization, and FAQPage for Google & AI Search Engines) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Event",
-    "name": "RNSIT Model United Nations Conference 2026 (RNSMUN 2026)",
-    "alternateName": "RNSMUN'26",
-    "description": "Annual collegiate Model United Nations conference hosted by MUNSoc RNSIT, featuring simulated committees (UNSC, Lok Sabha, DISEC, UNHRC, UNODC, IP), diplomatic debates, and youth leadership summits on 06–07 October 2026 at RNSIT Bengaluru.",
-    "startDate": "2026-10-06T09:00:00+05:30",
-    "endDate": "2026-10-07T18:00:00+05:30",
-    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-    "eventStatus": "https://schema.org/EventScheduled",
-    "location": {
-      "@type": "Place",
-      "name": "RNS Institute of Technology (RNSIT)",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Dr. Vishnuvardhan Road, Post, Channasandra, Rajarajeshwarinagar",
-        "addressLocality": "Bengaluru",
-        "addressRegion": "Karnataka",
-        "postalCode": "560098",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 12.9037,
-        "longitude": 77.5186
-      }
-    },
-    "image": [
-      "https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png",
-      "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png"
-    ],
-    "organizer": {
-      "@type": "Organization",
-      "name": "MUNSoc RNSIT",
-      "url": "https://mun.rnsit.ac.in/",
-      "logo": "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png"
-    },
-    "performer": {
-      "@type": "Organization",
-      "name": "MUNSoc RNSIT Secretariat & Participating Delegations",
-      "url": "https://mun.rnsit.ac.in/"
-    },
-    "isAccessibleForFree": false,
-    "inLanguage": "en-US",
-    "offers": [
+    "@graph": [
       {
-        "@type": "Offer",
-        "name": "Internal Delegate Pass (RNSIT Students)",
-        "price": "999",
-        "priceCurrency": "INR",
-        "validFrom": "2026-08-01T00:00:00+05:30",
-        "validThrough": "2026-10-05T23:59:59+05:30",
-        "url": "https://mun.rnsit.ac.in/registration",
-        "availability": "https://schema.org/InStock",
-        "description": "All-inclusive 2-day conference access, delegate kit, food & beverages, and certificate for internal RNSIT delegates."
+        "@type": "Event",
+        "@id": "https://mun.rnsit.ac.in/#event",
+        "name": "RNSIT Model United Nations Conference 2026 (RNSMUN 2026)",
+        "alternateName": ["RNSMUN 2026", "RNS MUN '26", "RNSIT MUN"],
+        "description": "Premier collegiate Model United Nations conference hosted by MUNSoc RNSIT, featuring 6 simulated committees (UNSC, Lok Sabha, DISEC, UNHRC, UNODC, IP), high-stakes diplomacy, and a ₹1,00,000+ prize pool on 06–07 October 2026 at RNSIT Bengaluru.",
+        "startDate": "2026-10-06T09:00:00+05:30",
+        "endDate": "2026-10-07T18:00:00+05:30",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "RNS Institute of Technology (RNSIT)",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Dr. Vishnuvardhan Road, Post, Channasandra, Rajarajeshwarinagar",
+            "addressLocality": "Bengaluru",
+            "addressRegion": "Karnataka",
+            "postalCode": "560098",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 12.9037,
+            "longitude": 77.5186
+          }
+        },
+        "image": [
+          "https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png",
+          "https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png",
+          "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png"
+        ],
+        "organizer": {
+          "@type": "Organization",
+          "@id": "https://mun.rnsit.ac.in/#organizer",
+          "name": "MUNSoc RNSIT",
+          "url": "https://mun.rnsit.ac.in/",
+          "logo": "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png",
+          "sameAs": [
+            "https://www.instagram.com/munsoc_rnsit/",
+            "https://chat.whatsapp.com/G5y1o155s6y9017"
+          ]
+        },
+        "performer": {
+          "@type": "Organization",
+          "name": "MUNSoc RNSIT Secretariat & Participating Delegations",
+          "url": "https://mun.rnsit.ac.in/"
+        },
+        "isAccessibleForFree": false,
+        "inLanguage": "en-US",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Internal Delegate Pass (RNSIT Students)",
+            "price": "999",
+            "priceCurrency": "INR",
+            "validFrom": "2026-08-01T00:00:00+05:30",
+            "validThrough": "2026-10-05T23:59:59+05:30",
+            "url": "https://mun.rnsit.ac.in/registration",
+            "availability": "https://schema.org/InStock",
+            "description": "All-inclusive 2-day conference access, delegate kit, food & beverages, and certificate for internal RNSIT delegates."
+          },
+          {
+            "@type": "Offer",
+            "name": "External Delegate Pass (Early Bird)",
+            "price": "1200",
+            "priceCurrency": "INR",
+            "validFrom": "2026-08-01T00:00:00+05:30",
+            "validThrough": "2026-09-18T23:59:59+05:30",
+            "url": "https://mun.rnsit.ac.in/registration",
+            "availability": "https://schema.org/InStock",
+            "description": "Discounted early-bird 2-day conference access, delegate kit, food & beverages, and certificate for external delegates."
+          },
+          {
+            "@type": "Offer",
+            "name": "External Delegate Pass (Regular / After Early Bird)",
+            "price": "1349",
+            "priceCurrency": "INR",
+            "validFrom": "2026-09-19T00:00:00+05:30",
+            "validThrough": "2026-10-05T23:59:59+05:30",
+            "url": "https://mun.rnsit.ac.in/registration",
+            "availability": "https://schema.org/InStock",
+            "description": "Standard 2-day conference access, delegate kit, food & beverages, and certificate for external delegates registering after early bird."
+          },
+          {
+            "@type": "Offer",
+            "name": "External Institutional Delegation Pass (After Early Bird)",
+            "price": "1349",
+            "priceCurrency": "INR",
+            "validFrom": "2026-09-19T00:00:00+05:30",
+            "validThrough": "2026-10-05T23:59:59+05:30",
+            "url": "https://mun.rnsit.ac.in/registration?type=delegation",
+            "availability": "https://schema.org/InStock",
+            "description": "Standard delegation pass per delegate for external institutions (after early bird) with automated roster generation and eligibility for the Flagship Best Delegation Trophy."
+          }
+        ]
       },
       {
-        "@type": "Offer",
-        "name": "External Delegate Pass (Early Bird)",
-        "price": "1200",
-        "priceCurrency": "INR",
-        "validFrom": "2026-08-01T00:00:00+05:30",
-        "validThrough": "2026-09-18T23:59:59+05:30",
-        "url": "https://mun.rnsit.ac.in/registration",
-        "availability": "https://schema.org/InStock",
-        "description": "Discounted early-bird 2-day conference access, delegate kit, food & beverages, and certificate for external delegates."
-      },
-      {
-        "@type": "Offer",
-        "name": "External Delegate Pass (Regular / After Early Bird)",
-        "price": "1349",
-        "priceCurrency": "INR",
-        "validFrom": "2026-09-19T00:00:00+05:30",
-        "validThrough": "2026-10-05T23:59:59+05:30",
-        "url": "https://mun.rnsit.ac.in/registration",
-        "availability": "https://schema.org/InStock",
-        "description": "Standard 2-day conference access, delegate kit, food & beverages, and certificate for external delegates registering after early bird."
-      },
-      {
-        "@type": "Offer",
-        "name": "External Institutional Delegation Pass (After Early Bird)",
-        "price": "1349",
-        "priceCurrency": "INR",
-        "validFrom": "2026-09-19T00:00:00+05:30",
-        "validThrough": "2026-10-05T23:59:59+05:30",
-        "url": "https://mun.rnsit.ac.in/registration?type=delegation",
-        "availability": "https://schema.org/InStock",
-        "description": "Standard delegation pass per delegate for external institutions (after early bird) with automated roster generation and eligibility for the Flagship Best Delegation Trophy."
+        "@type": "FAQPage",
+        "@id": "https://mun.rnsit.ac.in/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is RNSIT Model United Nations Conference (RNSMUN 2026)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "RNSMUN 2026 is the premier annual Model United Nations conference hosted by MUNSoc at RNS Institute of Technology in Bengaluru, Karnataka on 06–07 October 2026. It features 6 dynamic committees simulating international diplomacy, national governance, and investigative journalism with over 200+ delegates."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the prize pool and flagship award at RNSMUN 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "RNSMUN 2026 features a total prize pool of ₹1,00,000+ INR across all individual committee awards and institutional awards. The flagship award is the Best Delegation Trophy accompanied by a ₹10,000 INR cash prize awarded to the best-performing institution."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What committees are simulated at RNSMUN 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "RNSMUN 2026 features 6 committees: United Nations Security Council (UNSC), Lok Sabha (House of the People - Indian Parliament), Disarmament and International Security Committee (DISEC), United Nations Human Rights Council (UNHRC), United Nations Office on Drugs and Crime (UNODC), and the International Press (IP)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the registration fees for delegates at RNSMUN 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The registration fee is ₹999 for internal RNSIT students, ₹1,200 for external delegates during the Early Bird offer (valid until September 18, 2026), and ₹1,349 for standard external passes. Fees include 2-day conference entry, delegate kits, lunch, refreshments, and official certificates."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can an institutional delegation register for RNSMUN 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Institutional delegations (groups of 9 to 25 delegates from a single college or school) can register through the official registration portal at https://mun.rnsit.ac.in/registration?type=delegation. Delegations receive automated live Google Sheet rosters and compete for the Best Delegation Trophy (₹10,000 & Trophy)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where is RNSMUN 2026 hosted and what is the nearest metro station?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "RNSMUN 2026 is hosted at the RNS Institute of Technology campus on Dr. Vishnuvardhan Road, Channasandra, Bengaluru - 560098. The venue is 5.1 km (10-15 minutes by auto/cab) from the Kengeri / Pattanagere Purple Line Metro stations."
+            }
+          }
+        ]
       }
     ]
   }

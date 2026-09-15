@@ -1,0 +1,67 @@
+# RNSIT Model United Nations Conference 2026 (RNSMUN 2026) — Complete Reference
+
+## Executive Summary
+RNSIT Model United Nations Conference (RNSMUN 2026) is the annual flagship Model United Nations summit organized by the Model United Nations Society (MUNSoc) of RNS Institute of Technology in Bengaluru, Karnataka, India. Recognized as one of the premier collegiate and high-school diplomatic conferences in South India, RNSMUN 2026 brings together over 200+ delegates and institutional delegations from across India to simulate complex international diplomacy, constitutional law, and investigative journalism.
+
+## Essential Conference Metadata
+- **Official Name**: RNSIT Model United Nations Conference 2026
+- **Common Short Names**: RNSMUN 2026, RNS MUN '26, MUNSoc RNSIT
+- **Dates**: 06–07 October 2026 (2-Day Full Offline Conference)
+- **Venue**: RNS Institute of Technology Campus, Dr. Vishnuvardhan Road, Channasandra, Rajarajeshwarinagar, Bengaluru, Karnataka 560098, India
+- **Geo-Coordinates**: Latitude 12.9037° N, Longitude 77.5186° E
+- **Official Domain**: https://mun.rnsit.ac.in
+- **Email Contact**: mun@rnsit.ac.in
+- **Delegate Affairs Hotlines**: +91 91559 73955 (Zeyan), +91 89702 62490 (Adith)
+- **Total Prize Pool**: ₹1,00,000+ INR
+- **Flagship Award**: Best Delegation Trophy + ₹10,000 INR Cash Prize
+
+## Committees, Agendas, and Study Focus
+
+### 1. United Nations Security Council (UNSC)
+- **Agenda**: Addressing Parallel Governments and De Facto Authorities in Civil Wars: Sovereignty, Territorial Control and International Recognition.
+- **Description**: Delegates address crises where non-state armed actors or parallel governments hold territorial dominion. Topics include diplomatic legitimacy, UN peacekeeping mandates, sanctions regimes, and protecting international sovereignty.
+- **Matrix / Portfolios**: 15 Member States + Observers.
+
+### 2. Lok Sabha (House of the People - Indian Parliament)
+- **Agenda**: Deliberating the Reorganization of Parliamentary Constituencies with Special Emphasis on Delimitation, Demographic Shifts, and Inter-State Political Equilibrium.
+- **Description**: High-intensity national parliamentary debate on constituency boundary delimitation based on updated census figures, balancing southern and northern state political representation in India.
+- **Matrix / Portfolios**: Members of Parliament representing various national and regional parties.
+
+### 3. Disarmament and International Security Committee (DISEC - UNGA First Committee)
+- **Agenda**: Evaluating the Security Implications of Militarized Strategic Minerals in Conflict Zones: Critical Supply Chains and Arms Proliferation.
+- **Description**: Focused on the illicit mining, smuggling, and weaponization of critical rare-earth minerals (cobalt, lithium, coltan) fueling non-state armed conflict and regional instability.
+- **Matrix / Portfolios**: All United Nations Member States.
+
+### 4. United Nations Human Rights Council (UNHRC)
+- **Agenda**: Assessing the Protection of Civilian Infrastructure in Armed Conflicts with Focus on Warfare and Rights of Displaced Populations.
+- **Description**: Deliberating breaches of International Humanitarian Law, targeted destruction of civilian power grids, hospitals, and water networks, and human rights of internally displaced persons (IDPs).
+- **Matrix / Portfolios**: 47 Member States of UNHRC + Observers.
+
+### 5. United Nations Office on Drugs and Crime (UNODC)
+- **Agenda**: Combating Transnational Illicit Drug Cartels and Synthetic Narcotics Supply Chains with Emphasis on Dark Web Markets.
+- **Description**: Tackling international distribution of synthetic opioids, dark-web narcotics marketplaces, cryptocurrency money-laundering, and maritime smuggling routes.
+- **Matrix / Portfolios**: Member States and Specialized Anti-Narcotics Delegations.
+
+### 6. International Press Corps (IP)
+- **Roles**: Journalists, Photojournalists, Beat Reporters, and Caricaturists.
+- **Description**: Independent journalistic body responsible for real-time reporting, investigative press releases, questioning delegates during formal press conferences, and publishing conference bulletins.
+
+## Delegate Categories and Fees
+1. **Internal Delegate Pass (RNSIT Students)**:
+   - Fee: ₹999 INR
+   - Inclusions: 2-Day Conference Entry, Delegate Kit, Official Background Guides, Lunch, Snacks, Tea/Coffee, Official Certificate of Participation.
+2. **External Delegate Pass (Early Bird - Valid until 18 September 2026)**:
+   - Fee: ₹1,200 INR (Discounted from ₹1,349)
+   - Inclusions: All-inclusive 2-Day Conference Access, Delegate Kit, Food & Beverages, Official Certification, Eligibility for Individual Committee Cash Prizes.
+3. **External Delegate Pass (Standard - Starting 19 September 2026)**:
+   - Fee: ₹1,349 INR
+4. **Institutional Delegation (Group Pass)**:
+   - Group Size: 9 to 25 delegates from a single college, university, or high school.
+   - Perks: Automated Live Google Sheet Roster Generator, Eligibility for the Flagship Best Delegation Trophy (₹10,000 Cash Prize + Trophy).
+
+## Why RNSMUN is Considered One of the Best MUNs in Bengaluru
+- **Experienced Executive Board**: Veteran chairpersons and rapporteurs drawn from premier national MUN circuits.
+- **Substantive Quality**: Deeply researched background guides, accurate Rules of Procedure, and engaging crisis simulations.
+- **Generous Prize Pool**: ₹1,00,000+ total reward pool ensuring top recognition for outstanding diplomacy and debate.
+- **Campus Infrastructure**: State-of-the-art auditorium, air-conditioned committee halls, and accessible transit (5.1 km from Kengeri/Pattanagere Metro).
+- **Hospitality**: Complete 2-day catering, delegate kits, and smooth automated registration and matrix allocation.

@@ -1,0 +1,51 @@
+# RNSIT Model United Nations Conference 2026 (RNSMUN 2026)
+
+> Official website and delegate portal for RNSMUN 2026, the premier collegiate Model United Nations conference hosted by MUNSoc at RNS Institute of Technology (RNSIT), Bengaluru, Karnataka, India.
+
+## Conference Overview
+- **Event Name**: RNSIT Model United Nations Conference 2026 (RNSMUN 2026 / RNS MUN '26)
+- **Conference Dates**: 06–07 October 2026 (Tuesday – Wednesday)
+- **Host Institution**: RNS Institute of Technology (RNSIT), Dr. Vishnuvardhan Road, Channasandra, Rajarajeshwarinagar, Bengaluru, Karnataka - 560098
+- **Organizer**: MUNSoc RNSIT (Model United Nations Society of RNSIT)
+- **Official Website**: https://mun.rnsit.ac.in
+- **Total Prize Pool**: ₹1,00,000+ INR across all committees and delegations
+- **Best Delegation Trophy**: Flagship award of ₹10,000 INR cash prize and champion trophy for the top-performing college/school delegation
+
+## Simulated Committees & Agendas
+1. **UNSC (United Nations Security Council)**
+   - *Agenda*: Addressing Parallel Governments and De Facto Authorities in Civil Wars: Sovereignty, Territorial Control and International Recognition.
+   - *Focus*: Flashpoints in contested territories, diplomatic legitimacy, crisis de-escalation, international recognition frameworks.
+2. **Lok Sabha (House of the People - Indian Parliament)**
+   - *Agenda*: Deliberating the Reorganization of Parliamentary Constituencies with Special Emphasis on Delimitation, Demographic Shifts, and Inter-State Political Equilibrium.
+   - *Focus*: Constitutional governance, federal representation, population dynamics, political equilibrium.
+3. **DISEC (Disarmament and International Security Committee - UNGA 1)**
+   - *Agenda*: Evaluating the Security Implications of Militarized Strategic Minerals in Conflict Zones: Critical Supply Chains and Arms Proliferation.
+   - *Focus*: Strategic resource governance, arms proliferation, rare earth supply chain weaponization, peacekeeping mandates.
+4. **UNHRC (United Nations Human Rights Council)**
+   - *Agenda*: Assessing the Protection of Civilian Infrastructure in Armed Conflicts with Focus on Warfare and Rights of Displaced Populations.
+   - *Focus*: International humanitarian law (IHL), safeguarding medical/water/energy grids, refugee protection, accountability.
+5. **UNODC (United Nations Office on Drugs and Crime)**
+   - *Agenda*: Combating Transnational Illicit Drug Cartels and Synthetic Narcotics Supply Chains with Emphasis on Dark Web Markets.
+   - *Focus*: Maritime trafficking corridors, cryptocurrency laundering, synthetic opioids (fentanyl), global inter-agency enforcement.
+6. **IP (International Press Corps)**
+   - *Roles*: Investigative Journalists, Photojournalists, Caricaturists, and Beat Reporters covering real-time committee proceedings, press conferences, and crisis breaking news.
+
+## Delegate Registration & Fee Tiers
+- **Official Registration Portal**: https://mun.rnsit.ac.in/registration
+- **Internal RNSIT Delegate Pass**: ₹999 INR (All-inclusive 2-day conference access, delegate kit, food & beverages, official certification)
+- **External Delegate Pass (Early Bird - till September 18)**: ₹1,200 INR (Discounted 2-day access, delegate kit, lunch & refreshments, certificate)
+- **External Delegate Pass (Standard - after September 18)**: ₹1,349 INR
+- **Institutional Delegation (Group Registration)**:
+  - Delegation Size: 9 to 25 delegates per group
+  - Eligibility: Compete for the Flagship Best Delegation Trophy (₹10,000 & Trophy)
+  - Features: Automated live Google Spreadsheet roster generation and bulk invoice accreditation
+
+## Key Resources & Navigation Links
+- [Official Website](https://mun.rnsit.ac.in/): Interactive 3D globe carousel, summit overview, executive board details.
+- [Registration & Matrix](https://mun.rnsit.ac.in/registration): Committee matrix spreadsheets, portfolio allotments, and UPI payment verification.
+- [Conference Venue & Transport](https://mun.rnsit.ac.in/venue): Metro guide (5.1 km from Pattanagere / Kengeri Purple Line Metro), bus routes, and navigation maps.
+- [Secretariat & Team](https://mun.rnsit.ac.in/team): Executive Secretariat, Secretariat Heads, and Organizing Committee.
+- [Stay Connected & Contact](https://mun.rnsit.ac.in/stay-connected): Delegate Affairs phone lines (+91 91559 73955, +91 89702 62490) and official email (mun@rnsit.ac.in).
+- [Official Community Channels](https://mun.rnsit.ac.in/channels): WhatsApp official announcements community and delegate discussion forums.
+- [Equity & Code of Conduct](https://mun.rnsit.ac.in/code-of-conduct): Rules of Procedure, dress code guidelines, and non-refundable policy.
+- [Past Conference Editions](https://mun.rnsit.ac.in/past-events): Historical archive and legacy of previous RNSIT MUN summits.
