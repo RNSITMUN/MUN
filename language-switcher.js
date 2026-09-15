@@ -15,7 +15,10 @@
     { code: "ru", name: "Russian", native: "Русский", flag: "🇷🇺", dir: "ltr" },
     { code: "zh-CN", name: "Chinese", native: "简体中文", flag: "🇨🇳", dir: "ltr" },
     { code: "hi", name: "Hindi", native: "हिन्दी", flag: "🇮🇳", dir: "ltr" },
-    { code: "kn", name: "Kannada", native: "ಕನ್ನಡ", flag: "🇮🇳", dir: "ltr" }
+    { code: "kn", name: "Kannada", native: "ಕನ್ನಡ", flag: "🇮🇳", dir: "ltr" },
+    { code: "te", name: "Telugu", native: "తెలుగు", flag: "🇮🇳", dir: "ltr" },
+    { code: "ta", name: "Tamil", native: "தமிழ்", flag: "🇮🇳", dir: "ltr" },
+    { code: "ml", name: "Malayalam", native: "മലയാളം", flag: "🇮🇳", dir: "ltr" }
   ];
 
   const DIPLOMATIC_GLOSSARY = {
@@ -153,6 +156,51 @@
       "DOWNLOAD": "ಡೌನ್‌ಲೋಡ್",
       "External": "ಹೊರಗಿನ ಪ್ರತಿನಿಧಿಗಳು",
       "RNSIT": "RNSIT"
+    },
+    te: {
+      "Model United Nations Conference": "మోడల్ యునైటెడ్ నేషన్స్ కాన్ఫరెన్స్ 2026",
+      "EARLY BIRD": "ముందస్తు రాయితీ",
+      "Register": "నమోదు చేసుకోండి",
+      "Registration": "ప్రతినిధి నమోదు",
+      "Venue": "వేదిక",
+      "Contact": "సంప్రదించండి",
+      "Team": "నిర్వాహక బృందం",
+      "Equity Policy": "సమానత్వ విధానం",
+      "Past Events": "గత ఈవెంట్‌లు",
+      "Best Delegation Trophy": "ఉత్తమ ప్రతినిధి బృందం ట్రోఫీ",
+      "DOWNLOAD": "డౌన్‌లోడ్",
+      "External": "బాహ్య ప్రతినిధులు",
+      "RNSIT": "RNSIT"
+    },
+    ta: {
+      "Model United Nations Conference": "மாதிரி ஐக்கிய நாடுகள் மாநாடு 2026",
+      "EARLY BIRD": "முன்பதிவு சலுகை",
+      "Register": "பதிவு செய்க",
+      "Registration": "பிரதிநிதி பதிவு",
+      "Venue": "நிகழ்விடம்",
+      "Contact": "தொடர்புக்கு",
+      "Team": "ஒருங்கிணைப்புக் குழு",
+      "Equity Policy": "சமத்துவக் கொள்கை",
+      "Past Events": "முந்தைய நிகழ்வுகள்",
+      "Best Delegation Trophy": "சிறந்த குழுவிற்கான கோப்பை",
+      "DOWNLOAD": "பதிவிறக்கம்",
+      "External": "வெளிப் பிரதிநிதிகள்",
+      "RNSIT": "RNSIT"
+    },
+    ml: {
+      "Model United Nations Conference": "മോഡൽ യുണൈറ്റഡ് നേഷൻസ് കോൺഫറൻസ് 2026",
+      "EARLY BIRD": "നേരത്തെയുള്ള ബുക്കിംഗ്",
+      "Register": "രജിസ്റ്റർ ചെയ്യുക",
+      "Registration": "പ്രതിനിധി രജിസ്ട്രേഷൻ",
+      "Venue": "വേദി",
+      "Contact": "ബന്ധപ്പെടുക",
+      "Team": "സംഘാടക സമിതി",
+      "Equity Policy": "സമത്വ നയം",
+      "Past Events": "മുൻകാല ഇവന്റുകൾ",
+      "Best Delegation Trophy": "മികച്ച പ്രതിനിധി സംഘത്തിനുള്ള ട്രോഫി",
+      "DOWNLOAD": "ഡൗൺലോഡ്",
+      "External": "ബാഹ്യ പ്രതിനിധികൾ",
+      "RNSIT": "RNSIT"
     }
   };
 
@@ -249,7 +297,7 @@
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "en,es,fr,de,ar,ja,ru,zh-CN,hi,kn",
+            includedLanguages: "en,es,fr,de,ar,ja,ru,zh-CN,hi,kn,te,ta,ml",
             autoDisplay: false
           },
           "google_translate_element"

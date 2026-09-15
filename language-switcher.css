@@ -66,6 +66,21 @@ body.mun-lang-kn {
   font-family: 'Outfit', 'Noto Sans Kannada', 'Tunga', 'Segoe UI', sans-serif !important;
 }
 
+html[lang="te"],
+body.mun-lang-te {
+  font-family: 'Outfit', 'Noto Sans Telugu', 'Gautami', 'Segoe UI', sans-serif !important;
+}
+
+html[lang="ta"],
+body.mun-lang-ta {
+  font-family: 'Outfit', 'Noto Sans Tamil', 'Latha', 'Segoe UI', sans-serif !important;
+}
+
+html[lang="ml"],
+body.mun-lang-ml {
+  font-family: 'Outfit', 'Noto Sans Malayalam', 'Kartika', 'Segoe UI', sans-serif !important;
+}
+
 html[lang="ja"],
 body.mun-lang-ja {
   font-family: 'Outfit', 'Hiragino Sans', 'Meiryo', 'Yu Gothic', 'Noto Sans JP', sans-serif !important;
