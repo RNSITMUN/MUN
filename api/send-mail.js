@@ -135,6 +135,7 @@ export default async function handler(req, res) {
     }
 
     // ─── Record to Supabase Shared Mail Logs Table ───────────────
+    let logWarning = null;
     try {
       if (supabase && responseData.success !== false) {
         const { recipientName, recordType, recordId, templateId, templateName } = req.body || {};
@@ -154,17 +155,24 @@ export default async function handler(req, res) {
 
         if (insertError) {
           console.warn('⚠️ [send-mail] Supabase insert error:', insertError.message);
+          logWarning = 'Email sent but failed to log to history';
         }
       }
     } catch (dbErr) {
       console.warn('⚠️ [send-mail] Non-blocking error writing to mail_logs:', dbErr.message);
+      logWarning = 'Email sent but failed to log to history';
     }
 
-    return res.status(200).json({
+    const responsePayload = {
       success: responseData.success !== false,
       message: responseData.message || 'Email successfully sent via Google Apps Script.',
       details: responseData
-    });
+    };
+    if (logWarning) {
+      responsePayload.logWarning = logWarning;
+    }
+
+    return res.status(200).json(responsePayload);
 
   } catch (error) {
     console.error('Error forwarding to Google Apps Script:', error);
