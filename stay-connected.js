@@ -5,7 +5,7 @@ if (canvas) {
   const ctx = canvas.getContext("2d");
   if (ctx) {
     const config = {
-      src: "./peeps.png",
+      src: "./peeps.webp",
       rows: 15,
       cols: 7,
     };

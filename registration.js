@@ -3156,8 +3156,14 @@
       const dlgCard = document.getElementById('delegation-modal-card');
       if (dlgCard) dlgCard.scrollTop = 0;
     }
-
     function handleDelegationStep1Proceed() {
+      if (!validateDelegationFields()) {
+        const dlgCard = document.getElementById('delegation-modal-card');
+        if (window.gsap && dlgCard) {
+          gsap.fromTo(dlgCard, { x: -8 }, { x: 8, duration: 0.08, repeat: 3, yoyo: true, ease: 'power2.inOut', onComplete: () => gsap.set(dlgCard, { x: 0 }) });
+        }
+        return;
+      }
       goToDelegationStep(2);
     }
 
@@ -3324,7 +3330,7 @@
     }
 
     const DELEGATION_QR_MAP = {
-      9: '/Payment_delegation/del 9.jpeg',
+      9: '/Payment_delegation/del 9.png',
       10: '/Payment_delegation/del 10.png',
       11: '/Payment_delegation/del 11.png',
       12: '/Payment_delegation/del 12.png',
@@ -3360,7 +3366,7 @@
       const qrImg = document.getElementById('dlg-payment-qr-img');
       const countLabel = document.getElementById('dlg-payment-count-label');
       if (qrImg) {
-        qrImg.src = DELEGATION_QR_MAP[count] || DELEGATION_QR_MAP[33] || '/Payment_delegation/del 9.jpeg';
+        qrImg.src = DELEGATION_QR_MAP[count] || DELEGATION_QR_MAP[33] || '/Payment_delegation/del 9.png';
       }
       if (countLabel) {
         countLabel.textContent = count;
@@ -4164,7 +4170,24 @@
       }
 
       // Send to Supabase Database via API endpoint
-      fetch('/api/submit-delegation', {
+      async function fetchWithRetry(url, options, retries = 3) {
+        let attempt = 0;
+        const delays = [1000, 2000, 4000];
+        while (attempt < retries) {
+          try {
+            const res = await fetch(url, options);
+            if (res.status >= 500) throw new Error(`Server error: ${res.status}`);
+            return res;
+          } catch (err) {
+            attempt++;
+            if (attempt >= retries) throw err;
+            console.warn(`[Delegation] Fetch attempt ${attempt} failed, retrying in ${delays[attempt - 1]}ms...`);
+            await new Promise(r => setTimeout(r, delays[attempt - 1]));
+          }
+        }
+      }
+
+      fetchWithRetry('/api/submit-delegation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -4390,9 +4413,26 @@
         : `Thank you for registering, <strong>${delegateName}</strong>!<br>Your external delegate registration and payment screenshot for<br><span id="success-committee-name" class="success-committee-badge">${selectedCommName}</span><br>have been successfully submitted.<br>Our team will verify the payment and reach out via email/WhatsApp with your official registration confirmation and portfolio allotment.`;
 
       // ─── Direct Supabase Submission ─────────────────────────
+      async function fetchWithRetry(url, options, retries = 3) {
+        let attempt = 0;
+        const delays = [1000, 2000, 4000];
+        while (attempt < retries) {
+          try {
+            const res = await fetch(url, options);
+            if (res.status >= 500) throw new Error(`Server error: ${res.status}`);
+            return res;
+          } catch (err) {
+            attempt++;
+            if (attempt >= retries) throw err;
+            console.warn(`[Registration] Fetch attempt ${attempt} failed, retrying in ${delays[attempt - 1]}ms...`);
+            await new Promise(r => setTimeout(r, delays[attempt - 1]));
+          }
+        }
+      }
+
       async function dispatchSubmission(payload) {
         try {
-          const res = await fetch('/api/submit-registration', {
+          const res = await fetchWithRetry('/api/submit-registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -4841,7 +4881,7 @@
       receiptEl.innerHTML = `
         <div class="receipt-header">
           <div class="receipt-brand-left">
-            <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
+            <img src="./assets/Logos/RNS_MUN_2026_dark.webp" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.webp'" alt="RNS MUN 2026" class="receipt-header-logo-img">
             <div class="receipt-titles">
               <h2 class="receipt-org-title">RNS MUN'26</h2>
               <div class="receipt-doc-subtitle">OFFICIAL DELEGATE CONFIRMATION</div>
@@ -4981,7 +5021,7 @@
       dlgReceiptEl.innerHTML = `
         <div class="receipt-header">
           <div class="receipt-brand-left">
-            <img src="./assets/Logos/RNS_MUN_2026_dark.png" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.png'" alt="RNS MUN 2026" class="receipt-header-logo-img">
+            <img src="./assets/Logos/RNS_MUN_2026_dark.webp" onerror="this.onerror=null;this.src='./assets/Logos/RNS_MUN_2026.webp'" alt="RNS MUN 2026" class="receipt-header-logo-img">
             <div class="receipt-titles">
               <h2 class="receipt-org-title">RNS MUN'26</h2>
               <div class="receipt-doc-subtitle">OFFICIAL DELEGATION ACCREDITATION CONFIRMATION</div>

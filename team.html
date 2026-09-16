@@ -98,10 +98,9 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800&family=Anton&family=Oswald:wght@700&display=swap" rel="stylesheet"></noscript>
   
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./language-switcher.css">
   <script type="module" src="./animated-nav.js"></script>
-  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.png">
-  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
+  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.webp">
+  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.webp">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
   <style>
@@ -152,8 +151,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
-      height: 170px;
+      gap: 18px;
+      height: 190px;
       width: max-content;
       max-width: 92%;
       z-index: 20;
@@ -162,8 +161,8 @@
     
     .profile-img-container {
       position: relative;
-      width: 96px;
-      height: 96px;
+      width: 125px;
+      height: 125px;
       cursor: pointer;
       transform-origin: center center;
       transform: translate3d(var(--profile-tx, 0px), 0, 0) scale(var(--profile-scale, 1));
@@ -171,9 +170,9 @@
                   opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                   border-color 0.35s ease,
                   box-shadow 0.35s ease;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
       z-index: 25;
-      border-radius: 18px;
+      border-radius: 22px;
       border: 2.5px solid rgba(0, 0, 0, 0.06);
       background: #FFF7EB;
       overflow: hidden;
@@ -184,7 +183,7 @@
     .profile-img-container.active {
       z-index: 30;
       border-color: #6C0D2C;
-      box-shadow: 0 12px 30px rgba(108, 13, 44, 0.22);
+      box-shadow: 0 14px 34px rgba(108, 13, 44, 0.22);
     }
     
     .profile-img-container img {
@@ -192,7 +191,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      border-radius: 15px;
+      border-radius: 19px;
       pointer-events: none;
       transition: transform 0.45s ease;
     }
@@ -316,10 +315,26 @@
       display: none;
     }
 
-    /* Desktop / PC Screens (min-width: 769px): Lower MUNSOC SECRETARIAT safely below Nav Pill */
+    /* Desktop / PC Screens (min-width: 769px): Lower MUNSOC SECRETARIAT safely below Nav Pill & optimize sizing */
     @media (min-width: 769px) {
       .team-kicker {
-        margin-top: clamp(56px, 7.5vh, 80px);
+        margin-top: clamp(48px, 6vh, 68px);
+        margin-bottom: clamp(10px, 1.4vh, 16px);
+      }
+      .profile-row {
+        gap: 18px;
+        height: 190px;
+      }
+      .profile-img-container {
+        width: 125px;
+        height: 125px;
+        border-radius: 22px;
+      }
+      .profile-img-container img {
+        border-radius: 19px;
+      }
+      .role-display {
+        margin-top: 18px;
       }
     }
 
@@ -493,7 +508,7 @@
     }
   </style>
 </head>
-<body>
+<body class="notranslate">
 
 
   <!-- Navigation Pill -->
@@ -511,12 +526,12 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo" width="496" height="503">
+    <img src="./assets/Logos/MUN_logo.webp" alt="MUN Logo" class="top-left-logo" width="496" height="503">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo" width="159" height="170">
+    <img src="./assets/Logos/25_logo.webp" alt="25 Logo" class="top-right-logo" width="159" height="170">
   </div>
 
   <!-- Main Viewport -->
@@ -527,20 +542,20 @@
     <!-- Profile Row Container -->
     <div class="profile-row" id="profile-row">
       <div class="profile-img-container" data-index="0" data-first-name="NIKHIL" data-full-name="Nikhil Nayak" data-role="Secretary General">
-        <img src="./team/nikhil.webp?v=6" onerror="this.onerror=null;this.src='./team/nikhil.jpeg?v=6'" alt="MUNSoc - Nikhil Nayak">
+        <img src="./team/nikhil.webp?v=6" onerror="this.onerror=null;this.src='./team/nikhil.webp?v=6'" alt="MUNSoc - Nikhil Nayak">
       </div>
       <div class="profile-img-container" data-index="1" data-first-name="KOUSHIK" data-full-name="V Koushik" data-role="Director General">
-        <img src="./team/koushik.webp?v=14" onerror="this.onerror=null;this.src='./team/koushik.jpeg?v=14'" alt="MUNSoc - V Koushik" style="object-position: center 30%;">
+        <img src="./team/koushik.webp?v=14" onerror="this.onerror=null;this.src='./team/koushik.webp?v=14'" alt="MUNSoc - V Koushik" style="object-position: center 30%;">
       </div>
       <div class="profile-img-container" data-index="2" data-first-name="ADITI" data-full-name="Aditi Maktedar" data-role="Charge d'Affairs">
-        <img src="./team/aditi.webp?v=5" onerror="this.onerror=null;this.src='./team/aditi.jpeg?v=5'" alt="MUNSoc - Aditi Maktedar" style="object-position: center 25%;">
+        <img src="./team/aditi.webp?v=5" onerror="this.onerror=null;this.src='./team/aditi.webp?v=5'" alt="MUNSoc - Aditi Maktedar" style="object-position: center 25%;">
       </div>
       <div class="profile-row-break" aria-hidden="true"></div>
       <div class="profile-img-container" data-index="3" data-first-name="KARTHIK" data-full-name="Karthik Prasad M" data-role="Head of Equity">
-        <img src="./team/karthik.webp?v=5" onerror="this.onerror=null;this.src='./team/karthik.jpeg?v=5'" alt="MUNSoc - Karthik Prasad M">
+        <img src="./team/karthik.webp?v=5" onerror="this.onerror=null;this.src='./team/karthik.webp?v=5'" alt="MUNSoc - Karthik Prasad M">
       </div>
       <div class="profile-img-container" data-index="4" data-first-name="VAMSHI" data-full-name="Vamshi Ganesh" data-role="Head of Equity">
-        <img src="./team/vamshi.webp?v=5" onerror="this.onerror=null;this.src='./team/vamshi.jpeg?v=5'" alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
+        <img src="./team/vamshi.webp?v=5" onerror="this.onerror=null;this.src='./team/vamshi.webp?v=5'" alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
       </div>
     </div>
     
@@ -564,7 +579,6 @@
 
   <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>
-  <script type="module" src="./language-switcher.js"></script>
   <script type="module" src="./team.js"></script>
   <script src="/register-sw.js"></script>
   <script type="module" src="./analytics.js"></script>

@@ -1,5 +1,5 @@
 // brochure-modal.js - Ultra-Fast In-Website PDF Viewer with Interactive Embedded Links
-const BROCHURE_URL = '/assets/broucher/RNS%20MUN%202026-%20ConferenceBrochure.pdf';
+const BROCHURE_URL = '/assets/brochure/RNS%20MUN%202026-%20ConferenceBrochure.pdf';
 
 let pdfDoc = null;
 let baseTargetWidth = 720;

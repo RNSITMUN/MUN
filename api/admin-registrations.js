@@ -123,88 +123,123 @@ export default async function handler(req, res) {
     const type = (query.type || 'all').toLowerCase();
     const statusFilter = query.status && query.status !== 'all' ? String(query.status).trim() : null;
     const search = query.search ? String(query.search).trim().toLowerCase() : '';
+    const page = parseInt(query.page, 10) || 1;
+    const limit = parseInt(query.limit, 10) || 30;
+    const offset = (page - 1) * limit;
 
+    let regSearchOr = search ? `name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%,usn.ilike.%${search}%,institution.ilike.%${search}%,city.ilike.%${search}%,committee1.ilike.%${search}%,committee2.ilike.%${search}%` : null;
+    let dlgSearchOr = search ? `delegation_name.ilike.%${search}%,head_name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%,delegation_type.ilike.%${search}%` : null;
+
+    const stats = {
+      totalIndividuals: 0, pendingIndividuals: 0, confirmedIndividuals: 0, rejectedIndividuals: 0,
+      totalDelegations: 0, pendingDelegations: 0, confirmedDelegations: 0, rejectedDelegations: 0,
+      totalRegPages: 1, totalDlgPages: 1, currentPage: page, limit: limit,
+      internalCount: 0, externalCount: 0, totalAmount: 0, totalDelegatesRep: 0
+    };
+
+    function parsePaymentAmount(amt) {
+      if (!amt) return 0;
+      const match = String(amt).match(/[\d,]+/);
+      if (match) {
+        const num = parseInt(match[0].replace(/,/g, ''), 10);
+        return isNaN(num) ? 0 : num;
+      }
+      return 0;
+    }
+
+    // ─── Fetch Stats & Counts (Optimized select) ─────────────────
+    if (type === 'all' || type === 'individual') {
+      let q = privilegedClient.from('registrations').select('status, delegate_type, payment_amount', { count: 'exact' });
+      if (statusFilter) q = q.eq('status', statusFilter);
+      if (regSearchOr) q = q.or(regSearchOr);
+      
+      const { data, count, error } = await q;
+      if (!error && data) {
+         stats.totalIndividuals = count;
+         stats.totalRegPages = Math.ceil(count / limit) || 1;
+         data.forEach(r => {
+           if (r.status === 'Pending Verification') stats.pendingIndividuals++;
+           else if (r.status === 'Confirmed') {
+             stats.confirmedIndividuals++;
+             stats.totalAmount += parsePaymentAmount(r.payment_amount);
+           }
+           else if (r.status === 'Rejected') stats.rejectedIndividuals++;
+
+           if ((r.delegate_type || '').toLowerCase().startsWith('internal')) stats.internalCount++;
+           else stats.externalCount++;
+         });
+      }
+    }
+
+    if (type === 'all' || type === 'delegation') {
+      let q = privilegedClient.from('delegations').select('status, member_count, payment_amount', { count: 'exact' });
+      if (statusFilter) q = q.eq('status', statusFilter);
+      if (dlgSearchOr) q = q.or(dlgSearchOr);
+      
+      const { data, count, error } = await q;
+      if (!error && data) {
+         stats.totalDelegations = count;
+         stats.totalDlgPages = Math.ceil(count / limit) || 1;
+         data.forEach(r => {
+           if (r.status === 'Pending Verification') stats.pendingDelegations++;
+           else if (r.status === 'Confirmed') {
+             stats.confirmedDelegations++;
+             stats.totalAmount += parsePaymentAmount(r.payment_amount);
+             stats.totalDelegatesRep += (parseInt(r.member_count, 10) || 1);
+           }
+           else if (r.status === 'Rejected') stats.rejectedDelegations++;
+         });
+      }
+    }
+
+    // ─── Fetch Paginated Data ───────────────────────────────────
     let registrations = [];
     let delegations = [];
 
-    // ─── Fetch Individual Registrations ─────────────────────────
     if (type === 'all' || type === 'individual') {
       let regQuery = privilegedClient
         .from('registrations')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
 
-      if (statusFilter) {
-        regQuery = regQuery.eq('status', statusFilter);
-      }
+      if (statusFilter) regQuery = regQuery.eq('status', statusFilter);
+      if (regSearchOr) regQuery = regQuery.or(regSearchOr);
 
       const { data: regData, error: regError } = await regQuery;
-
       if (regError) {
         console.error('❌ [admin-registrations] Error fetching registrations:', regError);
-        return res.status(500).json({ success: false, error: 'Database error: ' + regError.message });
-      }
-
-      registrations = regData || [];
-
-      // Optional client search filter across fields
-      if (search) {
-        registrations = registrations.filter(item => {
-          return (
-            (item.name && item.name.toLowerCase().includes(search)) ||
-            (item.email && item.email.toLowerCase().includes(search)) ||
-            (item.phone && item.phone.toLowerCase().includes(search)) ||
-            (item.usn && item.usn.toLowerCase().includes(search)) ||
-            (item.institution && item.institution.toLowerCase().includes(search)) ||
-            (item.city && item.city.toLowerCase().includes(search)) ||
-            (item.committee1 && item.committee1.toLowerCase().includes(search)) ||
-            (item.committee2 && item.committee2.toLowerCase().includes(search))
-          );
-        });
+      } else {
+        registrations = regData || [];
       }
     }
 
-    // ─── Fetch Delegations ──────────────────────────────────────
     if (type === 'all' || type === 'delegation') {
       let dlgQuery = privilegedClient
         .from('delegations')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
 
-      if (statusFilter) {
-        dlgQuery = dlgQuery.eq('status', statusFilter);
-      }
+      if (statusFilter) dlgQuery = dlgQuery.eq('status', statusFilter);
+      if (dlgSearchOr) dlgQuery = dlgQuery.or(dlgSearchOr);
 
       const { data: dlgData, error: dlgError } = await dlgQuery;
-
       if (dlgError) {
         console.error('❌ [admin-registrations] Error fetching delegations:', dlgError);
-        return res.status(500).json({ success: false, error: 'Database error: ' + dlgError.message });
-      }
-
-      delegations = dlgData || [];
-
-      if (search) {
-        delegations = delegations.filter(item => {
-          return (
-            (item.delegation_name && item.delegation_name.toLowerCase().includes(search)) ||
-            (item.head_name && item.head_name.toLowerCase().includes(search)) ||
-            (item.email && item.email.toLowerCase().includes(search)) ||
-            (item.phone && item.phone.toLowerCase().includes(search)) ||
-            (item.delegation_type && item.delegation_type.toLowerCase().includes(search))
-          );
-        });
+      } else {
+        delegations = dlgData || [];
       }
     }
 
-    // ─── Fetch Shared Mail Logs from Supabase ───────────────────
+    // ─── Fetch Shared Mail Logs from Supabase (Limit to current data views)
     let mailLogs = [];
     try {
       const { data: logsData, error: logsError } = await privilegedClient
         .from('mail_logs')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(500);
+        .limit(100);
 
       if (!logsError && logsData) {
         mailLogs = logsData;
@@ -212,18 +247,6 @@ export default async function handler(req, res) {
     } catch (logErr) {
       console.warn('⚠️ [admin-registrations] Non-blocking error fetching mail_logs:', logErr.message);
     }
-
-    // ─── Calculate Summary Stats ────────────────────────────────
-    const stats = {
-      totalIndividuals: registrations.length,
-      totalDelegations: delegations.length,
-      pendingIndividuals: registrations.filter(r => r.status === 'Pending Verification').length,
-      confirmedIndividuals: registrations.filter(r => r.status === 'Confirmed').length,
-      rejectedIndividuals: registrations.filter(r => r.status === 'Rejected').length,
-      pendingDelegations: delegations.filter(d => d.status === 'Pending Verification').length,
-      confirmedDelegations: delegations.filter(d => d.status === 'Confirmed').length,
-      rejectedDelegations: delegations.filter(d => d.status === 'Rejected').length
-    };
 
     return res.status(200).json({
       success: true,

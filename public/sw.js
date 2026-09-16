@@ -7,8 +7,8 @@ const PRECACHE_ASSETS = [
   '/team',
   '/stay-connected',
   '/404',
-  '/assets/Logos/25_logo.png',
-  '/assets/Logos/MUN_logo.png'
+  '/assets/Logos/25_logo.webp',
+  '/assets/Logos/MUN_logo.webp'
 ];
 
 // Install Event - Pre-cache critical pages and logos

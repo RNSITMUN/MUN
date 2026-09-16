@@ -162,29 +162,24 @@ function updateMagneticRipple(activeIndex) {
     return;
   }
   
-  const baseSize = 95;
+  const baseSize = 125;
   
   // 1. Calculate the scale for each profile container
   const scales = [];
   profileContainers.forEach((container, i) => {
     const distance = Math.abs(i - activeIndex);
     if (distance === 0) {
-      const activeSize = isMobile ? (isSmallPhone ? 21 : (isPhone ? 23 : 24.5)) : 150;
+      const activeSize = 175;
       scales.push(activeSize / baseSize);
     } else {
-      if (isMobile) {
-        const size = Math.max(11, baseSize - (distance * 1.3));
-        scales.push(size / baseSize);
-      } else {
-        const size = 95 - (distance * 5);
-        scales.push(size / 95);
-      }
+      const size = 125 - (distance * 6);
+      scales.push(size / 125);
     }
   });
 
   // 2. Compute translation offsets recursively to guarantee 100% equal visual spacing
   const txs = new Array(profileContainers.length).fill(0);
-  const buffer = isMobile ? (isSmallPhone ? 1.6 : (isPhone ? 2.0 : 2.4)) : 24; // Extra spacing buffer around focused image
+  const buffer = 28; // Extra spacing buffer around focused image
   
   // Right side of active card
   for (let k = activeIndex + 1; k < profileContainers.length; k++) {

@@ -264,6 +264,7 @@
 
     const subtitleSpans = document.querySelectorAll(".globe-hero-subtitle span");
     subtitleSpans.forEach((span) => {
+      if (!document.body.contains(span)) return;
       const text = span.textContent.trim();
       if (glossary[text]) {
         span.textContent = glossary[text];
@@ -271,6 +272,7 @@
     });
 
     document.querySelectorAll(".hpm-tag, .qr-preview-badge").forEach((el) => {
+      if (!document.body.contains(el)) return;
       const txt = el.textContent.replace("★", "").trim();
       if (glossary[txt]) {
         el.textContent = (el.textContent.includes("★") ? "★ " : "") + glossary[txt];

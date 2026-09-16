@@ -110,8 +110,8 @@
         },
         "image": [
           "https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png",
-          "https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png",
-          "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png"
+          "https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp",
+          "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.webp"
         ],
         "organizer": {
           "@type": "EducationalOrganization",
@@ -119,7 +119,7 @@
           "name": "MUNSoc RNSIT",
           "alternateName": "Model United Nations Society of RNSIT",
           "url": "https://mun.rnsit.ac.in/",
-          "logo": "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.png",
+          "logo": "https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/Logos/MUN_logo.webp",
           "availableLanguage": ["en", "es", "fr", "de", "ar", "ja", "ru", "zh-CN", "hi", "kn", "te", "ta", "ml"],
           "knowsLanguage": ["en", "es", "fr", "de", "ar", "ja", "ru", "zh-CN", "hi", "kn", "te", "ta", "ml"],
           "sameAs": [
@@ -363,13 +363,13 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./brochure-modal.css">
   <link rel="stylesheet" href="./language-switcher.css">
-  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.png">
-  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.png">
+  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.webp">
+  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.webp">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
 
   <!-- Preload Critical Assets for Instant Rendering -->
-  <link rel="preload" as="image" href="./assets/Logos/25_logo.png">
+  <link rel="preload" as="image" href="./assets/Logos/25_logo.webp">
   <link rel="preload" as="image" href="./assets/Logos/MUN_logo.webp">
   <link rel="preload" as="image" href="./globe/1.webp">
   <link rel="preload" as="image" href="./globe/2.webp">
@@ -2375,19 +2375,23 @@
       <path id="preloader-path" />
     </svg>
   </div>
-  <script>
-    if (sessionStorage.getItem("hasVisited") === "true") {
-      document.getElementById("preloader").style.display = "none";
-      document.documentElement.classList.add("visited-site");
-    }
-  </script>
+
 
   <script>
     (function () {
       if (sessionStorage.getItem("hasVisited") === "true") {
-        document.addEventListener("DOMContentLoaded", () => {
+        const minTimer = new Promise(resolve => setTimeout(resolve, 500));
+        const winLoad = new Promise(resolve => {
+          if (document.readyState === 'complete') resolve();
+          else window.addEventListener('load', resolve, { once: true });
+        });
+
+        Promise.all([minTimer, winLoad]).then(() => {
           const preloaderEl = document.getElementById("preloader");
-          if (preloaderEl) preloaderEl.remove();
+          if (preloaderEl) preloaderEl.classList.add("exit");
+          
+          document.documentElement.classList.add('visited-site');
+          
           // Already visited — show nav pill immediately
           document.querySelector('.nav-pill')?.classList.add('nav-ready');
           // Mobile menu is injected by a module; retry until it mounts
@@ -2400,6 +2404,10 @@
             }
           };
           requestAnimationFrame(revealMobileMenu);
+
+          setTimeout(() => {
+            if (preloaderEl) preloaderEl.remove();
+          }, 850);
         });
         return;
       }
@@ -2492,13 +2500,13 @@
 
   <!-- Top Left Logo -->
   <div class="top-left-logo-container">
-    <img src="./assets/Logos/MUN_logo.png" alt="MUN Logo" class="top-left-logo" width="32" height="32"
+    <img src="./assets/Logos/MUN_logo.webp" alt="MUN Logo" class="top-left-logo" width="32" height="32"
       fetchpriority="high">
   </div>
 
   <!-- Top Right Logo -->
   <div class="top-right-logo-container">
-    <img src="./assets/Logos/25_logo.png" alt="25 Logo" class="top-right-logo" width="30" height="32">
+    <img src="./assets/Logos/25_logo.webp" alt="25 Logo" class="top-right-logo" width="30" height="32">
   </div>
 
   <!-- Main Globe Container -->
@@ -2960,7 +2968,7 @@
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
           </button>
-          <a href="/assets/broucher/RNS%20MUN%202026-%20ConferenceBrochure.pdf" download="RNS_MUN_2026_Brochure.pdf"
+          <a href="/assets/brochure/RNS%20MUN%202026-%20ConferenceBrochure.pdf" download="RNS_MUN_2026_Brochure.pdf"
             class="brochure-tool-btn brochure-download-btn" title="Download PDF" aria-label="Download PDF">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

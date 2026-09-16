@@ -10,7 +10,7 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "/assets/Logos/MUN_logo.png",
+      "src": "/assets/Logos/MUN_logo.webp",
       "sizes": "192x192 512x512",
       "type": "image/png",
       "purpose": "any maskable"

@@ -138,12 +138,15 @@ export default async function handler(req, res) {
     try {
       if (supabase && responseData.success !== false) {
         const { recipientName, recordType, recordId, templateId, templateName } = req.body || {};
+        const safeRecipient = recipient ? recipient.trim() : 'Unknown Recipient';
+        const safeName = (recipientName || 'Test / Unregistered').trim();
+        
         const { error: insertError } = await supabase.from('mail_logs').insert([{
-          recipient: recipient.trim(),
-          recipient_name: (recipientName || '').trim(),
-          record_type: (recordType || 'individual').trim(),
+          recipient: safeRecipient,
+          recipient_name: safeName,
+          record_type: (recordType || 'system').trim(),
           record_id: recordId ? String(recordId) : null,
-          template_id: (templateId || '').trim(),
+          template_id: (templateId || 'custom').trim(),
           template_name: (templateName || 'Custom Email').trim(),
           subject: (subject || "Notice from RNS MUN '26").trim(),
           status: 'sent'

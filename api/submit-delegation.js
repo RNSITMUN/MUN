@@ -41,6 +41,11 @@ export default async function handler(req, res) {
 
   // ─── Input Validation ────────────────────────────────────────
   const body = req.body || {};
+
+  if (body.screenshotBase64 && Buffer.byteLength(body.screenshotBase64, 'utf8') > 5 * 1024 * 1024) {
+    console.warn('⚠️ Payload rejected: screenshotBase64 exceeds 5MB limit.');
+    return res.status(413).json({ success: false, error: 'Payload Too Large: Payment screenshot exceeds maximum size limit.' });
+  }
   const { delegationName, headName, email, phone } = body;
 
   if (!delegationName || !String(delegationName).trim()) {
