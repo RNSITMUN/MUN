@@ -984,10 +984,14 @@
             <div id="reg-age-error" class="error-container" aria-live="polite" role="alert">Valid age is required</div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="reg-institution-group">
             <label class="form-label" for="reg-institution">College / Institute Name *</label>
             <input type="text" id="reg-institution" class="form-input" placeholder="e.g. College / Institute Name"
               autocomplete="organization" autocapitalize="words" spellcheck="false" required>
+            <select id="reg-institution-select" class="form-select" style="display: none;" onchange="handleInternalInstitutionChange(this)">
+              <option value="RNS Institute of Technology" selected>RNS Institute of Technology</option>
+              <option value="RNS First Grade College">RNS First Grade College</option>
+            </select>
             <div id="reg-institution-error" class="error-container" aria-live="polite" role="alert">College/Institute name is required</div>
           </div>
 
