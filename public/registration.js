@@ -1422,11 +1422,25 @@
     }
 
     
-    // Validate Internal RNSIT USN or Secret Keyword FRESHER
+    function getSelectedInternalInstitution() {
+      const selectEl = document.getElementById('reg-institution-select');
+      if (selectEl && selectEl.value) return selectEl.value;
+      const instInput = document.getElementById('reg-institution');
+      return instInput ? instInput.value.trim() : 'RNS Institute of Technology';
+    }
+
+    // Validate Internal USN:
+    // - For RNS First Grade College: Any input up to 10 chars (no prefix/pattern requirement)
+    // - For RNS Institute of Technology: Must start with 1RN, 1RX, 1IB or be FRESHER (4-10 alphanumeric chars)
     function isValidInternalUSN(val) {
       if (!val) return false;
       const clean = val.trim();
       if (clean.length === 0 || clean.length > 10) return false;
+
+      const inst = getSelectedInternalInstitution();
+      if (inst === 'RNS First Grade College') {
+        return clean.length <= 10;
+      }
 
       const lower = clean.toLowerCase();
       // Allow secret keywords: FRESHER, Fresher, fresher
@@ -1441,6 +1455,48 @@
 
       // Must be alphanumeric between 4 and 10 characters (e.g. 1RN22CS001)
       return /^[0-9a-zA-Z]{4,10}$/.test(clean);
+    }
+
+    function getInternalUSNErrorMessage() {
+      const inst = getSelectedInternalInstitution();
+      return inst === 'RNS First Grade College'
+        ? 'Please enter your USN / Roll No (max 10 chars)'
+        : 'Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER (max 10 chars)';
+    }
+
+    function updateInternalUSNFieldState() {
+      if (currentDelegateType !== 'internal') return;
+      const usnInput = document.getElementById('reg-usn');
+      const errEl = document.getElementById('reg-usn-error');
+      if (!usnInput) return;
+
+      const inst = getSelectedInternalInstitution();
+      usnInput.maxLength = 10;
+      usnInput.setAttribute('maxlength', '10');
+
+      if (inst === 'RNS First Grade College') {
+        usnInput.placeholder = 'Enter your USN/Roll Number';
+      } else {
+        usnInput.placeholder = 'e.g. 1RN22CS001 or FRESHER';
+      }
+
+      if (usnInput.value.trim()) {
+        const isValid = isValidInternalUSN(usnInput.value.trim());
+        if (isValid) {
+          usnInput.classList.remove('has-error');
+          if (errEl) errEl.style.display = 'none';
+        } else {
+          usnInput.classList.add('has-error');
+          if (errEl) {
+            errEl.textContent = getInternalUSNErrorMessage();
+            errEl.style.display = 'block';
+          }
+        }
+      } else {
+        usnInput.classList.remove('has-error');
+        if (errEl) errEl.style.display = 'none';
+      }
+      updateStep1NextButtonState();
     }
 
     function updateStep1NextButtonState() {
@@ -1478,6 +1534,18 @@
       }
     }
 
+    function handleInternalInstitutionChange(selectEl) {
+      if (!selectEl) return;
+      const institution = document.getElementById('reg-institution');
+      if (institution) {
+        institution.value = selectEl.value;
+        institution.classList.remove('has-error');
+      }
+      const errEl = document.getElementById('reg-institution-error');
+      if (errEl) errEl.style.display = 'none';
+      updateInternalUSNFieldState();
+    }
+
     function applyDelegateTypeUI(type) {
       currentDelegateType = type;
       const typeHidden = document.getElementById('reg-delegate-type');
@@ -1489,6 +1557,8 @@
       }
 
       const institution = document.getElementById('reg-institution');
+      const institutionSelect = document.getElementById('reg-institution-select');
+      const institutionSelectWrap = document.getElementById('custom-select-wrap-reg-institution-select');
       const step1Ind = document.getElementById('step-indicator-1');
       const step2Ind = document.getElementById('step-indicator-2');
       const step3Ind = document.getElementById('step-indicator-3');
@@ -1501,21 +1571,29 @@
       const usnErr = document.getElementById('reg-usn-error');
 
       if (type === 'internal') {
+        if (institutionSelect) {
+          if (!institutionSelect.value) {
+            institutionSelect.value = 'RNS Institute of Technology';
+          }
+          institutionSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
         if (institution) {
-          institution.value = 'RNS Institute of Technology';
+          institution.value = institutionSelect ? institutionSelect.value : 'RNS Institute of Technology';
           institution.readOnly = true;
+          institution.style.display = 'none';
           institution.classList.remove('has-error');
           const errEl = document.getElementById('reg-institution-error');
           if (errEl) errEl.style.display = 'none';
+        }
+        if (institutionSelectWrap) {
+          institutionSelectWrap.style.display = '';
         }
         if (usnLabel) usnLabel.innerHTML = 'USN / Roll No *';
         if (usnInput) {
           usnInput.required = true;
           usnInput.setAttribute('required', 'true');
-          usnInput.maxLength = 10;
-          usnInput.setAttribute('maxlength', '10');
-          usnInput.placeholder = 'e.g. 1RN22CS001 or FRESHER';
         }
+        updateInternalUSNFieldState();
         if (step1Ind) step1Ind.textContent = 'Delegate Details';
         if (step2Ind) step2Ind.textContent = 'Step 1';
         if (step3Ind) step3Ind.textContent = 'Step 2';
@@ -1524,8 +1602,12 @@
         if (step5Ind) step5Ind.style.display = 'none';
         updateStep1NextButtonState();
       } else {
+        if (institutionSelectWrap) {
+          institutionSelectWrap.style.display = 'none';
+        }
         if (institution) {
-          if (institution.value === 'RNS Institute of Technology') {
+          institution.style.display = '';
+          if (institution.value === 'RNS Institute of Technology' || institution.value === 'RNS First Grade College') {
             institution.value = '';
           }
           institution.readOnly = false;
@@ -2140,7 +2222,7 @@
           if (!isValidInternalUSN(usnVal)) {
             if (usnInput) usnInput.classList.add('has-error');
             if (errorEl) {
-              errorEl.textContent = 'Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER (max 10 chars)';
+              errorEl.textContent = getInternalUSNErrorMessage();
               errorEl.style.display = 'block';
             }
             isValid = false;
@@ -5159,6 +5241,19 @@
         }
       });
 
+      if (currentDelegateType === 'internal') {
+        const institutionSelect = document.getElementById('reg-institution-select');
+        if (institutionSelect) {
+          if (data['reg-institution'] === 'RNS First Grade College' || data['reg-institution'] === 'RNS Institute of Technology') {
+            institutionSelect.value = data['reg-institution'];
+          } else {
+            institutionSelect.value = 'RNS Institute of Technology';
+          }
+          institutionSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        updateInternalUSNFieldState();
+      }
+
       // Step 1: Experience Radio
       if (data['reg-exp-yes'] === 'yes') {
         const yesRadio = document.getElementById('reg-exp-yes');
@@ -5304,13 +5399,24 @@
         if (city) city.value = currentDelegateType === 'internal' ? 'Bengaluru' : '';
 
         const institution = document.getElementById('reg-institution');
+        const institutionSelect = document.getElementById('reg-institution-select');
+        const institutionSelectWrap = document.getElementById('custom-select-wrap-reg-institution-select');
         if (institution) {
           if (currentDelegateType === 'internal') {
+            if (institutionSelect) {
+              institutionSelect.value = 'RNS Institute of Technology';
+              institutionSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
             institution.value = 'RNS Institute of Technology';
             institution.readOnly = true;
+            institution.style.display = 'none';
+            if (institutionSelectWrap) institutionSelectWrap.style.display = '';
+            updateInternalUSNFieldState();
           } else {
             institution.value = '';
             institution.readOnly = false;
+            institution.style.display = '';
+            if (institutionSelectWrap) institutionSelectWrap.style.display = 'none';
           }
         }
 
@@ -5349,7 +5455,7 @@
           if (!isValidInternalUSN(usnInput.value.trim())) {
             usnInput.classList.add('has-error');
             if (errEl) {
-              errEl.textContent = 'Please enter a valid RNSIT USN (starting with 1RN, 1RX, 1IB) or FRESHER (max 10 chars)';
+              errEl.textContent = getInternalUSNErrorMessage();
               errEl.style.display = 'block';
             }
           } else {
@@ -5536,6 +5642,7 @@ Object.assign(window, {
   updateRosterPreview,
   handleDelegationPaymentScreenshotSelected,
   handleRegistrationSubmit,
+  handleInternalInstitutionChange,
   checkIndividualEmailRegistration,
   handleExperienceToggle,
   handleConferenceCountChange,
