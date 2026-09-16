@@ -4093,12 +4093,16 @@
       } else {
         roster.forEach((member, idx) => {
           const tr = document.createElement('tr');
+          const mName = member.name || member.delegateName || member['Delegate Name'] || '—';
+          const mEmail = member.email || member.emailAddress || member['Email Address'] || '—';
+          const mPhone = member.phone || member.mobileNumber || member['WhatsApp / Mobile Number'] || '—';
+          const mComm = member.committee || member.portfolio || member['Committee Preference 1'] || member.committee1 || '—';
           tr.innerHTML = `
             <td>${idx + 1}</td>
-            <td class="font-semibold cell-title">${escapeHtml(member.name || member.delegateName || '—')}</td>
-            <td>${escapeHtml(member.email || '—')}</td>
-            <td>${escapeHtml(member.phone || '—')}</td>
-            <td>${escapeHtml(member.committee || member.portfolio || '—')}</td>
+            <td class="font-semibold cell-title">${escapeHtml(mName)}</td>
+            <td>${escapeHtml(mEmail)}</td>
+            <td>${escapeHtml(mPhone)}</td>
+            <td>${escapeHtml(mComm)}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -4543,6 +4547,7 @@
       text.textContent = message;
       if (type === 'success') indicator.style.background = '#10b981';
       else if (type === 'error') indicator.style.background = '#ef4444';
+      else if (type === 'warning' || type === 'amber') indicator.style.background = '#f59e0b';
       else indicator.style.background = '#38bdf8';
 
       toast.classList.add('show');
@@ -4559,6 +4564,9 @@
     // ─── Delegation Roster & Table Helpers ────────────────────────────
     function extractDelegationSheetUrl(item) {
       if (!item) return '';
+      if (item.google_sheet_link || item.googleSheetLink || item.sheet_url || item.sheetUrl) {
+        return item.google_sheet_link || item.googleSheetLink || item.sheet_url || item.sheetUrl;
+      }
       let rd = item.roster_data;
       if (typeof rd === 'string') {
         if (rd.startsWith('http')) return rd;
@@ -4567,6 +4575,7 @@
       if (Array.isArray(rd) && rd.length > 0) {
         if (typeof rd[0] === 'string' && rd[0].startsWith('http')) return rd[0];
         if (rd[0]?.sheetUrl) return rd[0].sheetUrl;
+        if (rd[0]?.googleSheetLink) return rd[0].googleSheetLink;
       }
       return '';
     }
@@ -5090,7 +5099,11 @@
 
         const data = await res.json();
         if (data.success) {
-          showToast(`Ping email delivered to ${testEmail}! Check your inbox.`, 'success');
+          if (data.logWarning) {
+            showToast(`Ping delivered to ${testEmail}, but mail log failed: ${data.logWarning}`, 'warning');
+          } else {
+            showToast(`Ping email delivered to ${testEmail}! Check your inbox.`, 'success');
+          }
         } else {
           showToast(`Ping failed: ${data.error || 'Check Google Script permissions'}`, 'error');
         }
@@ -5601,6 +5614,7 @@
       try {
         let sentCount = 0;
         let lastError = null;
+        let lastWarning = null;
 
         const preset = document.getElementById('tpl-test-sample-preset')?.value || document.getElementById('preview-sample-select')?.value || 'confirmed_delegate';
         const isDelegationTest = activeTemplateId === 'tpl-delegation-roster-confirmation' || preset === 'delegation_head';
@@ -5684,18 +5698,25 @@
           const data = await res.json();
           if (data.success) {
             sentCount++;
+            if (data.logWarning) {
+              lastWarning = data.logWarning;
+            }
           } else {
             lastError = data.error || `Server status ${res.status}`;
           }
         }
 
         if (sentCount > 0) {
-          showToast(`Test email successfully delivered to ${emails.join(', ')}! Check your inbox.`, 'success');
+          if (lastWarning) {
+            showToast(`Test email sent to ${emails.join(', ')}, but failed to log to history.`, 'warning');
+          } else {
+            showToast(`Test email successfully delivered to ${emails.join(', ')}! Check your inbox.`, 'success');
+          }
           if (statusBox) {
             statusBox.style.display = 'block';
-            statusBox.style.background = '#D1FAE5';
-            statusBox.style.color = '#047857';
-            statusBox.innerHTML = `✅ <strong>Test Mail Delivered!</strong> Dispatched your current template to: <code>${escapeHtml(emails.join(', '))}</code> at ${new Date().toLocaleTimeString()}. Check your inbox & spam folder.`;
+            statusBox.style.background = lastWarning ? '#FEF3C7' : '#D1FAE5';
+            statusBox.style.color = lastWarning ? '#92400E' : '#047857';
+            statusBox.innerHTML = `${lastWarning ? '⚠️' : '✅'} <strong>Test Mail Delivered!</strong> Dispatched your current template to: <code>${escapeHtml(emails.join(', '))}</code> at ${new Date().toLocaleTimeString()}.${lastWarning ? ' (Warning: Mail log insert failed)' : ' Check your inbox & spam folder.'}`;
           }
         } else {
           showToast(`Send failed: ${lastError}`, 'error');
@@ -5778,12 +5799,16 @@
 
         const data = await res.json();
         if (data.success) {
-          showToast(`Test copy delivered to ${testEmail}!`, 'success');
+          if (data.logWarning) {
+            showToast(`Test copy delivered to ${testEmail}, but failed to log to history.`, 'warning');
+          } else {
+            showToast(`Test copy delivered to ${testEmail}!`, 'success');
+          }
           if (statusEl) {
             statusEl.style.display = 'block';
-            statusEl.style.background = '#D1FAE5';
-            statusEl.style.color = '#047857';
-            statusEl.innerHTML = `✅ Test copy successfully sent to <code>${escapeHtml(testEmail)}</code> at ${new Date().toLocaleTimeString()}! Real delegate was NOT emailed.`;
+            statusEl.style.background = data.logWarning ? '#FEF3C7' : '#D1FAE5';
+            statusEl.style.color = data.logWarning ? '#92400E' : '#047857';
+            statusEl.innerHTML = `${data.logWarning ? '⚠️' : '✅'} Test copy sent to <code>${escapeHtml(testEmail)}</code> at ${new Date().toLocaleTimeString()}! Real delegate was NOT emailed.${data.logWarning ? ' (Warning: Mail log insert failed)' : ''}`;
           }
         } else {
           showToast(`Test send failed: ${data.error || 'Server error'}`, 'error');
@@ -6092,7 +6117,11 @@
 
         const data = await res.json();
         if (data.success) {
-          showToast(`Email dispatched to ${recipient}!`, 'success');
+          if (data.logWarning) {
+            showToast(`Email dispatched to ${recipient}, but failed to log to history!`, 'warning');
+          } else {
+            showToast(`Email dispatched to ${recipient}!`, 'success');
+          }
           // Capture template metadata for the log
           markRecordMailSent(modalTargetRecord.id, modalTargetType, {
             templateId:   tplId,
