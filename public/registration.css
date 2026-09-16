@@ -1523,14 +1523,19 @@
       border-radius: 18px;
       width: 550px;
       max-width: 94vw;
+      /* svh fallback first, dvh preferred (accounts for mobile browser chrome) */
       max-height: calc(100svh - 40px);
       max-height: calc(100dvh - 40px);
+      /* Card is the ONLY scroll container — backdrop is overflow:hidden */
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       overscroll-behavior-y: contain;
-      touch-action: pan-y;
+      /* !important beats the inherited touch-action:none from .committee-modal-backdrop */
+      touch-action: pan-y !important;
+      /* Prevent flex container from preventing shrink below content height */
+      min-height: 0;
       padding: 26px 26px 36px 26px;
       box-sizing: border-box;
       position: relative;

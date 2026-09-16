@@ -154,12 +154,17 @@
         }, { passive: true });
       });
 
-      // Prevent backdrop touches from scrolling underlying page while allowing inner card to scroll freely
+      // Prevent backdrop touches from scrolling the underlying page.
+      // IMPORTANT: Do NOT block touches that originate on or inside .modal-registration-card —
+      // those must remain free to scroll the card naturally (pan-y).
       document.querySelectorAll('.committee-modal-backdrop').forEach(backdrop => {
         backdrop.addEventListener('touchmove', (e) => {
-          if (e.target === backdrop && !backdrop.classList.contains('keyboard-open') && backdrop.scrollHeight <= backdrop.clientHeight) {
-            e.preventDefault();
+          // Allow all touch events that started on the scrollable modal card
+          if (e.target && e.target.closest && e.target.closest('.modal-registration-card')) {
+            return; // let the card handle its own scrolling
           }
+          // Block all other backdrop touches to prevent the page behind from scrolling
+          e.preventDefault();
         }, { passive: false });
       });
     }
@@ -2856,6 +2861,57 @@
 
     // ─── Delegation Email Check (Live Drive Verification & State Restoration) ───
     let _dlgEmailDebounceTimer = null;
+
+    // Shared helper — render and lock an existing roster sheet in the UI.
+    // Declared here (outside checkEmailRegistration) so both checkEmailRegistration()
+    // and generateDelegationGoogleSheet() can call it without a ReferenceError.
+    function displayExistingSheet(sheetUrl, isSubmitted) {
+      if (!sheetUrl || !sheetUrl.includes('http')) return;
+      const hiddenLinkInput = document.getElementById('dlg-sheet-link');
+      const sheetAnchor    = document.getElementById('dlg-sheet-anchor');
+      const sheetResult    = document.getElementById('dlg-sheet-result');
+      const sheetErr       = document.getElementById('dlg-sheet-error');
+      const existsMsg      = document.getElementById('dlg-email-exists-msg');
+      const errEl          = document.getElementById('dlg-email-error');
+      const createSheetBtn = document.getElementById('dlg-create-sheet-btn');
+      const exitBtn        = document.getElementById('dlg-exit-btn');
+
+      if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
+      if (sheetAnchor) {
+        sheetAnchor.href = sheetUrl;
+        const dlgName = document.getElementById('dlg-delegation-name')?.value.trim();
+        sheetAnchor.textContent = dlgName ? `Open Google Sheet: ${dlgName}` : 'Open Google Sheet';
+      }
+      if (sheetResult) sheetResult.classList.add('is-generated');
+      if (sheetErr) sheetErr.style.display = 'none';
+
+      if (isSubmitted) {
+        if (existsMsg) {
+          existsMsg.textContent = 'This email has already registered a delegation.';
+          existsMsg.style.display = 'block';
+        }
+        if (errEl) errEl.style.display = 'none';
+        if (createSheetBtn) createSheetBtn.style.display = 'none';
+        if (exitBtn) exitBtn.style.display = 'block';
+      } else {
+        if (existsMsg) existsMsg.style.display = 'none';
+        if (createSheetBtn) createSheetBtn.style.display = 'none';
+        const statusPill = document.getElementById('dlg-roster-status-pill');
+        if (statusPill) {
+          statusPill.innerHTML = '<span class="roster-status-dot"></span> Live Sheet Active';
+          statusPill.style.display = 'inline-flex';
+        }
+        const nextBtn = document.getElementById('dlg-step1-next-btn');
+        if (nextBtn) {
+          nextBtn.disabled = false;
+          nextBtn.removeAttribute('disabled');
+          nextBtn.style.opacity = '1';
+          nextBtn.style.cursor = 'pointer';
+        }
+        if (exitBtn) exitBtn.style.display = 'none';
+      }
+    }
+
     function checkEmailRegistration(inputEl) {
       if (!inputEl) inputEl = document.getElementById('dlg-email');
       if (!inputEl) return;
@@ -2893,44 +2949,6 @@
         if (sheetErr) sheetErr.style.display = 'none';
       };
 
-      // Helper to render and lock an existing roster sheet for this email
-      const displayExistingSheet = (sheetUrl, isSubmitted) => {
-        if (!sheetUrl || !sheetUrl.includes('http')) return;
-        if (hiddenLinkInput) hiddenLinkInput.value = sheetUrl;
-        if (sheetAnchor) {
-          sheetAnchor.href = sheetUrl;
-          const dlgName = document.getElementById('dlg-delegation-name')?.value.trim();
-          sheetAnchor.textContent = dlgName ? `Open Google Sheet: ${dlgName}` : 'Open Google Sheet';
-        }
-        if (sheetResult) sheetResult.classList.add('is-generated');
-        if (sheetErr) sheetErr.style.display = 'none';
-
-        if (isSubmitted) {
-          if (existsMsg) {
-            existsMsg.textContent = 'This email has already registered a delegation.';
-            existsMsg.style.display = 'block';
-          }
-          if (errEl) errEl.style.display = 'none';
-          if (createSheetBtn) createSheetBtn.style.display = 'none';
-          if (exitBtn) exitBtn.style.display = 'block';
-        } else {
-          if (existsMsg) existsMsg.style.display = 'none';
-          if (createSheetBtn) createSheetBtn.style.display = 'none';
-          const statusPill = document.getElementById('dlg-roster-status-pill');
-          if (statusPill) {
-            statusPill.innerHTML = '<span class="roster-status-dot"></span> Live Sheet Active';
-            statusPill.style.display = 'inline-flex';
-          }
-          const nextBtn = document.getElementById('dlg-step1-next-btn');
-          if (nextBtn) {
-            nextBtn.disabled = false;
-            nextBtn.removeAttribute('disabled');
-            nextBtn.style.opacity = '1';
-            nextBtn.style.cursor = 'pointer';
-          }
-          if (exitBtn) exitBtn.style.display = 'none';
-        }
-      };
 
       // 1. If email field is cleared or modified to empty, immediately restore default button state
       if (!email) {
