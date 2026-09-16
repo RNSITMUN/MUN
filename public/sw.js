@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v4';
+const CACHE_NAME = 'mun-cache-v5';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
@@ -50,6 +50,25 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+  // Network-first for HTML pages (navigation) to avoid hashed asset mismatches after deployments
+  if (e.request.mode === 'navigate' || (e.request.headers.get('accept') && e.request.headers.get('accept').includes('text/html'))) {
+    e.respondWith(
+      fetch(e.request)
+        .then((networkResponse) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          // Fallback to cache if offline
+          return caches.match(e.request);
+        })
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for everything else (CSS, JS, Images, etc.)
   e.respondWith(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.match(e.request).then((cachedResponse) => {
