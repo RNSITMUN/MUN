@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v5';
+const CACHE_NAME = 'mun-cache-v6';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
@@ -6,6 +6,8 @@ const PRECACHE_ASSETS = [
   '/past-events',
   '/team',
   '/stay-connected',
+  '/venue',
+  '/code-of-conduct',
   '/404',
   '/assets/Logos/25_logo.webp',
   '/assets/Logos/MUN_logo.webp'
