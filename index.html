@@ -2380,21 +2380,14 @@
   <script>
     (function () {
       if (sessionStorage.getItem("hasVisited") === "true") {
-        const minTimer = new Promise(resolve => setTimeout(resolve, 500));
-        const winLoad = new Promise(resolve => {
-          if (document.readyState === 'complete') resolve();
-          else window.addEventListener('load', resolve, { once: true });
-        });
-
-        Promise.all([minTimer, winLoad]).then(() => {
-          const preloaderEl = document.getElementById("preloader");
-          if (preloaderEl) preloaderEl.classList.add("exit");
-          
-          document.documentElement.classList.add('visited-site');
-          
-          // Already visited — show nav pill immediately
+        const preloaderEl = document.getElementById("preloader");
+        if (preloaderEl) preloaderEl.style.display = 'none';
+        
+        document.documentElement.classList.add('visited-site');
+        
+        document.addEventListener("DOMContentLoaded", () => {
           document.querySelector('.nav-pill')?.classList.add('nav-ready');
-          // Mobile menu is injected by a module; retry until it mounts
+          
           const revealMobileMenu = () => {
             const mobileMenu = document.querySelector('.mobile-floating-menu-root');
             if (mobileMenu) {
@@ -2405,9 +2398,7 @@
           };
           requestAnimationFrame(revealMobileMenu);
 
-          setTimeout(() => {
-            if (preloaderEl) preloaderEl.remove();
-          }, 850);
+          if (preloaderEl) preloaderEl.remove();
         });
         return;
       }
