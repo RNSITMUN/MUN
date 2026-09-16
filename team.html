@@ -243,7 +243,43 @@
       font-weight: 800;
     }
     
-    /* Giant text section */
+    /* Background Stroked Typography (Brutalist effect) */
+    .giant-bg-text-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5; /* Behind everything (profiles are z-index 20+) */
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(8rem, 45vw, 30rem); /* Massive */
+      text-transform: uppercase;
+      line-height: 0.8;
+      white-space: nowrap;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(0, 0, 0, 0.04);
+      opacity: 1;
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scale(1);
+      user-select: none;
+    }
+    .bg-name.is-active-member {
+      -webkit-text-stroke: 2px rgba(108, 13, 44, 0.05); /* Subtle maroon stroke */
+    }
+    .bg-name.fade-out {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    
+    /* Giant text section (Foreground) */
     .giant-text-container {
       position: relative;
       width: 100%;
@@ -534,8 +570,13 @@
 
   <!-- Main Viewport -->
   <main class="team-viewport">
-    <!-- Minimalist Section Kicker -->
-    <div class="team-kicker" id="team-kicker">★ MUNSOC SECRETARIAT</div>
+  
+    <!-- Background Brutalist Text -->
+    <div class="giant-bg-text-container" aria-hidden="true">
+      <div class="bg-name" id="bg-name">RNSMUN</div>
+    </div>
+
+    <div class="team-kicker" id="team-kicker">✦ MUNSOC SECRETARIAT</div>
 
     <!-- Profile Row Container -->
     <div class="profile-row" id="profile-row">

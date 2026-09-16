@@ -62,6 +62,9 @@ function setGiantName(name, isActiveMember) {
       if (w._removeTimer) clearTimeout(w._removeTimer);
       // 600ms safely outlasts the 0.28s exit transition + max stagger (~0.14s)
       w._removeTimer = setTimeout(() => { removeWrapper(w); }, 600);
+      
+      const bgName = document.getElementById("bg-name");
+      if (bgName) bgName.classList.add("fade-out");
     }
   });
 
@@ -107,6 +110,18 @@ function setGiantName(name, isActiveMember) {
     // Force reflow then trigger slide-in
     newWrapper.offsetHeight;
     newWrapper.classList.add("slide-in");
+
+    // Update background text
+    const bgName = document.getElementById("bg-name");
+    if (bgName) {
+      bgName.textContent = name;
+      if (isActiveMember) {
+        bgName.classList.add("is-active-member");
+      } else {
+        bgName.classList.remove("is-active-member");
+      }
+      bgName.classList.remove("fade-out");
+    }
   };
 
   if (hasActiveSlideOut) {
