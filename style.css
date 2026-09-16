@@ -5,6 +5,45 @@
   --bg-color: #FFF7EB;
   --text-primary: #000000;
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Native View Transitions API for seamless morphing */
+@view-transition {
+  navigation: auto;
+}
+
+/* Assign persistent morphing identities */
+.nav-pill {
+  view-transition-name: site-nav;
+}
+.topology-bg-canvas {
+  view-transition-name: site-bg-topology;
+}
+.language-switcher-root {
+  view-transition-name: lang-pill;
+}
+.mobile-floating-menu-root {
+  view-transition-name: mobile-menu;
+}
+
+/* Custom animation to replace the default crossfade with a fluid slide */
+::view-transition-old(root) {
+  animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+}
+::view-transition-new(root) {
+  animation: 0.5s cubic-bezier(0.16, 1, 0.3, 1) both slide-up;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
 /* Screen-reader only utility — visually hidden but accessible */
@@ -1024,5 +1063,74 @@ body {
   .nav-pill,
   #topology-canvas {
     display: none !important;
+  }
+}
+
+/* ===============================
+   SCROLL-DRIVEN MICRO-PARALLAX
+   =============================== */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    /* Cards & Major Sections */
+    .what-mun-card, .why-card, .venue-hero-card, .reg-pass-card, .team-card {
+      /* Buttery smooth easing curve (fast initial slide, soft finish) */
+      animation: parallax-fade-up cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-timeline: view();
+      /* Wider range means it animates over a longer scroll distance = smoother */
+      animation-range: entry 0% cover 35%;
+      will-change: transform, opacity;
+    }
+
+    /* Badges, Stats & Committee Items */
+    .council-item, .fee-unit, .what-mun-label, .why-mun-pill, .what-mun-pill, .meta-tag, .venue-meta-tag, .venue-type-badge, .venue-action-pill {
+      animation: parallax-scale-up cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+      will-change: transform, opacity;
+    }
+
+    /* Typography / Text Blocks */
+    .editorial-headline-block, .why-mun-header {
+      animation: parallax-fade-up cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+      will-change: transform, opacity;
+    }
+
+    /* Mobile-Specific Tweaks: Shorter range and smaller offsets so it doesn't feel sluggish on tiny screens */
+    @media (max-width: 768px) {
+      .what-mun-card, .why-card, .venue-hero-card, .reg-pass-card, .team-card {
+        animation-range: entry 0% cover 22%;
+      }
+      .council-item, .fee-unit, .what-mun-label, .why-mun-pill, .what-mun-pill, .meta-tag, .venue-meta-tag, .venue-type-badge, .venue-action-pill {
+        animation-range: entry 0% cover 15%;
+      }
+      .editorial-headline-block, .why-mun-header {
+        animation-range: entry 0% cover 20%;
+      }
+    }
+
+    @keyframes parallax-fade-up {
+      from {
+        opacity: 0;
+        /* Use a CSS variable or clamp for responsive scaling, defaulting to 60px */
+        transform: translateY(clamp(30px, 6vw, 60px)) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes parallax-scale-up {
+      from {
+        opacity: 0;
+        transform: translateY(clamp(20px, 4vw, 35px)) scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
   }
 }
