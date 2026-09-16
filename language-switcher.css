@@ -493,11 +493,14 @@ body.mun-lang-ru {
   }
 
   .mun-lang-btn {
-    height: 34px;
-    min-height: 34px;
-    padding: 0 8px;
-    font-size: 0.70rem;
-    gap: 3px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 0.75rem;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(108, 13, 44, 0.15);
+    box-shadow: 0 6px 16px rgba(108, 13, 44, 0.12), inset 0 2px 4px rgba(255, 255, 255, 1);
   }
 
   .mun-lang-globe-icon svg {
@@ -526,10 +529,10 @@ body.mun-lang-ru {
   }
 
   .mun-lang-btn {
-    height: 32px;
-    min-height: 32px;
-    padding: 0 6px;
-    font-size: 0.66rem;
+    height: 34px;
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 0.7rem;
   }
 
   .mun-lang-modal {
