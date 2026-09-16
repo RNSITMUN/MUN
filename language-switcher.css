@@ -509,7 +509,7 @@ body.mun-lang-ru {
   }
 
   .mun-lang-flag {
-    font-size: 0.85rem;
+    display: none !important;
   }
 
   .mun-lang-code {
