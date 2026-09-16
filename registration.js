@@ -3016,8 +3016,8 @@
           }
         } else if (el.id === 'dlg-count') {
           const val = parseInt(el.value, 10);
-          isValid = !isNaN(val) && val >= 9 && val <= 25;
-          errMsg = 'Number of delegates must be between 9 and 25';
+          isValid = !isNaN(val) && val >= 9 && val <= 33;
+          errMsg = 'Number of delegates must be between 9 and 33';
         } else if (el.type === 'tel' || el.id === 'dlg-phone') {
           const digits = el.value.replace(/[^0-9]/g, '');
           isValid = digits.length === 10;
@@ -3320,19 +3320,34 @@
       15: '/Payment_delegation/del 15.png',
       16: '/Payment_delegation/del 16.png',
       17: '/Payment_delegation/del 17.png',
-      18: '/Payment_delegation/del 18.png'
+      18: '/Payment_delegation/del 18.png',
+      19: '/Payment_delegation/del 19.png',
+      20: '/Payment_delegation/del 20.png',
+      21: '/Payment_delegation/del 21.png',
+      22: '/Payment_delegation/del 22.png',
+      23: '/Payment_delegation/del 23.png',
+      24: '/Payment_delegation/del 24.png',
+      25: '/Payment_delegation/del 25.png',
+      26: '/Payment_delegation/del 26.png',
+      27: '/Payment_delegation/del 27.png',
+      28: '/Payment_delegation/del 28.png',
+      29: '/Payment_delegation/del 29.png',
+      30: '/Payment_delegation/del 30.png',
+      31: '/Payment_delegation/del 31.png',
+      32: '/Payment_delegation/del 32.png',
+      33: '/Payment_delegation/del 33.png'
     };
 
     function updateDelegationPaymentQR() {
       const countInput = document.getElementById('dlg-count');
       let count = parseInt(countInput ? countInput.value : '9', 10);
       if (isNaN(count) || count < 9) count = 9;
-      if (count > 25) count = 25;
+      if (count > 33) count = 33;
 
       const qrImg = document.getElementById('dlg-payment-qr-img');
       const countLabel = document.getElementById('dlg-payment-count-label');
       if (qrImg) {
-        qrImg.src = DELEGATION_QR_MAP[count] || DELEGATION_QR_MAP[18] || '/Payment_delegation/del 9.jpeg';
+        qrImg.src = DELEGATION_QR_MAP[count] || DELEGATION_QR_MAP[33] || '/Payment_delegation/del 9.jpeg';
       }
       if (countLabel) {
         countLabel.textContent = count;
@@ -3503,7 +3518,7 @@
       if (isNaN(val)) val = 9;
       val += delta;
       if (val < 9) val = 9;
-      if (val > 25) val = 25;
+      if (val > 33) val = 33;
       input.value = val;
 
       const err = document.getElementById('dlg-count-error');
@@ -3519,9 +3534,9 @@
       if (!input) return;
       const err = document.getElementById('dlg-count-error');
       const val = parseInt(input.value, 10);
-      if (input.value.trim() && (isNaN(val) || val < 9 || val > 25)) {
+      if (input.value.trim() && (isNaN(val) || val < 9 || val > 33)) {
         if (err) {
-          err.textContent = 'Number of delegates must be between 9 and 25';
+          err.textContent = 'Number of delegates must be between 9 and 33';
           err.style.display = 'block';
         }
         input.classList.add('has-error');
@@ -3537,8 +3552,8 @@
       let val = parseInt(input.value, 10);
       if (isNaN(val) || val < 9) {
         input.value = 9;
-      } else if (val > 25) {
-        input.value = 25;
+      } else if (val > 33) {
+        input.value = 33;
       }
       const err = document.getElementById('dlg-count-error');
       if (err) err.style.display = 'none';
@@ -3676,7 +3691,7 @@
 
       // Local fallback CSV generator
       const countInput = document.getElementById('dlg-count');
-      const count = Math.min(25, Math.max(9, parseInt(countInput?.value, 10) || 9));
+      const count = Math.min(33, Math.max(9, parseInt(countInput?.value, 10) || 9));
 
       const headers = getDelegationHeaders();
       const headRow = getHeadRowData();
@@ -4010,14 +4025,14 @@
         }
       });
 
-      // Validate Count (9 - 25 delegates limit)
+      // Validate Count (9 - 33 delegates limit)
       if (count) {
         const err = document.getElementById('dlg-count-error');
         const countVal = parseInt(count.value, 10);
-        if (!count.value.trim() || isNaN(countVal) || countVal < 9 || countVal > 25) {
+        if (!count.value.trim() || isNaN(countVal) || countVal < 9 || countVal > 33) {
           count.classList.add('has-error');
           if (err) {
-            err.textContent = 'Number of delegates must be between 9 and 25';
+            err.textContent = 'Number of delegates must be between 9 and 33';
             err.style.display = 'block';
           }
           hasError = true;
