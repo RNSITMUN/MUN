@@ -3653,6 +3653,9 @@
           'Email Address',
           'WhatsApp / Mobile Number',
           'USN / Roll No',
+          'Prior MUN Experience? (Yes/No)',
+          'Number of Conferences Participated',
+          'MUN Conferences Participated / Accolades',
           'Committee Preference 1',
           'Portfolio Preference 1',
           'Portfolio Preference 2',
@@ -3669,6 +3672,9 @@
           'WhatsApp / Mobile Number',
           'Institution / College Name',
           'USN / Roll No',
+          'Prior MUN Experience? (Yes/No)',
+          'Number of Conferences Participated',
+          'MUN Conferences Participated / Accolades',
           'Committee Preference 1',
           'Portfolio Preference 1',
           'Portfolio Preference 2',
@@ -3702,12 +3708,17 @@
           email,
           phone,
           '', // USN / Roll No (blank for user to fill)
+          '', // Prior MUN Experience? (Yes/No)
+          '', // Number of Conferences Participated
+          '', // MUN Conferences Participated / Accolades
           '', // Committee Preference 1
           '', // Portfolio Preference 1
           '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
           '', // Committee Preference 2
           '', // Comm 2 - Portfolio Preference 1
-          ''  // Comm 2 - Portfolio Preference 2
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
         ]
         : [
           '1',
@@ -3716,12 +3727,17 @@
           phone,
           delegationName,
           '', // USN / Roll No (blank for user to fill)
+          '', // Prior MUN Experience? (Yes/No)
+          '', // Number of Conferences Participated
+          '', // MUN Conferences Participated / Accolades
           '', // Committee Preference 1
           '', // Portfolio Preference 1
           '', // Portfolio Preference 2
+          '', // Portfolio Preference 3
           '', // Committee Preference 2
           '', // Comm 2 - Portfolio Preference 1
-          ''  // Comm 2 - Portfolio Preference 2
+          '', // Comm 2 - Portfolio Preference 2
+          ''  // Comm 2 - Portfolio Preference 3
         ];
     }
 
