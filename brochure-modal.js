@@ -64,6 +64,10 @@ export function openBrochureModal(e) {
   modal.classList.add('is-open');
   document.documentElement.classList.add('brochure-modal-open');
   document.body.classList.add('brochure-modal-open');
+
+  // Pause Lenis smooth scroll so the PDF modal can scroll natively
+  if (window.lenis) window.lenis.stop();
+
   currentZoom = 1.0;
   applyZoom();
   updateZoomButtonsState();
@@ -78,6 +82,9 @@ export function closeBrochureModal() {
   modal.classList.remove('is-open');
   document.documentElement.classList.remove('brochure-modal-open');
   document.body.classList.remove('brochure-modal-open');
+
+  // Resume Lenis smooth scroll for the main page
+  if (window.lenis) window.lenis.start();
 }
 
 const MIN_ZOOM = 0.5;
@@ -420,23 +427,25 @@ function setupScrollRenderer(targetWidth) {
   if (!modalBody) return;
   scrollRendererAttached = true;
 
-  const onScroll = () => {
-    const bodyRect = modalBody.getBoundingClientRect();
-    const buffer = 1000;
-    const slots = modalBody.querySelectorAll('.brochure-page-slot');
-
-    slots.forEach(slot => {
-      const pageNum = parseInt(slot.dataset.pageNum, 10);
-      if (pageNum && !renderedPages.has(pageNum)) {
-        const r = slot.getBoundingClientRect();
-        if (r.bottom >= bodyRect.top - buffer && r.top <= bodyRect.bottom + buffer) {
+  // Use IntersectionObserver instead of onScroll to eliminate layout thrashing
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const pageNum = parseInt(entry.target.dataset.pageNum, 10);
+        if (pageNum && !renderedPages.has(pageNum)) {
           renderPage(pageNum, targetWidth || baseTargetWidth || getBasePageWidth());
+          observer.unobserve(entry.target);
         }
       }
     });
-  };
+  }, {
+    root: modalBody,
+    rootMargin: '1200px 0px', // Eagerly render before it comes into view
+    threshold: 0
+  });
 
-  modalBody.addEventListener('scroll', onScroll, { passive: true });
+  const slots = modalBody.querySelectorAll('.brochure-page-slot');
+  slots.forEach(slot => observer.observe(slot));
 }
 
 async function loadBrochureContent() {

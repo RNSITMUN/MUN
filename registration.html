@@ -1733,6 +1733,89 @@
   <script type="module" src="./mobile-floating-menu.js"></script>
   <script type="module" src="./language-switcher.js"></script>
   <script type="module" src="./analytics.js"></script>
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="./lenis-init.js"></script>
+
+  <!-- Robust Form Auto-Save (Drafts) System -->
+  <script>
+    (function() {
+      const STORAGE_KEY = 'rnsmun_registration_draft';
+      
+      // Load existing draft
+      let draft = {};
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) draft = JSON.parse(saved);
+      } catch(e) {}
+
+      // Save on any input change (Event Delegation)
+      const saveInput = (e) => {
+        const el = e.target;
+        if (!el.id) return;
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+          if (el.type === 'password' || el.type === 'file') return;
+          
+          draft[el.id] = el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+        }
+      };
+      
+      document.addEventListener('input', saveInput);
+      document.addEventListener('change', saveInput);
+
+      // Hydrate inputs as they are injected into the DOM
+      const hydrateNode = (node) => {
+        if (node.nodeType !== 1) return; // Only Element nodes
+        
+        const inputs = node.tagName === 'INPUT' || node.tagName === 'TEXTAREA' || node.tagName === 'SELECT' 
+          ? [node] 
+          : node.querySelectorAll('input, textarea, select');
+          
+        let dispatched = false;
+        inputs.forEach(el => {
+          if (el.id && draft.hasOwnProperty(el.id)) {
+            if (el.type === 'checkbox' || el.type === 'radio') {
+              if (el.checked !== draft[el.id]) {
+                el.checked = draft[el.id];
+                dispatched = true;
+              }
+            } else {
+              if (el.value !== draft[el.id]) {
+                el.value = draft[el.id];
+                dispatched = true;
+              }
+            }
+          }
+        });
+      };
+
+      // Hydrate existing DOM
+      hydrateNode(document.body);
+
+      // Watch for dynamically added elements
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+          m.addedNodes.forEach(node => hydrateNode(node));
+        });
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Clear draft on successful registration submission
+      const originalFetch = window.fetch;
+      window.fetch = async function(...args) {
+        const response = await originalFetch.apply(this, args);
+        if (response.ok) {
+          const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url ? args[0].url : '');
+          if (url.includes('/api/submit-registration') || url.includes('/api/submit-delegation')) {
+            localStorage.removeItem(STORAGE_KEY);
+            draft = {};
+          }
+        }
+        return response;
+      };
+    })();
+  </script>
 </body>
 
 </html>

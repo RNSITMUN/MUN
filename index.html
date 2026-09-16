@@ -2967,7 +2967,7 @@
         </div>
       </header>
 
-      <div class="brochure-modal-body" id="brochure-modal-body"></div>
+      <div class="brochure-modal-body" id="brochure-modal-body" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true"></div>
     </div>
   </div>
 
@@ -2978,6 +2978,9 @@
   <script type="module" src="./brochure-modal.js"></script>
   <script src="/register-sw.js"></script>
   <script type="module" src="./analytics.js"></script>
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="./lenis-init.js"></script>
 </body>
 
 </html>

@@ -477,7 +477,7 @@
         </span>
       </button>
 
-      <div id="munLangModal" class="mun-lang-modal" role="dialog" aria-modal="true" aria-label="Select Language">
+      <div id="munLangModal" class="mun-lang-modal" role="dialog" aria-modal="true" aria-label="Select Language" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true">
         <!-- Warm Cream Base Background Layer -->
         <div class="mun-lang-modal-bg"></div>
 
@@ -485,7 +485,7 @@
         <div class="mun-lang-liquid-circle"></div>
 
         <!-- Language Items Wrapper -->
-        <div class="mun-lang-list-wrap">
+        <div class="mun-lang-list-wrap" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true">
           <ul class="mun-lang-list">
             ${SUPPORTED_LANGS.map(
               (lang, idx) => `
@@ -566,6 +566,9 @@
 
     // Performance-optimized scroll listener (avoids mobile style thrashing)
     window.addEventListener("scroll", () => {
+      if (isOpen) {
+        toggleMenu(false); // Instantly collapse the dropdown when the page is scrolled
+      }
       if (window.innerWidth > 768) {
         updateWidgetPosition();
       }

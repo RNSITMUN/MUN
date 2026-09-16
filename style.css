@@ -664,6 +664,21 @@ body.modal-open .mobile-floating-menu-backdrop,
 html.modal-open .mobile-floating-menu-backdrop,
 body.modal-open .mobile-floating-menu-root,
 html.modal-open .mobile-floating-menu-root,
+body.brochure-modal-open .mobile-floating-menu-backdrop,
+html.brochure-modal-open .mobile-floating-menu-backdrop,
+body.brochure-modal-open .mobile-floating-menu-root,
+html.brochure-modal-open .mobile-floating-menu-root {
+  display: none !important;
+}
+
+/* Background scroll lock when mobile menu is open */
+html.mobile-menu-open,
+body.mobile-menu-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
 body.modal-open .mobile-floating-reg-btn,
 html.modal-open .mobile-floating-reg-btn {
   opacity: 0 !important;
@@ -1133,4 +1148,23 @@ body {
       }
     }
   }
+}
+
+/* ===============================
+   LENIS SMOOTH SCROLL CORE STYLES
+   =============================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

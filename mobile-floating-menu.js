@@ -102,6 +102,11 @@
       container.classList.add("is-open");
       if (bDrop) bDrop.classList.add("is-active");
       if (regBtn) regBtn.classList.add("is-hidden-by-menu");
+      
+      document.documentElement.classList.add('mobile-menu-open');
+      document.body.classList.add('mobile-menu-open');
+      if (window.lenis) window.lenis.stop();
+
       try {
         window.history.pushState({ munFloatingMenu: true }, "", window.location.href);
       } catch (err) {}
@@ -109,6 +114,11 @@
       container.classList.remove("is-open");
       if (bDrop) bDrop.classList.remove("is-active");
       if (regBtn) regBtn.classList.remove("is-hidden-by-menu");
+      
+      document.documentElement.classList.remove('mobile-menu-open');
+      document.body.classList.remove('mobile-menu-open');
+      if (window.lenis) window.lenis.start();
+
       if (!isClosingFromPop && window.history.state && window.history.state.munFloatingMenu) {
         window.history.back();
       }
