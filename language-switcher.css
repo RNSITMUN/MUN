@@ -541,10 +541,12 @@ body.mun-lang-ru {
 }
 
 /* RTL Mobile Alignment */
-html[dir="rtl"] .mun-lang-widget,
-body.mun-lang-rtl .mun-lang-widget {
-  left: max(60px, calc(env(safe-area-inset-left, 0px) + 56px)) !important;
-  right: auto !important;
+@media (max-width: 768px) {
+  html[dir="rtl"] .mun-lang-widget,
+  body.mun-lang-rtl .mun-lang-widget {
+    left: max(60px, calc(env(safe-area-inset-left, 0px) + 56px)) !important;
+    right: auto !important;
+  }
 }
 
 @media (max-width: 520px) {

@@ -391,6 +391,8 @@
       widget.style.right = "auto";
       const isScrolled = navPill.classList.contains("nav-scrolled");
 
+      const isRtl = document.documentElement.dir === "rtl" || document.body.classList.contains("mun-lang-rtl");
+
       if (!isScrolled) {
         const wrap = navPill.querySelector(".nav-items-wrap");
         let navWidth = 0;
@@ -402,12 +404,25 @@
           navWidth = 650;
         }
 
-        widget.style.left = `calc(50% + ${Math.round(navWidth / 2) + 10}px)`;
+        if (isRtl) {
+          widget.style.right = `calc(50% + ${Math.round(navWidth / 2) + 10}px)`;
+          widget.style.left = "auto";
+        } else {
+          widget.style.left = `calc(50% + ${Math.round(navWidth / 2) + 10}px)`;
+          widget.style.right = "auto";
+        }
         widget.style.transform = "translateX(0)";
         widget.classList.remove("is-scrolled");
       } else {
-        widget.style.left = "calc(100% - 82px)";
-        widget.style.transform = "translateX(-100%)";
+        if (isRtl) {
+          widget.style.right = "calc(100% - 82px)";
+          widget.style.left = "auto";
+          widget.style.transform = "translateX(100%)";
+        } else {
+          widget.style.left = "calc(100% - 82px)";
+          widget.style.right = "auto";
+          widget.style.transform = "translateX(-100%)";
+        }
         widget.classList.add("is-scrolled");
       }
     } else {
