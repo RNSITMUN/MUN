@@ -182,7 +182,6 @@
     
     .profile-img-container.active {
       z-index: 30;
-      border-color: #6C0D2C;
       box-shadow: 0 14px 34px rgba(108, 13, 44, 0.22);
     }
     
@@ -378,7 +377,6 @@
         border: 2.5px solid rgba(0, 0, 0, 0.08);
       }
       .profile-img-container.active {
-        border-color: #6C0D2C;
         box-shadow: 0 8px 24px rgba(108, 13, 44, 0.22);
         transform: scale(1.04);
       }
@@ -390,19 +388,22 @@
       }
       .giant-text-container {
         margin-top: 0;
-        height: clamp(110px, 20vh, 180px);
+        height: clamp(120px, 25vh, 190px);
         margin-bottom: clamp(4px, 1vh, 12px);
+        align-items: flex-end;
       }
       .giant-name {
-        font-size: clamp(3.8rem, 25vw, 6.8rem);
+        font-size: clamp(4.2rem, 28vw, 7.5rem);
+        line-height: 0.75;
         /* scaleY moved to .name-wrapper so overflow:hidden clips in pre-scale space */
       }
       /* scaleY on .name-wrapper: overflow:hidden clips at layout bounds, THEN the whole
          wrapper is scaled — letters at translateY(150%) are invisible, letters at
          translateY(0) are fully visible including any glyph overshoot. */
       .name-wrapper {
-        transform: scaleY(1.26);
-        transform-origin: center center;
+        transform: scaleY(1.45);
+        transform-origin: bottom center;
+        align-items: flex-end;
       }
       /* Mobile: hardware-accelerate letters; animation values unchanged from desktop */
       .letter {
@@ -428,13 +429,17 @@
         margin-bottom: 6px;
       }
       .giant-text-container {
-        height: 95px;
+        height: 110px;
+        align-items: flex-end;
       }
       .giant-name {
-        font-size: clamp(3rem, 24vw, 3.8rem);
+        font-size: clamp(3.2rem, 26vw, 4.2rem);
+        line-height: 0.75;
       }
       .name-wrapper {
-        transform: scaleY(1.22);
+        transform: scaleY(1.35);
+        transform-origin: bottom center;
+        align-items: flex-end;
       }
     }
 
@@ -569,7 +574,7 @@
     </div>
 
     <!-- Role display below the profile row -->
-    <div class="role-display" id="role-display">Hover a member to view role</div>
+    <div class="role-display" id="role-display">TAP A MEMBER TO VIEW ROLE</div>
 
     <!-- Giant text area for name animation -->
     <div class="giant-text-container" id="giant-text-container">

@@ -120,12 +120,8 @@ function setGiantName(name, isActiveMember) {
 // Initialize default name
 setGiantName("RNSMUN", false);
 
-// Set helper label text dynamically based on viewport size
-if (window.innerWidth < 768) {
-  roleDisplay.textContent = "Swipe or tap a member to view role";
-} else {
-  roleDisplay.textContent = "Hover a member to view role";
-}
+// Set helper label text
+roleDisplay.textContent = "TAP A MEMBER TO VIEW ROLE";
 
 // Helper: check if we are on a mobile viewport or a touch screen
 const isTouchOrMobile = () => {
@@ -240,7 +236,7 @@ function deactivateAll() {
   // Revert all profile translations and sizes back to original layout
   updateMagneticRipple(null);
 
-  roleDisplay.textContent = isTouchOrMobile() ? "Swipe or tap a member to view role" : "Hover a member to view role";
+  roleDisplay.textContent = "TAP A MEMBER TO VIEW ROLE";
   roleDisplay.classList.remove("is-active-member");
   setGiantName("RNSMUN", false);
 }
