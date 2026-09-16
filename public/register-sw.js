@@ -7,5 +7,14 @@ if ('serviceWorker' in navigator) {
       .catch((err) => {
         console.error('Service Worker registration failed:', err);
       });
+      
+    // Auto-reload the page when a new service worker takes over (forces update for returning users stuck on old cache)
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
   });
 }
