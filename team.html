@@ -268,6 +268,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      /* overflow:hidden clips letters at translateY(150%) on all viewports */
+      overflow: hidden;
     }
     
     .giant-name {
@@ -378,8 +380,20 @@
       }
       .giant-name {
         font-size: clamp(3.8rem, 25vw, 6.8rem);
+        /* scaleY moved to .name-wrapper so overflow:hidden clips in pre-scale space */
+      }
+      /* scaleY on .name-wrapper: overflow:hidden clips at layout bounds, THEN the whole
+         wrapper is scaled — letters at translateY(150%) are invisible, letters at
+         translateY(0) are fully visible including any glyph overshoot. */
+      .name-wrapper {
         transform: scaleY(1.26);
         transform-origin: center center;
+      }
+      /* Mobile: hardware-accelerate letters; animation values unchanged from desktop */
+      .letter {
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
       }
     }
 
@@ -403,6 +417,8 @@
       }
       .giant-name {
         font-size: clamp(3rem, 24vw, 3.8rem);
+      }
+      .name-wrapper {
         transform: scaleY(1.22);
       }
     }

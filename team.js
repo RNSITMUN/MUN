@@ -8,15 +8,31 @@ const teamDots = document.querySelectorAll(".team-dot");
 let currentActiveIndex = null;
 let pendingEntryTimeout = null;
 
+function removeWrapper(w) {
+  if (!w) return;
+  if (w._removeTimer) {
+    clearTimeout(w._removeTimer);
+    w._removeTimer = null;
+  }
+  if (w._ro) {
+    w._ro.disconnect();
+    w._ro = null;
+  }
+  if (w.parentNode) {
+    w.remove();
+  }
+}
+
 function setGiantName(name, isActiveMember) {
+  // Cancel any pending delayed entry from a prior call
   if (pendingEntryTimeout) {
     clearTimeout(pendingEntryTimeout);
     pendingEntryTimeout = null;
   }
 
   // Find all current wrappers
-  const wrappers = giantTextContainer.querySelectorAll(".name-wrapper");
-  
+  const wrappers = Array.from(giantTextContainer.querySelectorAll(".name-wrapper"));
+
   // If the latest wrapper is already displaying the same name, do nothing
   if (wrappers.length > 0) {
     const latest = wrappers[wrappers.length - 1];
@@ -25,25 +41,36 @@ function setGiantName(name, isActiveMember) {
     }
   }
 
-  // Mark all existing wrappers as slide-out
+  // Process existing wrappers. We never remove a slide-out wrapper mid-animation —
+  // doing so would cause an abrupt visual jump. Instead we let it finish and wait for it.
+  let hasActiveSlideOut = false;
   wrappers.forEach((w, i) => {
-    w.classList.remove("slide-in");
-    w.classList.add("slide-out");
-    
-    // If there are multiple wrappers, remove older ones immediately to prevent clumping
     if (i < wrappers.length - 1) {
-      w.remove();
+      // Superseded by a later wrapper — safe to kill immediately (already invisible)
+      removeWrapper(w);
+    } else if (w.classList.contains("slide-out")) {
+      // Already mid-exit animation — do NOT remove it now; let it finish naturally.
+      // Re-arm its removal timer so it is cleaned up after the animation completes.
+      hasActiveSlideOut = true;
+      if (w._removeTimer) clearTimeout(w._removeTimer);
+      w._removeTimer = setTimeout(() => { removeWrapper(w); }, 600);
     } else {
-      setTimeout(() => {
-        w.remove();
-      }, 600);
+      // Visible slide-in wrapper — begin its exit, then wait before showing next name.
+      hasActiveSlideOut = true;
+      w.classList.remove("slide-in");
+      w.classList.add("slide-out");
+      if (w._removeTimer) clearTimeout(w._removeTimer);
+      // 600ms safely outlasts the 0.28s exit transition + max stagger (~0.14s)
+      w._removeTimer = setTimeout(() => { removeWrapper(w); }, 600);
     }
   });
 
   // Function to create and slide in the new name
   const createNew = () => {
+    pendingEntryTimeout = null;
+
     const newWrapper = document.createElement("div");
-    newWrapper.className = "name-wrapper"; // Start without slide-in to trigger transition
+    newWrapper.className = "name-wrapper";
     newWrapper.dataset.name = name;
 
     const h1 = document.createElement("h1");
@@ -52,7 +79,7 @@ function setGiantName(name, isActiveMember) {
     const chars = Array.from(name);
     let html = "";
     chars.forEach((char, index) => {
-      // Stagger transition starting from the center outward
+      // Stagger: centre-outward, original timing preserved
       const delay = 0.035 * Math.abs(index - Math.floor(chars.length / 2));
       const letterClass = char === " " ? "letter space" : "letter";
       const letterVal = char === " " ? "&nbsp;" : char;
@@ -63,28 +90,28 @@ function setGiantName(name, isActiveMember) {
     newWrapper.appendChild(h1);
     giantTextContainer.appendChild(newWrapper);
 
-    // Fit text dynamically using a ResizeObserver to adapt to Google Translate mutations
+    // Fit overlong text dynamically (ResizeObserver handles Google Translate mutations too).
+    // scaleY is now applied via CSS on .name-wrapper, not here, so we only scale X if needed.
     const ro = new ResizeObserver(() => {
       const maxWidth = window.innerWidth * 0.92;
-      h1.style.transform = 'none'; // Reset to measure natural width
       const currentWidth = h1.scrollWidth;
       if (currentWidth > maxWidth && currentWidth > 0) {
-        h1.style.transform = `scale(${maxWidth / currentWidth})`;
+        h1.style.transform = `scaleX(${maxWidth / currentWidth})`;
+      } else {
+        h1.style.transform = '';
       }
     });
     ro.observe(h1);
+    newWrapper._ro = ro;
 
-    // Store reference to disconnect it later if needed (handled by GC mostly)
-    newWrapper.dataset.ro = true;
-
-    // Force reflow and activate slide-in transition
+    // Force reflow then trigger slide-in
     newWrapper.offsetHeight;
     newWrapper.classList.add("slide-in");
   };
 
-  // If there was an existing name transitioning out, delay the entry of the new name until it is completely hidden
-  if (wrappers.length > 0) {
-    pendingEntryTimeout = setTimeout(createNew, 500); // 500ms delay balances snappiness with complete clearance
+  if (hasActiveSlideOut) {
+    // 500ms: original value; safely longer than the 0.28s exit + max stagger (~0.14s)
+    pendingEntryTimeout = setTimeout(createNew, 500);
   } else {
     createNew();
   }
