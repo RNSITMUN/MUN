@@ -716,6 +716,15 @@ html.modal-open .mobile-floating-reg-btn {
   pointer-events: auto;
 }
 
+.mobile-floating-reg-btn span {
+  display: inline-block;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
 .mobile-floating-reg-btn svg {
   stroke: #E5A93C;
   transition: transform 0.2s ease;
@@ -958,6 +967,10 @@ html.modal-open .mobile-floating-reg-btn {
   text-transform: uppercase;
   color: #000000;
   transition: color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55px;
 }
 
 .floating-menu-container.is-open .floating-menu-label {

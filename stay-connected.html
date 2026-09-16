@@ -257,6 +257,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
+      min-width: 0;
       text-align: left;
     }
 
@@ -270,6 +271,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
       background: #E5A93C;
       color: #000;
       border: 2px solid #000;
@@ -284,6 +286,15 @@
       box-shadow: 2.5px 2.5px 0 #000;
       transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
       flex-shrink: 0;
+    }
+
+    .copy-btn span {
+      display: inline-block;
+      max-width: 85px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -362,6 +373,10 @@
       padding: 3px 8px;
       margin-bottom: 6px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .person-name {
@@ -433,6 +448,10 @@
       box-shadow: 1.5px 1.5px 0 #000;
       transition: all 0.15s ease;
       flex-shrink: 0;
+      max-width: 85px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -552,8 +571,10 @@
         font-size: clamp(0.92rem, 3vw, 1.05rem);
         font-weight: 800;
         letter-spacing: -0.015em;
-        overflow: visible;
-        text-overflow: clip;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
       }
 
       .copy-btn {

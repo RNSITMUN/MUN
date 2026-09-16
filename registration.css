@@ -437,6 +437,17 @@
       color: #000;
     }
 
+    /* Prevent rogue browser extensions (e.g. video downloaders/translators) from injecting overlay buttons */
+    .eligibility-icon-badge > *:not(svg),
+    .eligibility-icon-badge svg > *:not(circle):not(path):not(rect):not(g):not(line):not(polyline):not(polygon),
+    .eligibility-card-head > *:not(.eligibility-icon-badge):not(.eligibility-card-title),
+    .eligibility-list li > *:not(.el-bullet):not(div),
+    .el-bullet > * {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     .eligibility-card-title {
       font-family: 'Outfit', sans-serif;
       font-size: 0.92rem;
@@ -475,20 +486,36 @@
       height: 18px;
       border-radius: 50%;
       background: #6C0D2C;
-      color: #FFF;
       font-size: 0.65rem;
       font-weight: 900;
       flex-shrink: 0;
       margin-top: 1.5px;
+      position: relative;
+      color: transparent !important; /* Hide original text to avoid double render */
+    }
+
+    .el-bullet::before {
+      content: "✓";
+      color: #FFF;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .el-bullet-cross {
       background: #800000;
+    }
+    .el-bullet-cross::before {
+      content: "✕";
       font-size: 0.68rem;
     }
 
     .el-bullet-star {
       background: #E5A93C;
+    }
+    .el-bullet-star::before {
+      content: "★";
       color: #000;
     }
 

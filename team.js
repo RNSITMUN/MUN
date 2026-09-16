@@ -63,6 +63,20 @@ function setGiantName(name, isActiveMember) {
     newWrapper.appendChild(h1);
     giantTextContainer.appendChild(newWrapper);
 
+    // Fit text dynamically using a ResizeObserver to adapt to Google Translate mutations
+    const ro = new ResizeObserver(() => {
+      const maxWidth = window.innerWidth * 0.92;
+      h1.style.transform = 'none'; // Reset to measure natural width
+      const currentWidth = h1.scrollWidth;
+      if (currentWidth > maxWidth && currentWidth > 0) {
+        h1.style.transform = `scale(${maxWidth / currentWidth})`;
+      }
+    });
+    ro.observe(h1);
+
+    // Store reference to disconnect it later if needed (handled by GC mostly)
+    newWrapper.dataset.ro = true;
+
     // Force reflow and activate slide-in transition
     newWrapper.offsetHeight;
     newWrapper.classList.add("slide-in");
