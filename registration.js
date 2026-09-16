@@ -4224,6 +4224,287 @@
         return;
       }
 
+      // Helper: parse CSV lines taking quotes into account
+      function parseCSVLines(text) {
+        const lines = [];
+        let row = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+          const c = text[i];
+          const next = text[i + 1];
+          if (c === '"') {
+            if (inQuotes && next === '"') {
+              current += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (c === ',' && !inQuotes) {
+            row.push(current.trim());
+            current = '';
+          } else if ((c === '\r' || c === '\n') && !inQuotes) {
+            if (c === '\r' && next === '\n') {
+              i++;
+            }
+            row.push(current.trim());
+            current = '';
+            if (row.some(val => val.length > 0)) {
+              lines.push(row);
+            }
+            row = [];
+          } else {
+            current += c;
+          }
+        }
+        if (current.length > 0 || row.length > 0) {
+          row.push(current.trim());
+          if (row.some(val => val.length > 0)) {
+            lines.push(row);
+          }
+        }
+        return lines;
+      }
+
+      function parseCsvToRosterObjects(csvText, sheetLink) {
+        const rows = parseCSVLines(csvText);
+        if (!rows || rows.length < 2) return [];
+
+        const rawHeaders = rows[0].map(h => h.replace(/^["']|["']$/g, '').trim());
+        const dataRows = rows.slice(1);
+        const roster = [];
+
+        dataRows.forEach((row, rIdx) => {
+          const rowObj = {
+            sheetUrl: sheetLink || '',
+            googleSheetLink: sheetLink || ''
+          };
+          let hasData = false;
+
+          rawHeaders.forEach((header, cIdx) => {
+            const cellVal = (row[cIdx] || '').trim();
+            if (cellVal) hasData = true;
+            rowObj[header] = cellVal;
+
+            const norm = header.toLowerCase();
+            if (norm.includes('sl') || norm.includes('no') || norm === '#') {
+              rowObj.slNo = cellVal || String(rIdx + 1);
+            } else if (norm.includes('delegate name') || norm === 'name') {
+              rowObj.name = cellVal;
+              rowObj.delegateName = cellVal;
+            } else if (norm.includes('email')) {
+              rowObj.email = cellVal;
+              rowObj.emailAddress = cellVal;
+            } else if (norm.includes('whatsapp') || norm.includes('mobile') || norm.includes('phone')) {
+              rowObj.phone = cellVal;
+              rowObj.mobileNumber = cellVal;
+            } else if (norm.includes('institution') || norm.includes('college')) {
+              rowObj.institution = cellVal;
+            } else if (norm.includes('usn') || norm.includes('roll')) {
+              rowObj.usn = cellVal;
+            } else if (norm.includes('prior mun') || norm.includes('experience?')) {
+              rowObj.munExperience = cellVal;
+            } else if (norm.includes('number of conferences') || norm.includes('conferences participated')) {
+              rowObj.experienceCount = cellVal;
+            } else if (norm.includes('accolades') || norm.includes('conferences participated /')) {
+              rowObj.experienceDetails = cellVal;
+            } else if (norm.includes('comm 2') || norm.includes('preference 2') || norm.includes('committee 2') || norm.includes('committee preference 2')) {
+              if (norm.includes('preference 1') || norm.includes('portfolio preference 1')) {
+                rowObj.portfolio2_1 = cellVal;
+              } else if (norm.includes('preference 2') || norm.includes('portfolio preference 2')) {
+                rowObj.portfolio2_2 = cellVal;
+              } else if (norm.includes('preference 3') || norm.includes('portfolio preference 3')) {
+                rowObj.portfolio2_3 = cellVal;
+              } else if (!rowObj.committee2) {
+                rowObj.committee2 = cellVal;
+              }
+            } else if (norm.includes('committee preference 1') || norm.includes('committee 1') || norm === 'committee') {
+              rowObj.committee = cellVal;
+              rowObj.committee1 = cellVal;
+            } else if (norm.includes('portfolio preference 1')) {
+              rowObj.portfolio = cellVal;
+              rowObj.portfolio1_1 = cellVal;
+            } else if (norm.includes('portfolio preference 2')) {
+              rowObj.portfolio1_2 = cellVal;
+            } else if (norm.includes('portfolio preference 3')) {
+              rowObj.portfolio1_3 = cellVal;
+            }
+          });
+
+          if (!rowObj.name && !rowObj.email) {
+            if (!hasData) return;
+          }
+
+          if (!rowObj.slNo) rowObj.slNo = String(rIdx + 1);
+          if (!rowObj.name) rowObj.name = `Delegate ${rIdx + 1}`;
+          if (!rowObj.delegateName) rowObj.delegateName = rowObj.name;
+          if (!rowObj.committee) rowObj.committee = rowObj.committee1 || rowObj.portfolio || 'Assigned Matrix';
+
+          roster.push(rowObj);
+        });
+
+        return roster;
+      }
+
+      function parseGvizTableToRosterObjects(table, sheetLink) {
+        if (!table || !table.cols || !table.rows) return [];
+        const rawHeaders = table.cols.map(c => (c && (c.label || c.id) ? (c.label || c.id).trim() : ''));
+        const roster = [];
+        table.rows.forEach((r, rIdx) => {
+          if (!r || !r.c) return;
+          const rowObj = {
+            sheetUrl: sheetLink || '',
+            googleSheetLink: sheetLink || ''
+          };
+          let hasData = false;
+          r.c.forEach((cell, cIdx) => {
+            const cellVal = (cell && (cell.v !== null && cell.v !== undefined ? String(cell.f || cell.v) : '')).trim();
+            if (cellVal) hasData = true;
+            const header = rawHeaders[cIdx] || `Col_${cIdx + 1}`;
+            rowObj[header] = cellVal;
+
+            const norm = header.toLowerCase();
+            if (norm.includes('sl') || norm.includes('no') || norm === '#') {
+              rowObj.slNo = cellVal || String(rIdx + 1);
+            } else if (norm.includes('delegate name') || norm === 'name') {
+              rowObj.name = cellVal;
+              rowObj.delegateName = cellVal;
+            } else if (norm.includes('email')) {
+              rowObj.email = cellVal;
+              rowObj.emailAddress = cellVal;
+            } else if (norm.includes('whatsapp') || norm.includes('mobile') || norm.includes('phone')) {
+              rowObj.phone = cellVal;
+              rowObj.mobileNumber = cellVal;
+            } else if (norm.includes('institution') || norm.includes('college')) {
+              rowObj.institution = cellVal;
+            } else if (norm.includes('usn') || norm.includes('roll')) {
+              rowObj.usn = cellVal;
+            } else if (norm.includes('prior mun') || norm.includes('experience?')) {
+              rowObj.munExperience = cellVal;
+            } else if (norm.includes('number of conferences') || norm.includes('conferences participated')) {
+              rowObj.experienceCount = cellVal;
+            } else if (norm.includes('accolades') || norm.includes('conferences participated /')) {
+              rowObj.experienceDetails = cellVal;
+            } else if (norm.includes('committee preference 1') || norm.includes('committee 1') || norm === 'committee') {
+              rowObj.committee = cellVal;
+              rowObj.committee1 = cellVal;
+            } else if (norm.includes('portfolio preference 1')) {
+              rowObj.portfolio = cellVal;
+              rowObj.portfolio1_1 = cellVal;
+            } else if (norm.includes('portfolio preference 2')) {
+              rowObj.portfolio1_2 = cellVal;
+            } else if (norm.includes('portfolio preference 3')) {
+              rowObj.portfolio1_3 = cellVal;
+            } else if (norm.includes('committee preference 2') || norm.includes('committee 2')) {
+              rowObj.committee2 = cellVal;
+            } else if (norm.includes('comm 2 - portfolio preference 1')) {
+              rowObj.portfolio2_1 = cellVal;
+            } else if (norm.includes('comm 2 - portfolio preference 2')) {
+              rowObj.portfolio2_2 = cellVal;
+            } else if (norm.includes('comm 2 - portfolio preference 3')) {
+              rowObj.portfolio2_3 = cellVal;
+            }
+          });
+
+          if (hasData) {
+            if (!rowObj.slNo) rowObj.slNo = String(rIdx + 1);
+            if (!rowObj.name) rowObj.name = `Delegate ${rIdx + 1}`;
+            if (!rowObj.delegateName) rowObj.delegateName = rowObj.name;
+            if (!rowObj.committee) rowObj.committee = rowObj.committee1 || rowObj.portfolio || 'Assigned Matrix';
+            roster.push(rowObj);
+          }
+        });
+        return roster;
+      }
+
+      function createFallbackRosterMember(fallbackInfo = {}, sheetLink = '') {
+        return {
+          slNo: '1',
+          name: (fallbackInfo.headName || 'Head of Delegation').trim(),
+          delegateName: (fallbackInfo.headName || 'Head of Delegation').trim(),
+          email: (fallbackInfo.email || '').trim(),
+          phone: (fallbackInfo.phone || '').trim(),
+          institution: (fallbackInfo.delegationName || '').trim(),
+          committee: 'Delegation Head',
+          portfolio: 'Delegation Head',
+          sheetUrl: sheetLink || '',
+          googleSheetLink: sheetLink || ''
+        };
+      }
+
+      async function fetchDelegationRosterRows(sheetLink, fallbackInfo = {}) {
+        const match = (sheetLink || '').match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+        if (!match || !match[1]) {
+          return [createFallbackRosterMember(fallbackInfo, sheetLink)];
+        }
+
+        const sheetId = match[1];
+        const gidMatch = (sheetLink || '').match(/[#&?]gid=([0-9]+)/);
+        const gid = gidMatch ? gidMatch[1] : '0';
+
+        let rawCsvText = null;
+
+        // Attempt 1: Fetch direct CSV export from Google Sheets
+        try {
+          const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+          const res = await fetch(csvUrl, { method: 'GET', cache: 'no-cache' });
+          if (res.ok) {
+            const text = await res.text();
+            if (text && !text.includes('<!DOCTYPE html>') && text.includes(',')) {
+              rawCsvText = text;
+            }
+          }
+        } catch (e) {
+          console.warn('[Delegation] CSV export fetch notice:', e);
+        }
+
+        // Attempt 2: Google Visualization API CSV query
+        if (!rawCsvText) {
+          try {
+            const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${gid}`;
+            const res = await fetch(gvizUrl, { method: 'GET', cache: 'no-cache' });
+            if (res.ok) {
+              const text = await res.text();
+              if (text && !text.includes('<!DOCTYPE html>') && text.includes(',')) {
+                rawCsvText = text;
+              }
+            }
+          } catch (e) {
+            console.warn('[Delegation] gviz CSV fetch notice:', e);
+          }
+        }
+
+        // Attempt 3: Google Visualization API JSON format
+        if (!rawCsvText) {
+          try {
+            const gvizJsonUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
+            const res = await fetch(gvizJsonUrl, { method: 'GET', cache: 'no-cache' });
+            if (res.ok) {
+              const jsonpText = await res.text();
+              const jsonMatch = jsonpText.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?/);
+              if (jsonMatch && jsonMatch[1]) {
+                const gvizData = JSON.parse(jsonMatch[1]);
+                if (gvizData && gvizData.table) {
+                  const parsed = parseGvizTableToRosterObjects(gvizData.table, sheetLink);
+                  if (parsed.length > 0) return parsed;
+                }
+              }
+            }
+          } catch (e) {
+            console.warn('[Delegation] gviz JSON fetch notice:', e);
+          }
+        }
+
+        if (rawCsvText) {
+          const parsedRows = parseCsvToRosterObjects(rawCsvText, sheetLink);
+          if (parsedRows.length > 0) {
+            return parsedRows;
+          }
+        }
+
+        return [createFallbackRosterMember(fallbackInfo, sheetLink)];
+      }
+
       // Construct Payload with Screenshot
       const formPayload = {
         registrationType: "delegation",
@@ -4248,22 +4529,32 @@
         submitBtn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="animation:spin 0.8s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-dashoffset="10" stroke-linecap="round"/></svg>Submitting\u2026</span>`;
       }
 
-      // Send to Supabase Database via API endpoint
-      fetch('/api/submit-delegation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          delegationName: formPayload.delegationName,
-          delegationType: formPayload.delegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
-          headName: formPayload.headName,
-          email: formPayload.email,
-          phone: formPayload.phone,
-          memberCount: formPayload.delegateCount,
-          rosterData: formPayload.googleSheetLink,
-          paymentAmount: formPayload.paymentAmount,
-          screenshotBase64: formPayload.screenshotBase64,
-          screenshotFormat: formPayload.screenshotFormat
-        })
+      // Step: Fetch filled delegate rows from Google Sheet before final submission
+      fetchDelegationRosterRows(formPayload.googleSheetLink, {
+        headName: formPayload.headName,
+        email: formPayload.email,
+        phone: formPayload.phone,
+        delegationName: formPayload.delegationName
+      })
+      .then(parsedRoster => {
+        // Send to Supabase Database via API endpoint with parsed row objects
+        return fetch('/api/submit-delegation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            delegationName: formPayload.delegationName,
+            delegationType: formPayload.delegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
+            headName: formPayload.headName,
+            email: formPayload.email,
+            phone: formPayload.phone,
+            memberCount: formPayload.delegateCount,
+            rosterData: parsedRoster,
+            googleSheetLink: formPayload.googleSheetLink,
+            paymentAmount: formPayload.paymentAmount,
+            screenshotBase64: formPayload.screenshotBase64,
+            screenshotFormat: formPayload.screenshotFormat
+          })
+        });
       })
       .then(async res => {
         const data = await res.json().catch(() => null);
