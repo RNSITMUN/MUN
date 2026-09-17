@@ -134,7 +134,8 @@ export default async function handler(req, res) {
       totalIndividuals: 0, pendingIndividuals: 0, confirmedIndividuals: 0, rejectedIndividuals: 0,
       totalDelegations: 0, pendingDelegations: 0, confirmedDelegations: 0, rejectedDelegations: 0,
       totalRegPages: 1, totalDlgPages: 1, currentPage: page, limit: limit,
-      internalCount: 0, externalCount: 0, totalAmount: 0, totalDelegatesRep: 0
+      internalCount: 0, externalCount: 0, totalAmount: 0, totalDelegatesRep: 0,
+      confirmedDelegateHeadcount: 0
     };
 
     function parsePaymentAmount(amt) {
@@ -155,7 +156,7 @@ export default async function handler(req, res) {
       
       const { data, count, error } = await q;
       if (!error && data) {
-         stats.totalIndividuals = count;
+         stats.totalIndividuals = data.filter(r => r.status !== 'Rejected').length;
          stats.totalRegPages = Math.ceil(count / limit) || 1;
          data.forEach(r => {
            if (r.status === 'Pending Verification') stats.pendingIndividuals++;
@@ -167,6 +168,9 @@ export default async function handler(req, res) {
 
            if ((r.delegate_type || '').toLowerCase().startsWith('internal')) stats.internalCount++;
            else stats.externalCount++;
+
+           // In the individual-registrations loop:
+           if (r.status !== 'Rejected') stats.totalDelegatesRep++; // one per non-rejected individual
          });
       }
     }
@@ -185,9 +189,14 @@ export default async function handler(req, res) {
            else if (r.status === 'Confirmed') {
              stats.confirmedDelegations++;
              stats.totalAmount += parsePaymentAmount(r.payment_amount);
-             stats.totalDelegatesRep += (parseInt(r.member_count, 10) || 1);
+             stats.confirmedDelegateHeadcount = (stats.confirmedDelegateHeadcount || 0) + (parseInt(r.member_count, 10) || 1);
            }
            else if (r.status === 'Rejected') stats.rejectedDelegations++;
+
+           // In the delegations loop:
+           if (r.status !== 'Rejected') {
+             stats.totalDelegatesRep += (parseInt(r.member_count, 10) || 1); // headcount per non-rejected delegation
+           }
          });
       }
     }
