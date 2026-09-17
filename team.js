@@ -486,6 +486,11 @@ allEbCards.forEach(card => {
     
     // Set dynamic background image with blur (via CSS variable)
     ebModal.style.setProperty("--bg-img", `url('${img.src}')`);
+    ebModal.style.setProperty("--modal-photo-bg", `url('${img.src}')`);
+    const ebModalLeft = ebModal.querySelector(".eb-modal-left");
+    if (ebModalLeft) {
+      ebModalLeft.style.setProperty("--modal-photo-bg", `url('${img.src}')`);
+    }
     
     // Default placeholders
     ebModalDesc.innerHTML = "<p>Description coming soon...</p>";
