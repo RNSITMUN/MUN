@@ -605,7 +605,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 0.6rem;
+      min-height: 136px;
+      gap: 0.55rem;
       box-shadow: 3.5px 3.5px 0px #000000;
       position: relative;
       overflow: hidden;
@@ -726,6 +727,7 @@
       display: flex;
       align-items: center;
       margin-top: auto;
+      min-height: 24px;
     }
 
     .stat-sub-pill {
@@ -1466,9 +1468,35 @@
       color: var(--accent-color);
       font-weight: 700;
     }
+    tbody td.cell-amount,
     tbody td .cell-amount {
       color: #047857;
       font-weight: 800;
+    }
+    .amt-cell-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.2;
+    }
+    .amt-primary {
+      color: #047857;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: -0.01em;
+      font-family: var(--font-sans);
+    }
+    .amt-upi-sub {
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: #64748B;
+      font-family: var(--font-mono, monospace);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      max-width: 155px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
     }
     tbody td .text-muted,
     tbody td .text-sm.text-muted {
@@ -2457,9 +2485,7 @@
             </div>
           </div>
           <div class="stat-value stat-val-confirmed" id="stat-confirmed-count">0</div>
-          <div class="stat-sub-wrap">
-            <span class="stat-sub-pill pill-mint">Fully verified registrations</span>
-          </div>
+          <div class="stat-sub-wrap"></div>
         </div>
 
         <!-- Card 5: Total Verified Fees -->
@@ -2476,7 +2502,7 @@
           </div>
           <div class="stat-value stat-val-fees" id="stat-total-fees">₹0</div>
           <div class="stat-sub-wrap">
-            <span class="stat-sub-pill pill-emerald">From confirmed delegates</span>
+            <span class="stat-sub-pill pill-emerald" id="stat-sub-fees">Avg ₹0 / delegate</span>
           </div>
         </div>
 
@@ -2493,7 +2519,6 @@
               </svg>
               <span>Individual Registrations</span>
             </span>
-            <span class="tab-badge" id="badge-count-individual">0</span>
           </button>
           <button class="tab-btn" id="tab-btn-delegation" onclick="switchTab('delegation')">
             <span class="tab-btn-content">
@@ -2507,7 +2532,6 @@
               </svg>
               <span>Delegations</span>
             </span>
-            <span class="tab-badge" id="badge-count-delegation">0</span>
           </button>
           <button class="tab-btn" id="tab-btn-templates" onclick="switchTab('templates')">
             <span class="tab-btn-content">
@@ -3440,8 +3464,11 @@
       document.getElementById('stat-confirmed-count').textContent = confirmedCount;
       document.getElementById('stat-total-fees').textContent = '₹' + totalAmount.toLocaleString('en-IN');
 
-      document.getElementById('badge-count-individual').textContent = totalInd;
-      document.getElementById('badge-count-delegation').textContent = totalDlg;
+      const statSubFees = document.getElementById('stat-sub-fees');
+      if (statSubFees) {
+        const avgPerConfirmed = confirmedCount > 0 ? Math.round(totalAmount / confirmedCount) : 0;
+        statSubFees.textContent = confirmedCount > 0 ? `Avg ₹${avgPerConfirmed.toLocaleString('en-IN')} / delegate` : 'Verified payments';
+      }
     }
 
     // ─── Filter & Search Logic ────────────────────────────────────
@@ -3868,8 +3895,8 @@
             <div class="text-sm">${escapeHtml(item.mun_experience || 'None')}</div>
             <div class="text-sm text-muted">${item.experience_count ? item.experience_count + ' MUNs' : ''}</div>
           </td>
-          <td class="font-semibold cell-amount nowrap">
-            ${escapeHtml(item.payment_amount || '—')}
+          <td class="cell-amount nowrap">
+            ${formatPaymentAmountCell(item.payment_amount)}
           </td>
           <td>${thumbHtml}</td>
           <td>
@@ -3957,8 +3984,8 @@
               </button>
             </div>
           </td>
-          <td class="font-semibold cell-amount nowrap">
-            ${escapeHtml(item.payment_amount || '—')}
+          <td class="cell-amount nowrap">
+            ${formatPaymentAmountCell(item.payment_amount)}
           </td>
           <td>${thumbHtml}</td>
           <td>
@@ -4854,6 +4881,49 @@
         return isNaN(num) ? 0 : num;
       }
       return 0;
+    }
+
+    function formatPaymentAmountCell(raw) {
+      if (!raw || String(raw).trim() === '' || String(raw).trim() === '—') {
+        return `<span class="text-muted">—</span>`;
+      }
+      const str = String(raw).trim();
+      let amountPart = str;
+      let upiPart = '';
+
+      if (str.includes('|')) {
+        const parts = str.split('|');
+        amountPart = parts[0].trim();
+        upiPart = parts.slice(1).join('|').trim();
+      } else if (str.includes(' - UPI:')) {
+        const parts = str.split(' - UPI:');
+        amountPart = parts[0].trim();
+        upiPart = 'UPI: ' + parts[1].trim();
+      } else if (/\(UPI:\s*([^)]+)\)/i.test(str)) {
+        const match = str.match(/\(UPI:\s*([^)]+)\)/i);
+        amountPart = str.replace(/\(UPI:\s*[^)]+\)/i, '').trim();
+        upiPart = match ? match[0].replace(/[()]/g, '').trim() : '';
+      }
+
+      let displayAmount = amountPart;
+      if (/^\d[\d,]*$/.test(displayAmount)) {
+        displayAmount = '₹' + displayAmount;
+      }
+
+      if (upiPart) {
+        let cleanUpi = upiPart.replace(/^UPI:\s*/i, 'UPI: ');
+        if (!cleanUpi.toLowerCase().startsWith('upi:')) {
+          cleanUpi = 'UPI: ' + cleanUpi;
+        }
+        return `
+          <div class="amt-cell-wrap">
+            <span class="amt-primary font-bold">${escapeHtml(displayAmount)}</span>
+            <span class="amt-upi-sub" title="${escapeHtml(cleanUpi)}">${escapeHtml(cleanUpi)}</span>
+          </div>
+        `;
+      }
+
+      return `<span class="amt-primary font-bold">${escapeHtml(displayAmount)}</span>`;
     }
 
     function getStatusBadgeClass(status) {
