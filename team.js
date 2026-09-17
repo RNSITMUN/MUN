@@ -373,7 +373,7 @@ document.addEventListener("keydown", (e) => {
 const ebProfiles = {
   "Kshitij Saha": {
     desc: "<p>Kshitij Saha is a seasoned veteran of the Bangalore MUN circuit and a respected chair across the city's premier conferences.</p><p>By day, he works as a Cyber Strategy Consultant at KPMG India. In the committee room, Kshitij brings a distinctive blend of meticulous preparation, sharp research instincts, and quirky humour that keeps debates dynamic, inclusive, and thoroughly enjoyable. His deep interest in Human Rights, combined with a talent for uncovering niche angles, allows him to transform even conventional committees into fresh, thought-provoking experiences.</p><p>Known for his keen eye for detail — nothing slips past him — Kshitij is deeply committed to creating a lively, supportive, and enriching environment for both first-time delegates and seasoned MUNers alike. Whether it’s guiding intense crises or fostering meaningful discussion, he ensures every committee is memorable, wholesome, and intellectually rewarding.</p>",
-    quote: "Can't think of any other quote 😭 😭 😭",
+    quote: "",
     song: "f1 theme",
     insta: ""
   },
@@ -422,7 +422,7 @@ const ebProfiles = {
   "Rajath R": {
     desc: "<p>A student of law<br>An enthusiast of politics<br>A follower of God<br>A fan of cricket and much more</p>",
     quote: "Winter is coming",
-    song: "Try any qawali of Nusrat khan if possible, Else go ahead with any song",
+    song: "",
     insta: "rajathrr_4"
   },
   "Anshuman Pandey": {
@@ -454,6 +454,24 @@ const ebProfiles = {
     quote: "Life’s but a walking shadow, a poor player,<br>That struts and frets his hour upon the stage,<br>And then is heard no more. It is a tale<br>Told by an idiot, full of sound and fury,<br>Signifying nothing.",
     song: "",
     insta: ""
+  },
+  "Divya Sharma": {
+    desc: "<p>Divya Sharma is a second-year B.Tech student pursuing Electronics and Communication Engineering (ECE) at RNSIT. She is a curious person who loves learning, exploring, and trying things from completely different fields. Fascinated by geopolitics and passionate about public speaking, she enjoys stepping out of her comfort zone and taking on new challenges. Beyond academics and MUNs, badminton is one of her favourite hobbies, while listening to songs and doing adventures are her go-to ways to chill.</p>",
+    quote: "keep your face always towards the sunshine, and shadows will fall behind you.",
+    song: "",
+    insta: ""
+  },
+  "Nuha Alishba": {
+    desc: "<p>Nuha Alishba is a second-year engineering student with a keen interest in international relations, geopolitics, and humanitarian law. Drawn to MUNs by the art of research and diplomacy, she enjoys exploring complex global issues through thoughtful conversations and nuanced perspectives. Beyond committee rooms, she fills journals with poetry, sketches whenever inspiration strikes, and has an eye for aesthetics and photography. A devoted cat lover with an unexpected obsession for Supras and race cars, she believes curiosity and empathy are at the heart of every meaningful conversation & that the smallest details often tell the biggest stories, which is exactly what she hopes to bring to IPC.</p>",
+    quote: "Tell your cat i said pspspspsps 😼",
+    song: "",
+    insta: ""
+  },
+  "Kapil Pal": {
+    desc: "<p>Kapil Pal is a computer science (AI&ML) undergrad at RNSIT who treats Model UN as a fantastic excuse to put on a suit and professionally argue. When he isn’t using calm logic to survive committee chaos, you’ll find him aggressively surfing the internet, casually critiquing everything (especially politics) and disagreeing with most things just for the sport of it. Sarcastic, endlessly curious, and dangerously easy to like.</p>",
+    quote: "Shinzou wo Sasageyo",
+    song: "",
+    insta: "stoic_kapil"
   }
 };
 
@@ -502,7 +520,7 @@ allEbCards.forEach(card => {
       if (data.desc) ebModalDesc.innerHTML = data.desc;
       
       let metaHtml = "";
-      if (data.quote) metaHtml += `<div><span>Quote:</span> "${data.quote}"</div>`;
+      if (data.quote) metaHtml += `<div><span>Quote:</span> ${data.quote}</div>`;
       if (data.song) metaHtml += `<div><span>Song:</span> ${data.song}</div>`;
       if (data.insta) metaHtml += `<div><span>Instagram:</span> @${data.insta}</div>`;
       

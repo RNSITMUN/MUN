@@ -55,13 +55,13 @@
   <meta property="og:locale:alternate" content="te_IN">
   <meta property="og:locale:alternate" content="ta_IN">
   <meta property="og:locale:alternate" content="ml_IN">
-  <meta property="og:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
-  <meta property="og:image:secure_url" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta property="og:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.webp">
+  <meta property="og:image:secure_url" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.webp">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="RNSIT Model United Nations Conference Official Banner">
-  <link rel="image_src" href="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <link rel="image_src" href="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.webp">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -69,7 +69,7 @@
   <meta name="twitter:title" content="Our Team | MUNSoc RNSIT Secretariat">
   <meta name="twitter:description"
     content="Meet the Secretariat and organizing team behind MUNSoc RNSIT, organizers of the RNSIT Model United Nations conference in Bengaluru. Multilingual support in 13 languages.">
-  <meta name="twitter:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.png">
+  <meta name="twitter:image" content="https://mun.rnsit.ac.in/assets/Logos/MUN_share_banner.webp">
   <meta name="twitter:image:alt" content="RNSIT Model United Nations Conference Official Banner">
 
   <!-- LLM & AI Search Index Context -->
@@ -650,6 +650,8 @@
       background-color: #f0ede6;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       position: relative;
+      z-index: 5;
+      isolation: isolate;
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
         box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
@@ -665,6 +667,8 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      position: relative;
+      z-index: 1;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -675,7 +679,7 @@
     /* Manual Image Adjustments */
     img.eb-zoom-adwityo {
       transform: scale(1.6);
-      transform-origin: center 30%;
+      transform-origin: center 80%;
     }
 
     .eb-card:hover .eb-image-wrap img.eb-zoom-adwityo {
@@ -683,11 +687,20 @@
     }
 
     img.eb-zoom-anshuman {
-      transform: scale(1.4);
-      transform-origin: 80% center;
+      transform: scale(1.3);
+      object-position: 80% 80%;
     }
 
     .eb-card:hover .eb-image-wrap img.eb-zoom-anshuman {
+      transform: scale(1.35);
+    }
+
+    img.eb-zoom-sahit {
+      transform: scale(1.4);
+      transform-origin: center 40%; /* Anchor closer to his face */
+    }
+
+    .eb-card:hover .eb-image-wrap img.eb-zoom-sahit {
       transform: scale(1.45);
     }
 
@@ -747,17 +760,15 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
       padding: 2rem;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
 
     .eb-modal-overlay::before {
@@ -770,10 +781,11 @@
       background-image: var(--bg-img);
       background-size: cover;
       background-position: center;
-      filter: blur(20px) brightness(0.6);
+      filter: blur(15px) brightness(0.65);
       z-index: -1;
-      transform: scale(1.1);
-      /* Hides blurred edges */
+      transform: scale(1.15);
+      opacity: 0;
+      transition: opacity 0.8s ease;
     }
 
     .eb-modal-overlay.active {
@@ -781,46 +793,66 @@
       pointer-events: all;
     }
 
+    .eb-modal-overlay.active::before {
+      opacity: 1;
+    }
+
     .eb-modal-content {
-      background: #F8F3EA;
+      background: rgba(255, 252, 248, 0.85); /* Warmer, softer translucent cream */
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
       width: 100%;
-      max-width: 800px;
+      max-width: 960px;
       max-height: 90vh;
-      border-radius: 8px;
+      border-radius: 24px; /* Smoother curves */
       display: flex;
       flex-direction: row;
       overflow: hidden;
-      transform: translateY(20px) scale(0.98);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(30px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.2) inset;
       position: relative;
     }
 
     .eb-modal-overlay.active .eb-modal-content {
       transform: translateY(0) scale(1);
+      opacity: 1;
     }
 
     .eb-modal-close {
       position: absolute;
-      top: 1rem;
+      top: 1.5rem;
       right: 1.5rem;
       font-size: 2rem;
       background: none;
       border: none;
       cursor: pointer;
       color: #000;
-      opacity: 0.5;
-      transition: opacity 0.2s;
+      opacity: 0.3;
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
       z-index: 10;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
     }
 
     .eb-modal-close:hover {
-      opacity: 1;
+      opacity: 0.8;
+      transform: rotate(90deg);
+      background: rgba(255, 255, 255, 0.9);
     }
 
     .eb-modal-left {
-      flex: 0 0 40%;
+      flex: 0 0 45%;
       background: #000;
+      position: relative;
     }
 
     .eb-modal-left img {
@@ -828,11 +860,24 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0.95;
+    }
+    
+    /* Elegant gradient fade between image and text */
+    .eb-modal-left::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 8%; /* Much tighter fade */
+      background: linear-gradient(to right, transparent, rgba(255, 252, 248, 0.85));
+      pointer-events: none;
     }
 
     .eb-modal-right {
       flex: 1;
-      padding: 3rem 2.5rem;
+      padding: 4rem 4rem 3rem 1rem; /* More space, less padding near the image to let it breathe */
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -840,45 +885,49 @@
 
     .eb-modal-name {
       font-family: 'Outfit', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: #000;
+      font-size: 3rem;
+      font-weight: 300;
+      color: #1a1a1a;
       margin-bottom: 0.25rem;
       line-height: 1.1;
       text-transform: uppercase;
+      letter-spacing: -0.03em;
     }
 
     .eb-modal-role {
       font-size: 0.9rem;
-      font-weight: 700;
-      color: #6C0D2C;
+      font-weight: 600;
+      color: rgba(108, 13, 44, 0.85);
       text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 2rem;
+      letter-spacing: 0.25em;
+      margin-bottom: 2.5rem;
     }
 
     .eb-modal-desc {
-      font-size: 0.95rem;
-      line-height: 1.6;
+      font-size: 1.05rem;
+      line-height: 1.8;
       color: #333;
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
+      font-weight: 300;
     }
 
     .eb-modal-desc p {
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .eb-modal-meta {
-      background: rgba(108, 13, 44, 0.05);
-      padding: 1.5rem;
-      border-radius: 4px;
-      border-left: 3px solid #6C0D2C;
+      background: rgba(108, 13, 44, 0.04);
+      padding: 1.5rem 1.75rem;
+      border-radius: 12px;
+      border: 1px solid rgba(108, 13, 44, 0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
 
     .eb-modal-meta div {
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-      color: #000;
+      margin-bottom: 0.85rem;
+      font-size: 0.95rem;
+      color: #111;
+      line-height: 1.5;
     }
 
     .eb-modal-meta div:last-child {
@@ -889,6 +938,9 @@
       font-weight: 700;
       color: #6C0D2C;
       margin-right: 0.5rem;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
     }
 
     /* Responsive Adjustments for Tablet and Mobile */
@@ -1480,7 +1532,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Shishir Simha.jpeg" alt="Shishir Simha" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Shishir Simha.webp" alt="Shishir Simha" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Shishir Simha</div>
           <div class="eb-role">Chair</div>
@@ -1501,7 +1553,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Sathya Shiva GP.jpeg" alt="Satya Shiva" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Sathya Shiva GP.webp" alt="Satya Shiva" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Satya Shiva</div>
           <div class="eb-role">Vice Chair</div>
@@ -1522,10 +1574,20 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="" alt="Kapil Pal" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/kapil.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;"
+              onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Kapil Pal</div>
           <div class="eb-role">Moderator</div>
+          <div class="eb-ig-link" style="pointer-events: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            @stoic_kapil
+          </div>
         </div>
       </div>
     </div>
@@ -1543,7 +1605,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Kshitij Saha.jpeg" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Kshitij Saha.webp" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Kshitij Saha</div>
           <div class="eb-role">Co-Chair</div>
@@ -1555,7 +1617,8 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Sahit S Bangre.jpeg" alt="Sahit Bhangre" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bhangre" loading="lazy" class="eb-zoom-sahit"
+              onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sahit Bhangre</div>
           <div class="eb-role">Co-Chair</div>
@@ -1567,7 +1630,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Tanmay.jpeg" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Tanmay.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Tanmay P Shetty</div>
           <div class="eb-role">Moderator</div>
@@ -1597,7 +1660,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Sumit Shingare.jpeg" alt="Sumit Shingare" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Sumit Shingare.webp" alt="Sumit Shingare" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sumit Shingare</div>
           <div class="eb-role">Co-Chair</div>
@@ -1618,7 +1681,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Sanchya Prathish.jpeg" alt="Sanchya Pratish" loading="lazy"
+            <img src="/EB/Sanchya Prathish.webp" alt="Sanchya Pratish" loading="lazy"
               style="object-position: center 10%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sanchya Pratish</div>
@@ -1640,7 +1703,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Vachan.jpeg" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Vachan.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Vachan B Hindiskere</div>
           <div class="eb-role">Moderator</div>
@@ -1670,7 +1733,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Anshuman.png" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy"
+            <img src="/EB/Anshuman.webp" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy"
               onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Anshuman Pandey</div>
@@ -1692,7 +1755,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Rajath R.jpeg" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Rajath R.webp" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Rajath R</div>
           <div class="eb-role">Vice Chair</div>
@@ -1713,7 +1776,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Jayanth N.jpeg" alt="Jayanth N" loading="lazy" style="object-position: center 10%;"
+            <img src="/EB/Jayanth N.webp" alt="Jayanth N" loading="lazy" style="object-position: center 10%;"
               onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Jayanth N</div>
@@ -1744,7 +1807,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Adwityo Das.jpeg" alt="Adwityo Das" class="eb-zoom-adwityo" loading="lazy"
+            <img src="/EB/Adwityo Das.webp" alt="Adwityo Das" class="eb-zoom-adwityo" loading="lazy"
               onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Adwityo Das</div>
@@ -1757,7 +1820,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/pranathi naik.jpeg" alt="Pranathi Naik" loading="lazy" style="object-position: center 80%;"
+            <img src="/EB/pranathi naik.webp" alt="Pranathi Naik" loading="lazy" style="object-position: center 100%;"
               onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Pranathi Naik</div>
@@ -1779,7 +1842,8 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="" alt="Divya Sharma" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/Divya.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;"
+              onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Divya Sharma</div>
           <div class="eb-role">Moderator</div>
@@ -1800,7 +1864,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="/EB/Pranav Sivakumar.jpeg" alt="Pranav Shivkumar" loading="lazy"
+            <img src="/EB/Pranav Sivakumar.webp" alt="Pranav Shivkumar" loading="lazy"
               onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Pranav Shivkumar</div>
@@ -1822,7 +1886,8 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <img src="" alt="Nuha Alishba" loading="lazy" onerror="this.style.display='none'">
+            <img src="/EB/nuha.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;"
+              onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Nuha Alishba</div>
           <div class="eb-role">Rapporteur</div>
