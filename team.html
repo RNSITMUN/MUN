@@ -504,6 +504,410 @@
         font-size: clamp(1.8rem, 14vh, 2.8rem);
       }
     }
+
+    /* =========================================================
+       EXECUTIVE BOARD SECTION (ELEGANT & PROFESSIONAL)
+       ========================================================= */
+    .eb-section {
+      width: 100%;
+      padding: clamp(60px, 10vh, 120px) 5% 100px 5%;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(80px, 14vh, 160px);
+    }
+
+    .committee-block {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .committee-block {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 80px;
+      }
+    }
+
+    .committee-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .committee-header::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 2px;
+      background-color: #8C6D3B;
+      margin-bottom: 20px;
+      opacity: 0.6;
+    }
+
+    .committee-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+      font-weight: 400;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      line-height: 1.4;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(108, 13, 44, 0.2);
+      margin-bottom: 1rem;
+      display: inline-block;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .committee-header {
+        flex: 0 0 30%;
+        position: sticky;
+        top: 140px;
+      }
+    }
+
+    .eb-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(30px, 4vw, 60px);
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .eb-grid {
+        flex: 1;
+      }
+    }
+
+    .eb-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: clamp(135px, 16vw, 170px);
+      cursor: default;
+    }
+
+    .eb-image-wrap {
+      width: clamp(135px, 16vw, 170px);
+      height: clamp(180px, 21.3vw, 226px);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      background-color: #f0ede6;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .eb-card:hover .eb-image-wrap {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 34px rgba(108, 13, 44, 0.15);
+    }
+
+    .eb-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .eb-card:hover .eb-image-wrap img {
+      transform: scale(1.05);
+    }
+
+    /* Manual Image Adjustments */
+    img.eb-zoom-adwityo {
+      transform: scale(1.6);
+      transform-origin: center 30%;
+    }
+    .eb-card:hover .eb-image-wrap img.eb-zoom-adwityo {
+      transform: scale(1.65);
+    }
+    img.eb-zoom-anshuman {
+      transform: scale(1.4);
+      transform-origin: 80% center;
+    }
+    .eb-card:hover .eb-image-wrap img.eb-zoom-anshuman {
+      transform: scale(1.45);
+    }
+
+    .eb-placeholder-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30%;
+      height: 30%;
+      opacity: 0.12;
+      color: #000;
+    }
+
+    .eb-name {
+      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    .eb-role {
+      font-size: 0.75rem;
+      color: #6C0D2C;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+      transition: all 0.4s ease;
+    }
+    
+    .eb-ig-link {
+      color: #6C0D2C;
+      margin-top: 8px;
+      opacity: 1;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .eb-ig-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* EB Member Modal */
+    .eb-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .eb-modal-overlay::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: var(--bg-img);
+      background-size: cover;
+      background-position: center;
+      filter: blur(20px) brightness(0.6);
+      z-index: -1;
+      transform: scale(1.1); /* Hides blurred edges */
+    }
+    .eb-modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .eb-modal-content {
+      background: #F8F3EA;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .eb-modal-overlay.active .eb-modal-content {
+      transform: translateY(0) scale(1);
+    }
+    .eb-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #000;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .eb-modal-close:hover {
+      opacity: 1;
+    }
+    .eb-modal-left {
+      flex: 0 0 40%;
+      background: #000;
+    }
+    .eb-modal-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .eb-modal-right {
+      flex: 1;
+      padding: 3rem 2.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .eb-modal-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .eb-modal-role {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #6C0D2C;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 2rem;
+    }
+    .eb-modal-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+    .eb-modal-desc p {
+      margin-bottom: 1rem;
+    }
+    .eb-modal-meta {
+      background: rgba(108, 13, 44, 0.05);
+      padding: 1.5rem;
+      border-radius: 4px;
+      border-left: 3px solid #6C0D2C;
+    }
+    .eb-modal-meta div {
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: #000;
+    }
+    .eb-modal-meta div:last-child {
+      margin-bottom: 0;
+    }
+    .eb-modal-meta span {
+      font-weight: 700;
+      color: #6C0D2C;
+      margin-right: 0.5rem;
+    }
+
+    /* Responsive Adjustments for Tablet and Mobile */
+    @media (max-width: 900px) {
+      .committee-block {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .committee-header {
+        position: relative;
+        top: 0;
+        flex: none;
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      .eb-grid {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .eb-section {
+        padding: clamp(3rem, 8vw, 5rem) 5%;
+      }
+      .committee-block {
+        align-items: center;
+        margin: 0 auto clamp(3rem, 8vw, 4rem);
+        flex-direction: column;
+      }
+      .committee-header {
+        position: static;
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+      .committee-title {
+        text-align: center;
+        font-size: 1.25rem;
+        padding-bottom: 0.5rem;
+      }
+      .eb-grid {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      .eb-card {
+        width: 155px;
+        align-items: center;
+        text-align: center;
+      }
+      .eb-image-wrap {
+        width: 155px;
+        height: 206px;
+      }
+      .eb-name {
+        font-size: 0.9rem;
+      }
+      .eb-role {
+        font-size: 0.75rem;
+      }
+      .eb-ig-link {
+        font-size: 0.75rem;
+        gap: 4px;
+        justify-content: center;
+        text-align: left;
+      }
+      .eb-ig-link svg {
+        width: 14px;
+        height: 14px;
+      }
+      .eb-modal-content {
+        flex-direction: column;
+        max-height: 95vh;
+      }
+      .eb-modal-left {
+        flex: 0 0 250px;
+      }
+      .eb-modal-right {
+        padding: 1.5rem;
+      }
+      .eb-modal-name {
+        font-size: 1.5rem;
+      }
+      .eb-modal-overlay {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body class="notranslate">
@@ -574,6 +978,260 @@
       <!-- name-wrapper will be dynamically managed via JS -->
     </div>
   </main>
+
+  <!-- Executive Board Section -->
+  <section class="eb-section" id="eb-section">
+
+    <!-- Committee: UNSC -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">United Nations Security Council</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Shishir Simha.jpeg" alt="Shishir Simha" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Shishir Simha</div>
+          <div class="eb-role">Chair</div>
+          <a href="https://www.instagram.com/shishir.simha/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @shishir.simha
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sathya Shiva GP.jpeg" alt="Satya Shiva" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Satya Shiva</div>
+          <div class="eb-role">Vice Chair</div>
+          <a href="https://www.instagram.com/s4thya._/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @s4thya._
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="" alt="Kapil Pal" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Kapil Pal</div>
+          <div class="eb-role">Moderator</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committee: UNHRC -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">United Nations Human Rights Council</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Kshitij Saha.jpeg" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Kshitij Saha</div>
+          <div class="eb-role">Co-Chair</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sahit S Bangre.jpeg" alt="Sahit Bhangre" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Sahit Bhangre</div>
+          <div class="eb-role">Co-Chair</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Tanmay.jpeg" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Tanmay P Shetty</div>
+          <div class="eb-role">Moderator</div>
+          <a href="https://www.instagram.com/tanmay_p_shetty/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @tanmay_p_shetty
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committee: DISEC -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">Disarmament and International Security Committee</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sumit Shingare.jpeg" alt="Sumit Shingare" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Sumit Shingare</div>
+          <div class="eb-role">Co-Chair</div>
+          <a href="https://www.instagram.com/sum1t_s/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @sum1t_s
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sanchya Prathish.jpeg" alt="Sanchya Pratish" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Sanchya Pratish</div>
+          <div class="eb-role">Co-Chair</div>
+          <a href="https://www.instagram.com/sanchya_prathish/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @sanchya_prathish
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Vachan.jpeg" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Vachan B Hindiskere</div>
+          <div class="eb-role">Moderator</div>
+          <a href="https://www.instagram.com/chanchan_69420/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @chanchan_69420
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committee: Lok Sabha -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">Lok Sabha</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Anshuman.png" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Anshuman Pandey</div>
+          <div class="eb-role">Chair</div>
+          <a href="https://www.instagram.com/_.anshuman_.07/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @_.anshuman_.07
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Rajath R.jpeg" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Rajath R</div>
+          <div class="eb-role">Vice Chair</div>
+          <a href="https://www.instagram.com/rajathrr_4/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @rajathrr_4
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Jayanth N.jpeg" alt="Jayanth N" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Jayanth N</div>
+          <div class="eb-role">Moderator</div>
+          <a href="https://www.instagram.com/mr_jayanth___07/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @mr_jayanth___07
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committee: UNODC -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">United Nations Office on Drugs and Crime</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Adwityo Das.jpeg" alt="Adwityo Das" class="eb-zoom-adwityo" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Adwityo Das</div>
+          <div class="eb-role">Chair</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/pranathi naik.jpeg" alt="Pranathi Naik" loading="lazy" style="object-position: center 80%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Pranathi Naik</div>
+          <div class="eb-role">Vice Chair</div>
+          <a href="https://www.instagram.com/pranathinaik.27/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @pranathinaik.27
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="" alt="Divya Sharma" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Divya Sharma</div>
+          <div class="eb-role">Moderator</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committee: IP -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <h3 class="committee-title">International Press</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Pranav Sivakumar.jpeg" alt="Pranav Shivkumar" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Pranav Shivkumar</div>
+          <div class="eb-role">Head</div>
+          <a href="https://www.instagram.com/therealfakist/" target="_blank" class="eb-ig-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            @therealfakist
+          </a>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="" alt="Nuha Alishba" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Nuha Alishba</div>
+          <div class="eb-role">Rapporteur</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EB Modal -->
+    <div class="eb-modal-overlay" id="ebModal">
+      <div class="eb-modal-content">
+        <button class="eb-modal-close" id="ebModalClose">&times;</button>
+        <div class="eb-modal-left">
+          <img src="" alt="" id="ebModalImg">
+        </div>
+        <div class="eb-modal-right">
+          <div class="eb-modal-name" id="ebModalName">Name</div>
+          <div class="eb-modal-role" id="ebModalRole">Role</div>
+          <div class="eb-modal-desc" id="ebModalDesc"></div>
+          <div class="eb-modal-meta" id="ebModalMeta"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>

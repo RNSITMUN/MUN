@@ -367,3 +367,174 @@ document.addEventListener("keydown", (e) => {
     deactivateAll();
   }
 });
+
+// --- EB Member Modal Logic ---
+
+const ebProfiles = {
+  "Kshitij Saha": {
+    desc: "<p>Kshitij Saha is a seasoned veteran of the Bangalore MUN circuit and a respected chair across the city's premier conferences.</p><p>By day, he works as a Cyber Strategy Consultant at KPMG India. In the committee room, Kshitij brings a distinctive blend of meticulous preparation, sharp research instincts, and quirky humour that keeps debates dynamic, inclusive, and thoroughly enjoyable. His deep interest in Human Rights, combined with a talent for uncovering niche angles, allows him to transform even conventional committees into fresh, thought-provoking experiences.</p><p>Known for his keen eye for detail — nothing slips past him — Kshitij is deeply committed to creating a lively, supportive, and enriching environment for both first-time delegates and seasoned MUNers alike. Whether it’s guiding intense crises or fostering meaningful discussion, he ensures every committee is memorable, wholesome, and intellectually rewarding.</p>",
+    quote: "Can't think of any other quote 😭 😭 😭",
+    song: "f1 theme",
+    insta: ""
+  },
+  "Sanchya Pratish": {
+    desc: "<p>Sanchya Prathish is a BALLB student with a 100% placement record with Best Delegate awards across DISEC, UNSC, UNCSW in numerous prestigious conferences like SLCUMUN, IRMUN, DSIMUN, KJMUN, ECHOMUN, NHMUN. Beyond the conference room, she can be found teaching French, scoring goals or running for no absolute reason.</p>",
+    quote: "Ishaan this one's for you lil goat :)",
+    song: "Mo City Flexologist by Travis Scott 0:48 onwards put",
+    insta: "sanchya_prathish"
+  },
+  "Pranav Shivkumar": {
+    desc: "<p>He is yet to give a description he told he needs time</p>",
+    quote: "“Dulce bellum inexpertis” ~ Erasmus",
+    song: "MIA by drake and bad bunny From 00:38 btw",
+    insta: "therealfakist"
+  },
+  "Jayanth N": {
+    desc: "<p>Jayanth N is currently pursuing his BBA LL.B. at M.S. Ramaiah Institute of Legal Studies, Bengaluru. Since beginning his Model United Nations journey in 2024, he has rapidly established himself as a distinguished figure in the MUN circuit through his dedication, discipline, and mastery of parliamentary procedure.</p><p>With a comprehensive understanding of both United Nations Rules of Procedure and Indian Parliamentary simulations, Jayanth is recognised for his impartial judgment, commanding presence, and exceptional procedural expertise. His ability to maintain order while fostering intellectually rigorous debate has earned him the respect of delegates and organisers alike.</p><p>Beyond the committee room, Jayanth is an organiser, strategist, and institution builder who believes that leadership is measured not by titles, but by the opportunities created for others. His vision extends beyond conferences—to building platforms that inspire excellence, empower young leaders, and redefine the standards of academic diplomacy.</p><p>He did not wait for opportunities to find him; he built them. He did not follow established paths; he created his own. Every challenge became a foundation, every setback a lesson, and every achievement another step towards something greater.</p><p>For Jayanth, Model United Nations is not merely about debate—it is about building leaders capable of shaping the future.</p>",
+    quote: "न भीतो मरणादस्मि केवलं दूषितो यशः",
+    song: "",
+    insta: ""
+  },
+  "Satya Shiva": {
+    desc: "<p>Sathya, currently pursuing Law at BMS College of Law, Bangalore, has been in the circuit for over 4 years. He comes with a well appreciated adjudication skill along with great legal acumen and is all set to perform his duty as the Vice Chair of UNSC at RNSMUN</p>",
+    quote: "Legen-wait for it-dary",
+    song: "Igors theme, Tyler, the creator",
+    insta: "S4thya._"
+  },
+  "Pranathi Naik": {
+    desc: "",
+    quote: "Perhaps",
+    song: "Santiago by Agents of Time (3:17 - 3:28)",
+    insta: "pranathinaik.27"
+  },
+  "Shishir Simha": {
+    desc: "",
+    quote: "The weapons of our warfare are not carnal",
+    song: "",
+    insta: "shishir.simha"
+  },
+  "Adwityo Das": {
+    desc: "<p>Adwitiyo Das is a Third year Student of International Relations, Public Policy and Journalism at St Joseph's University Bangalore. He serves as the current President of the St Joseph's University MUNSOC.</p>",
+    quote: "If you are nothing without the suit, then you shouldn't have it",
+    song: "",
+    insta: ""
+  },
+  "Rajath R": {
+    desc: "<p>A student of law<br>An enthusiast of politics<br>A follower of God<br>A fan of cricket and much more</p>",
+    quote: "Winter is coming",
+    song: "Try any qawali of Nusrat khan if possible, Else go ahead with any song",
+    insta: "rajathrr_4"
+  },
+  "Anshuman Pandey": {
+    desc: "",
+    quote: "",
+    song: "End of the beginning",
+    insta: "_.anshuman_.07"
+  },
+  "Sumit Shingare": {
+    desc: "<p>Sumit Shingare is a student at Dayananda Sagar College of Engineering studying Data Science. Holding a 100% Placement Record with Best Delegate awards across UNSC, DISEC and UNHRC in numerous prestigious conferences like BITSGOA, CMSMUN, FMUN, DOCMUN, DSIMUN, NMGDC, KJMUN, ROTAMUN, DSBAMUN, UniCon</p><p>Off the committee floor, Sumit is a die-hard Liverpool fan. Whether it’s drafting policies or debating if Lebron is the goat, he brings the same passion.</p>",
+    quote: "",
+    song: "",
+    insta: "sum1t_s"
+  },
+  "Sahit Bhangre": {
+    desc: "<p>Sahit S Bangre is a working professional at EY India. A scholarship student who pursued his PG Diploma in Finance from the University of London. He is also a B.Com graduate from JAIN (Deemed-to-be University) in Bangalore and the ex-President of Jain University MUN Society.</p><p>He was introduced to the world of MUNs as an escape from mundane school life. As they say - \"Love is found in the most unexpected places\", this was a classic example of that and there was no turning back. On the back of 9 years on the circuit, he's explored and experienced the entire length and breadth of MUNs from Press to Chairing but predominantly operates and specializes in the Security Council with an indomitable 100% top 3 placement record in the Security Council.</p><p>Apart from MUNs, he is also a passionate avgeek and religiously follows F1 and football like his life depends on it.</p>",
+    quote: "",
+    song: "",
+    insta: ""
+  },
+  "Vachan B Hindiskere": {
+    desc: "<p>Vachan B Hindiskere is a second-year Computer Science Engineering student at RNSIT and a keen MUNer with a strong interest in Geopolitics and International Law. He particularly enjoys bringing the technical perspective of his degree into MUNs, using research, analytical thinking, and technology to approach complex issues in committee. Beyond MUNs, Vachan enjoys doing hackathons, MMA, and most of all taking a good nap.</p>",
+    quote: "「先生の奥義『バイブス採点』を継承する。」",
+    song: "",
+    insta: ""
+  },
+  "Tanmay P Shetty": {
+    desc: "<p>Tanmay is a second-year engineering student with a deep passion for public speaking and debates. He began participating in Model United Nations (MUN) conferences in the 11th grade and has been balancing them ever since. Outside of his academic routine, he loves dogs, is a huge Formula 1 fan, and is a dedicated supporter of Charles Leclerc.</p>",
+    quote: "Life’s but a walking shadow, a poor player,<br>That struts and frets his hour upon the stage,<br>And then is heard no more. It is a tale<br>Told by an idiot, full of sound and fury,<br>Signifying nothing.",
+    song: "",
+    insta: ""
+  }
+};
+
+const ebModal = document.getElementById("ebModal");
+const ebModalClose = document.getElementById("ebModalClose");
+const ebModalImg = document.getElementById("ebModalImg");
+const ebModalName = document.getElementById("ebModalName");
+const ebModalRole = document.getElementById("ebModalRole");
+const ebModalDesc = document.getElementById("ebModalDesc");
+const ebModalMeta = document.getElementById("ebModalMeta");
+
+const allEbCards = document.querySelectorAll(".eb-card");
+
+allEbCards.forEach(card => {
+  const imgWrap = card.querySelector(".eb-image-wrap");
+  const img = card.querySelector("img");
+  const nameEl = card.querySelector(".eb-name");
+  const roleEl = card.querySelector(".eb-role");
+  
+  if (!imgWrap || !nameEl || !img) return;
+  
+  imgWrap.addEventListener("click", () => {
+    const name = nameEl.textContent.trim();
+    const role = roleEl ? roleEl.textContent.trim() : "";
+    
+    // Set basic info
+    ebModalName.textContent = name;
+    ebModalRole.textContent = role;
+    ebModalImg.src = img.src;
+    
+    // Set dynamic background image with blur (via CSS variable)
+    ebModal.style.setProperty("--bg-img", `url('${img.src}')`);
+    
+    // Default placeholders
+    ebModalDesc.innerHTML = "<p>Description coming soon...</p>";
+    ebModalMeta.innerHTML = "";
+    
+    // Override if data exists
+    if (ebProfiles[name]) {
+      const data = ebProfiles[name];
+      if (data.desc) ebModalDesc.innerHTML = data.desc;
+      
+      let metaHtml = "";
+      if (data.quote) metaHtml += `<div><span>Quote:</span> "${data.quote}"</div>`;
+      if (data.song) metaHtml += `<div><span>Song:</span> ${data.song}</div>`;
+      if (data.insta) metaHtml += `<div><span>Instagram:</span> @${data.insta}</div>`;
+      
+      ebModalMeta.innerHTML = metaHtml;
+      ebModalMeta.style.display = metaHtml ? "block" : "none";
+    } else {
+      ebModalMeta.style.display = "none";
+    }
+    
+    if (ebModal) {
+      ebModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    }
+  });
+});
+
+function closeEbModal() {
+  if (ebModal) {
+    ebModal.classList.remove("active");
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }
+}
+
+if (ebModalClose) {
+  ebModalClose.addEventListener("click", closeEbModal);
+}
+
+if (ebModal) {
+  ebModal.addEventListener("click", (e) => {
+    if (e.target === ebModal) closeEbModal();
+  });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && ebModal && ebModal.classList.contains("active")) {
+    closeEbModal();
+  }
+});
