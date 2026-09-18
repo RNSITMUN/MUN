@@ -3396,7 +3396,7 @@
       }
 
       try {
-        const res = await fetch('/api/admin-registrations?type=all', {
+        const res = await fetch('/api/admin-registrations?type=all&limit=1000', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${currentSession.access_token}`,
