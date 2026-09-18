@@ -483,6 +483,16 @@ const ebModalRole = document.getElementById("ebModalRole");
 const ebModalDesc = document.getElementById("ebModalDesc");
 const ebModalMeta = document.getElementById("ebModalMeta");
 
+function formatSongTitle(song) {
+  if (!song) return "";
+  let s = song.trim();
+  s = s.replace(/\s*\(?\d+:\d+.*$/i, "");
+  s = s.replace(/\s*From\s+\d+:\d+.*$/i, "");
+  s = s.replace(/\s+by\s+/i, " — ");
+  s = s.replace(/,\s*(Tyler,\s*the\s*creator)/i, " — Tyler, The Creator");
+  return s.trim();
+}
+
 const allEbCards = document.querySelectorAll(".eb-card");
 
 allEbCards.forEach(card => {
@@ -499,8 +509,30 @@ allEbCards.forEach(card => {
     
     // Set basic info
     ebModalName.textContent = name;
-    ebModalRole.textContent = role;
     ebModalImg.src = img.src;
+
+    // Ensure ideal facial framing depending on member photo proportions
+    if (name.includes("Kapil")) {
+      ebModalImg.style.objectPosition = "center 8%";
+    } else if (name.includes("Jayanth")) {
+      ebModalImg.style.objectPosition = "center 12%";
+    } else if (name.includes("Pranathi")) {
+      ebModalImg.style.objectPosition = "center 22%";
+    } else if (name.includes("Pranav")) {
+      ebModalImg.style.objectPosition = "center 18%";
+    } else if (name.includes("Nuha")) {
+      ebModalImg.style.objectPosition = "center 25%";
+    } else {
+      ebModalImg.style.objectPosition = "center 20%";
+    }
+
+    if (role) {
+      ebModalRole.textContent = role;
+      ebModalRole.style.display = "block";
+    } else {
+      ebModalRole.textContent = "";
+      ebModalRole.style.display = "none";
+    }
     
     // Set dynamic background image with blur (via CSS variable)
     ebModal.style.setProperty("--bg-img", `url('${img.src}')`);
@@ -520,12 +552,44 @@ allEbCards.forEach(card => {
       if (data.desc) ebModalDesc.innerHTML = data.desc;
       
       let metaHtml = "";
-      if (data.quote) metaHtml += `<div><span>Quote:</span> ${data.quote}</div>`;
-      if (data.song) metaHtml += `<div><span>Song:</span> ${data.song}</div>`;
-      if (data.insta) metaHtml += `<div><span>Instagram:</span> @${data.insta}</div>`;
+      if (data.quote && data.quote.trim()) {
+        const cleanQuote = data.quote.trim().replace(/^["“]+|["”]+$/g, "");
+        metaHtml += `<div class="eb-modal-quote"><p class="eb-quote-text">“${cleanQuote}”</p></div>`;
+      }
+
+      let metaRowHtml = "";
+      if (data.song && data.song.trim()) {
+        const cleanSong = formatSongTitle(data.song);
+        metaRowHtml += `
+          <div class="eb-meta-pill" title="${cleanSong}">
+            <svg class="eb-meta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+            <span class="eb-meta-val">${cleanSong}</span>
+          </div>`;
+      }
+      if (data.insta && data.insta.trim()) {
+        const handle = data.insta.trim().replace(/^@/, "");
+        metaRowHtml += `
+          <a href="https://www.instagram.com/${handle}/" target="_blank" rel="noopener noreferrer" class="eb-meta-pill">
+            <svg class="eb-meta-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span class="eb-meta-val">@${handle}</span>
+            <span class="eb-meta-arrow">↗</span>
+          </a>`;
+      }
+
+      if (metaRowHtml) {
+        metaHtml += `<div class="eb-modal-meta-row">${metaRowHtml}</div>`;
+      }
       
       ebModalMeta.innerHTML = metaHtml;
-      ebModalMeta.style.display = metaHtml ? "block" : "none";
+      ebModalMeta.style.display = metaHtml ? "flex" : "none";
     } else {
       ebModalMeta.style.display = "none";
     }
