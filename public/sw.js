@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v7';
+const CACHE_NAME = 'mun-cache-v8';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
