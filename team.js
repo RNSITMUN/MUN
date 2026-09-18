@@ -596,6 +596,7 @@ allEbCards.forEach(card => {
     
     if (ebModal) {
       ebModal.classList.add("active");
+      document.body.classList.add("modal-open");
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
     }
@@ -605,6 +606,7 @@ allEbCards.forEach(card => {
 function closeEbModal() {
   if (ebModal) {
     ebModal.classList.remove("active");
+    document.body.classList.remove("modal-open");
     document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
   }
