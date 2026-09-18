@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v6';
+const CACHE_NAME = 'mun-cache-v7';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
@@ -10,7 +10,9 @@ const PRECACHE_ASSETS = [
   '/code-of-conduct',
   '/404',
   '/assets/Logos/25_logo.webp',
-  '/assets/Logos/MUN_logo.webp'
+  '/assets/Logos/MUN_logo.webp',
+  '/assets/Logos/RNS_MUN_2026.webp',
+  '/assets/Logos/RNS_MUN_2026_dark.webp'
 ];
 
 // Install Event - Pre-cache critical pages and logos

@@ -5155,7 +5155,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
       <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
@@ -5219,7 +5219,7 @@
 
       <div class="logo-wrap">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
         </a>
       </div>
     </div>
@@ -5270,7 +5270,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
       <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
@@ -5324,7 +5324,7 @@
 
       <div class="logo-wrap">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
         </a>
       </div>
     </div>
@@ -5393,7 +5393,7 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v21_delegation_mail_template';
+    const TEMPLATES_VERSION = 'v22_fix_email_logo_cdn_urls';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
@@ -5760,7 +5760,14 @@
       if (testPresetSelect && testPresetSelect.value !== preset) testPresetSelect.value = preset;
 
       const sampleData = getSampleDataForPreset(preset);
-      const mergedHtml = interpolateTokens(rawHtml, sampleData);
+      let mergedHtml = interpolateTokens(rawHtml, sampleData);
+
+      // Inject base tag so any relative assets (/assets/...) resolve reliably against the host origin inside about:blank iframe
+      if (!mergedHtml.includes('<base ') && mergedHtml.includes('<head>')) {
+        mergedHtml = mergedHtml.replace('<head>', `<head><base href="${window.location.origin}/">`);
+      } else if (!mergedHtml.includes('<base ')) {
+        mergedHtml = `<base href="${window.location.origin}/">\n` + mergedHtml;
+      }
 
       const doc = iframe.contentDocument || iframe.contentWindow.document;
       doc.open();
@@ -6390,7 +6397,13 @@
       const iframe = document.getElementById('modal-preview-iframe');
       if (!iframe) return;
 
-      const code = document.getElementById('modal-code-textarea').value;
+      let code = document.getElementById('modal-code-textarea').value;
+      if (!code.includes('<base ') && code.includes('<head>')) {
+        code = code.replace('<head>', `<head><base href="${window.location.origin}/">`);
+      } else if (!code.includes('<base ')) {
+        code = `<base href="${window.location.origin}/">\n` + code;
+      }
+
       const doc = iframe.contentDocument || iframe.contentWindow.document;
       doc.open();
       doc.write(code);

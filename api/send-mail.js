@@ -88,7 +88,10 @@ export default async function handler(req, res) {
       });
     }
 
-    const preparedHtml = htmlBody.replace(/src=["']\/?assets\//g, 'src="https://raw.githubusercontent.com/RNSITMUN/MUN/main/assets/');
+    const publicAssetBase = 'https://mun.rnsit.ac.in/assets/';
+    const preparedHtml = htmlBody
+      .replace(/src=["'](?:https?:\/\/[^\/]+)?\/?assets\//gi, `src="${publicAssetBase}`)
+      .replace(/src=["']https:\/\/raw\.githubusercontent\.com\/RNSITMUN\/MUN\/main\/assets\//gi, `src="${publicAssetBase}`);
 
     const payload = {
       recipient: recipient.trim(),
