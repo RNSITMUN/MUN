@@ -558,133 +558,145 @@
     }
 
     /* =========================================================
-       EXECUTIVE BOARD SECTION (ELEGANT & PROFESSIONAL)
+       EXECUTIVE BOARD SECTION — EDITORIAL DESIGN
        ========================================================= */
+
+    /* ── Section shell ── */
     .eb-section {
       width: 100%;
-      padding: clamp(60px, 10vh, 120px) 5% 100px 5%;
+      background: transparent;
       position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(80px, 14vh, 160px);
+      z-index: 1;
+      padding: 0 0 clamp(40px, 5vw, 64px) 0;
+      overflow: visible;
     }
 
-    .committee-block {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      gap: 40px;
-    }
-
-    @media (min-width: 768px) {
-      .committee-block {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 80px;
-      }
-    }
-
-    .committee-header {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .committee-header::before {
-      content: '';
-      display: block;
-      width: 30px;
-      height: 2px;
-      background-color: #8C6D3B;
-      margin-bottom: 20px;
-      opacity: 0.6;
-    }
-
-    .committee-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
-      font-weight: 400;
-      color: #000;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      line-height: 1.4;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(108, 13, 44, 0.2);
-      margin-bottom: 1rem;
-      display: inline-block;
-      width: 100%;
-    }
-
-    @media (min-width: 768px) {
-      .committee-header {
-        flex: 0 0 30%;
-        position: sticky;
-        top: 140px;
-      }
-    }
-
-    .eb-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: clamp(30px, 4vw, 60px);
-      width: 100%;
-    }
-
-    @media (min-width: 768px) {
-      .eb-grid {
-        flex: 1;
-      }
-    }
-
-    .eb-card {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      width: clamp(135px, 16vw, 170px);
-      cursor: default;
-    }
-
+    /* ── Executive Board Title Block ── */
     .eb-main-title-container {
       text-align: center;
-      padding-top: 4rem;
-      padding-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(48px, 6vw, 84px) clamp(20px, 4vw, 60px) clamp(28px, 4vw, 44px);
+      gap: 16px;
+      margin: 0 auto;
+      max-width: 960px;
     }
 
     .eb-main-title {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2.3rem, 5vw, 4.2rem);
       font-weight: 900;
-      color: #000;
+      color: #0e0e0e;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin: 0;
+      letter-spacing: 0.04em;
       line-height: 1.1;
+      margin: 0;
     }
 
+    /* ── Divider line before committees ── */
+    .eb-section-divider {
+      width: calc(100% - clamp(80px, 12vw, 240px));
+      margin: 0 auto clamp(48px, 6vw, 72px);
+      height: 1px;
+      background: rgba(0, 0, 0, 0.08);
+    }
 
-    .eb-image-wrap {
-      width: clamp(135px, 16vw, 170px);
-      height: clamp(180px, 21.3vw, 226px);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      background-color: #f0ede6;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      position: relative;
-      z-index: 5;
-      isolation: isolate;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    /* ── Committee block (full-width editorial row) ── */
+    .committee-block {
+      width: 100%;
+      padding: 0 clamp(40px, 6vw, 120px);
+      box-sizing: border-box;
+      margin-bottom: clamp(60px, 7vw, 90px);
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: clamp(40px, 5vw, 84px);
+      align-items: start;
+    }
+
+    .committee-block:last-of-type {
+      margin-bottom: 0;
+    }
+
+    /* ── Committee header (left sticky column) ── */
+    .committee-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding-top: 6px;
+    }
+
+    @media (min-width: 1100px) {
+      .committee-header {
+        position: sticky;
+        top: 130px;
+      }
+    }
+
+    .committee-kicker {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8C6D3B;
+    }
+
+    .committee-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.3rem, 1.7vw, 1.75rem);
+      font-weight: 600;
+      color: #0e0e0e;
+      letter-spacing: -0.018em;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .committee-accent-line { display: none; }
+
+    /* ── EB grid (right column, horizontal cards) ── */
+    .eb-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(24px, 3vw, 44px);
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    /* ── Individual member card ── */
+    .eb-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: clamp(155px, 17vw, 215px);
       cursor: pointer;
     }
 
+    /* ── Photo container ── */
+    .eb-image-wrap {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      background-color: #EFE9DE;
+      position: relative;
+      z-index: 5;
+      isolation: isolate;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      transition:
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.4s ease;
+    }
+
     .eb-card:hover .eb-image-wrap {
-      transform: translateY(-6px);
-      box-shadow: 0 14px 34px rgba(108, 13, 44, 0.15);
+      transform: translateY(-8px);
+      box-shadow: 0 22px 42px -10px rgba(108, 13, 44, 0.2), 0 6px 16px -4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(108, 13, 44, 0.22);
     }
 
     .eb-image-wrap img {
@@ -694,11 +706,12 @@
       display: block;
       position: relative;
       z-index: 1;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: none;
     }
 
     .eb-card:hover .eb-image-wrap img {
-      transform: scale(1.05);
+      transform: scale(1.04);
     }
 
     /* Manual Image Adjustments */
@@ -706,85 +719,133 @@
       transform: scale(1.6);
       transform-origin: center 80%;
     }
-
     .eb-card:hover .eb-image-wrap img.eb-zoom-adwityo {
       transform: scale(1.65);
     }
-
     img.eb-zoom-anshuman {
       transform: scale(1.3);
       object-position: 80% 80%;
     }
-
     .eb-card:hover .eb-image-wrap img.eb-zoom-anshuman {
       transform: scale(1.35);
     }
-
     img.eb-zoom-sahit {
       transform: scale(1.4);
-      transform-origin: center 40%; /* Anchor closer to his face */
+      transform-origin: center 40%;
     }
-
     .eb-card:hover .eb-image-wrap img.eb-zoom-sahit {
       transform: scale(1.45);
     }
 
     .eb-placeholder-icon {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 30%;
-      height: 30%;
-      opacity: 0.12;
+      width: 30%; height: 30%;
+      opacity: 0.1;
       color: #000;
     }
 
+    /* ── Name ── */
     .eb-name {
-      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.95rem, 1.1vw, 1.06rem);
       font-weight: 700;
-      color: #000;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      line-height: 1.3;
+      color: #111111;
+      letter-spacing: -0.01em;
+      line-height: 1.22;
+      margin-bottom: 3px;
+      transition: color 0.2s ease;
     }
 
+    .eb-card:hover .eb-name { color: #6C0D2C; }
+
+    /* ── Role label below name ── */
     .eb-role {
-      font-size: 0.75rem;
-      color: #6C0D2C;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-weight: 700;
-      transition: all 0.4s ease;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0.01em;
+      color: #383838;
+      margin-bottom: 4px;
     }
 
+    /* ── Instagram link ── */
     .eb-ig-link {
-      color: #6C0D2C;
-      margin-top: 8px;
-      opacity: 1;
-      transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      color: #222222;
       text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 550;
+      letter-spacing: 0.01em;
+      padding: 3px 9px 3px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      margin-top: 2px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .eb-ig-link:hover {
+      background: #FFFFFF;
+      color: #6C0D2C;
+      border-color: rgba(108, 13, 44, 0.35);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(108, 13, 44, 0.12);
     }
 
     .eb-ig-link svg {
-      width: 16px;
-      height: 16px;
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+      color: #6C0D2C;
     }
 
-    /* EB Member Modal */
+    /* ── Thin separator between committees ── */
+    .committee-sep {
+      width: calc(100% - clamp(80px, 12vw, 240px));
+      margin: 0 clamp(40px, 6vw, 120px) clamp(50px, 6vw, 75px);
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    /* ── Scroll-fade-in animation ── */
+    .eb-card {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .eb-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .committee-block {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity 0.6s ease,
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .committee-block.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* ── EB Member Modal ── */
     .eb-modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.45);
       z-index: 1000;
       display: flex;
@@ -795,821 +856,232 @@
       transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       padding: 1.5rem;
     }
-
     .eb-modal-overlay::before {
       content: "";
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background-image: var(--bg-img);
-      background-size: cover;
-      background-position: center;
+      background-size: cover; background-position: center;
       filter: blur(14px) brightness(0.55);
-      z-index: -1;
-      transform: scale(1.08);
-      opacity: 0;
+      z-index: -1; transform: scale(1.08); opacity: 0;
       transition: opacity 0.6s ease;
     }
-
-    .eb-modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .eb-modal-overlay.active::before {
-      opacity: 1;
-    }
-
+    .eb-modal-overlay.active { opacity: 1; pointer-events: all; }
+    .eb-modal-overlay.active::before { opacity: 1; }
     .eb-modal-content {
       background: linear-gradient(155deg, #FFFFFF 0%, #FAF7F2 100%);
       border: 1px solid rgba(255, 255, 255, 0.85);
-      width: 100%;
-      max-width: 890px;
-      max-height: min(88vh, 630px);
+      width: 100%; max-width: 890px; max-height: min(88vh, 630px);
       border-radius: 26px;
-      display: flex;
-      flex-direction: row;
-      padding: 1.5rem;
-      box-sizing: border-box;
-      gap: 1.75rem;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 35px 90px -15px rgba(0, 0, 0, 0.5),
-        0 10px 30px -10px rgba(0, 0, 0, 0.2),
-        inset 0 1px 2px rgba(255, 255, 255, 0.95);
-      transform: translateY(22px) scale(0.98);
-      opacity: 0;
+      display: flex; flex-direction: row;
+      padding: 1.5rem; box-sizing: border-box;
+      overflow: hidden; position: relative;
+      box-shadow: 0 35px 90px -15px rgba(0,0,0,0.5), 0 10px 30px -10px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.95);
+      transform: translateY(22px) scale(0.98); opacity: 0;
       transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
     }
-
-    .eb-modal-overlay.active .eb-modal-content {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-
+    .eb-modal-overlay.active .eb-modal-content { transform: translateY(0) scale(1); opacity: 1; }
     .eb-modal-close {
-      position: absolute;
-      top: 1.15rem;
-      right: 1.15rem;
-      background: rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      cursor: pointer;
-      color: #333333;
+      position: absolute; top: 1.15rem; right: 1.15rem;
+      background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0,0,0,0.08);
+      cursor: pointer; color: #333;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 30;
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      padding: 0;
+      z-index: 50; width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; padding: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-
-    .eb-modal-close:hover {
-      background: #111111;
-      color: #ffffff;
-      border-color: #111111;
-      transform: rotate(90deg) scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .eb-modal-close:hover { background: #111; color: #fff; border-color: #111; transform: rotate(90deg) scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .eb-modal-scroll {
+      display: flex; flex-direction: row;
+      width: 100%; height: 100%; min-height: 0;
+      gap: 1.75rem;
     }
-
-    /* Left: Framed Art Portrait */
     .eb-modal-left {
-      flex: 0 0 340px;
-      align-self: stretch;
-      min-height: 460px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 12px 32px -4px rgba(0, 0, 0, 0.14),
-        inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-      background: #111111;
+      flex: 0 0 340px; align-self: stretch; min-height: 460px;
+      border-radius: 18px; overflow: hidden; position: relative;
+      box-shadow: 0 12px 32px -4px rgba(0,0,0,0.14), inset 0 0 0 1px rgba(0,0,0,0.06);
+      background: #111;
     }
-
     .eb-modal-left img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      display: block;
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 20%; display: block;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .eb-modal-content:hover .eb-modal-left img {
-      transform: scale(1.02);
-    }
-
-    /* Right: Editorial Typography */
-    .eb-modal-right {
-      flex: 1;
-      min-width: 0;
-      padding: 0.5rem 0.25rem 0.5rem 0.25rem;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .eb-modal-header {
-      flex: 0 0 auto;
-      margin-bottom: 0.85rem;
-      padding-right: 3.2rem;
-    }
-
+    .eb-modal-content:hover .eb-modal-left img { transform: scale(1.02); }
+    .eb-modal-right { flex: 1; min-width: 0; padding: 0.5rem 0.25rem; display: flex; flex-direction: column; overflow: hidden; }
+    .eb-modal-header { flex: 0 0 auto; margin-bottom: 0.85rem; padding-right: 3.2rem; }
     .eb-modal-body {
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      display: flex;
-      flex-direction: column;
-      padding-right: 0.85rem;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
+      flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column; padding-right: 0.85rem;
+      scrollbar-width: thin; scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
     }
+    .eb-modal-body::-webkit-scrollbar { width: 4px; }
+    .eb-modal-body::-webkit-scrollbar-track { background: transparent; }
+    .eb-modal-body::-webkit-scrollbar-thumb { background: rgba(108, 13, 44, 0.25); border-radius: 999px; }
+    .eb-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(108, 13, 44, 0.55); }
+    .eb-modal-body::-webkit-scrollbar-button { display: none; }
+    .eb-modal-role { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #6C0D2C; margin-bottom: 0.35rem; display: block; }
+    .eb-modal-name { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.1rem, 3.2vw, 2.65rem); font-weight: 600; color: #141414; line-height: 1.12; letter-spacing: -0.015em; margin: 0; word-break: break-word; }
+    .eb-modal-desc { font-family: 'Outfit', sans-serif; font-size: 0.92rem; line-height: 1.74; color: #383838; font-weight: 350; margin-bottom: 1.25rem; }
+    .eb-modal-desc p { margin: 0 0 0.85rem 0; }
+    .eb-modal-desc p:last-child { margin-bottom: 0; }
+    .eb-modal-meta { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-top: 0.5rem; }
+    .eb-modal-quote { background: rgba(108, 13, 44, 0.035); border-radius: 14px; padding: 13px 18px; margin: 0; }
+    .eb-quote-text { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 1.02rem; line-height: 1.55; color: #1c1c1c; margin: 0; }
+    .eb-modal-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 0.4rem; }
+    .eb-meta-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,0.035); border: 1px solid rgba(0,0,0,0.05); font-size: 0.82rem; color: #2b2b2b; text-decoration: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    a.eb-meta-pill:hover { background: rgba(108, 13, 44, 0.07); border-color: rgba(108, 13, 44, 0.2); color: #6C0D2C; transform: translateY(-1px); }
+    .eb-meta-icon { color: #6C0D2C; flex-shrink: 0; }
+    .eb-meta-val { font-weight: 450; color: #222; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .eb-meta-arrow { font-size: 0.85rem; opacity: 0.6; margin-left: 2px; transition: transform 0.2s ease, opacity 0.2s ease; }
+    a.eb-meta-pill:hover .eb-meta-arrow { opacity: 1; transform: translate(2px, -2px); }
 
-    .eb-modal-body::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    .eb-modal-body::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .eb-modal-body::-webkit-scrollbar-thumb {
-      background: rgba(108, 13, 44, 0.25);
-      border-radius: 999px;
-    }
-
-    .eb-modal-body::-webkit-scrollbar-thumb:hover {
-      background: rgba(108, 13, 44, 0.55);
-    }
-
-    .eb-modal-body::-webkit-scrollbar-button {
-      display: none;
-      width: 0;
-      height: 0;
-    }
-
-    .eb-modal-role {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #6C0D2C;
-      margin-bottom: 0.35rem;
-      display: block;
-    }
-
-    .eb-modal-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.1rem, 3.2vw, 2.65rem);
-      font-weight: 600;
-      color: #141414;
-      line-height: 1.12;
-      letter-spacing: -0.015em;
-      margin: 0;
-      word-break: break-word;
-    }
-
-    .eb-modal-desc {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 0.92rem;
-      line-height: 1.74;
-      color: #383838;
-      font-weight: 350;
-      margin-bottom: 1.25rem;
-    }
-
-    .eb-modal-desc p {
-      margin: 0 0 0.85rem 0;
-    }
-
-    .eb-modal-desc p:last-child {
-      margin-bottom: 0;
-    }
-
-    .eb-modal-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: auto;
-      padding-top: 0.5rem;
-    }
-
-    /* Minimal intimate quote capsule */
-    .eb-modal-quote {
-      position: relative;
-      background: rgba(108, 13, 44, 0.035);
-      border-radius: 14px;
-      padding: 13px 18px;
-      margin: 0;
-    }
-
-    .eb-quote-text {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-style: italic;
-      font-size: 1.02rem;
-      line-height: 1.55;
-      color: #1c1c1c;
-      margin: 0;
-    }
-
-    /* Minimalist metadata row */
-    .eb-modal-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 9px;
-      padding-top: 0.4rem;
-    }
-
-    .eb-meta-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.035);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      font-size: 0.82rem;
-      color: #2b2b2b;
-      text-decoration: none;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    a.eb-meta-pill:hover {
-      background: rgba(108, 13, 44, 0.07);
-      border-color: rgba(108, 13, 44, 0.2);
-      color: #6C0D2C;
-      transform: translateY(-1px);
-    }
-
-    .eb-meta-icon {
-      color: #6C0D2C;
-      flex-shrink: 0;
-    }
-
-    .eb-meta-val {
-      font-weight: 450;
-      color: #222222;
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .eb-meta-arrow {
-      font-size: 0.85rem;
-      opacity: 0.6;
-      margin-left: 2px;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
-    a.eb-meta-pill:hover .eb-meta-arrow {
-      opacity: 1;
-      transform: translate(2px, -2px);
-    }
-
-    /* Responsive Adjustments for Tablet and Mobile */
-    @media (max-width: 900px) {
-      .committee-block {
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .committee-header {
-        position: relative;
-        top: 0;
-        flex: none;
-        width: 100%;
-        margin-bottom: 0.5rem;
-      }
-
-      .eb-grid {
-        width: 100%;
-        justify-content: flex-start;
-      }
-    }
-
-    /* Executive Board Mobile Optimization (≤ 768px) */
+    /* ── Mobile ── */
     @media (max-width: 768px) {
-
-      /* 1. EB Section & Bottom Clearance for Fixed MENU/REGISTER */
       .eb-section {
-        width: 100%;
-        padding-left: 5%;
-        padding-right: 5%;
-        padding-top: 20px;
-        padding-bottom: max(112px, calc(92px + env(safe-area-inset-bottom, 0px)));
-        gap: clamp(44px, 8vw, 64px);
+        padding: 24px 6% max(112px, calc(92px + env(safe-area-inset-bottom, 0px)));
         box-sizing: border-box;
       }
-
       .eb-main-title-container {
-        padding-top: 0;
-        padding-bottom: clamp(6px, 1.5vh, 12px);
-      }
-
-      .committee-block {
-        flex-direction: column;
+        padding: clamp(18px, 3.5vh, 28px) 16px 24px;
+        gap: 18px;
         align-items: center;
-        width: 100%;
-        margin: 0 auto;
-        gap: clamp(18px, 4vw, 26px);
+        text-align: center;
       }
-
+      .eb-main-title-container .team-kicker {
+        font-size: clamp(0.74rem, 2.8vw, 0.86rem);
+        letter-spacing: 0.24em;
+        margin-bottom: 2px;
+      }
+      .eb-main-title {
+        font-size: clamp(2.35rem, 11vw, 3.4rem);
+        line-height: 1.05;
+        letter-spacing: 0.035em;
+      }
+      .committee-block {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin-bottom: clamp(40px, 8vw, 56px);
+        gap: 20px;
+      }
       .committee-header {
         position: static;
         width: 100%;
-        margin-bottom: 0;
         align-items: center;
         text-align: center;
+        gap: 8px;
+        padding-top: 0;
       }
-
-      .committee-header::before {
-        margin-bottom: 10px;
-        margin-left: auto;
-        margin-right: auto;
+      .committee-kicker {
+        font-size: 0.68rem;
+        letter-spacing: 0.22em;
       }
-
       .committee-title {
-        width: 100%;
+        font-size: clamp(1.35rem, 5.5vw, 1.65rem);
         text-align: center;
-        font-size: clamp(1.05rem, 4vw, 1.25rem);
-        line-height: 1.35;
-        padding-bottom: 0.5rem;
-        margin-bottom: 0;
-        overflow-wrap: break-word;
-        word-break: normal;
       }
-
-      /* 2. EB Grid: 2 Columns & Centered Odd 3rd Card */
+      .committee-accent-line {
+        margin: 4px auto 0;
+      }
       .eb-grid {
-        width: 100%;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: clamp(14px, 4vw, 20px);
-        row-gap: clamp(30px, 6vw, 42px);
+        column-gap: clamp(12px, 3.5vw, 18px);
+        row-gap: clamp(24px, 5vw, 36px);
         align-items: start;
       }
-
       .eb-card {
-        display: flex;
-        flex-direction: column;
         align-items: center;
         text-align: center;
         width: 100%;
         min-width: 0;
         box-sizing: border-box;
+        opacity: 1;
+        transform: none;
       }
-
-      /* The last card in a 3-member committee sits exactly in the middle. */
-      .eb-grid>.eb-card:last-child:nth-child(odd) {
+      .eb-grid > .eb-card:last-child:nth-child(odd) {
         grid-column: 1 / -1;
         justify-self: center;
         width: min(calc(50% - 7px), 170px);
       }
-
       .eb-image-wrap {
         width: 100%;
         height: clamp(158px, 47vw, 190px);
-        min-height: 0;
         aspect-ratio: auto;
         margin-bottom: 10px;
-        border-radius: 5px;
-        overflow: hidden;
-        position: relative;
-        background: #f0ede6;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
       }
-
       .eb-image-wrap img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        object-fit: cover;
-        object-position: center center;
-        background: transparent;
         transform: none;
       }
-
-      .eb-image-wrap img[style*="object-position"] {
-        object-fit: cover;
-      }
-
       .eb-image-wrap img.eb-zoom-adwityo,
       .eb-image-wrap img.eb-zoom-anshuman {
         transform: none;
       }
-
       .eb-name {
-        width: 100%;
-        font-size: clamp(0.84rem, 3.2vw, 0.95rem);
+        font-size: clamp(0.92rem, 3.4vw, 1.02rem);
         font-weight: 700;
-        line-height: 1.25;
-        margin-bottom: 4px;
         text-align: center;
-        overflow-wrap: normal;
-        word-break: normal;
       }
-
       .eb-role {
-        width: 100%;
-        font-size: clamp(0.68rem, 2.6vw, 0.75rem);
-        line-height: 1.2;
+        font-size: clamp(0.74rem, 2.7vw, 0.8rem);
+        font-weight: 600;
+        color: #383838;
         text-align: center;
       }
-
       .eb-ig-link {
-        width: 100%;
-        font-size: clamp(0.7rem, 2.6vw, 0.78rem);
-        gap: 4px;
+        font-size: clamp(0.72rem, 2.6vw, 0.78rem);
         justify-content: center;
-        text-align: center;
-        margin-top: 6px;
+        margin: 4px auto 0 auto;
       }
-
-      .eb-ig-link svg {
-        width: 14px;
-        height: 14px;
-        flex-shrink: 0;
+      .eb-section-divider,
+      .committee-sep {
+        display: none;
       }
-
-      /* 3. Minimal Centered Mobile EB Modal Card */
-      .eb-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100svh;
-        height: 100dvh;
-        padding: clamp(14px, 3vh, 24px) clamp(14px, 4vw, 20px);
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2500;
-      }
-
-      .eb-modal-content {
-        display: flex;
-        flex-direction: column;
-        width: min(88vw, 360px);
-        max-height: min(80dvh, 580px);
-        border-radius: 24px;
-        overflow-y: auto;
-        overflow-x: hidden;
+      .eb-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100dvh; padding: clamp(14px, 3vh, 24px) clamp(14px, 4vw, 20px); box-sizing: border-box; display: flex; align-items: center; justify-content: center; z-index: 2500; }
+      .eb-modal-content { display: flex; flex-direction: column; width: min(88vw, 360px); max-height: min(82dvh, 600px); border-radius: 24px; overflow: hidden; padding: 0; gap: 0; position: relative; }
+      .eb-modal-close { position: absolute; top: 12px; right: 12px; z-index: 50; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+      .eb-modal-scroll {
+        display: flex; flex-direction: column;
+        width: 100%; height: 100%; max-height: 100%;
+        overflow-y: auto; overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
-        position: relative;
-        background: linear-gradient(155deg, #FFFFFF 0%, #FAF7F2 100%);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
-        margin: auto;
-        padding: 1.25rem 1.15rem;
+        padding: 1.35rem 1.15rem 1.25rem;
+        box-sizing: border-box;
         gap: 0;
         scrollbar-width: thin;
-        scrollbar-color: rgba(108, 13, 44, 0.2) transparent;
+        scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
       }
-
-      .eb-modal-content::-webkit-scrollbar {
-        width: 3px;
-      }
-
-      .eb-modal-content::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .eb-modal-content::-webkit-scrollbar-thumb {
-        background: rgba(108, 13, 44, 0.2);
-        border-radius: 3px;
-      }
-
-      .eb-modal-content::-webkit-scrollbar-button {
-        display: none;
-        width: 0;
-        height: 0;
-      }
-
-      .eb-modal-close {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.05);
-        color: #222222;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 50;
-        transition: transform 0.2s ease, background 0.2s ease;
-        padding: 0;
-      }
-
-      .eb-modal-close:hover,
-      .eb-modal-close:active {
-        background: #111111;
-        color: #FFFFFF;
-        transform: scale(1.06);
-      }
-
-      /* Photogenic Portrait Cameo Frame on Mobile */
-      .eb-modal-left {
-        flex: 0 0 auto;
-        width: 140px;
-        height: 180px;
-        min-height: 180px;
-        max-height: 180px;
-        border-radius: 18px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.14), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-        background: #111111;
-        margin: 4px auto 14px auto;
-        -webkit-mask-image: none;
-        mask-image: none;
-      }
-
-      .eb-modal-left::before {
-        display: none;
-      }
-
-      .eb-modal-left img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-        min-width: 100%;
-        min-height: 100%;
-        object-fit: cover;
-        object-position: center 20%;
-      }
-
-      .eb-modal-right {
-        flex: 1 1 auto;
-        width: 100%;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        overflow: visible;
-      }
-
-      .eb-modal-header {
-        margin-bottom: 0.85rem;
-        padding-right: 0;
-        width: 100%;
-        text-align: center;
-      }
-
-      .eb-modal-role {
-        font-size: 0.68rem;
-        letter-spacing: 0.2em;
-        margin-bottom: 0.25rem;
-        text-align: center;
-        display: block;
-      }
-
-      .eb-modal-name {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: clamp(1.45rem, 5.2vw, 1.75rem);
-        font-weight: 600;
-        line-height: 1.15;
-        margin: 0;
-        color: #141414;
-        text-transform: none;
-        letter-spacing: -0.01em;
-        text-align: center;
-        word-break: break-word;
-      }
-
-      .eb-modal-body {
-        overflow: visible;
-        width: 100%;
-        padding-right: 0;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .eb-modal-desc {
-        font-size: 0.86rem;
-        line-height: 1.68;
-        color: #383838;
-        font-weight: 350;
-        margin-bottom: 12px;
-        text-align: left;
-        word-break: break-word;
-        padding: 0 4px;
-      }
-
-      .eb-modal-desc p {
-        margin-bottom: 8px;
-      }
-
-      .eb-modal-desc p:last-child {
-        margin-bottom: 0;
-      }
-
-      .eb-modal-meta {
-        width: 100%;
-        gap: 8px;
-        margin-top: auto;
-        padding-top: 0.25rem;
-      }
-
-      .eb-modal-quote {
-        padding: 10px 14px;
-        border-radius: 12px;
-        margin-bottom: 10px;
-        text-align: center;
-      }
-
-      .eb-quote-text {
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
-      .eb-modal-meta-row {
-        gap: 8px;
-        padding-top: 0.25rem;
-        justify-content: center;
-      }
-
-      .eb-meta-pill {
-        padding: 6px 12px;
-        font-size: 0.78rem;
-      }
+      .eb-modal-scroll::-webkit-scrollbar { width: 4px; }
+      .eb-modal-scroll::-webkit-scrollbar-track { background: transparent; }
+      .eb-modal-scroll::-webkit-scrollbar-thumb { background: rgba(108, 13, 44, 0.25); border-radius: 999px; }
+      .eb-modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(108, 13, 44, 0.55); }
+      .eb-modal-left { flex: 0 0 auto; width: 140px; height: 180px; min-height: 180px; max-height: 180px; border-radius: 18px; margin: 4px auto 14px auto; }
+      .eb-modal-right { flex: 0 0 auto; width: 100%; min-height: auto; padding: 0; align-items: center; text-align: center; overflow: visible; display: flex; flex-direction: column; }
+      .eb-modal-header { margin-bottom: 0.85rem; padding-right: 0; width: 100%; text-align: center; flex: 0 0 auto; }
+      .eb-modal-name { font-size: clamp(1.45rem, 5.2vw, 1.75rem); text-align: center; }
+      .eb-modal-body { overflow: visible; width: 100%; padding-right: 0; flex: 0 0 auto; min-height: auto; height: auto; }
+      .eb-modal-meta-row { justify-content: center; }
     }
-
-    /* 4. Short Screen Phones (Height ≤ 700px) */
-    @media (max-width: 768px) and (max-height: 700px) {
-      .eb-modal-left {
-        width: 125px;
-        height: 160px;
-        min-height: 160px;
-        max-height: 160px;
-        margin: 2px auto 10px auto;
-      }
-
-      .eb-modal-content {
-        max-height: 82dvh;
-        padding: 1.1rem 1rem;
-      }
-    }
-
-    /* 5. Narrow Screen Phones (≤ 360px) */
     @media (max-width: 360px) {
-      .eb-section {
-        padding-left: 3%;
-        padding-right: 3%;
-        padding-bottom: max(100px, calc(85px + env(safe-area-inset-bottom, 0px)));
-        gap: 28px;
-      }
-
-      .eb-grid {
-        column-gap: 10px;
-        row-gap: 24px;
-      }
-
-      .eb-grid>.eb-card:last-child:nth-child(odd) {
-        width: min(calc(50% - 5px), 150px);
-      }
-
-      .eb-image-wrap {
-        height: clamp(148px, 47vw, 170px);
-      }
-
-      .eb-name {
-        font-size: 0.82rem;
-      }
-
-      .eb-role {
-        font-size: 0.68rem;
-      }
-
-      .eb-modal-content {
-        width: 92vw;
-      }
-
-      .eb-modal-right {
-        padding: 4px 12px 14px 12px;
-      }
-
-      .eb-modal-name {
-        font-size: 1.25rem;
-      }
-
-      .eb-modal-desc {
-        font-size: 0.8rem;
-      }
+      .eb-grid { column-gap: 10px; row-gap: 24px; }
+      .eb-image-wrap { height: clamp(148px, 47vw, 170px); }
+      .eb-name { font-size: 0.82rem; }
+      .eb-modal-content { width: 92vw; }
     }
-
-    /* 6. Mobile Landscape Orientation (Height ≤ 520px) */
     @media (max-height: 520px) and (orientation: landscape) {
-      .eb-section {
-        padding-left: 4%;
-        padding-right: 4%;
-        padding-bottom: max(80px, calc(60px + env(safe-area-inset-bottom, 0px)));
-        gap: 28px;
-      }
-
-      .eb-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 16px;
-      }
-
-      .eb-grid>.eb-card:last-child:nth-child(odd) {
-        grid-column: auto;
-        justify-self: auto;
-        width: 100%;
-      }
-
-      .eb-modal-overlay {
-        padding: 10px 12px;
-      }
-
-      .eb-modal-content {
-        flex-direction: row;
-        width: min(92vw, 600px);
-        max-height: calc(100dvh - 24px);
-        border-radius: 20px;
-      }
-
-      .eb-modal-left {
-        flex: 0 0 42%;
-        height: 100%;
-        max-height: none;
-        border-radius: 14px;
-        overflow: hidden;
-        background: #ede8e1;
-        -webkit-mask-image: none;
-        mask-image: none;
-      }
-
-      .eb-modal-left img {
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-        max-width: 100%;
-        object-fit: cover;
-      }
-
-      .eb-modal-right {
-        flex: 1 1 auto;
-        height: 100%;
-        padding: 16px 18px;
-        text-align: left;
-        align-items: flex-start;
-      }
-
-      .eb-modal-close {
-        top: 8px;
-        right: 8px;
-        width: 30px;
-        height: 30px;
-        font-size: 1.15rem;
-      }
-
-      .eb-modal-name {
-        text-align: left;
-        font-size: 1.25rem;
-      }
-
-      .eb-modal-role {
-        text-align: left;
-        margin-bottom: 8px;
-      }
-
-      .eb-modal-desc {
-        text-align: left;
-        padding: 0;
-        margin-bottom: 10px;
-      }
-
-      .eb-modal-meta {
-        text-align: left;
-      }
+      .eb-modal-content { width: min(92vw, 600px); max-height: calc(100dvh - 24px); padding: 0; }
+      .eb-modal-scroll { flex-direction: row; padding: 14px; gap: 14px; overflow-y: hidden; }
+      .eb-modal-left { flex: 0 0 42%; height: 100%; min-height: 0; max-height: none; border-radius: 14px; margin: 0; }
+      .eb-modal-right { text-align: left; align-items: flex-start; padding: 10px 14px; overflow: hidden; flex: 1; min-height: 0; }
+      .eb-modal-header { text-align: left; padding-right: 2.5rem; }
+      .eb-modal-name { text-align: left; font-size: 1.25rem; }
+      .eb-modal-role { text-align: left; }
+      .eb-modal-body { overflow-y: auto; flex: 1; height: 100%; min-height: 0; }
     }
   </style>
 
@@ -1732,96 +1204,72 @@
   <!-- Executive Board Section -->
   <section class="eb-section" id="eb-section">
     <div class="eb-main-title-container">
-      <h2 class="eb-main-title">Meet The<br>Executive Board</h2>
-
+      <div class="team-kicker">✦ EXECUTIVE BOARD</div>
+      <h2 class="eb-main-title">The Executive Board</h2>
     </div>
+
+    <div class="eb-section-divider"></div>
 
     <!-- Committee: UNSC -->
     <div class="committee-block">
       <div class="committee-header">
+        <div class="committee-kicker">01 &nbsp;·&nbsp; UNSC</div>
         <h3 class="committee-title">United Nations Security Council</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Shishir Simha.webp" alt="Shishir Simha" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Shishir Simha</div>
           <div class="eb-role">Chair</div>
           <a href="https://www.instagram.com/shishir.simha/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @shishir.simha
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Sathya Shiva GP.webp" alt="Satya Shiva" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Satya Shiva</div>
           <div class="eb-role">Vice Chair</div>
           <a href="https://www.instagram.com/s4thya._/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @s4thya._
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/kapil.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/kapil.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Kapil Pal</div>
           <div class="eb-role">Moderator</div>
-          <div class="eb-ig-link" style="pointer-events: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+          <span class="eb-ig-link" style="pointer-events:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @stoic_kapil
-          </div>
+          </span>
         </div>
       </div>
     </div>
 
+    <div class="committee-sep"></div>
+
     <!-- Committee: UNHRC -->
     <div class="committee-block">
       <div class="committee-header">
+        <div class="committee-kicker">02 &nbsp;·&nbsp; UNHRC</div>
         <h3 class="committee-title">United Nations Human Rights Council</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Kshitij Saha.webp" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Kshitij Saha</div>
@@ -1829,301 +1277,201 @@
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bhangre" loading="lazy" class="eb-zoom-sahit"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bhangre" loading="lazy" class="eb-zoom-sahit" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sahit Bhangre</div>
           <div class="eb-role">Co-Chair</div>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Tanmay.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Tanmay P Shetty</div>
           <div class="eb-role">Moderator</div>
           <a href="https://www.instagram.com/tanmay_p_shetty/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @tanmay_p_shetty
           </a>
         </div>
       </div>
     </div>
 
+    <div class="committee-sep"></div>
+
     <!-- Committee: DISEC -->
     <div class="committee-block">
       <div class="committee-header">
-        <h3 class="committee-title">Disarmament and International Security Committee</h3>
+        <div class="committee-kicker">03 &nbsp;·&nbsp; DISEC</div>
+        <h3 class="committee-title">Disarmament &amp; International Security Committee</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Sumit Shingare.webp" alt="Sumit Shingare" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sumit Shingare</div>
           <div class="eb-role">Co-Chair</div>
           <a href="https://www.instagram.com/sum1t_s/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @sum1t_s
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Sanchya Prathish.webp" alt="Sanchya Pratish" loading="lazy"
-              style="object-position: center 10%;" onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Sanchya Prathish.webp" alt="Sanchya Pratish" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Sanchya Pratish</div>
           <div class="eb-role">Co-Chair</div>
           <a href="https://www.instagram.com/sanchya_prathish/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @sanchya_prathish
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Vachan.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Vachan B Hindiskere</div>
           <div class="eb-role">Moderator</div>
           <a href="https://www.instagram.com/chanchan_69420/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @chanchan_69420
           </a>
         </div>
       </div>
     </div>
 
+    <div class="committee-sep"></div>
+
     <!-- Committee: Lok Sabha -->
     <div class="committee-block">
       <div class="committee-header">
+        <div class="committee-kicker">04 &nbsp;·&nbsp; PARLIAMENT</div>
         <h3 class="committee-title">Lok Sabha</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Anshuman.webp" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Anshuman.webp" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Anshuman Pandey</div>
           <div class="eb-role">Chair</div>
           <a href="https://www.instagram.com/_.anshuman_.07/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @_.anshuman_.07
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <img src="/EB/Rajath R.webp" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Rajath R</div>
           <div class="eb-role">Vice Chair</div>
           <a href="https://www.instagram.com/rajathrr_4/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @rajathrr_4
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Jayanth N.webp" alt="Jayanth N" loading="lazy" style="object-position: center 10%;"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Jayanth N.webp" alt="Jayanth N" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Jayanth N</div>
           <div class="eb-role">Moderator</div>
           <a href="https://www.instagram.com/mr_jayanth___07/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @mr_jayanth___07
           </a>
         </div>
       </div>
     </div>
 
+    <div class="committee-sep"></div>
+
     <!-- Committee: UNODC -->
     <div class="committee-block">
       <div class="committee-header">
+        <div class="committee-kicker">05 &nbsp;·&nbsp; UNODC</div>
         <h3 class="committee-title">United Nations Office on Drugs and Crime</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Adwityo Das.webp" alt="Adwityo Das" class="eb-zoom-adwityo" loading="lazy"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Adwityo Das.webp" alt="Adwityo Das" class="eb-zoom-adwityo" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Adwityo Das</div>
           <div class="eb-role">Chair</div>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/pranathi naik.webp" alt="Pranathi Naik" loading="lazy" style="object-position: center 100%;"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/pranathi naik.webp" alt="Pranathi Naik" loading="lazy" style="object-position: center 100%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Pranathi Naik</div>
           <div class="eb-role">Vice Chair</div>
           <a href="https://www.instagram.com/pranathinaik.27/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @pranathinaik.27
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Divya.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Divya.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Divya Sharma</div>
           <div class="eb-role">Moderator</div>
           <a href="https://www.instagram.com/divyasharma_2810/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @divyasharma_2810
           </a>
         </div>
       </div>
     </div>
 
+    <div class="committee-sep"></div>
+
     <!-- Committee: IP -->
     <div class="committee-block">
       <div class="committee-header">
+        <div class="committee-kicker">06 &nbsp;·&nbsp; INTERNATIONAL PRESS</div>
         <h3 class="committee-title">International Press</h3>
+        <div class="committee-accent-line"></div>
       </div>
       <div class="eb-grid">
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/Pranav Sivakumar.webp" alt="Pranav Shivkumar" loading="lazy"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/Pranav Sivakumar.webp" alt="Pranav Shivkumar" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Pranav Shivkumar</div>
           <div class="eb-role">Head</div>
           <a href="https://www.instagram.com/therealfakist/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @therealfakist
           </a>
         </div>
         <div class="eb-card">
           <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <img src="/EB/nuha.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;"
-              onerror="this.style.display='none'">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/EB/nuha.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Nuha Alishba</div>
           <div class="eb-role">Rapporteur</div>
           <a href="https://www.instagram.com/draw_ingur_attention/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             @draw_ingur_attention
           </a>
         </div>
@@ -2139,17 +1487,19 @@
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <div class="eb-modal-left">
-          <img src="" alt="" id="ebModalImg">
-        </div>
-        <div class="eb-modal-right">
-          <div class="eb-modal-header">
-            <span class="eb-modal-role" id="ebModalRole">Role</span>
-            <h2 class="eb-modal-name" id="ebModalName">Name</h2>
+        <div class="eb-modal-scroll" id="ebModalScroll">
+          <div class="eb-modal-left">
+            <img src="" alt="" id="ebModalImg">
           </div>
-          <div class="eb-modal-body">
-            <div class="eb-modal-desc" id="ebModalDesc"></div>
-            <div class="eb-modal-meta" id="ebModalMeta"></div>
+          <div class="eb-modal-right">
+            <div class="eb-modal-header">
+              <span class="eb-modal-role" id="ebModalRole">Role</span>
+              <h2 class="eb-modal-name" id="ebModalName">Name</h2>
+            </div>
+            <div class="eb-modal-body">
+              <div class="eb-modal-desc" id="ebModalDesc"></div>
+              <div class="eb-modal-meta" id="ebModalMeta"></div>
+            </div>
           </div>
         </div>
       </div>

@@ -1363,40 +1363,7 @@
     .table-top-scroll-inner {
       height: 1px;
     }
-    /* Floating nudge arrows */
-    .tbl-scroll-arrow {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 200;
-      background: #6C0D2C;
-      color: #FFF7EB;
-      border: 2px solid #000000;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 2px 2px 0px #000000;
-      font-size: 1.1rem;
-      font-weight: 900;
-      line-height: 1;
-      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
-      user-select: none;
-    }
-    .tbl-scroll-arrow:hover {
-      background: #E5A93C;
-      color: #000000;
-      transform: translateY(-50%) scale(1.1);
-      box-shadow: 3px 3px 0px #000000;
-    }
-    .tbl-scroll-arrow.visible {
-      display: flex;
-    }
-    #tbl-arrow-left  { left: 8px; }
-    #tbl-arrow-right { right: 8px; }
+
 
     table.data-table {
       width: 100%;
@@ -4478,7 +4445,7 @@
           filteredItem.member_count = rows.length;
         }
 
-        renderDelegationsTable(filteredDelegations);
+        renderDelegationTable(filteredDelegations);
         updateStats();
 
         showToast(`Roster re-synced! (${rows.length} ${rows.length === 1 ? 'delegate' : 'delegates'} updated)`, 'success');
@@ -6874,22 +6841,16 @@ function createJsonResponse(obj, statusCode) {
       });
     }
   </script>
-  <!-- Floating horizontal scroll arrows -->
-  <button class="tbl-scroll-arrow" id="tbl-arrow-left"  aria-label="Scroll table left"  title="Scroll left">&#8592;</button>
-  <button class="tbl-scroll-arrow" id="tbl-arrow-right" aria-label="Scroll table right" title="Scroll right">&#8594;</button>
+
 
   <script>
     (function () {
-      const NUDGE = 260;
-      // Simple flag — no RAF, no lock queue. Synchronous assignment = zero lag.
       let isSyncing = false;
 
       function initTableScrollSync() {
         const wrapper       = document.getElementById('table-responsive-wrapper');
         const mirror        = document.getElementById('table-top-mirror');
         const inner         = document.getElementById('table-top-mirror-inner');
-        const arrowL        = document.getElementById('tbl-arrow-left');
-        const arrowR        = document.getElementById('tbl-arrow-right');
         const tableContainer= document.getElementById('table-main-container');
 
         if (!wrapper || !mirror || !inner) return;
@@ -6899,28 +6860,12 @@ function createJsonResponse(obj, statusCode) {
           inner.style.width = wrapper.scrollWidth + 'px';
         }
 
-        // ── Arrow visibility ─────────────────────────────────────────
-        function updateArrows() {
-          if (!tableContainer) return;
-          const rect      = tableContainer.getBoundingClientRect();
-          const inView    = rect.top < window.innerHeight && rect.bottom > 0;
-          const canScroll = wrapper.scrollWidth > wrapper.clientWidth + 4;
-          if (inView && canScroll) {
-            arrowL.classList.toggle('visible', wrapper.scrollLeft > 4);
-            arrowR.classList.toggle('visible', wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - 4);
-          } else {
-            arrowL.classList.remove('visible');
-            arrowR.classList.remove('visible');
-          }
-        }
-
         // ── Instant bidirectional sync ───────────────────────────────
         // mirror → wrapper: user drags the top scrollbar
         mirror.addEventListener('scroll', () => {
           if (isSyncing) return;
           isSyncing = true;
           wrapper.scrollLeft = mirror.scrollLeft;
-          updateArrows();
           isSyncing = false;
         }, { passive: true });
 
@@ -6929,40 +6874,22 @@ function createJsonResponse(obj, statusCode) {
           if (isSyncing) return;
           isSyncing = true;
           mirror.scrollLeft = wrapper.scrollLeft;
-          updateArrows();
           isSyncing = false;
         }, { passive: true });
 
-        // ── Arrow buttons (smooth nudge + hold) ──────────────────────
-        function nudge(dir) {
-          // Use smooth only on arrow press, not during scroll sync
-          wrapper.scrollBy({ left: dir * NUDGE, behavior: 'smooth' });
-        }
-        let holdTimer = null;
-        function startHold(dir) { nudge(dir); holdTimer = setInterval(() => nudge(dir), 180); }
-        function stopHold()      { clearInterval(holdTimer); holdTimer = null; }
-
-        arrowL.addEventListener('mousedown', () => startHold(-1));
-        arrowR.addEventListener('mousedown', () => startHold(1));
-        ['mouseup', 'mouseleave'].forEach(ev => {
-          arrowL.addEventListener(ev, stopHold);
-          arrowR.addEventListener(ev, stopHold);
-        });
-
         // ── Initial setup ────────────────────────────────────────────
         syncInnerWidth();
-        updateArrows();
 
         // Watch table width changes (data load, resize)
-        const ro = new ResizeObserver(() => { syncInnerWidth(); updateArrows(); });
+        const ro = new ResizeObserver(() => { syncInnerWidth(); });
         ro.observe(wrapper);
         wrapper.querySelectorAll('table').forEach(t => ro.observe(t));
 
         // Watch DOM mutations (rows added after data fetch)
-        const mo = new MutationObserver(() => { syncInnerWidth(); updateArrows(); });
+        const mo = new MutationObserver(() => { syncInnerWidth(); });
         mo.observe(wrapper, { childList: true, subtree: true });
 
-        window.addEventListener('scroll', updateArrows, { passive: true });
+
       }
 
       if (document.readyState === 'loading') {

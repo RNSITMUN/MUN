@@ -599,6 +599,11 @@ allEbCards.forEach(card => {
       document.body.classList.add("modal-open");
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
+      const ebModalScroll = document.getElementById("ebModalScroll");
+      if (ebModalScroll) ebModalScroll.scrollTop = 0;
+      if (ebModalDesc) ebModalDesc.scrollTop = 0;
+      const ebModalBody = ebModal.querySelector(".eb-modal-body");
+      if (ebModalBody) ebModalBody.scrollTop = 0;
     }
   });
 });
@@ -627,3 +632,40 @@ document.addEventListener("keydown", (e) => {
     closeEbModal();
   }
 });
+
+// ── Scroll-fade-in: committee blocks + individual cards ──
+(function initEbScrollAnimations() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    // Just make everything visible immediately
+    document.querySelectorAll('.committee-block, .eb-card').forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  const blockObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        blockObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger cards within same committee
+        const cards = Array.from(entry.target.closest('.eb-grid')?.querySelectorAll('.eb-card') || []);
+        const idx = cards.indexOf(entry.target);
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+        }, idx * 80);
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -20px 0px' });
+
+  document.querySelectorAll('.committee-block').forEach(el => blockObserver.observe(el));
+  document.querySelectorAll('.eb-card').forEach(el => cardObserver.observe(el));
+})();
+
