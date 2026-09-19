@@ -384,7 +384,7 @@ const ebProfiles = {
     insta: "sanchya_prathish"
   },
   "Pranav Shivkumar": {
-    desc: "<p>We asked for a bio. They gave us NOTHING</p>",
+    desc: "<p>Bio was too goated for the website.</p>",
     quote: "“Dulce bellum inexpertis” ~ Erasmus",
     song: "MIA by drake and bad bunny From 00:38 btw",
     insta: "therealfakist"
@@ -408,7 +408,7 @@ const ebProfiles = {
     insta: "pranathinaik.27"
   },
   "Shishir Simha": {
-    desc: "<p>Too busy being goated for a bio.</p>",
+    desc: "<p>We could tell you, but where's the fun in that?</p>",
     quote: "The weapons of our warfare are not carnal",
     song: "",
     insta: "shishir.simha"
