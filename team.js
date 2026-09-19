@@ -384,7 +384,7 @@ const ebProfiles = {
     insta: "sanchya_prathish"
   },
   "Pranav Shivkumar": {
-    desc: "<p>He is yet to give a description he told he needs time</p>",
+    desc: "<p>We asked for a bio. They gave us NOTHING</p>",
     quote: "“Dulce bellum inexpertis” ~ Erasmus",
     song: "MIA by drake and bad bunny From 00:38 btw",
     insta: "therealfakist"
@@ -402,13 +402,13 @@ const ebProfiles = {
     insta: "S4thya._"
   },
   "Pranathi Naik": {
-    desc: "",
+    desc: "<p>Their lawyer advised against a bio.</p>",
     quote: "Perhaps",
     song: "Santiago by Agents of Time (3:17 - 3:28)",
     insta: "pranathinaik.27"
   },
   "Shishir Simha": {
-    desc: "",
+    desc: "<p>Too busy being goated for a bio.</p>",
     quote: "The weapons of our warfare are not carnal",
     song: "",
     insta: "shishir.simha"
@@ -426,7 +426,7 @@ const ebProfiles = {
     insta: "rajathrr_4"
   },
   "Anshuman Pandey": {
-    desc: "",
+    desc: "<p>No bio, unfortunately the aura is indescribable.</p>",
     quote: "",
     song: "End of the beginning",
     insta: "_.anshuman_.07"
