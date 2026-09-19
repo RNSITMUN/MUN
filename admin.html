@@ -3363,7 +3363,7 @@
       }
 
       try {
-        const res = await fetch('/api/admin-registrations?type=all&limit=1000', {
+        const res = await fetch('/api/admin-registrations?type=all&limit=1000&page=1', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${currentSession.access_token}`,
@@ -3388,6 +3388,78 @@
 
         if (Array.isArray(data.mailLogs)) {
           syncCloudMailLogs(data.mailLogs);
+        }
+
+        // Expected total counts from server stats
+        const statsObj = data.stats || {};
+        const expectedTotalRegs = (typeof statsObj.pendingIndividuals === 'number' && typeof statsObj.confirmedIndividuals === 'number' && typeof statsObj.rejectedIndividuals === 'number')
+          ? (statsObj.pendingIndividuals + statsObj.confirmedIndividuals + statsObj.rejectedIndividuals)
+          : (statsObj.totalIndividuals || 0);
+
+        const expectedTotalDlgs = typeof statsObj.totalDelegations === 'number'
+          ? statsObj.totalDelegations
+          : ((statsObj.pendingDelegations || 0) + (statsObj.confirmedDelegations || 0) + (statsObj.rejectedDelegations || 0));
+
+        // Resilience loop for server-side row caps: fetch subsequent pages if more records exist
+        const MAX_PAGES = 20;
+        let currentPage = 1;
+        let hitSafetyCap = false;
+
+        while (currentPage < MAX_PAGES && (rawRegistrations.length < expectedTotalRegs || rawDelegations.length < expectedTotalDlgs)) {
+          currentPage++;
+          try {
+            const pageRes = await fetch(`/api/admin-registrations?type=all&limit=1000&page=${currentPage}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${currentSession.access_token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (!pageRes.ok) {
+              break;
+            }
+
+            const pageData = await pageRes.json();
+            if (!pageData || !pageData.success) {
+              break;
+            }
+
+            const newRegs = pageData.registrations || [];
+            const newDlgs = pageData.delegations || [];
+
+            // If no new records returned at all, stop fetching
+            if (newRegs.length === 0 && newDlgs.length === 0) {
+              break;
+            }
+
+            if (newRegs.length > 0) {
+              const existingRegIds = new Set(rawRegistrations.map(r => String(r.id)));
+              const uniqueRegs = newRegs.filter(r => !existingRegIds.has(String(r.id)));
+              rawRegistrations.push(...uniqueRegs);
+            }
+            if (newDlgs.length > 0) {
+              const existingDlgIds = new Set(rawDelegations.map(d => String(d.id)));
+              const uniqueDlgs = newDlgs.filter(d => !existingDlgIds.has(String(d.id)));
+              rawDelegations.push(...uniqueDlgs);
+            }
+
+            if (currentPage >= MAX_PAGES && (rawRegistrations.length < expectedTotalRegs || rawDelegations.length < expectedTotalDlgs)) {
+              hitSafetyCap = true;
+            }
+          } catch (pageErr) {
+            console.warn(`⚠️ Error fetching page ${currentPage}:`, pageErr);
+            break;
+          }
+        }
+
+        // Safety cap or incomplete list warning
+        if (hitSafetyCap || (rawRegistrations.length < expectedTotalRegs || rawDelegations.length < expectedTotalDlgs)) {
+          const loadedTotal = rawRegistrations.length + rawDelegations.length;
+          const expectedTotal = expectedTotalRegs + expectedTotalDlgs;
+          if (loadedTotal < expectedTotal) {
+            showToast(`Only ${loadedTotal} of ${expectedTotal} registrations loaded — contact your database admin`, 'warning');
+          }
         }
 
         updateStats(data.stats);
