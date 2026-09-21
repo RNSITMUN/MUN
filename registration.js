@@ -2486,7 +2486,7 @@
         }
         if (ieeeSection) ieeeSection.style.display = 'block';
         if (orderDesc) orderDesc.textContent = 'IEEE Affiliated Delegate Pass';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,350) →';
       } else {
         if (standardCard) {
           standardCard.style.background = '#FFFFFF';
@@ -2500,7 +2500,7 @@
         }
         if (ieeeSection) ieeeSection.style.display = 'none';
         if (orderDesc) orderDesc.textContent = 'External Delegate Pass (Early Bird)';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
+        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,350) →';
       }
     }
 
@@ -4536,7 +4536,7 @@
         googleSheetLink: sheetLink ? sheetLink.value.trim() : '',
         screenshotBase64: _compressedScreenshots['delegation'] || '',
         screenshotFormat: (_compressedScreenshots['delegation'] || '').includes('image/webp') ? 'webp' : 'jpeg',
-        paymentAmount: `₹${(parseInt(count.value.trim(), 10) || 9) * 1200}`
+        paymentAmount: `₹${(parseInt(count.value.trim(), 10) || 9) * 1350}`
       };
 
       const submitBtn = document.getElementById('dlg-submit-btn');
@@ -4732,7 +4732,7 @@
       const isIEEE = currentDelegateType === 'external' && (isIEEEMember === true || externalCategory === 'ieee' || Boolean(enteredIeeeId));
       const paymentAmount = currentDelegateType === 'internal'
         ? '₹999'
-        : isIEEE ? '₹1,200 (IEEE)' : '₹1,200 (External)';
+        : isIEEE ? '₹1,350 (IEEE)' : '₹1,350 (External)';
 
       const displayedUpi = (document.getElementById('external-upi-id-text')?.textContent || '').trim();
       const resolvedExternalUpi = _currentExternalAssignedUPI || (displayedUpi && displayedUpi !== 'mun@rnsit.ac.in' ? displayedUpi : 'aditimak.2005-1@okhdfcbank');
@@ -5233,7 +5233,7 @@
       const portfolios2 = [comm2Port1, comm2Port2].filter(Boolean).join(' / ') || (comm2 !== 'None Specified' ? 'Open Allocation' : 'N/A');
 
       const category = currentDelegateType === 'internal' ? 'Internal RNSIT Delegate' : 'External Delegate';
-      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,200 (Early Bird Delegate Pass)';
+      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,350 (Early Bird Delegate Pass)';
 
       const dateStr = new Date().toLocaleDateString('en-IN', {
         day: '2-digit',
