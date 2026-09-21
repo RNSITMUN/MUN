@@ -374,19 +374,19 @@ const ebProfiles = {
   "Kshitij Saha": {
     desc: "<p>Kshitij Saha is a seasoned veteran of the Bangalore MUN circuit and a respected chair across the city's premier conferences.</p><p>By day, he works as a Cyber Strategy Consultant at KPMG India. In the committee room, Kshitij brings a distinctive blend of meticulous preparation, sharp research instincts, and quirky humour that keeps debates dynamic, inclusive, and thoroughly enjoyable. His deep interest in Human Rights, combined with a talent for uncovering niche angles, allows him to transform even conventional committees into fresh, thought-provoking experiences.</p><p>Known for his keen eye for detail — nothing slips past him — Kshitij is deeply committed to creating a lively, supportive, and enriching environment for both first-time delegates and seasoned MUNers alike. Whether it’s guiding intense crises or fostering meaningful discussion, he ensures every committee is memorable, wholesome, and intellectually rewarding.</p>",
     quote: "",
-    song: "f1 theme",
+    song: "",
     insta: ""
   },
-  "Sanchya Pratish": {
+  "Sanchya Prathish": {
     desc: "<p>Sanchya Prathish is a BALLB student with a 100% placement record with Best Delegate awards across DISEC, UNSC, UNCSW in numerous prestigious conferences like SLCUMUN, IRMUN, DSIMUN, KJMUN, ECHOMUN, NHMUN. Beyond the conference room, she can be found teaching French, scoring goals or running for no absolute reason.</p>",
     quote: "Ishaan this one's for you lil goat :)",
-    song: "Mo City Flexologist by Travis Scott 0:48 onwards put",
+    song: "",
     insta: "sanchya_prathish"
   },
-  "Pranav Shivkumar": {
-    desc: "<p>He is yet to give a description he told he needs time</p>",
+  "Pranav Sivakumar": {
+    desc: "<p>Bio was too goated for the website.</p>",
     quote: "“Dulce bellum inexpertis” ~ Erasmus",
-    song: "MIA by drake and bad bunny From 00:38 btw",
+    song: "",
     insta: "therealfakist"
   },
   "Jayanth N": {
@@ -395,25 +395,25 @@ const ebProfiles = {
     song: "",
     insta: ""
   },
-  "Satya Shiva": {
+  "Sathya Shiva": {
     desc: "<p>Sathya, currently pursuing Law at BMS College of Law, Bangalore, has been in the circuit for over 4 years. He comes with a well appreciated adjudication skill along with great legal acumen and is all set to perform his duty as the Vice Chair of UNSC at RNSMUN</p>",
     quote: "Legen-wait for it-dary",
-    song: "Igors theme, Tyler, the creator",
+    song: "",
     insta: "S4thya._"
   },
   "Pranathi Naik": {
-    desc: "",
+    desc: "<p>Their lawyer advised against a bio.</p>",
     quote: "Perhaps",
-    song: "Santiago by Agents of Time (3:17 - 3:28)",
+    song: "",
     insta: "pranathinaik.27"
   },
   "Shishir Simha": {
-    desc: "",
+    desc: "<p>We could tell you, but where's the fun in that?</p>",
     quote: "The weapons of our warfare are not carnal",
     song: "",
     insta: "shishir.simha"
   },
-  "Adwityo Das": {
+  "Adwitiyo Das": {
     desc: "<p>Adwitiyo Das is a Third year Student of International Relations, Public Policy and Journalism at St Joseph's University Bangalore. He serves as the current President of the St Joseph's University MUNSOC.</p>",
     quote: "If you are nothing without the suit, then you shouldn't have it",
     song: "",
@@ -426,9 +426,9 @@ const ebProfiles = {
     insta: "rajathrr_4"
   },
   "Anshuman Pandey": {
-    desc: "",
+    desc: "<p>No bio, unfortunately the aura is indescribable.</p>",
     quote: "",
-    song: "End of the beginning",
+    song: "",
     insta: "_.anshuman_.07"
   },
   "Sumit Shingare": {
@@ -475,6 +475,19 @@ const ebProfiles = {
   }
 };
 
+// Aliases for robustness
+ebProfiles["Sathya"] = ebProfiles["Sathya Shiva"];
+ebProfiles["Satya Shiva"] = ebProfiles["Sathya Shiva"];
+ebProfiles["Pranav"] = ebProfiles["Pranav Sivakumar"];
+ebProfiles["Sivakumar"] = ebProfiles["Pranav Sivakumar"];
+ebProfiles["Pranav Shivkumar"] = ebProfiles["Pranav Sivakumar"];
+ebProfiles["Sanchya"] = ebProfiles["Sanchya Prathish"];
+ebProfiles["Prathish"] = ebProfiles["Sanchya Prathish"];
+ebProfiles["Sanchya Pratish"] = ebProfiles["Sanchya Prathish"];
+ebProfiles["Adwitiyo"] = ebProfiles["Adwitiyo Das"];
+ebProfiles["Adwityo Das"] = ebProfiles["Adwitiyo Das"];
+ebProfiles["Adwityo"] = ebProfiles["Adwitiyo Das"];
+
 const ebModal = document.getElementById("ebModal");
 const ebModalClose = document.getElementById("ebModalClose");
 const ebModalImg = document.getElementById("ebModalImg");
@@ -518,7 +531,7 @@ allEbCards.forEach(card => {
       ebModalImg.style.objectPosition = "center 12%";
     } else if (name.includes("Pranathi")) {
       ebModalImg.style.objectPosition = "center 22%";
-    } else if (name.includes("Pranav")) {
+    } else if (name.includes("Pranav") || name.includes("Sivakumar")) {
       ebModalImg.style.objectPosition = "center 18%";
     } else if (name.includes("Nuha")) {
       ebModalImg.style.objectPosition = "center 25%";
@@ -558,18 +571,6 @@ allEbCards.forEach(card => {
       }
 
       let metaRowHtml = "";
-      if (data.song && data.song.trim()) {
-        const cleanSong = formatSongTitle(data.song);
-        metaRowHtml += `
-          <div class="eb-meta-pill" title="${cleanSong}">
-            <svg class="eb-meta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 18V5l12-2v13"></path>
-              <circle cx="6" cy="18" r="3"></circle>
-              <circle cx="18" cy="16" r="3"></circle>
-            </svg>
-            <span class="eb-meta-val">${cleanSong}</span>
-          </div>`;
-      }
       if (data.insta && data.insta.trim()) {
         const handle = data.insta.trim().replace(/^@/, "");
         metaRowHtml += `
