@@ -464,7 +464,7 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./brochure-modal.css">
   <link rel="stylesheet" href="./language-switcher.css">
-  <link rel="icon" type="image/png" href="/assets/Logos/MUN_logo.webp">
+  <link rel="icon" type="image/webp" href="/assets/Logos/MUN_logo.webp">
   <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.webp">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#6C0D2C">
@@ -764,13 +764,13 @@
       letter-spacing: 0.02em;
     }
 
-    /* Hero Pricing - Ultra-Minimal Clean Pill Aesthetic (Slightly Bigger) */
+    /* Hero Pricing - Refined Diplomatic Pass Pill */
     .hero-pricing-minimal {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 14px;
       pointer-events: auto;
       max-width: 92vw;
     }
@@ -779,72 +779,82 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      max-width: 100%;
-      background: #FFFFFF;
-      border: 1.8px solid #000000;
-      border-radius: 20px;
-      padding: 5px 18px 5px 6px;
-      box-shadow: 2.5px 2.5px 0px #000000;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.8px solid #111113;
+      border-radius: 9999px;
+      padding: 6px 18px;
+      box-shadow: 2.5px 2.5px 0px #111113;
       font-family: 'Outfit', sans-serif;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: default;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
     }
 
     @media (hover: hover) and (pointer: fine) {
       .hpm-pill:hover {
+        background: #FFFFFF;
         transform: translate(-1px, -1px);
-        box-shadow: 3.5px 3.5px 0px #000000;
+        box-shadow: 3.5px 3.5px 0px #111113;
+      }
+      .hpm-pill:hover .hpm-val {
+        color: #8B1139;
       }
     }
 
-    .hpm-tag {
-      font-size: 0.65rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: #E5A93C;
-      color: #000000;
-      border: 1.2px solid #000000;
-      border-radius: 9999px;
-      padding: 3.5px 10px;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      box-shadow: 1px 1px 0px #000000;
+    .hpm-pill:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #111113;
     }
 
     .hpm-item {
       display: inline-flex;
       align-items: baseline;
-      gap: 5px;
-      font-size: 0.84rem;
+      gap: 6px;
       line-height: 1;
     }
 
     .hpm-lbl {
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.55);
-      font-size: 0.76rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #585860;
+      font-size: 0.74rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .hpm-val {
+      font-family: 'Outfit', sans-serif;
       font-weight: 900;
       color: #6C0D2C;
-      font-size: 1.06rem;
+      font-size: 1.1rem;
       letter-spacing: -0.02em;
+      transition: color 0.15s ease;
     }
 
     .hpm-sep {
-      color: rgba(0, 0, 0, 0.25);
-      font-size: 0.8rem;
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: #E5A93C;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #111113;
+      margin: 0 2px;
+      align-self: center;
+      flex-shrink: 0;
     }
 
     .hpm-val-internal {
-      font-weight: 800;
-      color: rgba(0, 0, 0, 0.88);
-      font-size: 1.02rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      color: #111113;
+      font-size: 1.08rem;
       letter-spacing: -0.02em;
     }
 
@@ -1004,30 +1014,21 @@
 
     @media (max-width: 480px) {
       .hpm-pill {
-        gap: 7px;
-        padding: 4.5px 13px 4.5px 5px;
-        flex-wrap: wrap;
-        justify-content: center;
-        text-align: center;
-        height: auto;
-        border-radius: 20px; /* Adapts better to multi-line */
-      }
-
-      .hpm-tag {
-        font-size: 0.58rem;
-        padding: 3px 8px;
+        gap: 8px;
+        padding: 5px 14px;
+        white-space: nowrap;
       }
 
       .hpm-lbl {
-        font-size: 0.72rem;
+        font-size: 0.66rem;
       }
 
       .hpm-val {
-        font-size: 0.95rem;
+        font-size: 0.98rem;
       }
 
       .hpm-val-internal {
-        font-size: 0.92rem;
+        font-size: 0.95rem;
       }
 
 
@@ -2375,12 +2376,17 @@
       }
 
       .hpm-pill {
-        padding: 3px 8px 3px 4px;
+        padding: 4px 12px;
+        gap: 8px;
+      }
+
+      .hpm-lbl {
+        font-size: 0.62rem;
       }
 
       .hpm-val,
       .hpm-val-internal {
-        font-size: 0.78rem;
+        font-size: 0.88rem;
       }
 
       .hero-btn-row {
@@ -2416,12 +2422,17 @@
       }
 
       .hpm-pill {
-        padding: 2px 7px 2px 3px;
+        padding: 3px 10px;
+        gap: 6px;
+      }
+
+      .hpm-lbl {
+        font-size: 0.6rem;
       }
 
       .hpm-val,
       .hpm-val-internal {
-        font-size: 0.74rem;
+        font-size: 0.82rem;
       }
 
       .hero-btn-row {
@@ -2601,17 +2612,17 @@
         <span class="hero-date-text">06–07 OCTOBER 2026</span>
       </p>
       <div class="hero-pricing-minimal">
-        <div class="hpm-pill">
+        <a href="/registration" class="hpm-pill" aria-label="Delegate Passes: External ₹1,350, RNSIT ₹999">
           <span class="hpm-item">
             <span class="hpm-lbl">External</span>
             <span class="hpm-val">₹1,350</span>
           </span>
-          <span class="hpm-sep">&bull;</span>
+          <span class="hpm-sep" aria-hidden="true"></span>
           <span class="hpm-item">
             <span class="hpm-lbl">RNSIT</span>
             <span class="hpm-val-internal">₹999</span>
           </span>
-        </div>
+        </a>
         <div class="hero-btn-row">
           <button type="button" class="hero-brochure-btn" id="hero-brochure-btn" onclick="openBrochureModal(event)"
             aria-label="Open RNSMUN 2026 Conference Brochure">
