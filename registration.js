@@ -1,3 +1,6 @@
+    // Always clear stale session QR pin on fresh page load to guarantee dynamic rotation
+    try { sessionStorage.removeItem('mun26_assigned_ext_qr'); } catch (e) {}
+
     const COMMITTEE_MATRIX_LINKS = {
       all: 'https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632',
       unsc: 'https://docs.google.com/spreadsheets/d/1ilmTRceKjf9o5yGb820WMFA7UygDcb8bF_lIhUpvFQ8/edit?gid=1436649926#gid=1436649926',
@@ -2524,8 +2527,9 @@
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
 
-      // Clear any transient screenshot state
+      // Clear any transient screenshot state and unpin external QR
       resetPaymentScreenshotState();
+      try { sessionStorage.removeItem('mun26_assigned_ext_qr'); } catch (e) {}
 
       // Check if a saved draft exists in sessionStorage
       const restored = restoreDraft(forceType || currentDelegateType);
@@ -2569,6 +2573,7 @@
 
     // Close Registration Modal
     function closeRegistrationModal(fromPopState = false) {
+      try { sessionStorage.removeItem('mun26_assigned_ext_qr'); } catch (e) {}
       if (!fromPopState) {
         popModalHistoryState();
       }
@@ -3459,25 +3464,27 @@
 
     let _currentExternalAssignedUPI = 'nikhilnayak2005@okicici';
 
-    async function updateExternalPaymentQR() {
-      // 1. Session Pinning: If an account was already assigned during this registration flow, reuse it immediately
-      try {
-        const cached = sessionStorage.getItem('mun26_assigned_ext_qr');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (parsed && parsed.upiId && parsed.qrUrl) {
-            applyExternalQRUI(parsed.upiId, parsed.qrUrl);
-            return;
+    async function updateExternalPaymentQR(forceRefresh = false) {
+      // 1. Session Pinning: Only reuse if explicitly not force-refreshed and already assigned
+      if (!forceRefresh) {
+        try {
+          const cached = sessionStorage.getItem('mun26_assigned_ext_qr');
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed && parsed.upiId && parsed.qrUrl) {
+              applyExternalQRUI(parsed.upiId, parsed.qrUrl);
+              return;
+            }
           }
-        }
-      } catch (e) {}
+        } catch (e) {}
+      }
 
       // 2. Instant Zero-Flicker Synchronous Rotation: Apply client rotation immediately so the UI is NEVER blank or stale
-      applyClientExternalQRRotation();
+      applyClientExternalQRRotation(forceRefresh ? _currentExternalAssignedUPI : null);
 
       // 3. Background Sync with Server Rotation Engine (enforces <= 17 appearances per 24h rolling window globally)
       try {
-        const resp = await fetch('/api/get-external-qr');
+        const resp = await fetch(`/api/get-external-qr?t=${Date.now()}`, { cache: 'no-store' });
         if (resp.ok) {
           const data = await resp.json();
           if (data && data.success && data.upiId && data.qrUrl) {
@@ -3488,6 +3495,29 @@
       } catch (err) {
         console.warn('[External QR] Remote rotation notice:', err);
       }
+    }
+
+    function rotateExternalPaymentQR(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      try {
+        sessionStorage.removeItem('mun26_assigned_ext_qr');
+      } catch (e) {}
+
+      const btn = document.getElementById('switch-external-upi-btn');
+      if (btn) {
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = 'Switching UPI...';
+        btn.style.opacity = '0.7';
+        setTimeout(() => {
+          btn.innerHTML = origHTML;
+          btn.style.opacity = '1';
+        }, 800);
+      }
+
+      updateExternalPaymentQR(true);
     }
 
     function applyExternalQRUI(upiId, qrUrl) {
@@ -3504,7 +3534,7 @@
       }
     }
 
-    function applyClientExternalQRRotation() {
+    function applyClientExternalQRRotation(avoidUpiId = null) {
       const LOCAL_KEY = 'mun26_ext_qr_impressions';
       const MAX_PER_24H = 17;
       const WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -3526,16 +3556,20 @@
       });
 
       let eligible = EXTERNAL_QR_POOL.filter(acc => counts[acc.upiId] < MAX_PER_24H);
-      let selected;
-      if (eligible.length > 0) {
-        const minCount = Math.min(...eligible.map(acc => counts[acc.upiId]));
-        const candidates = eligible.filter(acc => counts[acc.upiId] === minCount);
-        selected = candidates[Math.floor(Math.random() * candidates.length)];
-      } else {
-        const minCount = Math.min(...EXTERNAL_QR_POOL.map(acc => counts[acc.upiId]));
-        const candidates = EXTERNAL_QR_POOL.filter(acc => counts[acc.upiId] === minCount);
-        selected = candidates[Math.floor(Math.random() * candidates.length)];
+      if (avoidUpiId && eligible.length > 1) {
+        const filtered = eligible.filter(acc => acc.upiId !== avoidUpiId);
+        if (filtered.length > 0) eligible = filtered;
       }
+
+      let pool = eligible.length > 0 ? eligible : EXTERNAL_QR_POOL;
+      if (avoidUpiId && pool.length > 1) {
+        const filtered = pool.filter(acc => acc.upiId !== avoidUpiId);
+        if (filtered.length > 0) pool = filtered;
+      }
+
+      const minCount = Math.min(...pool.map(acc => counts[acc.upiId]));
+      const candidates = pool.filter(acc => counts[acc.upiId] === minCount);
+      const selected = candidates[Math.floor(Math.random() * candidates.length)];
 
       impressions.push({ upiId: selected.upiId, time: now });
       try {
@@ -5282,7 +5316,7 @@
             </div>
             <div class="receipt-contact-card">
               <span class="contact-name">Dhatri</span>
-              <span class="contact-role">Charge d'Affaires</span>
+              <span class="contact-role">Delegate Affairs</span>
               <span class="contact-phone">+91 90351 20294</span>
             </div>
           </div>
@@ -5421,7 +5455,7 @@
             </div>
             <div class="receipt-contact-card">
               <span class="contact-name">Dhatri</span>
-              <span class="contact-role">Charge d'Affaires</span>
+              <span class="contact-role">Delegate Affairs</span>
               <span class="contact-phone">+91 90351 20294</span>
             </div>
           </div>
@@ -5933,6 +5967,8 @@ Object.assign(window, {
   selectExternalCategory,
   handleProceedToExternalPayment,
   copyExternalUPI,
+  updateExternalPaymentQR,
+  rotateExternalPaymentQR,
   handleSuccessDone,
   printRegistrationReceipt,
   clearDraftAndDismissBanner,

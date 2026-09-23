@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mun-cache-v9';
+const CACHE_NAME = 'mun-cache-v11';
 const PRECACHE_ASSETS = [
   '/',
   '/registration',
@@ -48,6 +48,7 @@ self.addEventListener('fetch', (e) => {
     e.request.method !== 'GET' ||
     !e.request.url.startsWith(self.location.origin) ||
     e.request.url.includes('/api/') ||
+    e.request.url.includes('/Payment_') ||
     e.request.url.includes('/@') ||
     e.request.url.includes('node_modules')
   ) {
