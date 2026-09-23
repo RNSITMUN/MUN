@@ -2455,53 +2455,24 @@
     }
 
     // ==========================================
-    // EXTERNAL DELEGATE CATEGORY SELECTOR (Step 4)
+    // EXTERNAL DELEGATE PRICING & PASS (Step 4)
     // ==========================================
     let isIEEEMember = false;
     let externalCategory = 'standard';
 
     function selectExternalCategory(category) {
-      externalCategory = category;
-      isIEEEMember = (category === 'ieee');
+      externalCategory = 'standard';
+      isIEEEMember = false;
 
-      const standardCard = document.getElementById('plan-card-standard');
-      const ieeeCard = document.getElementById('plan-card-ieee');
-      const ieeeSection = document.getElementById('ieee-member-section');
       const orderDesc = document.getElementById('external-order-desc');
-      const payBtn = document.getElementById('reg-pay-now-btn');
+      const orderPrice = document.getElementById('external-order-price');
+      const totalPayable = document.getElementById('external-total-payable');
+      const payBtn = document.getElementById('reg-proceed-to-pay-btn') || document.getElementById('reg-pay-now-btn');
 
-      const standardCircle = standardCard ? standardCard.querySelector('.plan-radio-circle') : null;
-      const ieeeCircle = ieeeCard ? ieeeCard.querySelector('.plan-radio-circle') : null;
-
-      if (category === 'ieee') {
-        if (standardCard) {
-          standardCard.style.background = '#FFFDF9';
-          standardCard.style.boxShadow = '2px 2px 0px var(--text-primary)';
-          if (standardCircle) standardCircle.style.background = 'transparent';
-        }
-        if (ieeeCard) {
-          ieeeCard.style.background = '#FFFFFF';
-          ieeeCard.style.boxShadow = '4px 4px 0px var(--text-primary)';
-          if (ieeeCircle) ieeeCircle.style.background = 'var(--accent-color)';
-        }
-        if (ieeeSection) ieeeSection.style.display = 'block';
-        if (orderDesc) orderDesc.textContent = 'IEEE Affiliated Delegate Pass';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
-      } else {
-        if (standardCard) {
-          standardCard.style.background = '#FFFFFF';
-          standardCard.style.boxShadow = '4px 4px 0px var(--text-primary)';
-          if (standardCircle) standardCircle.style.background = 'var(--accent-color)';
-        }
-        if (ieeeCard) {
-          ieeeCard.style.background = '#FFFDF9';
-          ieeeCard.style.boxShadow = '2px 2px 0px var(--text-primary)';
-          if (ieeeCircle) ieeeCircle.style.background = 'transparent';
-        }
-        if (ieeeSection) ieeeSection.style.display = 'none';
-        if (orderDesc) orderDesc.textContent = 'External Delegate Pass (Early Bird)';
-        if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,200) →';
-      }
+      if (orderDesc) orderDesc.textContent = 'External Delegate Pass (Standard)';
+      if (orderPrice) orderPrice.textContent = '₹1,350';
+      if (totalPayable) totalPayable.textContent = '₹1,350';
+      if (payBtn) payBtn.textContent = 'Proceed to Payment (₹1,350) →';
     }
 
     // ==========================================
@@ -2529,24 +2500,17 @@
         return;
       }
 
-      // Validate IEEE ID if member
-      if (isIEEEMember === true) {
-        const ieeeId = document.getElementById('reg-ieee-id');
-        const ieeeErr = document.getElementById('reg-ieee-id-error');
-        if (!ieeeId || !ieeeId.value.trim()) {
-          if (ieeeId) ieeeId.classList.add('has-error');
-          if (ieeeErr) ieeeErr.style.display = 'block';
-          return;
-        }
-        if (ieeeId) ieeeId.classList.remove('has-error');
-        if (ieeeErr) ieeeErr.style.display = 'none';
-      }
-
-      // Update Step 5 Tier Badge
+      // Update Step 5 Tier Badge & Pricing Info
       const tierBadge = document.getElementById('step5-tier-badge');
-      if (tierBadge) {
-        tierBadge.textContent = (isIEEEMember ? '[ IEEE AFFILIATED PASS ]' : '[ EXTERNAL DELEGATE PASS ]');
-      }
+      if (tierBadge) tierBadge.textContent = '[ EXTERNAL DELEGATE PASS ]';
+      const step5Original = document.getElementById('step5-original-price');
+      if (step5Original) step5Original.style.display = 'none';
+      const step5Amount = document.getElementById('step5-amount-display');
+      if (step5Amount) step5Amount.textContent = '₹1,350';
+      const step5Desc = document.getElementById('step5-payment-desc');
+      if (step5Desc) step5Desc.innerHTML = 'Scan the QR code or use the UPI ID below to complete your payment of <strong>₹1,350</strong>. Upload the transaction screenshot below to complete your registration.';
+      const step5Proof = document.getElementById('step5-proof-text');
+      if (step5Proof) step5Proof.textContent = '[ PROOF OF ₹1,350 TRANSFER ]';
 
       updateExternalPaymentQR();
       goToStep(5);
@@ -3487,14 +3451,13 @@
     // Strictly caps presentations to <= 17 per 24h
     // ==========================================
     const EXTERNAL_QR_POOL = [
-      { upiId: 'aditimak.2005-1@okhdfcbank', file: 'aditimak.2005-1@okhdfcbank.png' },
-      { upiId: 'koushikr955@okhdfcbank',     file: 'koushikr955@okhdfcbank.png' },
       { upiId: 'nikhilnayak2005@okicici',    file: 'nikhilnayak2005@okicici.png' },
+      { upiId: 'koushikr955@okhdfcbank',     file: 'koushikr955@okhdfcbank.png' },
       { upiId: 'vamshiganesh274@oksbi',      file: 'vamshiganesh274@oksbi.png' },
       { upiId: 'wingspawn28-1@okaxis',       file: 'wingspawn28-1@okaxis.png' }
     ];
 
-    let _currentExternalAssignedUPI = 'aditimak.2005-1@okhdfcbank';
+    let _currentExternalAssignedUPI = 'nikhilnayak2005@okicici';
 
     async function updateExternalPaymentQR() {
       // 1. Session Pinning: If an account was already assigned during this registration flow, reuse it immediately
@@ -3588,7 +3551,7 @@
     }
 
     function copyExternalUPI() {
-      const upiText = _currentExternalAssignedUPI || (document.getElementById('external-upi-id-text')?.textContent.trim()) || 'aditimak.2005-1@okhdfcbank';
+      const upiText = _currentExternalAssignedUPI || (document.getElementById('external-upi-id-text')?.textContent.trim()) || 'nikhilnayak2005@okicici';
       const markCopied = () => {
         const btn = document.getElementById('copy-external-upi-btn');
         if (btn) {
@@ -4728,17 +4691,15 @@
       const getRadioVal = (name) => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
       const getSelectText = (id) => { const el = document.getElementById(id); return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''; };
 
-      const enteredIeeeId = getVal('reg-ieee-id');
-      const isIEEE = currentDelegateType === 'external' && (isIEEEMember === true || externalCategory === 'ieee' || Boolean(enteredIeeeId));
       const paymentAmount = currentDelegateType === 'internal'
         ? '₹999'
-        : isIEEE ? '₹1,200 (IEEE)' : '₹1,200 (External)';
+        : '₹1,350 (External)';
 
       const displayedUpi = (document.getElementById('external-upi-id-text')?.textContent || '').trim();
-      const resolvedExternalUpi = _currentExternalAssignedUPI || (displayedUpi && displayedUpi !== 'mun@rnsit.ac.in' ? displayedUpi : 'aditimak.2005-1@okhdfcbank');
+      const resolvedExternalUpi = _currentExternalAssignedUPI || (displayedUpi && displayedUpi !== 'mun@rnsit.ac.in' ? displayedUpi : 'nikhilnayak2005@okicici');
 
       const formPayload = {
-        delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : isIEEE ? 'External (IEEE Member)' : 'External',
+        delegateType:      currentDelegateType === 'internal' ? 'Internal (RNSIT)' : 'External',
         name:              getVal('reg-name'),
         institution:       currentDelegateType === 'internal' ? (getVal('reg-institution') || 'RNS Institute of Technology (RNSIT)') : (getVal('reg-institution') || 'Not Specified'),
         usn:               getVal('reg-usn') || 'N/A',
@@ -4754,7 +4715,7 @@
         committee2:        getSelectText('reg-committee-2'),
         portfolio2_1:      getSelectText('reg-comm2-portfolio-1'),
         portfolio2_2:      getSelectText('reg-comm2-portfolio-2'),
-        ieeeId:            enteredIeeeId || (isIEEE ? 'IEEE Member' : ''),
+        ieeeId:            '',
         paymentAmount,
         assignedUpiId:     currentDelegateType === 'external' ? resolvedExternalUpi : '',
         screenshotBase64:  _compressedScreenshots[currentDelegateType] || '',
@@ -5233,7 +5194,7 @@
       const portfolios2 = [comm2Port1, comm2Port2].filter(Boolean).join(' / ') || (comm2 !== 'None Specified' ? 'Open Allocation' : 'N/A');
 
       const category = currentDelegateType === 'internal' ? 'Internal RNSIT Delegate' : 'External Delegate';
-      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,200 (Early Bird Delegate Pass)';
+      const fee = currentDelegateType === 'internal' ? '₹999 (Internal All-Inclusive Delegate Pass)' : '₹1,350 (Standard Delegate Pass)';
 
       const dateStr = new Date().toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -5320,9 +5281,9 @@
               <span class="contact-phone">+91 89702 62490</span>
             </div>
             <div class="receipt-contact-card">
-              <span class="contact-name">Aditi</span>
+              <span class="contact-name">Dhatri</span>
               <span class="contact-role">Charge d'Affaires</span>
-              <span class="contact-phone">+91 91080 80956</span>
+              <span class="contact-phone">+91 90351 20294</span>
             </div>
           </div>
         </div>
@@ -5459,9 +5420,9 @@
               <span class="contact-phone">+91 89702 62490</span>
             </div>
             <div class="receipt-contact-card">
-              <span class="contact-name">Aditi</span>
+              <span class="contact-name">Dhatri</span>
               <span class="contact-role">Charge d'Affaires</span>
-              <span class="contact-phone">+91 91080 80956</span>
+              <span class="contact-phone">+91 90351 20294</span>
             </div>
           </div>
         </div>
@@ -5527,9 +5488,7 @@
       // Step 2 — Committee 1
       'reg-committee-1', 'reg-portfolio-1', 'reg-portfolio-2',
       // Step 3 — Committee 2
-      'reg-committee-2', 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2',
-      // Step 4 — IEEE ID (only text field, never payment data)
-      'reg-ieee-id'
+      'reg-committee-2', 'reg-comm2-portfolio-1', 'reg-comm2-portfolio-2'
     ];
 
     function saveDraft() {
@@ -5576,7 +5535,7 @@
       applyDelegateTypeUI(currentDelegateType);
 
       // 2. Step 1: Text & simple fields
-      const step1TextFields = ['reg-name', 'reg-age', 'reg-institution', 'reg-usn', 'reg-city', 'reg-phone', 'reg-email', 'reg-experience-details', 'reg-ieee-id'];
+      const step1TextFields = ['reg-name', 'reg-age', 'reg-institution', 'reg-usn', 'reg-city', 'reg-phone', 'reg-email', 'reg-experience-details'];
       step1TextFields.forEach(id => {
         const el = document.getElementById(id);
         if (el && id in data && data[id] !== undefined) {

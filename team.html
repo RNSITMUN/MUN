@@ -180,11 +180,12 @@
       align-items: center;
       justify-content: center;
       gap: 18px;
-      height: 190px;
+      height: 220px;
       width: max-content;
       max-width: 92%;
       z-index: 20;
       padding: 10px;
+      margin-bottom: 22px;
     }
 
     .profile-img-container {
@@ -201,7 +202,7 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
       z-index: 25;
       border-radius: 22px;
-      overflow: hidden;
+      overflow: visible;
       will-change: transform, opacity;
       -webkit-tap-highlight-color: transparent;
     }
@@ -211,13 +212,170 @@
       box-shadow: 0 14px 34px rgba(108, 13, 44, 0.22);
     }
 
-    .profile-img-container img {
+    /* Inner clip wrapper — owns the rounded corners + overflow:hidden so the overlay animates inside */
+    .profile-img-clip {
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .profile-img-clip img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       pointer-events: none;
       transition: transform 0.45s ease;
+    }
+
+    /* Ultra-Minimal Modern Instagram Badge — Positioned right below each image */
+    .profile-ig-badge {
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform-origin: top center;
+      transform: translateX(-50%) scale(calc(1 / var(--profile-scale, 1)));
+      z-index: 35;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5.5px;
+      height: 25px;
+      padding: 0 10px 0 9px;
+      border-radius: 9999px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(0, 0, 0, 0.09);
+      box-shadow: 0 2px 8px -2px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(0, 0, 0, 0.02);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  background 0.22s ease,
+                  border-color 0.22s ease,
+                  box-shadow 0.22s ease,
+                  opacity 0.3s ease;
+      white-space: nowrap;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      pointer-events: auto;
+    }
+
+    /* Invisible hit bridge ensuring seamless cursor glide between photo and badge */
+    .profile-ig-badge::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: -12px;
+      bottom: -6px;
+      pointer-events: auto;
+      z-index: -1;
+    }
+
+    .profile-ig-badge-icon {
+      width: 11px;
+      height: 11px;
+      color: #6C0D2C;
+      opacity: 0.85;
+      flex-shrink: 0;
+      transition: color 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .profile-ig-badge-handle {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+      color: #2D2528;
+      line-height: 1;
+      transition: color 0.22s ease, font-weight 0.22s ease;
+    }
+
+    .profile-ig-badge-arrow {
+      width: 7.5px;
+      height: 7.5px;
+      color: #8C6D3B;
+      flex-shrink: 0;
+      opacity: 0.55;
+      transition: color 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+    }
+
+    /* Card Active / Hover Accentuation — Pill animates cleanly with the enlarged member */
+    .profile-img-container.active .profile-ig-badge {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(108, 13, 44, 0.28);
+      box-shadow: 0 4px 16px -2px rgba(108, 13, 44, 0.14), 0 1px 3px rgba(0, 0, 0, 0.04);
+      opacity: 1;
+    }
+
+    .profile-img-container.active .profile-ig-badge .profile-ig-badge-icon {
+      opacity: 1;
+      color: #6C0D2C;
+    }
+
+    .profile-img-container.active .profile-ig-badge .profile-ig-badge-arrow {
+      opacity: 0.85;
+      color: #6C0D2C;
+    }
+
+    /* Soften inactive badges when one is enlarged, creating elegant focus without hiding */
+    .profile-row:has(.profile-img-container.active) .profile-img-container:not(.active) .profile-ig-badge {
+      opacity: 0.48;
+    }
+
+    /* Badge Direct Hover: Micro-interactive elevation with refined burgundy glow */
+    .profile-ig-badge:hover {
+      background: #FFFFFF !important;
+      border-color: #6C0D2C !important;
+      transform: translateX(-50%) scale(calc(1.06 / var(--profile-scale, 1))) !important;
+      box-shadow: 0 6px 18px -2px rgba(108, 13, 44, 0.22), 0 0 0 2px rgba(108, 13, 44, 0.08) !important;
+      opacity: 1 !important;
+    }
+
+    .profile-ig-badge:hover .profile-ig-badge-icon {
+      color: #6C0D2C;
+      opacity: 1;
+      transform: scale(1.15) rotate(-4deg);
+    }
+
+    .profile-ig-badge:hover .profile-ig-badge-handle {
+      color: #6C0D2C;
+      font-weight: 600;
+    }
+
+    .profile-ig-badge:hover .profile-ig-badge-arrow {
+      color: #6C0D2C;
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
+    /* Role label below the profiles */
+    .role-display {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.45);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 6px;
+      height: 24px;
+      line-height: 24px;
+      transition: color 0.3s ease, opacity 0.3s ease;
+      z-index: 10;
+      text-align: center;
+      max-width: 92vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .role-display.is-active-member {
+      color: #6C0D2C;
+      font-weight: 800;
     }
 
     /* Minimalist Dots Indicator on Mobile */
@@ -245,30 +403,6 @@
       border-radius: 10px;
       background: #6C0D2C;
       box-shadow: 0 2px 8px rgba(108, 13, 44, 0.3);
-    }
-
-    /* Role label below the profiles */
-    .role-display {
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.45);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-top: 24px;
-      height: 24px;
-      line-height: 24px;
-      transition: color 0.3s ease, opacity 0.3s ease;
-      z-index: 10;
-      text-align: center;
-      max-width: 92vw;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .role-display.is-active-member {
-      color: #6C0D2C;
-      font-weight: 800;
     }
 
     /* Giant text section (Foreground) */
@@ -339,19 +473,19 @@
       display: none;
     }
 
-    /* Desktop / PC Screens (min-width: 769px): Lower MUNSOC SECRETARIAT safely below Nav Pill & optimize sizing */
+    /* Desktop / PC Screens (min-width: 769px): Position MUNSOC SECRETARIAT slightly above for PC devices */
     @media (min-width: 769px) {
       .team-kicker {
         margin-top: clamp(48px, 6vh, 68px);
         margin-bottom: clamp(10px, 1.4vh, 16px);
         position: relative;
-        top: 18px;
+        top: 0px;
       }
-
 
       .profile-row {
         gap: 18px;
-        height: 190px;
+        height: 220px;
+        margin-bottom: 24px;
       }
 
       .profile-img-container {
@@ -360,8 +494,12 @@
         border-radius: 22px;
       }
 
+      .profile-img-clip {
+        border-radius: 22px;
+      }
+
       .role-display {
-        margin-top: 18px;
+        margin-top: 8px;
       }
     }
 
@@ -386,6 +524,8 @@
 
       .team-dots-indicator {
         display: flex;
+        margin-top: 4px;
+        margin-bottom: clamp(10px, 1.8vh, 16px);
       }
 
       .profile-row {
@@ -393,11 +533,12 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        gap: clamp(10px, 3.2vw, 16px);
+        column-gap: clamp(14px, 4vw, 20px);
+        row-gap: clamp(44px, 6.8vh, 52px);
         width: 100%;
-        max-width: clamp(320px, 92vw, 400px);
+        max-width: clamp(320px, 92vw, 420px);
         height: auto;
-        margin: 0 auto clamp(8px, 1.5vh, 16px) auto;
+        margin: 0 auto clamp(26px, 3.8vh, 36px) auto;
         padding: 4px;
       }
 
@@ -409,18 +550,117 @@
       }
 
       .profile-img-container {
-        width: clamp(88px, 25vw, 108px);
-        height: clamp(88px, 25vw, 108px);
+        width: clamp(86px, 24vw, 104px);
+        height: clamp(86px, 24vw, 104px);
         border-radius: clamp(18px, 4.5vw, 22px);
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
       }
 
+      .profile-img-clip {
+        border-radius: clamp(18px, 4.5vw, 22px);
+      }
+
       .profile-img-container.active {
-        box-shadow: 0 8px 24px rgba(108, 13, 44, 0.22);
-        transform: scale(1.04);
+        box-shadow: 0 8px 26px rgba(108, 13, 44, 0.22);
+      }
+
+      /* Mobile Instagram Badge: Perfectly proportioned, crisp typography, non-colliding */
+      .profile-ig-badge {
+        bottom: -25px;
+        height: 23px;
+        padding: 0 9px 0 8px;
+        gap: 4px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(12px) saturate(160%);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+        border: 1px solid rgba(0, 0, 0, 0.09);
+        box-shadow: 0 2px 8px -2px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
+        transform: translateX(-50%) scale(calc(1 / var(--profile-scale, 1)));
+        transform-origin: top center;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+                    background 0.22s ease,
+                    border-color 0.22s ease,
+                    box-shadow 0.22s ease,
+                    opacity 0.3s ease;
+      }
+
+      /* Mobile touch target extension for effortless finger taps */
+      .profile-ig-badge::before {
+        top: -8px;
+        left: -10px;
+        right: -10px;
+        bottom: -8px;
+      }
+
+      .profile-ig-badge-icon {
+        width: 10px;
+        height: 10px;
+        color: #6C0D2C;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      .profile-ig-badge-handle {
+        font-size: clamp(0.58rem, 2.4vw, 0.62rem);
+        font-weight: 550;
+        letter-spacing: 0.012em;
+        color: #2D2528;
+        line-height: 1;
+        transition: color 0.2s ease, font-weight 0.2s ease;
+      }
+
+      .profile-ig-badge-arrow {
+        display: inline-block;
+        width: 6.5px;
+        height: 6.5px;
+        color: #8C6D3B;
+        opacity: 0.65;
+        transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      /* On Mobile: When card is active, illuminate its badge with luxury bloom */
+      .profile-img-container.active .profile-ig-badge {
+        background: #FFFFFF !important;
+        border-color: #6C0D2C !important;
+        box-shadow: 0 4px 14px -1px rgba(108, 13, 44, 0.22), 0 0 0 2px rgba(108, 13, 44, 0.08) !important;
+        opacity: 1 !important;
+        transform: translateX(-50%) scale(calc(1.04 / var(--profile-scale, 1))) !important;
+      }
+
+      .profile-img-container.active .profile-ig-badge .profile-ig-badge-icon {
+        color: #6C0D2C;
+        transform: scale(1.1) rotate(-3deg);
+      }
+
+      .profile-img-container.active .profile-ig-badge .profile-ig-badge-handle {
+        color: #6C0D2C;
+        font-weight: 600;
+      }
+
+      .profile-img-container.active .profile-ig-badge .profile-ig-badge-arrow {
+        color: #6C0D2C;
+        opacity: 1;
+        transform: translate(1.5px, -1.5px);
+      }
+
+      /* Inactive member badges softly recede on mobile to bring spotlight to active member */
+      .profile-row:has(.profile-img-container.active) .profile-img-container:not(.active) .profile-ig-badge {
+        opacity: 0.42;
+      }
+
+      /* Touch feedback on mobile when tapped directly */
+      .profile-ig-badge:active {
+        transform: translateX(-50%) scale(calc(0.93 / var(--profile-scale, 1))) !important;
+        background: #FFF5F7 !important;
+        border-color: #6C0D2C !important;
+        box-shadow: 0 2px 8px rgba(108, 13, 44, 0.25) !important;
       }
 
       .role-display {
+        flex-wrap: wrap;
+        min-height: auto;
+        gap: 6px;
+        line-height: 1.3;
         font-size: clamp(0.78rem, 2.6vw, 0.88rem);
         letter-spacing: 0.14em;
         margin-top: 0;
@@ -437,19 +677,14 @@
       .giant-name {
         font-size: clamp(4.2rem, 28vw, 7.5rem);
         line-height: 0.75;
-        /* scaleY moved to .name-wrapper so overflow:hidden clips in pre-scale space */
       }
 
-      /* scaleY on .name-wrapper: overflow:hidden clips at layout bounds, THEN the whole
-         wrapper is scaled — letters at translateY(150%) are invisible, letters at
-         translateY(0) are fully visible including any glyph overshoot. */
       .name-wrapper {
         transform: scaleY(1.45);
         transform-origin: bottom center;
         align-items: flex-end;
       }
 
-      /* Mobile: hardware-accelerate letters; animation values unchanged from desktop */
       .letter {
         will-change: transform;
         -webkit-backface-visibility: hidden;
@@ -460,14 +695,36 @@
     /* Narrow Screen Phones (≤ 360px) */
     @media (max-width: 360px) {
       .profile-row {
-        gap: 8px;
-        margin-bottom: 8px;
+        column-gap: 10px;
+        row-gap: 40px;
+        margin: 0 auto 24px auto;
       }
 
       .profile-img-container {
         width: 78px;
         height: 78px;
         border-radius: 16px;
+      }
+
+      .profile-ig-badge {
+        bottom: -22px;
+        height: 21px;
+        padding: 0 6px;
+        gap: 3px;
+      }
+
+      .profile-ig-badge-icon {
+        width: 8.5px;
+        height: 8.5px;
+      }
+
+      .profile-ig-badge-handle {
+        font-size: 0.54rem;
+        letter-spacing: 0;
+      }
+
+      .profile-ig-badge-arrow {
+        display: none;
       }
 
       .role-display {
@@ -506,7 +763,8 @@
 
       .profile-row {
         height: auto;
-        margin-bottom: 4px;
+        row-gap: 34px;
+        margin-bottom: 18px;
       }
 
       .profile-img-container {
@@ -515,8 +773,32 @@
         border-radius: 12px;
       }
 
+      .profile-img-clip {
+        border-radius: 12px;
+      }
+
+      .profile-ig-badge {
+        bottom: -20px;
+        height: 19px;
+        padding: 0 6px;
+        gap: 2.5px;
+      }
+
+      .profile-ig-badge-icon {
+        width: 8px;
+        height: 8px;
+      }
+
+      .profile-ig-badge-handle {
+        font-size: 0.52rem;
+      }
+
+      .profile-ig-badge-arrow {
+        display: none;
+      }
+
       .team-dots-indicator {
-        margin: 2px 0 4px 0;
+        margin: 4px 0 6px 0;
       }
 
       .role-display {
@@ -1163,30 +1445,44 @@
     <!-- Profile Row Container -->
     <div class="profile-row" id="profile-row">
       <div class="profile-img-container" data-index="0" data-first-name="NIKHIL" data-full-name="Nikhil Nayak"
-        data-role="Secretary General">
-        <img src="./team/nikhil.webp?v=6" onerror="this.onerror=null;this.src='./team/nikhil.webp?v=6'"
-          alt="MUNSoc - Nikhil Nayak">
+        data-role="Secretary General" data-insta="nikhil7n7">
+        <div class="profile-img-clip">
+          <img src="./team/nikhil.webp?v=6" onerror="this.onerror=null;this.src='./team/nikhil.webp?v=6'" alt="MUNSoc - Nikhil Nayak">
+        </div>
+        <a href="https://www.instagram.com/nikhil7n7/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Nikhil Nayak on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span class="profile-ig-badge-handle">@nikhil7n7</span>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+        </a>
       </div>
       <div class="profile-img-container" data-index="1" data-first-name="KOUSHIK" data-full-name="V Koushik"
-        data-role="Director General">
-        <img src="./team/koushik.webp?v=14" onerror="this.onerror=null;this.src='./team/koushik.webp?v=14'"
-          alt="MUNSoc - V Koushik" style="object-position: center 30%;">
-      </div>
-      <div class="profile-img-container" data-index="2" data-first-name="ADITI" data-full-name="Aditi Maktedar"
-        data-role="Charge d'Affairs">
-        <img src="./team/aditi.webp?v=5" onerror="this.onerror=null;this.src='./team/aditi.webp?v=5'"
-          alt="MUNSoc - Aditi Maktedar" style="object-position: center 25%;">
+        data-role="Director General" data-insta="koushik_v__">
+        <div class="profile-img-clip">
+          <img src="./team/koushik.webp?v=14" onerror="this.onerror=null;this.src='./team/koushik.webp?v=14'" alt="MUNSoc - V Koushik" style="object-position: center 30%;">
+        </div>
+        <a href="https://www.instagram.com/koushik_v__/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="V Koushik on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span class="profile-ig-badge-handle">@koushik_v__</span>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+        </a>
       </div>
       <div class="profile-row-break" aria-hidden="true"></div>
-      <div class="profile-img-container" data-index="3" data-first-name="KARTHIK" data-full-name="Karthik Prasad M"
-        data-role="Head of Equity">
-        <img src="./team/karthik.webp?v=5" onerror="this.onerror=null;this.src='./team/karthik.webp?v=5'"
-          alt="MUNSoc - Karthik Prasad M">
+      <div class="profile-img-container" data-index="2" data-first-name="KARTHIK" data-full-name="Karthik Prasad M"
+        data-role="Head of Equity" data-insta="kkarthhikk">
+        <div class="profile-img-clip">
+          <img src="./team/karthik.webp?v=5" onerror="this.onerror=null;this.src='./team/karthik.webp?v=5'" alt="MUNSoc - Karthik Prasad M">
+        </div>
+        <a href="https://www.instagram.com/kkarthhikk/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Karthik Prasad M on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span class="profile-ig-badge-handle">@kkarthhikk</span>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+        </a>
       </div>
-      <div class="profile-img-container" data-index="4" data-first-name="VAMSHI" data-full-name="Vamshi Ganesh"
+      <div class="profile-img-container" data-index="3" data-first-name="VAMSHI" data-full-name="Vamshi Ganesh"
         data-role="Head of Equity">
-        <img src="./team/vamshi.webp?v=5" onerror="this.onerror=null;this.src='./team/vamshi.webp?v=5'"
-          alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
+        <div class="profile-img-clip">
+          <img src="./team/vamshi.webp?v=5" onerror="this.onerror=null;this.src='./team/vamshi.webp?v=5'" alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
+        </div>
       </div>
     </div>
 
@@ -1196,7 +1492,6 @@
       <span class="team-dot" data-index="1"></span>
       <span class="team-dot" data-index="2"></span>
       <span class="team-dot" data-index="3"></span>
-      <span class="team-dot" data-index="4"></span>
     </div>
 
     <!-- Role display below the profile row -->

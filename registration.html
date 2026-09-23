@@ -122,7 +122,7 @@
       {
         "@type": "Offer",
         "name": "External Delegate Pass (Standard)",
-        "price": "1349",
+        "price": "1350",
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock"
       }
@@ -1418,83 +1418,25 @@
           <!-- 2. EXTERNAL DELEGATE PAYMENT PANEL -->
           <div id="external-payment-panel" style="display: none;">
 
-            <!-- NOTE: IEEE Discount Notice -->
-            <div class="neo-note-callout"
-              style="background: #FFFDF9; border: 2px solid var(--text-primary); box-shadow: 3px 3px 0px var(--text-primary); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
-              <span
-                style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; background: var(--accent-color); color: #FFF7EB; padding: 3px 8px; border-radius: 4px; border: 1.2px solid var(--text-primary); flex-shrink: 0;">
-                NOTE
-              </span>
-              <span style="font-size: 0.83rem; font-weight: 600; color: var(--text-primary); line-height: 1.4;">
-                Existing IEEE members get a discounted price.
-              </span>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label class="form-label"
-                style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; margin-bottom: 8px; display: block;">
-                Select Delegate Pass *
-              </label>
-
-              <!-- Two Interactive Plan Selector Cards -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-
-                <!-- Option 1: Standard Pass -->
-                <div class="category-plan-card" id="plan-card-standard" onclick="selectExternalCategory('standard')"
-                  style="background: #FFFFFF; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 14px 14px; cursor: pointer; transition: all 0.15s ease;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span
-                      style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
-                      Standard Pass
-                    </span>
-                    <span class="plan-radio-circle"
-                      style="width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-primary); background: var(--accent-color); display: inline-block;"></span>
-                  </div>
-                  <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 4px;">
-                    <span
-                      style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
-                    <span
-                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
-                  </div>
-                  <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
-                    Early Bird Offer
-                  </div>
-                </div>
-
-                <!-- Option 2: IEEE Member Pass -->
-                <div class="category-plan-card" id="plan-card-ieee" onclick="selectExternalCategory('ieee')"
-                  style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 2px 2px 0px var(--text-primary); border-radius: 12px; padding: 14px 14px; cursor: pointer; transition: all 0.15s ease;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span
-                      style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
-                      IEEE Member
-                    </span>
-                    <span class="plan-radio-circle"
-                      style="width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-primary); background: transparent; display: inline-block;"></span>
-                  </div>
-                  <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 4px;">
-                    <span
-                      style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through;">₹1,349</span>
-                    <span
-                      style="font-size: 1.45rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
-                  </div>
-                  <div style="font-size: 0.72rem; color: rgba(17, 17, 19, 0.6); font-weight: 600; margin-top: 4px;">
-                    Affiliated Rate
-                  </div>
-                </div>
-
+            <!-- Standard Delegate Pass Card -->
+            <div class="category-plan-card" id="plan-card-standard"
+              style="background: #FFFFFF; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span
+                  style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
+                  Standard Delegate Pass
+                </span>
+                <span
+                  style="background: var(--accent-color); color: #FFF7EB; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; border: 1.2px solid var(--text-primary); text-transform: uppercase; letter-spacing: 0.06em;">
+                  All-Inclusive
+                </span>
               </div>
-            </div>
-
-            <!-- IEEE Membership ID input (visible only when IEEE is selected) -->
-            <div id="ieee-member-section" style="display: none; margin-bottom: 16px;">
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="reg-ieee-id"
-                  style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.04em;">
-                  IEEE Membership ID *
-                </label>
-                <input type="text" id="reg-ieee-id" class="form-input" placeholder="e.g. 98765432" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
-                <div id="reg-ieee-id-error" class="error-container" aria-live="polite" role="alert">IEEE Membership ID is required</div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+                <span
+                  style="font-size: 1.65rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,350</span>
+                <span style="font-size: 0.74rem; color: rgba(17, 17, 19, 0.6); font-weight: 600;">
+                  2-Day Conference Access
+                </span>
               </div>
             </div>
 
@@ -1505,13 +1447,11 @@
                 style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1.5px dashed rgba(17, 17, 19, 0.2); margin-bottom: 10px;">
                 <span id="external-order-desc"
                   style="font-size: 0.86rem; font-weight: 700; color: var(--text-primary);">
-                  External Delegate Pass (Early Bird)
+                  External Delegate Pass (Standard)
                 </span>
                 <div style="display: flex; align-items: baseline; gap: 6px;">
-                  <span
-                    style="font-size: 0.85rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
-                  <span
-                    style="font-size: 1.15rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans);">₹1,200</span>
+                  <span id="external-order-price"
+                    style="font-size: 1.15rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans);">₹1,350</span>
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1519,9 +1459,9 @@
                   style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary);">
                   Total Payable
                 </span>
-                <span
+                <span id="external-total-payable"
                   style="font-size: 1.55rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">
-                  ₹1,200
+                  ₹1,350
                 </span>
               </div>
             </div>
@@ -1537,7 +1477,7 @@
             <div class="wizard-btn-row" id="reg-step-4-btns">
               <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
               <button type="button" class="submit-btn wizard-next-btn" id="reg-proceed-to-pay-btn"
-                onclick="handleProceedToExternalPayment()">Proceed to Payment (₹1,200) →</button>
+                onclick="handleProceedToExternalPayment()">Proceed to Payment (₹1,350) →</button>
             </div>
 
           </div>
@@ -1558,14 +1498,14 @@
                 [ EXTERNAL DELEGATE PASS ]
               </div>
               <div style="display: flex; align-items: baseline; gap: 8px;">
-                <span
-                  style="font-size: 1.1rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans);">₹1,349</span>
-                <span
-                  style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,200</span>
+                <span id="step5-original-price"
+                  style="font-size: 1.1rem; font-weight: 700; color: rgba(17, 17, 19, 0.45); text-decoration: line-through; font-family: var(--font-sans); display: none;">₹1,350</span>
+                <span id="step5-amount-display"
+                  style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹1,350</span>
               </div>
             </div>
-            <p style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
-              Scan the QR code or use the UPI ID below to complete your payment of ₹1,200. Upload the transaction
+            <p id="step5-payment-desc" style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
+              Scan the QR code or use the UPI ID below to complete your payment of <strong>₹1,350</strong>. Upload the transaction
               screenshot below to complete your registration.
             </p>
           </div>
@@ -1582,7 +1522,7 @@
             <div class="qr-code-display-wrap"
               style="position: relative; display: inline-block; padding: 12px; background: #FFFFFF; border: 2.5px solid var(--text-primary); border-radius: 10px; box-shadow: 3px 3px 0px var(--text-primary); margin-bottom: 14px;">
               <img id="external-upi-qr"
-                src="./Payment_external/aditimak.2005-1@okhdfcbank.png"
+                src="./Payment_external/nikhilnayak2005@okicici.png"
                 alt="UPI Payment QR Code" width="165" height="165" style="display: block; border-radius: 4px; object-fit: contain;">
               <button type="button" class="qr-expand-btn" onclick="openQRPreview('external-upi-qr', 'UPI Payment QR Code')" aria-label="Enlarge payment QR code" title="Tap to enlarge QR code">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
@@ -1599,7 +1539,7 @@
                 <span
                   style="font-family: monospace; font-size: 0.92rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                   id="external-upi-id-text">
-                  aditimak.2005-1@okhdfcbank
+                  nikhilnayak2005@okicici
                 </span>
               </div>
               <button type="button" id="copy-external-upi-btn" onclick="copyExternalUPI()"
@@ -1622,8 +1562,8 @@
               style="display: flex; justify-content: space-between; align-items: center;">
               <span style="text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.04em;">Please upload the
                 screenshot of your payment *</span>
-              <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
-                PROOF OF ₹1,200 TRANSFER ]</span>
+              <span id="step5-proof-text" style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-color);">[
+                PROOF OF ₹1,350 TRANSFER ]</span>
             </label>
 
             <div class="file-upload-dropzone" id="external-payment-dropzone"

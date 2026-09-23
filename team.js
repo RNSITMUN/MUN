@@ -218,7 +218,7 @@ function activateMember(container, index, firstName, fullName, role) {
   // Apply fluid magnetic ripple sizes and translates
   updateMagneticRipple(index);
 
-  // Update displays
+  // Update displays with role and member name
   roleDisplay.textContent = `${role} • ${fullName}`;
   roleDisplay.classList.add("is-active-member");
   roleDisplay.style.opacity = "1";
@@ -270,13 +270,14 @@ profileContainers.forEach((container) => {
   });
 
   // Pointer Leave (Desktop Hover only)
-  container.addEventListener("pointerleave", () => {
+  container.addEventListener("pointerleave", (e) => {
     if (isTouchOrMobile()) return;
+    if (e.relatedTarget && container.contains(e.relatedTarget)) return;
     setTimeout(() => {
-      if (currentActiveIndex === index) {
+      if (currentActiveIndex === index && !container.matches(":hover")) {
         deactivateAll();
       }
-    }, 50);
+    }, 140);
   });
 
   // Click / Tap (Mobile Touch support & click toggle)

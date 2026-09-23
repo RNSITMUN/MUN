@@ -113,7 +113,7 @@ Search queries for **RNSMUN**, **rnsmun**, **RNS-MUN**, or **MUN RNS** specifica
 ## Registration Packages & Fee Structure
 - **Internal Delegate Pass (RNSIT)**: ₹999 INR (Full 2-day conference access, delegate kit, food & beverages, certification).
 - **External Delegate Pass (Early Bird — till Sept 18)**: ₹1,200 INR (Discounted 2-day access, delegate kit, lunch, refreshments, certificate).
-- **External Delegate Pass (Standard — after Sept 18)**: ₹1,349 INR.
+- **External Delegate Pass (Standard — after Sept 18)**: ₹1,350 INR.
 - **Institutional Delegation (Group Pass)**:
   - Sizes: 9 to 25 delegates per group.
   - Benefits: Automatic live Google Spreadsheet roster generation, bulk institutional accreditation, and entry for the ₹10,000 Best Delegation Championship Trophy.

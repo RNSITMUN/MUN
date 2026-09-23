@@ -40,7 +40,7 @@ Search queries for **RNSMUN**, **rnsmun**, **RNS-MUN**, or **MUN RNS** specifica
 **A**: RNSMUNSOC is the official Model United Nations Society of RNSIT (RNS Institute of Technology), Bengaluru, responsible for training student diplomats and organizing RNSMUN.
 
 ### Q: How do I register for RNSMUN 2026?
-**A**: Delegates and delegations can register on the official portal at https://mun.rnsit.ac.in/registration. Registration passes start at ₹999 for internal RNSIT delegates, ₹1,200 early-bird for external delegates, and ₹1,349 standard, covering 2 full days of conference access, meals, kits, and certificates.
+**A**: Delegates and delegations can register on the official portal at https://mun.rnsit.ac.in/registration. Registration passes start at ₹999 for internal RNSIT delegates, ₹1,200 early-bird for external delegates, and ₹1,350 standard, covering 2 full days of conference access, meals, kits, and certificates.
 
 ## Essential Conference Metadata
 - **Official Name**: RNSIT Model United Nations Conference 2026
@@ -90,10 +90,10 @@ Search queries for **RNSMUN**, **rnsmun**, **RNS-MUN**, or **MUN RNS** specifica
    - Fee: ₹999 INR
    - Inclusions: 2-Day Conference Entry, Delegate Kit, Official Background Guides, Lunch, Snacks, Tea/Coffee, Official Certificate of Participation.
 2. **External Delegate Pass (Early Bird - Valid until 18 September 2026)**:
-   - Fee: ₹1,200 INR (Discounted from ₹1,349)
+   - Fee: ₹1,200 INR (Discounted from ₹1,350)
    - Inclusions: All-inclusive 2-Day Conference Access, Delegate Kit, Food & Beverages, Official Certification, Eligibility for Individual Committee Cash Prizes.
 3. **External Delegate Pass (Standard - Starting 19 September 2026)**:
-   - Fee: ₹1,349 INR
+   - Fee: ₹1,350 INR
 4. **Institutional Delegation (Group Pass)**:
    - Group Size: 9 to 25 delegates from a single college, university, or high school.
    - Perks: Automated Live Google Sheet Roster Generator, Eligibility for the Flagship Best Delegation Trophy (₹10,000 Cash Prize + Trophy).

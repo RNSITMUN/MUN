@@ -4,9 +4,8 @@ import path from 'path';
 import os from 'os';
 
 export const EXTERNAL_QR_POOL = [
-  { upiId: 'aditimak.2005-1@okhdfcbank', file: 'aditimak.2005-1@okhdfcbank.png' },
-  { upiId: 'koushikr955@okhdfcbank',     file: 'koushikr955@okhdfcbank.png' },
   { upiId: 'nikhilnayak2005@okicici',    file: 'nikhilnayak2005@okicici.png' },
+  { upiId: 'koushikr955@okhdfcbank',     file: 'koushikr955@okhdfcbank.png' },
   { upiId: 'vamshiganesh274@oksbi',      file: 'vamshiganesh274@oksbi.png' },
   { upiId: 'wingspawn28-1@okaxis',       file: 'wingspawn28-1@okaxis.png' }
 ];
