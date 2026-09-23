@@ -4499,7 +4499,7 @@
         googleSheetLink: sheetLink ? sheetLink.value.trim() : '',
         screenshotBase64: _compressedScreenshots['delegation'] || '',
         screenshotFormat: (_compressedScreenshots['delegation'] || '').includes('image/webp') ? 'webp' : 'jpeg',
-        paymentAmount: `₹${(parseInt(count.value.trim(), 10) || 9) * 1200}`
+        paymentAmount: `₹${(parseInt(count.value.trim(), 10) || 9) * 1350}`
       };
 
       const submitBtn = document.getElementById('dlg-submit-btn');
