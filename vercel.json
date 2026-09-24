@@ -37,6 +37,22 @@
     {
       "source": "/scan",
       "destination": "/scan.html"
+    },
+    {
+      "source": "/api/hub-data",
+      "destination": "/api/scanner"
+    },
+    {
+      "source": "/api/staff-auth",
+      "destination": "/api/scanner"
+    },
+    {
+      "source": "/api/update-checkpoint",
+      "destination": "/api/scanner"
+    },
+    {
+      "source": "/api/scan-stats",
+      "destination": "/api/scanner"
     }
   ],
   "headers": [

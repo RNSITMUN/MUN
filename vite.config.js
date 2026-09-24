@@ -11,10 +11,7 @@ import adminRegistrationsHandler from './api/admin-registrations.js';
 import adminUpdateStatusHandler from './api/admin-update-status.js';
 import adminResyncRosterHandler from './api/admin-resync-roster.js';
 import sendMailHandler from './api/send-mail.js';
-import hubDataHandler from './api/hub-data.js';
-import updateCheckpointHandler from './api/update-checkpoint.js';
-import staffAuthHandler from './api/staff-auth.js';
-import scanStatsHandler from './api/scan-stats.js';
+import scannerHandler from './api/scanner.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -84,17 +81,14 @@ const cleanUrlsPlugin = () => ({
       if (url === '/api/send-mail') {
         return handleApiRequest(sendMailHandler);
       }
-      if (url === '/api/hub-data') {
-        return handleApiRequest(hubDataHandler);
-      }
-      if (url === '/api/update-checkpoint') {
-        return handleApiRequest(updateCheckpointHandler);
-      }
-      if (url === '/api/staff-auth') {
-        return handleApiRequest(staffAuthHandler);
-      }
-      if (url === '/api/scan-stats') {
-        return handleApiRequest(scanStatsHandler);
+      if (
+        url === '/api/hub-data' ||
+        url === '/api/update-checkpoint' ||
+        url === '/api/staff-auth' ||
+        url === '/api/scan-stats' ||
+        url === '/api/scanner'
+      ) {
+        return handleApiRequest(scannerHandler);
       }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);

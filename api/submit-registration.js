@@ -1,4 +1,4 @@
-import { supabase, uploadScreenshotToStorage } from './_supabase.js';
+import { supabase, uploadScreenshotToStorage } from '../lib/supabase.js';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';

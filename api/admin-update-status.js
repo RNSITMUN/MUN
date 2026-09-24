@@ -1,4 +1,4 @@
-import { supabase } from './_supabase.js';
+import { supabase } from '../lib/supabase.js';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';

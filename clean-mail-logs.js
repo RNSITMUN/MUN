@@ -1,4 +1,4 @@
-import { supabase } from './api/_supabase.js';
+import { supabase } from './lib/supabase.js';
 
 async function cleanLogs() {
   if (!supabase) {

@@ -1,8 +1,8 @@
-import { supabase } from './_supabase.js';
+import { supabase } from '../lib/supabase.js';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
-import { getPublicToken } from './_token.js';
+import { getPublicToken } from '../lib/token.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
