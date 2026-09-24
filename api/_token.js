@@ -258,3 +258,8 @@ export function verifyStaffSession(sessionToken) {
     return false;
   }
 }
+
+// Fallback handler if Vercel serverless engine attempts to invoke helper module
+export default function handler(req, res) {
+  res.status(404).json({ error: 'Private helper module' });
+}
