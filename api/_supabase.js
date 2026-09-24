@@ -138,3 +138,8 @@ export async function uploadScreenshotToStorage(base64Data, filenamePrefix = 'de
     return '';
   }
 }
+
+// Fallback handler if Vercel serverless engine attempts to invoke helper module
+export default function handler(req, res) {
+  res.status(404).json({ error: 'Private helper module' });
+}
