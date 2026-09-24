@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Delegate Pass | RNS MUN 2026</title>
+  <meta name="description" content="Official delegate credential, diplomatic allotment, and logistics accreditation pass for RNS Model United Nations 2026.">
+  <link rel="icon" type="image/webp" href="/assets/Logos/MUN_logo.webp">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Local Bundled Client-Side QR Generator (100% Offline & Standalone) -->
+  <script src="/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cream: #FFF7EB;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #FFFDF9;
+      --primary: #6C0D2C;
+      --primary-dark: #4A081D;
+      --accent-gold: #E5A93C;
+      --accent-gold-light: #FDF3DC;
+      --text-dark: #111113;
+      --text-muted: #555558;
+      --border-black: #000000;
+      --border-subtle: #E8DFD3;
+      --success-green: #047857;
+      --success-bg: #ECFDF5;
+      --warning-amber: #B45309;
+      --warning-bg: #FFFBEB;
+      --shadow-neobrutal: 4px 4px 0px #000000;
+      --shadow-card: 6px 6px 0px #000000;
+      --shadow-sm: 2px 2px 0px #000000;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem 3rem 1rem;
+      background-image: 
+        radial-gradient(var(--border-subtle) 1px, transparent 1px),
+        radial-gradient(var(--border-subtle) 1px, var(--bg-cream) 1px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    /* Top Navigation / Brand Bar */
+    .top-header {
+      width: 100%;
+      max-width: 620px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .staff-portal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      background: var(--bg-card);
+      border: 2px solid var(--border-black);
+      border-radius: 9999px;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .staff-portal-link:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+      background: var(--accent-gold-light);
+    }
+
+    /* Main Pass Container */
+    .pass-container {
+      width: 100%;
+      max-width: 620px;
+      background: var(--bg-card);
+      border: 2.5px solid var(--border-black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Card Banner */
+    .pass-header-ribbon {
+      background: var(--primary);
+      color: #FFF7EB;
+      padding: 1.35rem 1.25rem 1.1rem 1.25rem;
+      border-bottom: 2.5px solid var(--border-black);
+      text-align: center;
+      position: relative;
+    }
+
+    .ribbon-tag {
+      display: inline-block;
+      background: var(--accent-gold);
+      color: #000000;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.8rem;
+      border: 1.5px solid #000000;
+      border-radius: 9999px;
+      margin-bottom: 0.45rem;
+      box-shadow: 1.5px 1.5px 0px #000;
+    }
+
+    .pass-main-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      color: #FFF7EB;
+      line-height: 1.2;
+    }
+
+    .pass-sub-title {
+      font-size: 0.76rem;
+      color: rgba(255, 247, 235, 0.88);
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
+    /* Pass Body */
+    .pass-body {
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Identity Hero Box */
+    .identity-box {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .identity-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .delegate-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .delegate-institution {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .delegate-type-pill {
+      background: var(--accent-gold-light);
+      color: #78350F;
+      border: 1.5px solid var(--border-black);
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      white-space: nowrap;
+      box-shadow: 1.5px 1.5px 0px #000;
+    }
+
+    .meta-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      border-top: 1.5px dashed var(--border-subtle);
+      padding-top: 0.75rem;
+    }
+
+    .meta-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      color: var(--text-dark);
+    }
+
+    .meta-pill.id-highlight {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--border-black);
+    }
+
+    /* Diplomatic Allotment Card */
+    .allocation-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .allocation-header {
+      background: #111113;
+      color: #FFF7EB;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.45rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .allocation-content {
+      padding: 1rem 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 520px) {
+      .allocation-content {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+    }
+
+    .allocation-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .allocation-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .allocation-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.25;
+    }
+
+    .allocation-val.committee {
+      color: var(--primary);
+    }
+
+    /* Checkpoints Section */
+    .checkpoints-section {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkpoints-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-black);
+      padding-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .section-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border: 1.5px solid var(--border-black);
+      border-radius: 9999px;
+      background: #FFFFFF;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    /* Day Groups */
+    .day-group {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .day-header {
+      background: #F3F4F6;
+      border-bottom: 1.5px solid var(--border-black);
+      padding: 0.45rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .checkpoint-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .live-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--success-green);
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 6px rgba(4, 120, 87, 0.6); }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    @keyframes stampPop {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .checkpoint-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s ease;
+      gap: 0.6rem;
+    }
+
+    .checkpoint-item:last-child {
+      border-bottom: none;
+    }
+
+    .checkpoint-item.redeemed {
+      background: #F0FDF4;
+    }
+
+    .checkpoint-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .checkpoint-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .checkpoint-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .status-pill {
+      font-size: 0.7rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border-black);
+      box-shadow: 1px 1px 0px #000;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .status-pill.redeemed {
+      background: #DCFCE7;
+      color: #065F46;
+      border-color: #065F46;
+      animation: stampPop 0.35s ease-out;
+    }
+
+    .status-pill.pending {
+      background: #F3F4F6;
+      color: #6B7280;
+      border-color: #9CA3AF;
+    }
+
+    @media (max-width: 480px) {
+      .checkpoint-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.45rem;
+      }
+      .status-pill {
+        align-self: flex-start;
+      }
+    }
+
+    /* QR Matrix Box */
+    .qr-card {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .qr-frame {
+      background: #FFFFFF;
+      padding: 0.85rem;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .qr-frame:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #000000;
+    }
+
+    .qr-img {
+      display: block;
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+    }
+
+    .qr-enlarge-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--primary);
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 9999px;
+      padding: 0.3rem 0.75rem;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .qr-enlarge-badge:hover {
+      background: var(--bg-cream);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .qr-caption-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+
+    .qr-caption {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 440px;
+    }
+
+    /* Fullscreen High-Contrast QR Modal */
+    .qr-fullscreen-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(17, 17, 19, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      box-sizing: border-box;
+      animation: qrFadeIn 0.2s ease-out;
+    }
+
+    @keyframes qrFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .qr-modal-content {
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0px #000000;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.35rem;
+      gap: 1.1rem;
+      box-sizing: border-box;
+      animation: qrScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    @keyframes qrScaleUp {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .qr-modal-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      border-bottom: 2px solid var(--border-subtle);
+      padding-bottom: 0.85rem;
+    }
+
+    .qr-modal-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      min-width: 0;
+    }
+
+    .qr-modal-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .qr-modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+
+    .qr-modal-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .qr-modal-close-btn {
+      background: #FFFFFF;
+      color: var(--text-dark);
+      border: 2px solid #000000;
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+
+    .qr-modal-close-btn:hover {
+      background: var(--bg-cream);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .qr-modal-frame {
+      background: #FFFFFF;
+      padding: 1rem;
+      border: 3px solid #000000;
+      border-radius: var(--radius-sm);
+      box-shadow: 4px 4px 0px #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-modal-img {
+      width: min(72vw, 290px);
+      height: min(72vw, 290px);
+      display: block;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    .qr-modal-footer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .qr-modal-hint {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .qr-modal-dismiss-btn {
+      background: transparent;
+      border: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0.2rem;
+      font-family: inherit;
+    }
+
+    /* Action Buttons */
+    .pass-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 480px) {
+      .pass-actions {
+        flex-direction: column;
+      }
+    }
+
+    .btn-action-primary {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .btn-action-primary:hover {
+      background: var(--primary-dark);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .btn-action-secondary {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      background: #FFFFFF;
+      color: var(--text-dark);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .btn-action-secondary:hover {
+      background: var(--bg-cream);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    /* Roster Selector (For Delegations) */
+    .delegation-roster-box {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .roster-select-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+      color: var(--text-dark);
+    }
+
+    .roster-select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 2px solid var(--border-black);
+      border-radius: 6px;
+      background: #FFFFFF;
+      outline: none;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    /* Loading Spinner */
+    .loading-wrap {
+      padding: 3.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--border-subtle);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Printable Lanyard Card (Default hidden on screen) */
+    .print-lanyard-card {
+      display: none;
+    }
+
+    /* Print Badge Media Styles (Exact 3.5" x 2.25" Physical Lanyard Card) */
+    @media print {
+      @page {
+        size: 3.5in 2.25in;
+        margin: 0;
+      }
+
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 2.25in !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        background-image: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        overflow: hidden !important;
+      }
+
+      /* Hide all web interface components */
+      .top-header,
+      .pass-container,
+      .pass-actions,
+      .staff-portal-link,
+      #pass-card,
+      #qr-modal,
+      .qr-fullscreen-modal,
+      .qr-enlarge-badge {
+        display: none !important;
+      }
+
+      /* Show and format physical lanyard badge */
+      .print-lanyard-card {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 3.5in !important;
+        height: 2.25in !important;
+        max-width: 3.5in !important;
+        max-height: 2.25in !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        border: 1.5px solid #000000 !important;
+        border-radius: 6px !important;
+        background: #FFFDF9 !important;
+        overflow: hidden !important;
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-inside: avoid !important;
+        break-after: avoid !important;
+        position: relative !important;
+        font-family: 'Outfit', sans-serif !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      .print-header {
+        background: #6C0D2C !important;
+        color: #FFFFFF !important;
+        padding: 4px 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border-bottom: 1.5px solid #000000 !important;
+        height: 28px !important;
+        box-sizing: border-box !important;
+      }
+
+      .print-header-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+      }
+
+      .print-logo {
+        width: 18px !important;
+        height: 18px !important;
+        border: 1px solid #000 !important;
+        border-radius: 3px !important;
+        background: #FFFFFF !important;
+      }
+
+      .print-conf-title {
+        font-family: 'Syne', sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.01em !important;
+        color: #FFF7EB !important;
+      }
+
+      .print-tag-pill {
+        background: #E5A93C !important;
+        color: #000000 !important;
+        font-size: 7.5px !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        padding: 1.5px 5px !important;
+        border: 1px solid #000000 !important;
+        border-radius: 9999px !important;
+      }
+
+      .print-body {
+        flex: 1 !important;
+        padding: 5px 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+      }
+
+      .print-info-col {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        min-width: 0 !important;
+      }
+
+      .print-delegate-name {
+        font-family: 'Syne', sans-serif !important;
+        font-size: 14.5px !important;
+        font-weight: 900 !important;
+        line-height: 1.15 !important;
+        color: #111113 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .print-delegate-inst {
+        font-size: 8px !important;
+        font-weight: 600 !important;
+        color: #4B5563 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        margin-bottom: 2px !important;
+      }
+
+      .print-allotment-box {
+        background: #FFFFFF !important;
+        border: 1px solid #000000 !important;
+        border-radius: 4px !important;
+        padding: 3px 6px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5px !important;
+        box-shadow: 1px 1px 0px #000 !important;
+      }
+
+      .print-allotment-row {
+        display: flex !important;
+        align-items: baseline !important;
+        gap: 4px !important;
+        font-size: 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .print-allotment-label {
+        font-size: 7px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        color: #6B7280 !important;
+      }
+
+      .print-allotment-val {
+        font-weight: 800 !important;
+        color: #111113 !important;
+      }
+
+      .print-allotment-val.comm {
+        color: #6C0D2C !important;
+      }
+
+      .print-meta-bar {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        margin-top: 2px !important;
+      }
+
+      .print-id-pill {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 7.5px !important;
+        font-weight: 800 !important;
+        background: #6C0D2C !important;
+        color: #FFFFFF !important;
+        border: 1px solid #000 !important;
+        border-radius: 3px !important;
+        padding: 1px 4px !important;
+      }
+
+      .print-status-tag {
+        font-size: 7px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        color: #047857 !important;
+      }
+
+      .print-qr-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2px !important;
+        flex-shrink: 0 !important;
+      }
+
+      .print-qr-frame {
+        background: #FFFFFF !important;
+        border: 1.2px solid #000000 !important;
+        border-radius: 5px !important;
+        padding: 2.5px !important;
+        box-shadow: 1px 1px 0px #000 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .print-qr-img {
+        width: 76px !important;
+        height: 76px !important;
+        object-fit: contain !important;
+        display: block !important;
+      }
+
+      .print-qr-sub {
+        font-size: 6px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        color: #4B5563 !important;
+      }
+
+      .print-footer {
+        background: #111113 !important;
+        color: #FFF7EB !important;
+        padding: 2px 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: 16px !important;
+        font-size: 6.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.04em !important;
+        box-sizing: border-box !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-header">
+    <a href="/" class="brand-link">
+      <img src="/assets/Logos/MUN_logo.webp" alt="RNS MUN 2026 Logo" class="brand-logo" />
+      <div class="brand-text-wrap">
+        <span class="brand-title">RNS MUN 2026</span>
+        <span class="brand-subtitle">Official Credential Pass</span>
+      </div>
+    </a>
+    <a href="/scan" class="staff-portal-link" title="Secretariat Check-in Scanner">
+      📷 Staff Scan
+    </a>
+  </header>
+
+  <!-- Pass Card -->
+  <main class="pass-container" id="pass-card">
+    <div class="pass-header-ribbon">
+      <span class="ribbon-tag">RNS MUN '26 • ACCREDITED</span>
+      <h1 class="pass-main-title">OFFICIAL DELEGATE PASS</h1>
+      <p class="pass-sub-title">RNS Model United Nations 2026 • Campus & Logistics Passport</p>
+    </div>
+
+    <!-- Dynamic Content Area -->
+    <div id="content-container">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <p style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted);">Verifying credential with Secretariat servers...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Printable Physical Lanyard Badge (3.5" x 2.25") - Hidden on screen, visible on print -->
+  <div class="print-lanyard-card" id="print-lanyard-badge" aria-hidden="true">
+    <div class="print-header">
+      <div class="print-header-left">
+        <img src="/assets/Logos/MUN_logo.webp" alt="Logo" class="print-logo" />
+        <span class="print-conf-title">RNS MUN 2026</span>
+      </div>
+      <span class="print-tag-pill" id="print-badge-type-tag">DELEGATE</span>
+    </div>
+    <div class="print-body">
+      <div class="print-info-col">
+        <div class="print-delegate-name" id="print-badge-name">Delegate Name</div>
+        <div class="print-delegate-inst" id="print-badge-institution">Institution Name</div>
+        <div class="print-allotment-box">
+          <div class="print-allotment-row">
+            <span class="print-allotment-label">Committee:</span>
+            <span class="print-allotment-val comm" id="print-badge-committee">UNSC</span>
+          </div>
+          <div class="print-allotment-row">
+            <span class="print-allotment-label">Portfolio:</span>
+            <span class="print-allotment-val" id="print-badge-portfolio">France</span>
+          </div>
+        </div>
+        <div class="print-meta-bar">
+          <span class="print-id-pill" id="print-badge-id">RNS-MUN-26-0001</span>
+          <span class="print-status-tag">★ OFFICIAL ACCREDITATION</span>
+        </div>
+      </div>
+      <div class="print-qr-col">
+        <div class="print-qr-frame">
+          <img src="" alt="Badge QR" class="print-qr-img" id="print-badge-qr" />
+        </div>
+        <span class="print-qr-sub">Scan for Accreditation</span>
+      </div>
+    </div>
+    <div class="print-footer">
+      <span>RNS INSTITUTE OF TECHNOLOGY, BENGALURU</span>
+      <span>mun.rnsit.ac.in</span>
+    </div>
+  </div>
+
+  <!-- Fullscreen High-Contrast QR Modal (Bright White Lightbox for Outdoor Glare) -->
+  <div id="qr-modal" class="qr-fullscreen-modal" style="display: none;" onclick="closeQrModal(event)" aria-modal="true" role="dialog" aria-label="Fullscreen QR Code">
+    <div class="qr-modal-content" onclick="event.stopPropagation()">
+      <div class="qr-modal-header">
+        <div class="qr-modal-title-wrap">
+          <span class="qr-modal-badge">★ OFFICIAL ACCREDITATION</span>
+          <h3 class="qr-modal-title" id="modal-qr-delegate-name">Delegate Name</h3>
+          <span class="qr-modal-sub" id="modal-qr-delegate-meta">RNS-MUN-26-0001 • Committee</span>
+        </div>
+        <button type="button" class="qr-modal-close-btn" onclick="closeQrModal()" aria-label="Close Fullscreen QR">
+          ✕ Close
+        </button>
+      </div>
+
+      <div class="qr-modal-frame">
+        <img id="modal-qr-img" src="" alt="Fullscreen Delegate Pass QR Code" class="qr-modal-img" />
+      </div>
+
+      <div class="qr-modal-footer">
+        <span class="qr-modal-hint">☀️ High-contrast mode for outdoor scanning & morning glare</span>
+        <button type="button" class="qr-modal-dismiss-btn" onclick="closeQrModal()">
+          Tap anywhere to close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let passData = null;
+    let selectedMemberIdx = 0;
+
+    // Parse URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenParam = urlParams.get('t');
+    const idParam = urlParams.get('id');
+    const typeParam = (urlParams.get('type') || 'individual').toLowerCase();
+
+    // Member deep-linking: supports ?m=2 or ?member=2 (0-indexed or 1-indexed fallback)
+    const mParam = urlParams.get('m') ?? urlParams.get('member');
+    if (mParam !== null && mParam !== undefined && mParam !== '') {
+      const parsedIdx = parseInt(mParam, 10);
+      if (!isNaN(parsedIdx) && parsedIdx >= 0) {
+        selectedMemberIdx = parsedIdx;
+      }
+    }
+
+    function formatTime(isoStr) {
+      if (!isoStr) return '';
+      try {
+        const d = new Date(isoStr);
+        let hours = d.getHours();
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        return `${hours}:${minutes} ${ampm}`;
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function updateUrlMemberParam(idx) {
+      try {
+        const url = new URL(window.location.href);
+        if (idx > 0) {
+          url.searchParams.set('m', idx);
+          url.searchParams.delete('member');
+        } else {
+          url.searchParams.delete('m');
+          url.searchParams.delete('member');
+        }
+        window.history.replaceState({ memberIdx: idx }, '', url.toString());
+      } catch (e) {}
+    }
+
+    function copyPassLink() {
+      let url = passData?.passUrl || window.location.href;
+      if (passData?.type === 'delegation' && selectedMemberIdx > 0) {
+        try {
+          const u = new URL(url);
+          u.searchParams.set('m', selectedMemberIdx);
+          url = u.toString();
+        } catch (e) {
+          url += (url.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+        }
+      }
+      navigator.clipboard.writeText(url).then(() => {
+        const memberName = passData?.roster?.[selectedMemberIdx]?.name;
+        const msg = memberName 
+          ? `✅ Personal pass link for "${memberName}" copied to clipboard!`
+          : '✅ Pass link copied to clipboard!';
+        alert(msg);
+      }).catch(() => {
+        prompt('Copy your pass link:', url);
+      });
+    }
+
+    function onRosterMemberChange(val) {
+      selectedMemberIdx = parseInt(val, 10) || 0;
+      updateUrlMemberParam(selectedMemberIdx);
+      renderPass();
+    }
+
+    window.addEventListener('popstate', (e) => {
+      const currentUrlParams = new URLSearchParams(window.location.search);
+      const m = currentUrlParams.get('m') ?? currentUrlParams.get('member');
+      if (m !== null && m !== undefined && m !== '') {
+        selectedMemberIdx = parseInt(m, 10) || 0;
+      } else {
+        selectedMemberIdx = 0;
+      }
+      renderPass();
+    });
+
+    // ─── Live Real-Time Polling & Credential Loader ─────────────
+    let isPolling = false;
+    let pollIntervalId = null;
+
+    async function loadPassData(isBackground = false) {
+      if (isPolling && isBackground) return;
+      isPolling = true;
+
+      const container = document.getElementById('content-container');
+      
+      let apiUrl = '';
+      if (tokenParam) {
+        apiUrl = `/api/hub-data?t=${encodeURIComponent(tokenParam)}`;
+      } else if (idParam) {
+        apiUrl = `/api/hub-data?id=${encodeURIComponent(idParam)}&type=${encodeURIComponent(typeParam)}`;
+      } else {
+        if (!isBackground) {
+          container.innerHTML = `
+            <div style="padding: 3rem 1.5rem; text-align: center;">
+              <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">🎫</div>
+              <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
+                Welcome to RNS MUN 2026 Pass Hub
+              </h2>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+                To view your Official Delegate Pass, please click the secure pass link provided in your allocation email (e.g. <code>/hub?t=...</code>), or scan your conference credential QR code.
+              </p>
+              <a href="/" class="btn-action-primary" style="display:inline-block; max-width:220px; text-decoration:none;">
+                Return to Website
+              </a>
+            </div>
+          `;
+        }
+        isPolling = false;
+        return;
+      }
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        // Anti-IDOR Blocked Screen
+        if (res.status === 403 || data.idorBlocked) {
+          if (!isBackground) {
+            container.innerHTML = `
+              <div style="padding: 3rem 1.5rem; text-align: center;">
+                <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">🔒</div>
+                <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
+                  Protected Credential Pass
+                </h2>
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5; max-width: 480px; margin-left: auto; margin-right: auto;">
+                  Direct sequential ID access is restricted to ensure delegate privacy and prevent unauthorized enumeration.
+                  <br><br>
+                  Please access your official pass using the secure link (<code>/hub?t=...</code>) sent to your registered email address.
+                </p>
+                <div style="display: flex; gap: 0.75rem; justify-content: center;">
+                  <a href="/" class="btn-action-primary" style="text-decoration:none; padding: 0.6rem 1.2rem;">Back to Home</a>
+                  <a href="/scan" class="btn-action-secondary" style="text-decoration:none; padding: 0.6rem 1.2rem;">Staff Portal</a>
+                </div>
+              </div>
+            `;
+          }
+          isPolling = false;
+          return;
+        }
+
+        if (!data.success) {
+          if (!isBackground) {
+            container.innerHTML = `
+              <div style="padding: 3rem 1.5rem; text-align: center;">
+                <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">⚠️</div>
+                <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
+                  Credential Not Found
+                </h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+                  ${escapeHtml(data.error || 'The credential token is invalid or has expired.')}
+                </p>
+                <a href="/" class="btn-action-primary" style="display:inline-block; text-decoration:none;">Return to Home</a>
+              </div>
+            `;
+          }
+          isPolling = false;
+          return;
+        }
+
+        // Check if anything relevant has changed
+        const hasChanged = !passData ||
+          JSON.stringify(passData.checkpoints) !== JSON.stringify(data.checkpoints) ||
+          JSON.stringify(passData.roster) !== JSON.stringify(data.roster) ||
+          passData.allocatedCommittee !== data.allocatedCommittee ||
+          passData.allocatedPortfolio !== data.allocatedPortfolio ||
+          passData.status !== data.status;
+
+        passData = data;
+
+        if (hasChanged) {
+          await renderPass();
+        }
+
+      } catch (err) {
+        if (!isBackground) {
+          console.error('Error fetching pass data:', err);
+          container.innerHTML = `
+            <div style="padding: 3rem 1.5rem; text-align: center;">
+              <p style="color: #DC2626; font-weight: 700;">Could not connect to accreditation server. Please check your network connection and reload.</p>
+            </div>
+          `;
+        }
+      } finally {
+        isPolling = false;
+      }
+    }
+
+    /**
+     * Generates a 100% offline, client-side QR Code completely in the browser.
+     * Uses local bundled qrcode.min.js with zero 3rd-party dependencies or external network requests.
+     */
+    async function generateClientQrDataUrl(text, size = 300, highRes = false) {
+      if (typeof QRCode !== 'undefined') {
+        try {
+          if (typeof QRCode.toDataURL === 'function') {
+            return await QRCode.toDataURL(text, {
+              width: size,
+              margin: highRes ? 2 : 1,
+              errorCorrectionLevel: highRes ? 'H' : 'M',
+              color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+              }
+            });
+          }
+        } catch (canvasErr) {
+          console.warn('[hub] Canvas toDataURL failed, attempting SVG fallback:', canvasErr);
+        }
+
+        try {
+          if (typeof QRCode.toString === 'function') {
+            const svg = await QRCode.toString(text, {
+              type: 'svg',
+              margin: highRes ? 2 : 1,
+              errorCorrectionLevel: highRes ? 'H' : 'M'
+            });
+            if (svg) {
+              return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+            }
+          }
+        } catch (svgErr) {
+          console.warn('[hub] SVG QR generation fallback failed:', svgErr);
+        }
+      }
+      return '';
+    }
+
+    async function renderPass() {
+      if (!passData) return;
+
+      const isDelegation = passData.type === 'delegation';
+      const container = document.getElementById('content-container');
+
+      // Delegation Member Selection
+      let currentMember = null;
+      let activeCheckpoints = passData.checkpoints || {};
+
+      if (isDelegation && passData.roster && passData.roster.length > 0) {
+        if (selectedMemberIdx >= passData.roster.length) {
+          selectedMemberIdx = Math.max(0, passData.roster.length - 1);
+        } else if (selectedMemberIdx < 0) {
+          selectedMemberIdx = 0;
+        }
+        currentMember = passData.roster[selectedMemberIdx] || passData.roster[0];
+        activeCheckpoints = currentMember.checkpoints || passData.checkpoints;
+      }
+
+      const delegateName = isDelegation 
+        ? (currentMember ? currentMember.name : passData.name) 
+        : passData.name;
+
+      const committeeName = isDelegation 
+        ? (currentMember ? currentMember.committee : passData.allocatedCommittee)
+        : passData.allocatedCommittee;
+
+      const portfolioName = isDelegation 
+        ? (currentMember ? currentMember.portfolio : passData.allocatedPortfolio)
+        : passData.allocatedPortfolio;
+
+      // Tokenized Public Pass Link (Includes &m= for individual delegation member badges)
+      let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
+      if (isDelegation && selectedMemberIdx > 0) {
+        passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+      }
+      const qrDataUrl = await generateClientQrDataUrl(passUrl, 320, false);
+
+      function renderCheckpointRow(key, title, subtitle) {
+        const item = activeCheckpoints[key] || { redeemed: false, timestamp: null, by: null };
+        const isRedeemed = !!item.redeemed;
+        const timeStr = isRedeemed ? formatTime(item.timestamp) : '';
+        const staffBy = item.by || 'Secretariat Staff';
+
+        let stampedText = '✓ Stamped';
+        if (timeStr && staffBy) {
+          stampedText = `✓ Stamped ${timeStr} • ${escapeHtml(staffBy)}`;
+        } else if (timeStr) {
+          stampedText = `✓ Stamped ${timeStr}`;
+        } else if (staffBy) {
+          stampedText = `✓ Stamped • ${escapeHtml(staffBy)}`;
+        }
+
+        return `
+          <div class="checkpoint-item ${isRedeemed ? 'redeemed' : ''}">
+            <div class="checkpoint-info">
+              <span class="checkpoint-name">
+                ${isRedeemed ? '✓' : '○'} ${title}
+              </span>
+              <span class="checkpoint-desc">${subtitle}</span>
+            </div>
+            <span class="status-pill ${isRedeemed ? 'redeemed' : 'pending'}">
+              ${isRedeemed ? stampedText : '○ Not Redeemed'}
+            </span>
+          </div>
+        `;
+      }
+
+      // Build Roster Dropdown if Delegation
+      let rosterSelectorHtml = '';
+      if (isDelegation && passData.roster && passData.roster.length > 0) {
+        const optionsHtml = passData.roster.map((m, idx) => `
+          <option value="${idx}" ${idx === selectedMemberIdx ? 'selected' : ''}>
+            ${idx + 1}. ${escapeHtml(m.name)} — ${escapeHtml(m.committee || 'Delegate')}
+          </option>
+        `).join('');
+
+        rosterSelectorHtml = `
+          <div class="delegation-roster-box">
+            <label class="roster-select-label" for="roster-select">
+              👥 Delegation Roster Member (${passData.roster.length} Delegates):
+            </label>
+            <select id="roster-select" class="roster-select" onchange="onRosterMemberChange(this.value)">
+              ${optionsHtml}
+            </select>
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.35rem; font-weight: 500;">
+              📌 Bookmark or copy this pass link to directly open this delegate's personal badge.
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="pass-body">
+          
+          <!-- Identity Hero Card -->
+          <div class="identity-box">
+            <div class="identity-top">
+              <div>
+                <h2 class="delegate-name">${escapeHtml(delegateName)}</h2>
+                <div class="delegate-institution">🏛️ ${escapeHtml(passData.institution)}</div>
+              </div>
+              <span class="delegate-type-pill">
+                ${isDelegation ? 'Institutional Delegation' : escapeHtml(passData.delegateType)}
+              </span>
+            </div>
+
+            <div class="meta-pills-row">
+              <span class="meta-pill id-highlight">DELEGATE ID: ${escapeHtml(passData.delegateId)}</span>
+              <span class="meta-pill">STATUS: ${escapeHtml(passData.status)}</span>
+              ${isDelegation ? `<span class="meta-pill">HEAD: ${escapeHtml(passData.headName || 'Delegation Head')}</span>` : ''}
+            </div>
+          </div>
+
+          <!-- Roster Member Selector (If Delegation) -->
+          ${rosterSelectorHtml}
+
+          <!-- Diplomatic Allocation Card -->
+          <div class="allocation-card">
+            <div class="allocation-header">
+              <span>Official Diplomatic Allotment</span>
+              <span>UN • RNS MUN 2026</span>
+            </div>
+            <div class="allocation-content">
+              <div class="allocation-block">
+                <span class="allocation-label">Allocated Committee</span>
+                <span class="allocation-val committee">${escapeHtml(committeeName || 'General Assembly')}</span>
+              </div>
+              <div class="allocation-block">
+                <span class="allocation-label">Allocated Portfolio</span>
+                <span class="allocation-val">${escapeHtml(portfolioName || 'General Delegate')}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checkpoint Status Section -->
+          <div class="checkpoints-section">
+            <div class="checkpoints-title-row">
+              <h3 class="section-title">
+                Checkpoint Status
+              </h3>
+              <span class="section-badge" title="Live accreditation updates automatically every 10 seconds">
+                <span class="live-dot"></span> Live Real-Time
+              </span>
+            </div>
+
+            <!-- Day 1 Group -->
+            <div class="day-group">
+              <div class="day-header">
+                <span>Day 1 — Conference Kickoff</span>
+                <span>Day 1 of 2</span>
+              </div>
+              <div class="checkpoint-list">
+                ${renderCheckpointRow('day1_entry', 'Day 1 Entry', 'Campus gate entry & security accreditation')}
+                ${renderCheckpointRow('day1_lunch', 'Midday Repast', 'Official conference delegate luncheon')}
+                ${renderCheckpointRow('day1_refreshment', 'Refreshment Hour', 'Evening high tea & snacks')}
+              </div>
+            </div>
+
+            <!-- Day 2 Group -->
+            <div class="day-group">
+              <div class="day-header">
+                <span>Day 2 — Resolution & Plenary</span>
+                <span>Day 2 of 2</span>
+              </div>
+              <div class="checkpoint-list">
+                ${renderCheckpointRow('day2_entry', 'Day 2 Entry', 'Day 2 campus access & roll call')}
+                ${renderCheckpointRow('day2_lunch', 'Midday Repast', 'Official conference delegate luncheon')}
+                ${renderCheckpointRow('day2_refreshment', 'Refreshment Hour', 'Closing high tea & social mixer')}
+              </div>
+            </div>
+          </div>
+
+          <!-- QR Code Matrix Box -->
+          <div class="qr-card">
+            <div class="qr-frame" onclick="openQrModal()" title="Tap to expand fullscreen high-contrast QR code" role="button" tabindex="0">
+              <img src="${qrDataUrl}" alt="Official Delegate Pass QR Code" class="qr-img" id="pass-qr-img" />
+            </div>
+            <button type="button" class="qr-enlarge-badge" onclick="openQrModal()">
+              🔍 Tap to Enlarge (High Brightness)
+            </button>
+            <span class="qr-caption-title">Accreditation QR Identifier</span>
+            <p class="qr-caption">
+              Present this QR badge at campus security gates and catering stations. Tap the code above for fullscreen high-contrast mode in sunlight.
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="pass-actions">
+            <button class="btn-action-primary" onclick="window.print()">
+              🖨️ Save / Print Pass Badge
+            </button>
+            <button class="btn-action-secondary" onclick="copyPassLink()">
+              📋 Copy Pass Link
+            </button>
+          </div>
+
+        </div>
+      `;
+
+      // Populate Printable Physical Lanyard Badge (3.5" x 2.25")
+      const elPrintName = document.getElementById('print-badge-name');
+      const elPrintInst = document.getElementById('print-badge-institution');
+      const elPrintComm = document.getElementById('print-badge-committee');
+      const elPrintPort = document.getElementById('print-badge-portfolio');
+      const elPrintId = document.getElementById('print-badge-id');
+      const elPrintQr = document.getElementById('print-badge-qr');
+      const elPrintTag = document.getElementById('print-badge-type-tag');
+
+      if (elPrintName) elPrintName.textContent = delegateName;
+      if (elPrintInst) elPrintInst.textContent = passData.institution || 'Institutional Representative';
+      if (elPrintComm) elPrintComm.textContent = committeeName || 'General Assembly';
+      if (elPrintPort) elPrintPort.textContent = portfolioName || 'General Delegate';
+      if (elPrintId) elPrintId.textContent = passData.delegateId;
+      if (elPrintQr) elPrintQr.src = qrDataUrl;
+      if (elPrintTag) elPrintTag.textContent = isDelegation ? 'DELEGATION' : (passData.delegateType || 'DELEGATE').toUpperCase();
+    }
+
+    // ─── Polling Schedule & Visibility Listeners ────────────────────
+    function startLivePolling() {
+      if (pollIntervalId) clearInterval(pollIntervalId);
+
+      // Lightweight 10-second polling check
+      pollIntervalId = setInterval(() => {
+        if (!document.hidden && document.visibilityState === 'visible') {
+          loadPassData(true);
+        }
+      }, 10000);
+
+      // Tab visibility change listener: immediate update when switching back to tab
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          loadPassData(true);
+        }
+      });
+
+      // Window focus listener (e.g. returning to browser app on mobile)
+      window.addEventListener('focus', () => {
+        loadPassData(true);
+      });
+    }
+
+    // ─── Fullscreen High-Contrast QR Modal Logic ───────────────────
+    async function openQrModal() {
+      const modal = document.getElementById('qr-modal');
+      const modalImg = document.getElementById('modal-qr-img');
+      const modalName = document.getElementById('modal-qr-delegate-name');
+      const modalMeta = document.getElementById('modal-qr-delegate-meta');
+
+      if (!passData) return;
+
+      const isDelegation = passData.type === 'delegation';
+      let currentMember = null;
+      if (isDelegation && passData.roster && passData.roster.length > 0) {
+        currentMember = passData.roster[selectedMemberIdx] || passData.roster[0];
+      }
+
+      const delegateName = isDelegation 
+        ? (currentMember ? currentMember.name : passData.name) 
+        : passData.name;
+
+      const committeeName = isDelegation 
+        ? (currentMember ? currentMember.committee : passData.allocatedCommittee)
+        : passData.allocatedCommittee;
+
+      let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
+      if (isDelegation && selectedMemberIdx > 0) {
+        passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+      }
+
+      // 600px high-resolution client-side QR code image for crisp scanning in bright sunlight (100% Offline)
+      const highResQrUrl = await generateClientQrDataUrl(passUrl, 600, true);
+
+      if (modalImg && highResQrUrl) modalImg.src = highResQrUrl;
+      if (modalName) modalName.textContent = delegateName;
+      if (modalMeta) modalMeta.textContent = `${passData.delegateId} • ${committeeName || 'Delegate'}`;
+      if (modal) modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeQrModal(e) {
+      if (e && e.target && e.target.closest && e.target.closest('.qr-modal-content') && !e.target.closest('.qr-modal-close-btn') && !e.target.closest('.qr-modal-dismiss-btn')) {
+        return;
+      }
+      const modal = document.getElementById('qr-modal');
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // Dismiss modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeQrModal();
+      }
+    });
+
+    // Initialize Pass Loading and activate live polling
+    loadPassData().then(() => {
+      startLivePolling();
+    });
+  </script>
+</body>
+</html>

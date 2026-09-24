@@ -11,6 +11,10 @@ import adminRegistrationsHandler from './api/admin-registrations.js';
 import adminUpdateStatusHandler from './api/admin-update-status.js';
 import adminResyncRosterHandler from './api/admin-resync-roster.js';
 import sendMailHandler from './api/send-mail.js';
+import hubDataHandler from './api/hub-data.js';
+import updateCheckpointHandler from './api/update-checkpoint.js';
+import staffAuthHandler from './api/staff-auth.js';
+import scanStatsHandler from './api/scan-stats.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -80,6 +84,18 @@ const cleanUrlsPlugin = () => ({
       if (url === '/api/send-mail') {
         return handleApiRequest(sendMailHandler);
       }
+      if (url === '/api/hub-data') {
+        return handleApiRequest(hubDataHandler);
+      }
+      if (url === '/api/update-checkpoint') {
+        return handleApiRequest(updateCheckpointHandler);
+      }
+      if (url === '/api/staff-auth') {
+        return handleApiRequest(staffAuthHandler);
+      }
+      if (url === '/api/scan-stats') {
+        return handleApiRequest(scanStatsHandler);
+      }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
       
@@ -102,6 +118,10 @@ const cleanUrlsPlugin = () => ({
           req.url = '/venue.html';
         } else if (url === '/admin') {
           req.url = '/admin.html';
+        } else if (url === '/hub') {
+          req.url = '/hub.html' + (queryString ? '?' + queryString : '');
+        } else if (url === '/scan') {
+          req.url = '/scan.html' + (queryString ? '?' + queryString : '');
         } else if (url === '/404') {
           req.url = '/404.html' + req.url.substring(4);
         } else if (url !== '/' && url !== '') {
@@ -168,6 +188,8 @@ export default defineConfig({
         coc: resolve(process.cwd(), 'code-of-conduct.html'),
         venue: resolve(process.cwd(), 'venue.html'),
         admin: resolve(process.cwd(), 'admin.html'),
+        hub: resolve(process.cwd(), 'hub.html'),
+        scan: resolve(process.cwd(), 'scan.html'),
         error: resolve(process.cwd(), '404.html')
       }
     }

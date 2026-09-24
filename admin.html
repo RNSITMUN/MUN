@@ -2817,6 +2817,10 @@
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{roster_count}}')">{{roster_count}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{usn}}')">{{usn}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{city}}')">{{city}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{allocated_committee}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 800;">🇺🇳 {{allocated_committee}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{allocated_portfolio}}')" style="border-color: #E5A93C; color: #000000; font-weight: 800;">🏷️ {{allocated_portfolio}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{hub_url}}')" style="border-color: #047857; color: #047857; font-weight: 800;">🎫 {{hub_url}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{qr_code_url}}')" style="border-color: #000000; font-weight: 800;">📷 {{qr_code_url}}</button>
               </div>
             </div>
 
@@ -3017,6 +3021,42 @@
           <select id="send-mail-template-select" class="filter-select" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalTemplateSelectChange()">
             <!-- Populated dynamically -->
           </select>
+        </div>
+
+        <!-- Diplomatic Allotment Box (Active for Individual Delegate Allocation) -->
+        <div id="modal-allotment-config-card" style="display: none; background: #FFFDF9; border: 2px solid #000000; border-radius: 8px; padding: 0.85rem 1rem; box-shadow: 2.5px 2.5px 0 #000000; flex-direction: column; gap: 0.6rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 0.82rem; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.5px;">
+                🏛️ Committee &amp; Portfolio Allocation
+              </span>
+              <span class="badge badge-confirmed" style="font-size: 0.68rem; padding: 1.5px 6px;">Includes Live Pass QR</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #555;">
+              Delegate Pref 1: <strong id="modal-pref1-display" style="color: #000;">—</strong>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div>
+              <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.2rem;" for="modal-alloc-committee">Allocated Committee</label>
+              <input type="text" id="modal-alloc-committee" list="committee-options-list" class="form-input" style="padding: 0.42rem 0.65rem; font-size: 0.82rem; font-weight: 700;" placeholder="Select or type committee..." oninput="onModalAllocationChanged()">
+              <datalist id="committee-options-list">
+                <option value="UNSC — United Nations Security Council"></option>
+                <option value="UNHRC — United Nations Human Rights Council"></option>
+                <option value="DISEC — Disarmament & International Security Committee"></option>
+                <option value="UNODC — United Nations Office on Drugs and Crime"></option>
+                <option value="AIPPM — All India Political Parties Meet"></option>
+                <option value="IP — International Press"></option>
+              </datalist>
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.2rem;" for="modal-alloc-portfolio">Allocated Portfolio / Country</label>
+              <input type="text" id="modal-alloc-portfolio" class="form-input" style="padding: 0.42rem 0.65rem; font-size: 0.82rem; font-weight: 700;" placeholder="Assigned Country / Portfolio..." oninput="onModalAllocationChanged()">
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #555;">
+            <span>⚡ Edits instantly re-interpolate email preview and update the delegate's live pass at <code>/hub?t=...</code></span>
+          </div>
         </div>
 
         <!-- Email Subject -->
@@ -3911,6 +3951,10 @@
         // Status badge / selector
         const statusBadgeClass = getStatusBadgeClass(item.status);
 
+        const hasAllotment = !!(item.allocated_committee && item.allocated_portfolio);
+        const allocComm = item.allocated_committee || item.committee1 || '—';
+        const allocPort = item.allocated_portfolio || item.portfolio1_1 || '—';
+
         tr.innerHTML = `
           <td>
             <div class="font-semibold cell-title">${escapeHtml(item.name || 'Unnamed')}</div>
@@ -3923,8 +3967,17 @@
           <td>${typeBadge}</td>
           <td><div style="max-width: 160px; word-break: break-word;">${escapeHtml(item.institution || '—')}</div></td>
           <td>
-            <div class="font-semibold cell-accent">${escapeHtml(item.committee1 || '—')}</div>
-            <div class="text-sm text-muted">1: ${escapeHtml(item.portfolio1_1 || '—')} | 2: ${escapeHtml(item.portfolio1_2 || '—')}</div>
+            ${hasAllotment ? `
+              <div style="margin-bottom: 3px;">
+                <span class="badge" style="background: #6C0D2C; color: #FFF; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; letter-spacing: 0.5px;">🏛️ ALLOTTED</span>
+              </div>
+              <div class="font-semibold cell-accent" style="color: #6C0D2C; font-size: 0.88rem; line-height: 1.25;">${escapeHtml(allocComm)}</div>
+              <div class="font-semibold" style="color: #000000; font-size: 0.82rem; margin-top: 2px;">🏷️ ${escapeHtml(allocPort)}</div>
+              <div class="text-sm text-muted" style="font-size: 0.72rem; margin-top: 3px;">Pref 1: ${escapeHtml(item.committee1 || '—')}</div>
+            ` : `
+              <div class="font-semibold cell-accent">${escapeHtml(item.committee1 || '—')}</div>
+              <div class="text-sm text-muted">1: ${escapeHtml(item.portfolio1_1 || '—')} | 2: ${escapeHtml(item.portfolio1_2 || '—')}</div>
+            `}
           </td>
           <td>
             <div>${escapeHtml(item.committee2 || '—')}</div>
@@ -3948,10 +4001,15 @@
           <td class="text-sm text-muted nowrap">
             ${formatDateTime(item.created_at)}
           </td>
-          <td style="text-align: center;">
-            <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'individual')" title="${isSent ? 'Mail sent to delegate. Click to send another email.' : 'Send Mail'}">
-              ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
-            </button>
+          <td style="text-align: center; white-space: nowrap;">
+            <div style="display: flex; gap: 0.35rem; justify-content: center; align-items: center;">
+              <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'individual')" title="${isSent ? 'Mail sent to delegate. Click to send another email.' : 'Send Committee Allocation & QR Pass Email'}">
+                ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '✉️ Allocate / Mail'}
+              </button>
+              <a href="/hub?t=${encodeURIComponent(item.public_token || item.id)}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.35rem 0.55rem; text-decoration: none;" title="Open Official QR Pass">
+                🎫 Pass
+              </a>
+            </div>
           </td>
         `;
 
@@ -4037,10 +4095,15 @@
           <td class="text-sm text-muted nowrap">
             ${formatDateTime(item.created_at)}
           </td>
-          <td style="text-align: center;">
-            <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to delegation. Click to send another email.' : 'Send Mail'}">
-              ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
-            </button>
+          <td style="text-align: center; white-space: nowrap;">
+            <div style="display: flex; gap: 0.35rem; justify-content: center; align-items: center;">
+              <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to delegation. Click to send another email.' : 'Send Mail'}">
+                ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
+              </button>
+              <a href="/hub?t=${encodeURIComponent(item.public_token || item.id)}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.35rem 0.55rem; text-decoration: none;" title="Open Delegation QR Pass">
+                🎫 Pass
+              </a>
+            </div>
           </td>
         `;
 
@@ -5152,6 +5215,165 @@
     // Default Starter Presets
     const DEFAULT_MAIL_TEMPLATES = [
       {
+        id: 'tpl-allocation-pass',
+        name: 'Committee & Portfolio Allocation (+ Pass QR)',
+        isPreset: true,
+        subject: "Official Committee & Portfolio Allocation — RNS MUN 2026 | {{name}}",
+        body: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #111113; margin: 0; padding: 24px 16px; line-height: 1.6; }
+    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2.5px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
+    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px 20px 18px 20px; text-align: center; border-bottom: 2.5px solid #000000; }
+    .header-logo { display: block; margin: 0 auto; max-width: 290px; width: 100%; height: auto; border: 0; }
+    .header p { margin: 8px 0 0 0; font-size: 13px; opacity: 0.95; color: #E5A93C; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; }
+    .content { padding: 28px 24px; font-size: 15px; color: #222222; }
+    .salutation { font-size: 18px; font-weight: 800; color: #6C0D2C; margin-bottom: 12px; }
+    .allocation-box { background: #FFFDF9; border: 2px solid #000000; border-radius: 10px; padding: 18px; margin: 20px 0; box-shadow: 3px 3px 0px #000000; }
+    .allocation-title { font-size: 13px; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; border-bottom: 1.5px solid #000000; padding-bottom: 6px; }
+    .allocation-row { margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
+    .allocation-row:last-child { margin-bottom: 0; }
+    .qr-card-email { background: #FFF7EB; border: 2px solid #000000; border-radius: 10px; padding: 20px; text-align: center; margin: 22px 0; box-shadow: 3px 3px 0px #000000; }
+    .pass-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 15px; padding: 12px 26px; border: 2px solid #000000; border-radius: 6px; box-shadow: 3px 3px 0px #000000; margin-top: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .guide-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.5; }
+    .contacts-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 14px; }
+    .contact-item { padding: 4px 0; font-weight: 600; }
+    .contact-item a { color: #6C0D2C; text-decoration: none; font-weight: 700; }
+    .contact-divider { border: 0; border-top: 1px dashed #D5C7B4; margin: 6px 0; }
+    .signoff { margin-top: 24px; font-size: 14.5px; line-height: 1.5; color: #333333; }
+    .logo-wrap { margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #EEEEEE; text-align: center; }
+    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
+      <p>OFFICIAL COMMITTEE &amp; PORTFOLIO ALLOCATION</p>
+    </div>
+    <div class="content">
+      <div class="salutation">Dear {{name}},</div>
+      <p>Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
+      <p>We are delighted to formally announce that your committee and diplomatic portfolio allocation has been officially confirmed for RNS MUN 2026:</p>
+      
+      <!-- Diplomatic Allotment Summary Box -->
+      <div class="allocation-box">
+        <div class="allocation-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
+        <div class="allocation-row">
+          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Delegate Name:</span>
+          <strong style="color: #000000; font-size: 16px; font-weight: 800;">{{name}}</strong>
+        </div>
+        <div class="allocation-row" style="margin-top: 10px;">
+          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Allocated Committee:</span>
+          <strong style="color: #6C0D2C; font-size: 18px; font-weight: 800; display: block;">{{allocated_committee}}</strong>
+        </div>
+        <div class="allocation-row" style="margin-top: 10px;">
+          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Allocated Portfolio / Country:</span>
+          <strong style="color: #000000; font-size: 18px; font-weight: 800; display: block;">{{allocated_portfolio}}</strong>
+        </div>
+        <div class="allocation-row" style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
+          <table style="width: 100%; font-size: 13px;" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="color: #666666; font-weight: 600;">Delegate ID:</td>
+              <td style="text-align: right; font-family: monospace; font-weight: 800; color: #6C0D2C;">#RNSMUN-26-{{registration_id}}</td>
+            </tr>
+            <tr>
+              <td style="color: #666666; font-weight: 600; padding-top: 4px;">Institution:</td>
+              <td style="text-align: right; font-weight: 700; color: #222222; padding-top: 4px;">{{institution}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <p>Your verified Digital Delegate Pass &amp; Checkpoint QR code has been generated. <strong>Please save, screenshot, or bookmark this pass</strong> on your mobile phone before arriving at campus:</p>
+
+      <!-- Scannable QR Credential Card -->
+      <div class="qr-card-email">
+        <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #6C0D2C; margin-bottom: 6px;">
+          YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
+        </div>
+        <p style="margin: 0 0 12px 0; font-size: 13px; color: #555555; line-height: 1.4;">
+          Scan this encrypted QR code at campus security, committee rooms, and dining counters.
+        </p>
+        <div>
+          <img src="{{qr_code_url}}" alt="Delegate Pass QR Code" width="210" height="210" style="display:inline-block; border: 2.5px solid #000000; border-radius: 10px; background: #ffffff; padding: 10px; margin: 6px auto; box-shadow: 2px 2px 0px #000000;" />
+        </div>
+        <div style="margin-top: 10px; font-family: monospace; font-size: 13.5px; font-weight: 800; color: #111111;">
+          ID: #RNSMUN-26-{{registration_id}} &bull; {{allocated_portfolio}}
+        </div>
+        <div>
+          <a href="{{hub_url}}" target="_blank" class="pass-btn">Open Live Delegate Pass &rarr;</a>
+        </div>
+        <div style="margin-top: 10px; font-size: 11.5px; color: #555555; word-break: break-all;">
+          Direct Pass URL: <a href="{{hub_url}}" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">{{hub_url}}</a>
+        </div>
+      </div>
+
+      <!-- Logistics Checkpoint Guide -->
+      <div class="guide-box">
+        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">📋 Important Logistics Pass Instructions:</strong>
+        <p style="margin: 0 0 8px 0;">
+          This individual QR code is required for instantaneous accreditation across all 6 conference stations:
+        </p>
+        <ul style="margin: 0; padding-left: 18px; line-height: 1.6;">
+          <li><strong>Day 1 &amp; Day 2 Gate Entry:</strong> Campus security check-in &amp; kit collection.</li>
+          <li><strong>Midday Repast (Lunch):</strong> Dining hall accreditation for registered delegates.</li>
+          <li><strong>Refreshment Hour:</strong> Evening High Tea &amp; artisanal refreshments.</li>
+        </ul>
+      </div>
+
+      <!-- Dress Code & Rules -->
+      <div class="guide-box" style="background: #FFFDF9;">
+        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">👔 Dress Code &amp; Preparation:</strong>
+        <div style="margin-bottom: 4px;"><strong>Day 1:</strong> Western Business Formal (Suits, Blazers, Formal Shirts &amp; Trousers / Formal Dresses)</div>
+        <div style="margin-bottom: 6px;"><strong>Day 2:</strong> Indian Traditional Attire or Western Business Formal</div>
+        <div style="font-size: 12.5px; color: #555555; margin-top: 6px;">
+          Study Guides and Rules of Procedure are accessible via our official portal. Please review your committee agenda thoroughly before Day 1.
+        </div>
+      </div>
+
+      <p>Should you have any questions regarding your committee, portfolio matrix, or logistics, please reach out to our team:</p>
+      
+      <!-- Contact Details -->
+      <div class="contacts-box">
+        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-item">Adith (Secretariat Lead): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-item">Official Secretariat Email: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
+      </div>
+
+      <p>We eagerly look forward to hosting you for an unforgettable diplomatic summit!</p>
+
+      <div class="signoff">
+        Warm regards,<br>
+        <strong>Core Secretariat of RNS MUN 2026</strong><br>
+        RNSIT MUN Society
+      </div>
+
+      <p style="margin-top: 22px; font-size: 14px; color: #333333; line-height: 1.5; text-align: center;">
+        Follow our Instagram for live updates &amp; announcements &rarr;<br>
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
+      </p>
+
+      <div class="logo-wrap">
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; margin: 0 auto; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
+        </a>
+      </div>
+    </div>
+    <div class="footer">
+      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Channasandra, Bengaluru - 560098<br>Email: mun@rnsit.ac.in &bull; Web: mun.rnsit.ac.in</p>
+    </div>
+  </div>
+</body>
+</html>`,
+        attachments: []
+      },
+      {
         id: 'tpl-welcome-confirmed',
         name: 'Delegate Mail',
         isPreset: true,
@@ -5432,14 +5654,14 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v22_fix_email_logo_cdn_urls';
+    const TEMPLATES_VERSION = 'v24_committee_portfolio_allocation_with_qr';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
       if (stored !== null && storedVersion === TEMPLATES_VERSION) {
         try {
           mailTemplates = JSON.parse(stored);
-          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed')) {
+          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-allocation-pass') || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed')) {
             mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
             saveTemplatesToStorage();
           }
@@ -5719,6 +5941,10 @@
           amount: '₹1,350',
           type: 'External',
           registration_id: 'REG-9102-PES',
+          allocated_committee: 'UNHRC (Human Rights Council)',
+          allocated_portfolio: 'Federal Republic of Germany',
+          hub_url: 'https://mun.rnsit.ac.in/hub?t=01SkYaqPrya001',
+          qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent('https://mun.rnsit.ac.in/hub?t=01SkYaqPrya001'),
           usn: '',
           city: 'Bengaluru',
           roster_table: '',
@@ -5755,6 +5981,10 @@
         phone: '+91 98765 43210',
         committee: 'UNSC — United Nations Security Council',
         portfolio: "People's Republic of China / Kingdom of Bahrain",
+        allocated_committee: 'UNSC — United Nations Security Council',
+        allocated_portfolio: "People's Republic of China",
+        hub_url: 'https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0',
+        qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent('https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0'),
         committee1: 'UNSC — United Nations Security Council',
         portfolio1_1: "People's Republic of China",
         portfolio1_2: 'Kingdom of Bahrain',
@@ -5800,6 +6030,14 @@
 
       const sampleData = getSampleDataForPreset(preset);
       let mergedHtml = interpolateTokens(rawHtml, sampleData);
+
+      // On localhost, allow clicking the button in the preview iframe to open the local /hub pass for instant testing
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        mergedHtml = mergedHtml.replace(
+          new RegExp('https://mun.rnsit.ac.in/hub', 'g'),
+          `${window.location.origin}/hub`
+        );
+      }
 
       // Inject base tag so any relative assets (/assets/...) resolve reliably against the host origin inside about:blank iframe
       if (!mergedHtml.includes('<base ') && mergedHtml.includes('<head>')) {
@@ -6341,8 +6579,32 @@
 
       populateModalTemplateOptions();
 
-      // If opening for delegation, pre-select delegation roster template if available
-      if (modalTargetType === 'delegation') {
+      // Configure Allotment Box and default template
+      if (modalTargetType === 'individual') {
+        const allocTpl = mailTemplates.find(t => t.id === 'tpl-allocation-pass');
+        const select = document.getElementById('send-mail-template-select');
+        if (allocTpl && select) {
+          select.value = allocTpl.id;
+          syncOrRebuildCustomSelect(select);
+        }
+
+        const allocCard = document.getElementById('modal-allotment-config-card');
+        if (allocCard) {
+          allocCard.style.display = 'flex';
+          const commInput = document.getElementById('modal-alloc-committee');
+          const portInput = document.getElementById('modal-alloc-portfolio');
+          const prefDisplay = document.getElementById('modal-pref1-display');
+          const c1 = modalTargetRecord.committee1 || modalTargetRecord.committee || 'None';
+          const p1 = modalTargetRecord.portfolio1_1 || modalTargetRecord.portfolio || 'None';
+          if (commInput) commInput.value = modalTargetRecord.allocated_committee || modalTargetRecord.committee1 || 'UNSC — United Nations Security Council';
+          if (portInput) portInput.value = modalTargetRecord.allocated_portfolio || modalTargetRecord.portfolio1_1 || '';
+          if (prefDisplay) prefDisplay.textContent = `${c1} / ${p1}`;
+        }
+      } else {
+        const allocCard = document.getElementById('modal-allotment-config-card');
+        if (allocCard) allocCard.style.display = 'none';
+
+        // If opening for delegation, pre-select delegation roster template if available
         const dlgTpl = mailTemplates.find(t => t.id === 'tpl-delegation-confirmed' || t.id === 'tpl-delegation-roster-confirmation');
         const select = document.getElementById('send-mail-template-select');
         if (dlgTpl && select) {
@@ -6361,6 +6623,25 @@
       modal.classList.remove('active');
       modalAttachments = [];
       modalTargetRecord = null;
+      const allocCard = document.getElementById('modal-allotment-config-card');
+      if (allocCard) allocCard.style.display = 'none';
+    }
+
+    function onModalAllocationChanged() {
+      if (!modalTargetRecord || modalTargetType !== 'individual') return;
+      const c = (document.getElementById('modal-alloc-committee')?.value || '').trim();
+      const p = (document.getElementById('modal-alloc-portfolio')?.value || '').trim();
+      modalTargetRecord.allocated_committee = c;
+      modalTargetRecord.allocated_portfolio = p;
+
+      // Sync into rawRegistrations so it reflects everywhere
+      const orig = rawRegistrations.find(r => String(r.id) === String(modalTargetRecord.id));
+      if (orig) {
+        orig.allocated_committee = c;
+        orig.allocated_portfolio = p;
+      }
+
+      onModalTemplateSelectChange();
     }
 
     function populateModalTemplateOptions() {
@@ -6437,6 +6718,15 @@
       if (!iframe) return;
 
       let code = document.getElementById('modal-code-textarea').value;
+
+      // On localhost, allow clicking the button in the preview iframe to open the local /hub pass for instant testing
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        code = code.replace(
+          new RegExp('https://mun.rnsit.ac.in/hub', 'g'),
+          `${window.location.origin}/hub`
+        );
+      }
+
       if (!code.includes('<base ') && code.includes('<head>')) {
         code = code.replace('<head>', `<head><base href="${window.location.origin}/">`);
       } else if (!code.includes('<base ')) {
@@ -6590,6 +6880,23 @@
 
         const data = await res.json();
         if (data.success) {
+          // Persist allocation to PostgreSQL and local cache
+          if (modalTargetType === 'individual' && modalTargetRecord && currentSession?.access_token) {
+            fetch('/api/admin-update-status', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${currentSession.access_token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: modalTargetRecord.id,
+                type: 'individual',
+                allocated_committee: modalTargetRecord.allocated_committee,
+                allocated_portfolio: modalTargetRecord.allocated_portfolio
+              })
+            }).catch(e => console.warn('[send-mail] Allocation background save warning:', e.message));
+          }
+
           if (data.logWarning) {
             showToast(`Email dispatched to ${recipient}, but failed to log to history!`, 'warning');
           } else {
@@ -6621,6 +6928,10 @@
     // ─── Dynamic Token Helpers ─────────────────────────────────────
 
     function buildTokenDataFromRecord(item, type) {
+      const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
+      const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}`;
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;
+
       if (type === 'individual') {
         const c1 = item.committee1 || item.committee_pref_1 || item.committee_1 || item.committee || 'None selected';
         const p1_1 = item.portfolio1_1 || item.portfolio_pref_1_1 || item.portfolio_1_1 || item.portfolio1 || item.portfolio || 'None';
@@ -6630,12 +6941,19 @@
         const p2_2 = item.portfolio2_2 || item.portfolio_pref_2_2 || item.portfolio_2_2 || item.portfolio4 || 'None';
         const p1 = [p1_1, p1_2].filter(p => p && p !== 'None').join(', ') || p1_1;
 
+        const allocComm = item.allocated_committee || item.allocatedCommittee || c1 || 'UNODC';
+        const allocPort = item.allocated_portfolio || item.allocatedPortfolio || p1_1 || 'United States of America';
+
         return {
           name: item.name || 'Delegate',
           email: item.email || '',
           phone: item.phone || '',
           committee: item.committee1 || item.committee2 || 'Assigned Committee',
           portfolio: p1 || item.portfolio2_1 || 'General Matrix',
+          allocated_committee: allocComm,
+          allocated_portfolio: allocPort,
+          hub_url: hubUrl,
+          qr_code_url: qrCodeUrl,
           committee1: c1,
           portfolio1_1: p1_1,
           portfolio1_2: p1_2,
@@ -6661,12 +6979,19 @@
         const memberCount = item.member_count || roster.length || '1';
         const sheetUrl = extractDelegationSheetUrl(item) || 'https://docs.google.com/spreadsheets/d/1jel7NFjYw78sDX4P8Bsia0HpozcRcs1SzjpLgY2tw24/copy';
 
+        const allocComm = item.allocated_committee || item.allocatedCommittee || 'Institutional Delegation';
+        const allocPort = item.allocated_portfolio || item.allocatedPortfolio || `${memberCount} Delegates Roster`;
+
         return {
           name: item.head_name || item.delegation_name || 'Delegation Head',
           email: item.email || '',
           phone: item.phone || '',
           committee: 'All Delegation Committees',
           portfolio: `Delegation Size: ${memberCount} Delegates`,
+          allocated_committee: allocComm,
+          allocated_portfolio: allocPort,
+          hub_url: hubUrl,
+          qr_code_url: qrCodeUrl,
           committee1: 'Delegation Committees',
           portfolio1_1: `Allotted to ${memberCount} delegates`,
           portfolio1_2: 'See matrix sheet',
@@ -6698,6 +7023,10 @@
         '{{phone}}': data.phone || '',
         '{{committee}}': data.committee || '',
         '{{portfolio}}': data.portfolio || '',
+        '{{allocated_committee}}': data.allocated_committee || data.committee || '',
+        '{{allocated_portfolio}}': data.allocated_portfolio || data.portfolio || '',
+        '{{hub_url}}': data.hub_url || 'https://mun.rnsit.ac.in/hub',
+        '{{qr_code_url}}': data.qr_code_url || 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp',
         '{{committee1}}': data.committee1 || '',
         '{{committee_pref_1}}': data.committee1 || '',
         '{{portfolio1_1}}': data.portfolio1_1 || '',

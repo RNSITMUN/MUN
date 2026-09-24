@@ -1,0 +1,3751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Scanner & Check-in Portal | RNS MUN 2026</title>
+  <meta name="description" content="Secretariat accreditation and logistics check-in scanner for RNS Model United Nations 2026.">
+  <link rel="icon" type="image/webp" href="/assets/Logos/MUN_logo.webp">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- HTML5-QRCode Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cream: #FFF7EB;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #FFFDF9;
+      --primary: #6C0D2C;
+      --primary-dark: #4A081D;
+      --accent-gold: #E5A93C;
+      --accent-gold-light: #FDF3DC;
+      --text-dark: #111113;
+      --text-muted: #555558;
+      --border-black: #000000;
+      --border-subtle: #E8DFD3;
+      --success-green: #047857;
+      --success-bg: #ECFDF5;
+      --warning-amber: #B45309;
+      --warning-bg: #FFFBEB;
+      --error-red: #B91C1C;
+      --error-bg: #FEF2F2;
+      --shadow-neobrutal: 4px 4px 0px #000000;
+      --shadow-card: 6px 6px 0px #000000;
+      --shadow-sm: 2px 2px 0px #000000;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 1rem 3rem 1rem;
+      background-image: 
+        radial-gradient(var(--border-subtle) 1px, transparent 1px),
+        radial-gradient(var(--border-subtle) 1px, var(--bg-cream) 1px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    /* Top Bar */
+    .scanner-header {
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .brand-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .logout-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 9999px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+    }
+
+    .logout-btn:hover {
+      background: #FEE2E2;
+      border-color: #991B1B;
+      color: #991B1B;
+    }
+
+    /* Main Scanner Container */
+    .scanner-card {
+      width: 100%;
+      max-width: 580px;
+      background: var(--bg-card);
+      border: 2.5px solid var(--border-black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .scanner-ribbon {
+      background: var(--primary);
+      color: #FFF7EB;
+      padding: 0.9rem 1.25rem;
+      border-bottom: 2.5px solid var(--border-black);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scanner-ribbon h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+
+    .scanner-station-pill {
+      background: var(--accent-gold);
+      color: #000000;
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border: 1.5px solid #000;
+      border-radius: 9999px;
+      box-shadow: 1.5px 1.5px 0px #000;
+    }
+
+    /* Content Area */
+    .scanner-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Station Selector Bar - Custom Neobrutalist Architecture */
+    .station-select-box {
+      background: var(--bg-subtle);
+      border: 2.5px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .station-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .station-label-title {
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .station-mode-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1.5px solid #065F46;
+      border-radius: 9999px;
+      padding: 0.18rem 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 1px 1px 0px #000;
+      transition: all 0.2s ease;
+    }
+
+    .station-mode-tag.inspect {
+      background: #FAF5FF;
+      color: #6B21A8;
+      border-color: #6B21A8;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #059669;
+      box-shadow: 0 0 6px #059669;
+      display: inline-block;
+      animation: pulseDot 1.6s infinite;
+    }
+
+    .station-mode-tag.inspect .live-dot {
+      background: #9333EA;
+      box-shadow: 0 0 6px #9333EA;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    /* Custom Trigger Button */
+    .custom-dropdown-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .station-trigger-btn {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 8px;
+      padding: 0.52rem 0.75rem;
+      box-shadow: 2px 2px 0px #000000;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .station-trigger-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+      background: #FFFDF9;
+    }
+
+    .station-trigger-btn.open {
+      border-color: var(--primary);
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .trigger-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      min-width: 0;
+    }
+
+    .trigger-icon-box {
+      width: 30px;
+      height: 30px;
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      background: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+      box-shadow: 1px 1px 0px #000000;
+      transition: transform 0.15s ease;
+    }
+
+    .station-trigger-btn:hover .trigger-icon-box {
+      transform: scale(1.04);
+    }
+
+    .trigger-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      min-width: 0;
+    }
+
+    .trigger-primary-title {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .trigger-sub-title {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: #6B7280;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .trigger-right {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .trigger-tag-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.60rem;
+      font-weight: 700;
+      background: var(--bg-cream);
+      border: 1.2px solid var(--border-black);
+      border-radius: 4px;
+      padding: 0.12rem 0.4rem;
+      color: var(--text-dark);
+      box-shadow: 1px 1px 0px #000;
+      letter-spacing: 0.04em;
+    }
+
+    .trigger-chevron {
+      width: 22px;
+      height: 22px;
+      border: 1.2px solid var(--border-black);
+      border-radius: 4px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      box-shadow: 1px 1px 0px #000;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .station-trigger-btn.open .trigger-chevron {
+      transform: rotate(180deg);
+      background: var(--accent-gold);
+    }
+
+    /* Minimal Professional Dropdown Menu Panel */
+    .station-menu-panel {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0px #000000;
+      overflow-y: auto;
+      max-height: 310px;
+      display: none;
+    }
+
+    .station-menu-panel.open {
+      display: block;
+      animation: menuPop 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes menuPop {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-section-header {
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      border-top: 1px solid #E2E8F0;
+      padding: 0.32rem 0.75rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #475569;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-section-header:first-child {
+      border-top: none;
+    }
+
+    .menu-section-header.utility {
+      background: #FEF3C7;
+      color: #78350F;
+      border-bottom-color: #FDE68A;
+      border-top-color: #FDE68A;
+    }
+
+    .menu-section-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    .station-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.48rem 0.75rem;
+      border-bottom: 1px solid #F1F5F9;
+      cursor: pointer;
+      transition: background 0.12s ease;
+      background: #FFFFFF;
+    }
+
+    .station-option:last-child {
+      border-bottom: none;
+    }
+
+    .station-option:hover {
+      background: #FFFBEB;
+    }
+
+    .station-option.active {
+      background: #F0FDF4;
+    }
+
+    .opt-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 0;
+    }
+
+    .opt-icon-box {
+      width: 26px;
+      height: 26px;
+      border: 1px solid var(--border-black);
+      border-radius: 5px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .station-option.active .opt-icon-box {
+      background: #FEF08A;
+    }
+
+    .opt-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+      min-width: 0;
+    }
+
+    .opt-title {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #1E293B;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .station-option.active .opt-title {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .opt-sub {
+      font-size: 0.66rem;
+      font-weight: 400;
+      color: #64748B;
+    }
+
+    .opt-right {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .opt-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 0.1rem 0.38rem;
+      border-radius: 3px;
+      border: 1px solid var(--border-black);
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .opt-tag.gate { background: #EEF2FF; color: #3730A3; border-color: #3730A3; }
+    .opt-tag.meal { background: #DCFCE7; color: #166534; border-color: #166534; }
+    .opt-tag.tea  { background: #FEF3C7; color: #92400E; border-color: #92400E; }
+    .opt-tag.inspect { background: #F3E8FF; color: #6B21A8; border-color: #6B21A8; }
+
+    .opt-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: transparent;
+      transition: all 0.15s ease;
+    }
+
+    .station-option.active .opt-check {
+      background: #059669;
+      color: #FFFFFF;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    /* 1-Tap Quick Station Chips */
+    .quick-chips-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.15rem;
+    }
+
+    .quick-chips-label {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .quick-station-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .quick-chip {
+      background: #FFFFFF;
+      border: 1.2px solid var(--border-black);
+      border-radius: 5px;
+      padding: 0.22rem 0.48rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 1px 1px 0px #000;
+      transition: all 0.12s ease;
+      font-family: 'Outfit', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .quick-chip:hover {
+      transform: translate(-0.5px, -0.5px);
+      box-shadow: 1.5px 1.5px 0px #000;
+      background: var(--accent-gold-light);
+    }
+
+    .quick-chip.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: #000;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    /* Operational Checkpoint Tallies Dashboard */
+    .operational-stats-card {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .ops-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ops-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .ops-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .ops-subtitle {
+      font-size: 0.64rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .ops-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .ops-live-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1.2px solid #065F46;
+      border-radius: 9999px;
+      padding: 0.15rem 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .btn-ops-refresh {
+      background: #FFFFFF;
+      border: 1.2px solid var(--border-black);
+      border-radius: 5px;
+      padding: 0.18rem 0.48rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 1px 1px 0px #000;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .btn-ops-refresh:hover {
+      background: var(--accent-gold-light);
+      transform: translate(-0.5px, -0.5px);
+    }
+
+    .btn-ops-refresh.spinning .refresh-icon {
+      display: inline-block;
+      animation: spinIcon 0.7s linear infinite;
+    }
+
+    @keyframes spinIcon {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Day Switcher Tabs */
+    .ops-day-tabs {
+      display: flex;
+      gap: 0.35rem;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.2rem;
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .ops-day-tab {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-muted);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .ops-day-tab:hover {
+      background: var(--bg-cream);
+      color: var(--text-dark);
+    }
+
+    .ops-day-tab.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 1px 1px 0px #000;
+      border: 1px solid var(--border-black);
+    }
+
+    /* Metrics 3-Col Grid */
+    .ops-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .ops-stat-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.6rem 0.65rem;
+      box-shadow: 1.5px 1.5px 0px #000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      transition: transform 0.15s ease;
+    }
+
+    .ops-stat-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .ops-stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .ops-stat-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .ops-stat-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      background: #F3F4F6;
+      border: 1px solid #D1D5DB;
+      padding: 0.05rem 0.3rem;
+      border-radius: 9999px;
+      color: var(--text-dark);
+    }
+
+    .ops-stat-number {
+      display: flex;
+      align-items: baseline;
+      gap: 0.2rem;
+      line-height: 1.1;
+    }
+
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .stat-slash {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #9CA3AF;
+    }
+
+    .stat-max {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #6B7280;
+    }
+
+    .ops-progress-track {
+      width: 100%;
+      height: 5px;
+      background: #E5E7EB;
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 0.5px solid rgba(0,0,0,0.1);
+    }
+
+    .ops-progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 9999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .ops-stat-card.entry .ops-progress-fill {
+      background: #2563EB;
+    }
+    .ops-stat-card.lunch .ops-progress-fill {
+      background: #059669;
+    }
+    .ops-stat-card.refreshment .ops-progress-fill {
+      background: #D97706;
+    }
+
+    /* Committee Breakdown Accordion */
+    .ops-breakdown-toggle-btn {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.42rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 1px 1px 0px #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .ops-breakdown-toggle-btn:hover {
+      background: var(--accent-gold-light);
+    }
+
+    .ops-breakdown-toggle-btn .toggle-chevron {
+      font-size: 0.65rem;
+      transition: transform 0.2s ease;
+    }
+
+    .ops-breakdown-toggle-btn.open .toggle-chevron {
+      transform: rotate(180deg);
+    }
+
+    .ops-breakdown-panel {
+      display: none;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 1px 1px 0px #000;
+      margin-top: 0.4rem;
+      animation: menuPop 0.15s ease;
+    }
+
+    .ops-breakdown-panel.open {
+      display: block;
+    }
+
+    .committee-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+    }
+
+    .committee-table th {
+      background: #F8FAFC;
+      border-bottom: 1.5px solid var(--border-black);
+      padding: 0.38rem 0.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #475569;
+      text-align: left;
+    }
+
+    .committee-table th:not(:first-child) {
+      text-align: center;
+    }
+
+    .committee-table td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid #F1F5F9;
+      color: var(--text-dark);
+    }
+
+    .committee-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .committee-table tr:hover td {
+      background: #FFFDF9;
+    }
+
+    .comm-name-cell {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .comm-code-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.64rem;
+      font-weight: 800;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 0.08rem 0.32rem;
+      border-radius: 4px;
+    }
+
+    .comm-val-cell {
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    .comm-val-highlight {
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Camera Viewport */
+    .camera-viewport-wrap {
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #000000;
+      position: relative;
+      min-height: 280px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #reader {
+      width: 100%;
+    }
+
+    #reader video {
+      object-fit: cover !important;
+      border-radius: 6px;
+    }
+
+    .camera-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      border: 2px solid rgba(229, 169, 60, 0.8);
+      border-radius: 12px;
+      pointer-events: none;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+    }
+
+    .camera-reticle::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-gold);
+      box-shadow: 0 0 8px var(--accent-gold);
+      animation: scanSweep 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes scanSweep {
+      0% { top: 0%; }
+      100% { top: 100%; }
+    }
+
+    .camera-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .btn-camera {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .btn-camera:hover {
+      background: var(--bg-cream);
+    }
+
+    /* Scan Result Alert Box */
+    .result-card {
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.65rem;
+      box-shadow: var(--shadow-sm);
+      animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .result-card.success {
+      display: flex;
+      background: var(--success-bg);
+      border-color: #065F46;
+    }
+
+    .result-card.warning {
+      display: flex;
+      background: var(--warning-bg);
+      border-color: #9A3412;
+    }
+
+    .result-card.error {
+      display: flex;
+      background: var(--error-bg);
+      border-color: var(--error-red);
+    }
+
+    .result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .result-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .result-badge {
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      border: 1.5px solid currentColor;
+      white-space: nowrap;
+    }
+
+    .result-details {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.35rem;
+    }
+
+    .btn-result-hub {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: #000;
+      background: #FFFFFF;
+      border: 1.5px solid #000;
+      border-radius: 6px;
+      box-shadow: 1.5px 1.5px 0px #000;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Manual Search Area */
+    /* Manual Search Area */
+    .manual-search-box {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .manual-search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+
+    .manual-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .manual-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .search-input-wrap {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .search-input-container {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon-prefix {
+      position: absolute;
+      left: 0.75rem;
+      font-size: 0.9rem;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.65rem 2rem 0.65rem 2.2rem;
+      font-size: 0.88rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      color: var(--text-dark);
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 6px;
+      box-shadow: 2px 2px 0px #000;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--accent-gold), 2px 2px 0px #000;
+    }
+
+    .btn-clear-search {
+      position: absolute;
+      right: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #E5E7EB;
+      border: 1px solid #9CA3AF;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: #374151;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .btn-clear-search:hover {
+      background: #D1D5DB;
+      color: #111827;
+    }
+
+    .btn-search {
+      padding: 0.65rem 1.1rem;
+      font-size: 0.85rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 6px;
+      box-shadow: 2px 2px 0px #000;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.05s;
+    }
+
+    .btn-search:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-search:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .btn-search:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Feedback Banner */
+    .search-feedback {
+      font-size: 0.8rem;
+      font-weight: 600;
+      min-height: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .search-feedback.loading {
+      color: #4B5563;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .search-feedback.success {
+      color: #047857;
+    }
+
+    .search-feedback.error {
+      color: #B91C1C;
+    }
+
+    .search-feedback.info {
+      color: #1E40AF;
+    }
+
+    /* Interactive Search Results Tray */
+    .search-results-tray {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 8px;
+      box-shadow: 3px 3px 0px #000;
+      padding: 0.75rem;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      animation: fadeInTray 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInTray {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-tray-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5px dashed var(--border-subtle);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .search-result-card {
+      border: 1.5px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.65rem 0.8rem;
+      background: #FFFDF9;
+      box-shadow: 2px 2px 0px #000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: transform 0.1s, box-shadow 0.1s, border-color 0.1s;
+    }
+
+    .search-result-card:hover {
+      border-color: var(--primary);
+      box-shadow: 3px 3px 0px var(--accent-gold);
+    }
+
+    .search-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .search-candidate-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .search-type-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-black);
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .search-type-badge.individual {
+      background: #ECFDF5;
+      color: #065F46;
+    }
+
+    .search-type-badge.delegation {
+      background: #EFF6FF;
+      color: #1E40AF;
+    }
+
+    .search-type-badge.head {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .search-candidate-meta {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.8rem;
+      line-height: 1.3;
+    }
+
+    .search-candidate-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .search-card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+      padding-top: 0.35rem;
+      border-top: 1px solid #F1ECE4;
+    }
+
+    .btn-stamp-direct {
+      background: #047857;
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border: 1.5px solid var(--border-black);
+      border-radius: 5px;
+      box-shadow: 1.5px 1.5px 0px #000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s, transform 0.05s;
+    }
+
+    .btn-stamp-direct:hover {
+      background: #065F46;
+    }
+
+    .btn-stamp-direct:active {
+      transform: translate(1px, 1px);
+      box-shadow: 0.5px 0.5px 0px #000;
+    }
+
+    .btn-view-pass-link {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .btn-view-pass-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Lock Screen Modal */
+    .lock-screen-container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 2.5px solid var(--border-black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .lock-header {
+      background: var(--primary);
+      color: #FFF7EB;
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 2.5px solid var(--border-black);
+    }
+
+    .lock-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .lock-body {
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .lock-pin-input {
+      width: 180px;
+      padding: 0.85rem;
+      font-size: 1.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.3em;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      box-shadow: 3px 3px 0px #000;
+      outline: none;
+    }
+
+    .btn-unlock {
+      width: 100%;
+      max-width: 240px;
+      padding: 0.85rem;
+      font-size: 0.95rem;
+      font-weight: 900;
+      background: var(--accent-gold);
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-unlock:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .lock-error {
+      color: #B91C1C;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+
+    /* Delegation Member Selection Modal */
+    .delegation-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .delegation-modal-overlay.open {
+      display: flex;
+    }
+
+    .delegation-modal-card {
+      background: var(--bg-card);
+      border: 3px solid var(--border-black);
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0px #000000;
+      width: 100%;
+      max-width: 560px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPopIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-ribbon {
+      background: var(--primary);
+      color: #FFF7EB;
+      padding: 1rem 1.25rem;
+      border-bottom: 2.5px solid var(--border-black);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .modal-ribbon-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .modal-ribbon-sub {
+      font-size: 0.76rem;
+      opacity: 0.9;
+      margin-top: 0.2rem;
+      font-weight: 500;
+    }
+
+    .modal-close-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+      color: var(--text-dark);
+      flex-shrink: 0;
+    }
+
+    .modal-close-btn:hover {
+      background: #FEE2E2;
+      color: #991B1B;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    /* Modal Subheader Meta Banner */
+    .modal-meta-box {
+      background: var(--accent-gold-light);
+      border-bottom: 2px solid var(--border-black);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .meta-row-institution {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .meta-row-station {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .modal-station-pill {
+      background: var(--primary);
+      color: #FFF7EB;
+      padding: 0.2rem 0.6rem;
+      border: 1.5px solid var(--border-black);
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      box-shadow: 1.5px 1.5px 0px #000;
+    }
+
+    /* Inline alert inside modal */
+    .modal-alert-banner {
+      display: none;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border-black);
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-alert-banner.success {
+      display: flex;
+      background: var(--success-bg);
+      color: var(--success-green);
+      border-color: var(--success-green);
+    }
+
+    .modal-alert-banner.warning {
+      display: flex;
+      background: var(--warning-bg);
+      color: #9A3412;
+      border-color: #9A3412;
+    }
+
+    /* Modal Scrollable Roster List */
+    .modal-roster-list {
+      padding: 1rem 1.25rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: calc(92vh - 240px);
+      background: var(--bg-cream);
+    }
+
+    .modal-member-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.15s ease;
+    }
+
+    .modal-member-card.stamped {
+      background: #F0FDF4;
+      border-color: #047857;
+    }
+
+    .modal-member-card:hover {
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .member-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-name-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .member-idx-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      background: var(--primary);
+      color: #FFF;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #000;
+      flex-shrink: 0;
+    }
+
+    .member-idx-badge.head {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    .member-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .member-diplomatic-row {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .member-action-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .btn-stamp-member {
+      background: var(--success-green);
+      color: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.12s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .btn-stamp-member:hover {
+      background: #065F46;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .btn-stamp-member:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .member-stamped-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: #DCFCE7;
+      color: #065F46;
+      border: 1.5px solid #065F46;
+      border-radius: 9999px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .btn-member-override {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn-member-override:hover {
+      color: #9A3412;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+      background: #FFFFFF;
+      border-top: 2.5px solid var(--border-black);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .modal-footer-stats {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .btn-modal-close-action {
+      background: #FFFFFF;
+      border: 2px solid var(--border-black);
+      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+    }
+
+    .btn-modal-close-action:hover {
+      background: var(--bg-cream);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Staff Login Lock Screen -->
+  <div id="lock-screen" class="lock-screen-container">
+    <div class="lock-header">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
+      <h2>Staff Scanner Login</h2>
+      <p style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.25rem;">Secretariat Accreditation & Logistics Portal</p>
+    </div>
+    <div class="lock-body">
+      <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-align: center;">
+        Enter Organizer PIN to authenticate a secure staff session:
+      </p>
+      <input type="password" id="entry-pin" class="lock-pin-input" maxlength="6" placeholder="••••" autocomplete="off" inputmode="numeric" />
+      <div id="lock-error-msg" class="lock-error"></div>
+      <button class="btn-unlock" id="btn-submit-pin" onclick="submitPin()">
+        Authenticate Staff
+      </button>
+    </div>
+  </div>
+
+  <!-- Authenticated Scanner View -->
+  <div id="authenticated-view" style="display: none; width: 100%; max-width: 580px;">
+    
+    <header class="scanner-header">
+      <a href="/" class="brand-link">
+        <img src="/assets/Logos/MUN_logo.webp" alt="RNS MUN Logo" class="brand-logo">
+        <div>
+          <div class="brand-title">RNS MUN '26</div>
+          <div class="brand-badge">Secretariat Scanner Portal</div>
+        </div>
+      </a>
+      <button class="logout-btn" onclick="logout()">End Session 🔒</button>
+    </header>
+
+    <div class="scanner-card">
+      
+      <div class="scanner-ribbon">
+        <h1>Organizer QR Scanner</h1>
+        <span class="scanner-station-pill" id="active-station-badge">Gate Entry</span>
+      </div>
+
+      <div class="scanner-body">
+        
+        <!-- Custom Neobrutalist Station Selector -->
+        <div class="station-select-box">
+          <div class="station-label-row">
+            <span class="station-label-title">🎯 ACTIVE CHECKPOINT STATION</span>
+            <span class="station-mode-tag" id="station-mode-indicator">
+              <span class="live-dot"></span> Auto-stamp on scan
+            </span>
+          </div>
+
+          <!-- Custom Dropdown Component -->
+          <div class="custom-dropdown-wrap">
+            <button type="button" class="station-trigger-btn" id="custom-station-trigger" onclick="toggleStationMenu()" aria-haspopup="listbox" aria-expanded="false">
+              <div class="trigger-left">
+                <div class="trigger-icon-box" id="trigger-icon">🚪</div>
+                <div class="trigger-text-group">
+                  <span class="trigger-primary-title" id="trigger-title">Day 1: Gate Entry</span>
+                  <span class="trigger-sub-title" id="trigger-subtitle">Accreditation & Morning Check-in • Day 1 of 2</span>
+                </div>
+              </div>
+              <div class="trigger-right">
+                <span class="trigger-tag-pill" id="trigger-tag">GATE</span>
+                <span class="trigger-chevron" id="trigger-chevron">▼</span>
+              </div>
+            </button>
+
+            <!-- Custom Neobrutalist Menu Panel -->
+            <div class="station-menu-panel" id="custom-station-menu" role="listbox">
+              
+              <!-- Section 1: Day 1 -->
+              <div class="menu-section-header">
+                <span>📅 Day 1 Checkpoints</span>
+                <span class="menu-section-tag">Day 1 of 2</span>
+              </div>
+              
+              <div class="station-option active" data-val="day1_entry" data-icon="🚪" data-title="Day 1: Gate Entry" data-sub="Accreditation & Morning Check-in • Day 1" data-tag="GATE" data-badge="Gate Entry" onclick="selectStation('day1_entry')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">🚪</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 1: Gate Entry</div>
+                    <div class="opt-sub">Accreditation & morning badge validation</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag gate">GATE</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <div class="station-option" data-val="day1_lunch" data-icon="🍽️" data-title="Day 1: Midday Repast" data-sub="Official Lunch Pass • Day 1" data-tag="MEAL" data-badge="Midday Repast" onclick="selectStation('day1_lunch')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">🍽️</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 1: Midday Repast</div>
+                    <div class="opt-sub">Official conference delegate luncheon</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag meal">MEAL</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <div class="station-option" data-val="day1_refreshment" data-icon="☕" data-title="Day 1: Refreshment Hour" data-sub="Evening High Tea & Snacks • Day 1" data-tag="TEA" data-badge="Refreshment Hour" onclick="selectStation('day1_refreshment')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">☕</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 1: Refreshment Hour</div>
+                    <div class="opt-sub">Evening high tea & snacks distribution</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag tea">TEA</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <!-- Section 2: Day 2 -->
+              <div class="menu-section-header">
+                <span>📅 Day 2 Checkpoints</span>
+                <span class="menu-section-tag">Day 2 of 2</span>
+              </div>
+
+              <div class="station-option" data-val="day2_entry" data-icon="🚪" data-title="Day 2: Gate Entry" data-sub="Morning Campus Access • Day 2" data-tag="GATE" data-badge="Gate Entry" onclick="selectStation('day2_entry')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">🚪</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 2: Gate Entry</div>
+                    <div class="opt-sub">Day 2 campus access & roll call</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag gate">GATE</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <div class="station-option" data-val="day2_lunch" data-icon="🍽️" data-title="Day 2: Midday Repast" data-sub="Official Lunch Pass • Day 2" data-tag="MEAL" data-badge="Midday Repast" onclick="selectStation('day2_lunch')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">🍽️</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 2: Midday Repast</div>
+                    <div class="opt-sub">Official conference delegate luncheon</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag meal">MEAL</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <div class="station-option" data-val="day2_refreshment" data-icon="☕" data-title="Day 2: Refreshment Hour" data-sub="Closing Mixer & High Tea • Day 2" data-tag="TEA" data-badge="Refreshment Hour" onclick="selectStation('day2_refreshment')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">☕</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Day 2: Refreshment Hour</div>
+                    <div class="opt-sub">Closing high tea & social mixer</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag tea">TEA</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+              <!-- Section 3: Utility / Inspection -->
+              <div class="menu-section-header utility">
+                <span>🛡️ Verification & Review</span>
+                <span class="menu-section-tag">Read-Only</span>
+              </div>
+
+              <div class="station-option" data-val="inspect" data-icon="🔍" data-title="Inspection Mode" data-sub="View Pass Details without Stamping" data-tag="INSPECT" data-badge="Inspect Mode" onclick="selectStation('inspect')" role="option">
+                <div class="opt-left">
+                  <div class="opt-icon-box">🔍</div>
+                  <div class="opt-text">
+                    <div class="opt-title">Inspection Mode</div>
+                    <div class="opt-sub">Inspect credentials without marking checkpoints</div>
+                  </div>
+                </div>
+                <div class="opt-right">
+                  <span class="opt-tag inspect">AUDIT</span>
+                  <span class="opt-check">✓</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 1-Tap Quick Station Switching Chips -->
+          <div class="quick-chips-wrap">
+            <span class="quick-chips-label">⚡ 1-Tap Station Switching:</span>
+            <div class="quick-station-chips">
+              <button type="button" class="quick-chip active" data-val="day1_entry" onclick="selectStation('day1_entry')">🚪 Gate 1</button>
+              <button type="button" class="quick-chip" data-val="day1_lunch" onclick="selectStation('day1_lunch')">🍽️ Lunch 1</button>
+              <button type="button" class="quick-chip" data-val="day1_refreshment" onclick="selectStation('day1_refreshment')">☕ Tea 1</button>
+              <button type="button" class="quick-chip" data-val="day2_entry" onclick="selectStation('day2_entry')">🚪 Gate 2</button>
+              <button type="button" class="quick-chip" data-val="day2_lunch" onclick="selectStation('day2_lunch')">🍽️ Lunch 2</button>
+              <button type="button" class="quick-chip" data-val="day2_refreshment" onclick="selectStation('day2_refreshment')">☕ Tea 2</button>
+              <button type="button" class="quick-chip" data-val="inspect" onclick="selectStation('inspect')">🔍 Inspect</button>
+            </div>
+          </div>
+
+          <!-- Hidden Native Select for 100% Logic & Test Compatibility -->
+          <select id="station-dropdown" class="station-select-native" style="display: none;" onchange="onStationChanged(this.value)">
+            <option value="day1_entry" selected>🚪 Day 1: Gate Entry (Accreditation & Morning Check-in)</option>
+            <option value="day1_lunch">🍽️ Day 1: Midday Repast (Official Lunch Pass)</option>
+            <option value="day1_refreshment">☕ Day 1: Refreshment Hour (Evening High Tea & Snacks)</option>
+            <option value="day2_entry">🚪 Day 2: Gate Entry (Morning Campus Access)</option>
+            <option value="day2_lunch">🍽️ Day 2: Midday Repast (Official Lunch Pass)</option>
+            <option value="day2_refreshment">☕ Day 2: Refreshment Hour (Closing Mixer & High Tea)</option>
+            <option value="inspect">🔍 Inspection Mode (View Pass details without stamping)</option>
+          </select>
+        </div>
+
+        <!-- Live Operational Checkpoint Tallies -->
+        <div class="operational-stats-card" id="operational-stats-container">
+          <div class="ops-header">
+            <div class="ops-title-group">
+              <span class="ops-title">📊 Operational Checkpoint Tallies</span>
+              <span class="ops-subtitle">Live delegate headcount and station throughput</span>
+            </div>
+            <div class="ops-header-right">
+              <span class="ops-live-pill">
+                <span class="live-dot"></span> Live Sync
+              </span>
+              <button type="button" class="btn-ops-refresh" id="btn-refresh-stats" onclick="loadScanStats(true)" title="Refresh checkpoint counts">
+                <span class="refresh-icon">🔄</span> Sync
+              </button>
+            </div>
+          </div>
+
+          <!-- Day Tabs -->
+          <div class="ops-day-tabs">
+            <button type="button" class="ops-day-tab active" id="tab-day1" onclick="switchStatsDay(1)">
+              📅 Day 1 Checkpoints
+            </button>
+            <button type="button" class="ops-day-tab" id="tab-day2" onclick="switchStatsDay(2)">
+              📅 Day 2 Checkpoints
+            </button>
+          </div>
+
+          <!-- 3-Metric Headcount Cards Grid -->
+          <div class="ops-metrics-grid">
+            <!-- Entry Card -->
+            <div class="ops-stat-card entry">
+              <div class="ops-stat-top">
+                <span class="ops-stat-label">🚪 Entry</span>
+                <span class="ops-stat-pct" id="stat-entry-pct">0%</span>
+              </div>
+              <div class="ops-stat-number">
+                <span class="stat-val" id="stat-entry-count">0</span>
+                <span class="stat-slash">/</span>
+                <span class="stat-max" id="stat-entry-total">240</span>
+              </div>
+              <div class="ops-progress-track">
+                <div class="ops-progress-fill" id="stat-entry-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Lunch Card -->
+            <div class="ops-stat-card lunch">
+              <div class="ops-stat-top">
+                <span class="ops-stat-label">🍽️ Lunch</span>
+                <span class="ops-stat-pct" id="stat-lunch-pct">0%</span>
+              </div>
+              <div class="ops-stat-number">
+                <span class="stat-val" id="stat-lunch-count">0</span>
+                <span class="stat-slash">/</span>
+                <span class="stat-max" id="stat-lunch-total">240</span>
+              </div>
+              <div class="ops-progress-track">
+                <div class="ops-progress-fill" id="stat-lunch-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Refreshment Card -->
+            <div class="ops-stat-card refreshment">
+              <div class="ops-stat-top">
+                <span class="ops-stat-label">☕ Tea</span>
+                <span class="ops-stat-pct" id="stat-refreshment-pct">0%</span>
+              </div>
+              <div class="ops-stat-number">
+                <span class="stat-val" id="stat-refreshment-count">0</span>
+                <span class="stat-slash">/</span>
+                <span class="stat-max" id="stat-refreshment-total">240</span>
+              </div>
+              <div class="ops-progress-track">
+                <div class="ops-progress-fill" id="stat-refreshment-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Committee Breakdown Accordion -->
+          <div class="ops-breakdown-section">
+            <button type="button" class="ops-breakdown-toggle-btn" id="btn-toggle-committee-breakdown" onclick="toggleCommitteeBreakdown()" aria-expanded="false">
+              <span>🏛️ Committee Breakdown <span id="comm-breakdown-sub" style="font-weight: 500; color: var(--text-muted); font-size: 0.65rem;">(Click to view by council)</span></span>
+              <span class="toggle-chevron" id="comm-breakdown-chevron">▼</span>
+            </button>
+            <div class="ops-breakdown-panel" id="committee-breakdown-panel">
+              <table class="committee-table">
+                <thead>
+                  <tr>
+                    <th>Committee</th>
+                    <th>Roster</th>
+                    <th>Entry</th>
+                    <th>Lunch</th>
+                    <th>Tea</th>
+                  </tr>
+                </thead>
+                <tbody id="committee-table-body">
+                  <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading committee tallies...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera Scanner Area -->
+        <div class="camera-viewport-wrap">
+          <div id="reader"></div>
+          <div class="camera-reticle"></div>
+        </div>
+
+        <div class="camera-controls-bar">
+          <button class="btn-camera" onclick="switchCamera()">
+            🔄 Switch Camera
+          </button>
+          <button class="btn-camera" id="btn-toggle-camera" onclick="toggleScannerStream()">
+            ⏸️ Pause Scanner
+          </button>
+        </div>
+
+        <!-- Live Scan Result Feedback Box -->
+        <div id="result-box" class="result-card">
+          <div class="result-top">
+            <h3 class="result-title" id="result-name">Candidate Name</h3>
+            <span class="result-badge" id="result-badge">Stamped</span>
+          </div>
+          <div class="result-details" id="result-details">
+            Allocated Committee & Portfolio info here
+          </div>
+          <div class="result-actions" id="result-actions"></div>
+        </div>
+
+        <!-- Manual Lookup & Accreditation -->
+        <div class="manual-search-box" id="manual-search-section">
+          <div class="manual-search-header">
+            <span class="manual-title">🔍 Manual Search & Accreditation</span>
+            <span class="manual-hint">Delegate Name, Email, Token, or ID</span>
+          </div>
+          <div class="search-input-wrap">
+            <div class="search-input-container">
+              <span class="search-icon-prefix">🔎</span>
+              <input
+                type="text"
+                id="manual-search-input"
+                class="search-input"
+                placeholder="Type name (e.g. Ananya), email (rvce@gmail.com), token, or ID..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button type="button" id="btn-clear-search" class="btn-clear-search" onclick="clearManualSearch()" title="Clear search" style="display: none;">✕</button>
+            </div>
+            <button class="btn-search" id="btn-manual-search" onclick="searchAndCheckIn()">
+              Search & Stamp ➔
+            </button>
+          </div>
+          <div id="search-feedback" class="search-feedback"></div>
+          <div id="search-results-tray" class="search-results-tray" style="display: none;"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Delegation Member Selection Modal -->
+  <div id="delegation-member-modal" class="delegation-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-delegation-name">
+    <div class="delegation-modal-card">
+      <div class="modal-ribbon">
+        <div>
+          <div class="modal-ribbon-title">👥 Delegation Member Check-in</div>
+          <div class="modal-ribbon-sub">Select individual delegate to stamp for this station</div>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeDelegationMemberModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-meta-box">
+        <div class="meta-row-institution">
+          <span>🏛️ <strong id="modal-institution-name">Institution Name</strong></span>
+          <span style="opacity: 0.6;">•</span>
+          <span>🏷️ <strong id="modal-delegation-name">Delegation Name</strong></span>
+        </div>
+        <div class="meta-row-station">
+          <div>
+            <span>🎯 Station: </span>
+            <span class="modal-station-pill" id="modal-station-pill">🍽️ Day 1: Midday Repast</span>
+          </div>
+          <span id="modal-roster-count" style="font-weight: 800; color: var(--primary);">9 Delegates</span>
+        </div>
+      </div>
+
+      <div id="modal-alert-banner" class="modal-alert-banner"></div>
+
+      <div class="modal-roster-list" id="modal-roster-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-footer-stats" id="modal-footer-stats">
+          Stamped 0 of 9 delegates
+        </div>
+        <button type="button" class="btn-modal-close-action" onclick="closeDelegationMemberModal()">
+          Done / Close ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let html5QrCode = null;
+    let currentCameraId = null;
+    let cameraList = [];
+    let isScannerRunning = false;
+    let scanCooldown = false;
+
+    // ─── Persistent Staff Session Management (localStorage with 24-hr Expiry) ───
+    const STAFF_SESSION_KEY = 'rns_staff_session_token';
+    const MAX_SESSION_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours matching server signature
+
+    function getStaffSessionToken() {
+      try {
+        // Retrieve persistent token from localStorage, with fallback/migration from sessionStorage
+        let token = localStorage.getItem(STAFF_SESSION_KEY);
+        if (!token) {
+          token = sessionStorage.getItem(STAFF_SESSION_KEY);
+          if (token) {
+            localStorage.setItem(STAFF_SESSION_KEY, token);
+            sessionStorage.removeItem(STAFF_SESSION_KEY);
+          }
+        }
+
+        if (!token || typeof token !== 'string') return null;
+
+        // Verify 24-hour expiration matching server signature structure: staff.<timestamp>.<salt>.<sig>
+        const parts = token.trim().split('.');
+        if (parts.length === 4 && parts[0] === 'staff') {
+          const timestamp = parseInt(parts[1], 10);
+          if (!isNaN(timestamp)) {
+            const age = Date.now() - timestamp;
+            if (age > MAX_SESSION_AGE_MS || timestamp > Date.now() + 60000) {
+              clearStaffSessionToken();
+              return null;
+            }
+          }
+        }
+
+        return token;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setStaffSessionToken(token) {
+      try {
+        if (token) {
+          localStorage.setItem(STAFF_SESSION_KEY, token);
+          sessionStorage.removeItem(STAFF_SESSION_KEY);
+        } else {
+          clearStaffSessionToken();
+        }
+      } catch (e) {}
+    }
+
+    function clearStaffSessionToken() {
+      try {
+        localStorage.removeItem(STAFF_SESSION_KEY);
+        sessionStorage.removeItem(STAFF_SESSION_KEY);
+      } catch (e) {}
+    }
+
+    // Check Staff Authentication Session
+    function checkAuth() {
+      const sessionToken = getStaffSessionToken();
+      if (sessionToken) {
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('authenticated-view').style.display = 'block';
+        initCameraScanner();
+        loadScanStats();
+      } else {
+        document.getElementById('lock-screen').style.display = 'block';
+        document.getElementById('authenticated-view').style.display = 'none';
+      }
+    }
+
+    // Authenticate PIN securely against Server API (No secret in frontend)
+    async function submitPin() {
+      const pinInput = document.getElementById('entry-pin');
+      const errBox = document.getElementById('lock-error-msg');
+      const btn = document.getElementById('btn-submit-pin');
+      const pin = pinInput.value.trim();
+
+      if (!pin) {
+        errBox.textContent = 'Please enter Organizer PIN.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Verifying...';
+      errBox.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/staff-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success && data.sessionToken) {
+          setStaffSessionToken(data.sessionToken);
+          pinInput.value = '';
+          errBox.style.display = 'none';
+          checkAuth();
+        } else {
+          errBox.textContent = data.error || 'Invalid Organizer PIN.';
+          errBox.style.display = 'block';
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      } catch (e) {
+        errBox.textContent = 'Network error verifying credentials.';
+        errBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Authenticate Staff';
+      }
+    }
+
+    function logout() {
+      if (html5QrCode && isScannerRunning) {
+        html5QrCode.stop().catch(() => {});
+      }
+      clearStaffSessionToken();
+      checkAuth();
+    }
+
+    const STATION_META = {
+      day1_entry: {
+        icon: '🚪',
+        title: 'Day 1: Gate Entry',
+        subtitle: 'Accreditation & Morning Check-in • Day 1 of 2',
+        tag: 'GATE',
+        badge: 'Gate Entry'
+      },
+      day1_lunch: {
+        icon: '🍽️',
+        title: 'Day 1: Midday Repast',
+        subtitle: 'Official Lunch Pass • Day 1 of 2',
+        tag: 'MEAL',
+        badge: 'Midday Repast'
+      },
+      day1_refreshment: {
+        icon: '☕',
+        title: 'Day 1: Refreshment Hour',
+        subtitle: 'Evening High Tea & Snacks • Day 1 of 2',
+        tag: 'TEA',
+        badge: 'Refreshment Hour'
+      },
+      day2_entry: {
+        icon: '🚪',
+        title: 'Day 2: Gate Entry',
+        subtitle: 'Morning Campus Access • Day 2 of 2',
+        tag: 'GATE',
+        badge: 'Gate Entry'
+      },
+      day2_lunch: {
+        icon: '🍽️',
+        title: 'Day 2: Midday Repast',
+        subtitle: 'Official Lunch Pass • Day 2 of 2',
+        tag: 'MEAL',
+        badge: 'Midday Repast'
+      },
+      day2_refreshment: {
+        icon: '☕',
+        title: 'Day 2: Refreshment Hour',
+        subtitle: 'Closing Mixer & High Tea • Day 2 of 2',
+        tag: 'TEA',
+        badge: 'Refreshment Hour'
+      },
+      inspect: {
+        icon: '🔍',
+        title: 'Inspection Mode',
+        subtitle: 'View Pass Details without Stamping',
+        tag: 'INSPECT',
+        badge: 'Inspect Mode'
+      }
+    };
+
+    function toggleStationMenu() {
+      const menu = document.getElementById('custom-station-menu');
+      const trigger = document.getElementById('custom-station-trigger');
+      if (!menu || !trigger) return;
+
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) {
+        closeStationMenu();
+      } else {
+        menu.classList.add('open');
+        trigger.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function closeStationMenu() {
+      const menu = document.getElementById('custom-station-menu');
+      const trigger = document.getElementById('custom-station-trigger');
+      if (menu) menu.classList.remove('open');
+      if (trigger) {
+        trigger.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function selectStation(val) {
+      const select = document.getElementById('station-dropdown');
+      if (select) {
+        select.value = val;
+      }
+      onStationChanged(val);
+      closeStationMenu();
+    }
+
+    function onStationChanged(val) {
+      const meta = STATION_META[val] || STATION_META.day1_entry;
+      
+      // 1. Header Ribbon Badge
+      const badge = document.getElementById('active-station-badge');
+      if (badge) badge.textContent = meta.badge;
+
+      // 2. Custom Trigger Button
+      const triggerIcon = document.getElementById('trigger-icon');
+      const triggerTitle = document.getElementById('trigger-title');
+      const triggerSubtitle = document.getElementById('trigger-subtitle');
+      const triggerTag = document.getElementById('trigger-tag');
+      if (triggerIcon) triggerIcon.textContent = meta.icon;
+      if (triggerTitle) triggerTitle.textContent = meta.title;
+      if (triggerSubtitle) triggerSubtitle.textContent = meta.subtitle;
+      if (triggerTag) triggerTag.textContent = meta.tag;
+
+      // 3. Dropdown Menu Highlights
+      document.querySelectorAll('.station-option').forEach(opt => {
+        if (opt.getAttribute('data-val') === val) {
+          opt.classList.add('active');
+        } else {
+          opt.classList.remove('active');
+        }
+      });
+
+      // 4. Quick Chips Highlights
+      document.querySelectorAll('.quick-chip').forEach(chip => {
+        if (chip.getAttribute('data-val') === val) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      // 5. Mode Indicator Tag
+      const modeTag = document.getElementById('station-mode-indicator');
+      if (modeTag) {
+        if (val === 'inspect') {
+          modeTag.className = 'station-mode-tag inspect';
+          modeTag.innerHTML = '<span class="live-dot"></span> Inspection Only (No Stamp)';
+        } else {
+          modeTag.className = 'station-mode-tag';
+          modeTag.innerHTML = '<span class="live-dot"></span> Auto-stamp on scan';
+        }
+      }
+
+      // Auto-align operational tallies day tab if user selects a specific day station
+      if (val.startsWith('day1')) {
+        switchStatsDay(1);
+      } else if (val.startsWith('day2')) {
+        switchStatsDay(2);
+      }
+    }
+
+    // Close menu or modal when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-dropdown-wrap')) {
+        closeStationMenu();
+      }
+      if (e.target.classList.contains('delegation-modal-overlay')) {
+        closeDelegationMemberModal();
+      }
+    });
+
+    // Close menu or modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeStationMenu();
+        closeDelegationMemberModal();
+      }
+    });
+
+    // Initialize Camera Scanner
+    async function initCameraScanner() {
+      try {
+        if (!html5QrCode) {
+          html5QrCode = new Html5Qrcode("reader");
+        }
+        const devices = await Html5Qrcode.getCameras();
+
+        if (devices && devices.length) {
+          cameraList = devices;
+          // Prefer back/environment camera on mobile
+          const backCam = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
+          currentCameraId = backCam ? backCam.id : devices[0].id;
+          startScannerWithCamera(currentCameraId);
+        } else {
+          showErrorResult('Camera Error', 'No cameras detected on this device.');
+        }
+      } catch (err) {
+        console.error('Camera initialization error:', err);
+        showErrorResult('Camera Access Required', 'Please grant camera permission to scan delegate passes.');
+      }
+    }
+
+    function startScannerWithCamera(cameraId) {
+      if (!html5QrCode) return;
+      const config = { fps: 15, qrbox: { width: 220, height: 220 } };
+
+      html5QrCode.start(
+        cameraId,
+        config,
+        (decodedText) => onQrCodeDetected(decodedText),
+        (errorMessage) => { /* per-frame blips ignored */ }
+      ).then(() => {
+        isScannerRunning = true;
+        document.getElementById('btn-toggle-camera').textContent = '⏸️ Pause Scanner';
+      }).catch(err => {
+        console.error('Failed to start scanner:', err);
+      });
+    }
+
+    function toggleScannerStream() {
+      if (!html5QrCode) return;
+      const btn = document.getElementById('btn-toggle-camera');
+      if (isScannerRunning) {
+        html5QrCode.stop().then(() => {
+          isScannerRunning = false;
+          btn.textContent = '▶️ Resume Scanner';
+        });
+      } else {
+        startScannerWithCamera(currentCameraId || cameraList[0]?.id);
+      }
+    }
+
+    function switchCamera() {
+      if (cameraList.length < 2) {
+        alert('Only one camera is detected on this device.');
+        return;
+      }
+      const nextIdx = (cameraList.findIndex(c => c.id === currentCameraId) + 1) % cameraList.length;
+      currentCameraId = cameraList[nextIdx].id;
+
+      if (isScannerRunning) {
+        html5QrCode.stop().then(() => {
+          startScannerWithCamera(currentCameraId);
+        });
+      }
+    }
+
+    // Parse Scanned Text into Token or ID
+    function parseScanPayload(rawText) {
+      if (!rawText) return null;
+      const text = rawText.trim();
+
+      try {
+        if (text.includes('/hub')) {
+          const url = new URL(text.startsWith('http') ? text : 'https://' + text);
+          const t = url.searchParams.get('t');
+          const m = url.searchParams.get('m') ?? url.searchParams.get('member');
+          const memberIndex = (m !== null && m !== undefined && m !== '') ? parseInt(m, 10) : undefined;
+          if (t) return { token: t, memberIndex };
+          const id = url.searchParams.get('id');
+          const type = url.searchParams.get('type') || 'individual';
+          if (id) return { id, type, memberIndex };
+        }
+      } catch (e) {}
+
+      // If text specifies delegation prefix, e.g. "del 47", "del_47", "delegation 47"
+      const delMatch = text.match(/^(?:del|delegation)[-_:\s]*(\d+)$/i);
+      if (delMatch) {
+        return { id: delMatch[1], type: 'delegation' };
+      }
+
+      // If text specifies individual prefix, e.g. "ind 47", "del-id 47"
+      const indMatch = text.match(/^(?:ind|individual|delegate)[-_:\s]*(\d+)$/i);
+      if (indMatch) {
+        return { id: indMatch[1], type: 'individual' };
+      }
+
+      // If 14-char alphanumeric string, treat as token
+      if (/^[a-zA-Z0-9]{10,24}$/.test(text) && !/^\d+$/.test(text)) {
+        return { token: text };
+      }
+
+      // If pure digits, return id with type 'auto' so processCheckIn resolves correctly
+      const digitsOnly = text.replace(/[^0-9]/g, '');
+      if (digitsOnly) {
+        return { id: digitsOnly, type: 'auto' };
+      }
+
+      return null;
+    }
+
+    // Handle Detected QR code
+    async function onQrCodeDetected(decodedText) {
+      if (scanCooldown) return;
+      scanCooldown = true;
+      setTimeout(() => { scanCooldown = false; }, 1800); // 1.8s cooldown
+
+      const payload = parseScanPayload(decodedText);
+      if (!payload || (!payload.token && !payload.id)) {
+        showErrorResult('Invalid QR Code', 'The scanned QR code is not recognized as an official RNS MUN 2026 pass.');
+        return;
+      }
+
+      await processCheckIn(payload);
+    }
+
+    let activeModalCandidate = null;
+    let activeModalStation = null;
+    let activeModalPayload = null;
+
+    function formatTime(isoStr) {
+      if (!isoStr) return '';
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      } catch (e) {
+        return '';
+      }
+    }
+
+    // Process Check-in & Station Accreditation
+    async function processCheckIn(payload) {
+      const sessionToken = getStaffSessionToken();
+      if (!sessionToken) {
+        logout();
+        return;
+      }
+
+      const activeStation = document.getElementById('station-dropdown').value;
+
+      try {
+        // Step 1: Fetch delegate profile
+        let candidate = null;
+
+        if (payload.token) {
+          const hubRes = await fetch(`/api/hub-data?t=${encodeURIComponent(payload.token)}`, {
+            headers: { 'Authorization': `Bearer ${sessionToken}` }
+          });
+          if (hubRes.status === 401) { logout(); return; }
+          candidate = await hubRes.json();
+        } else if (payload.type === 'auto') {
+          // Check individual first
+          let hubRes = await fetch(`/api/hub-data?id=${encodeURIComponent(payload.id)}&type=individual`, {
+            headers: { 'Authorization': `Bearer ${sessionToken}` }
+          });
+          if (hubRes.status === 401) { logout(); return; }
+          let cData = await hubRes.json();
+          if (cData && cData.success) {
+            candidate = cData;
+          } else {
+            // Check delegation
+            hubRes = await fetch(`/api/hub-data?id=${encodeURIComponent(payload.id)}&type=delegation`, {
+              headers: { 'Authorization': `Bearer ${sessionToken}` }
+            });
+            if (hubRes.status === 401) { logout(); return; }
+            candidate = await hubRes.json();
+          }
+        } else {
+          const hubRes = await fetch(`/api/hub-data?id=${encodeURIComponent(payload.id)}&type=${encodeURIComponent(payload.type || 'individual')}`, {
+            headers: { 'Authorization': `Bearer ${sessionToken}` }
+          });
+          if (hubRes.status === 401) { logout(); return; }
+          candidate = await hubRes.json();
+        }
+
+        if (!candidate.success) {
+          showErrorResult('Record Not Found', candidate.error || 'No delegate found for this credential.');
+          return;
+        }
+
+        // ─── Institutional Delegation Branching ──────────────────────
+        if (candidate.type === 'delegation') {
+          activeModalCandidate = candidate;
+          activeModalPayload = payload;
+          activeModalStation = activeStation;
+
+          if (activeStation === 'inspect') {
+            showDelegationInspectionProfile(candidate, payload);
+          } else {
+            openDelegationMemberModal(candidate, activeStation, payload);
+            if (payload.autoStamp && payload.memberIndex !== undefined) {
+              stampDelegationMember(payload.memberIndex, false);
+            }
+          }
+          return;
+        }
+
+        // ─── Individual Delegate Branching ───────────────────────────
+        if (activeStation === 'inspect') {
+          showCandidateProfile(candidate, 'Inspected', 'success');
+          return;
+        }
+
+        // Step 2: Update Checkpoint for current station (Individual delegate)
+        const updateRes = await fetch('/api/update-checkpoint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionToken}`
+          },
+          body: JSON.stringify({
+            token: payload.token,
+            id: payload.id,
+            type: payload.type,
+            checkpointKey: activeStation,
+            status: true,
+            staffName: 'Secretariat Staff'
+          })
+        });
+
+        if (updateRes.status === 401) {
+          alert('Staff session expired. Please re-authenticate.');
+          logout();
+          return;
+        }
+
+        const result = await updateRes.json();
+
+        if (result.duplicate) {
+          showWarningResult(candidate, result.message, activeStation, payload);
+          return;
+        }
+
+        if (result.success) {
+          showSuccessResult(candidate, activeStation, payload);
+          loadScanStats();
+        } else {
+          showErrorResult('Check-in Failed', result.error || 'Server rejected check-in.');
+        }
+
+      } catch (err) {
+        showErrorResult('Network Error', 'Could not reach server: ' + err.message);
+      }
+    }
+
+    // ─── Delegation Member Selection Modal Handlers ─────────────────
+    function openDelegationMemberModal(candidate, stationKey, payload) {
+      activeModalCandidate = candidate;
+      activeModalStation = stationKey;
+      activeModalPayload = payload;
+
+      const modal = document.getElementById('delegation-member-modal');
+      const instNameEl = document.getElementById('modal-institution-name');
+      const delNameEl = document.getElementById('modal-delegation-name');
+      const stationPillEl = document.getElementById('modal-station-pill');
+      const rosterCountEl = document.getElementById('modal-roster-count');
+      const alertBanner = document.getElementById('modal-alert-banner');
+
+      if (alertBanner) {
+        alertBanner.className = 'modal-alert-banner';
+        alertBanner.innerHTML = '';
+        alertBanner.style.display = 'none';
+      }
+
+      const delName = candidate.delegationName || candidate.name;
+      if (instNameEl) instNameEl.textContent = candidate.institution || 'Institutional Representative';
+      if (delNameEl) delNameEl.textContent = delName;
+      
+      const meta = STATION_META[stationKey] || { title: stationKey, icon: '🎯' };
+      if (stationPillEl) stationPillEl.textContent = `${meta.icon || '🎯'} ${meta.title || stationKey}`;
+      
+      const count = Array.isArray(candidate.roster) ? candidate.roster.length : 0;
+      if (rosterCountEl) rosterCountEl.textContent = `${count} Delegates`;
+
+      renderDelegationModalRoster();
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+
+      // Auto-scroll and highlight if a specific member was scanned or deep-linked
+      if (payload && payload.memberIndex !== undefined) {
+        setTimeout(() => {
+          const card = document.getElementById(`modal-card-m-${payload.memberIndex}`);
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.style.borderColor = 'var(--primary)';
+            card.style.boxShadow = '0 0 0 3px var(--accent-gold), 4px 4px 0px #000';
+            setTimeout(() => {
+              card.style.borderColor = '';
+              card.style.boxShadow = '';
+            }, 3200);
+          }
+        }, 120);
+      }
+    }
+
+    function closeDelegationMemberModal() {
+      const modal = document.getElementById('delegation-member-modal');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    function renderDelegationModalRoster() {
+      const listContainer = document.getElementById('modal-roster-list');
+      const statsEl = document.getElementById('modal-footer-stats');
+      if (!listContainer || !activeModalCandidate) return;
+
+      const roster = activeModalCandidate.roster || [];
+      const stationKey = activeModalStation;
+      const isInspect = stationKey === 'inspect';
+      let stampedCount = 0;
+
+      let html = '';
+
+      roster.forEach((m, idx) => {
+        const cp = m.checkpoints?.[stationKey] || { redeemed: false };
+        const isRedeemed = !isInspect && !!cp.redeemed;
+        if (isRedeemed) stampedCount++;
+
+        const isHead = idx === 0;
+        const timeStr = isRedeemed ? formatTime(cp.timestamp) : '';
+
+        html += `
+          <div class="modal-member-card ${isRedeemed ? 'stamped' : ''}" id="modal-card-m-${idx}">
+            <div class="member-info-col">
+              <div class="member-name-row">
+                <span class="member-idx-badge ${isHead ? 'head' : ''}">
+                  ${isHead ? '👑 HEAD • #1' : `#${idx + 1}`}
+                </span>
+                <span class="member-name" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</span>
+              </div>
+              <div class="member-diplomatic-row">
+                <div><strong>🇺🇳 Committee:</strong> ${escapeHtml(m.committee || 'Assigned Committee')}</div>
+                <div><strong>🏷️ Portfolio:</strong> ${escapeHtml(m.portfolio || 'Assigned Portfolio')}</div>
+              </div>
+            </div>
+
+            <div class="member-action-col">
+              ${isInspect ? `
+                <span class="member-stamped-badge" style="background:#F3F4F6; color:#4B5563; border-color:#9CA3AF;">
+                  Delegate #${idx + 1}
+                </span>
+              ` : isRedeemed ? `
+                <span class="member-stamped-badge">
+                  ✓ Stamped ${timeStr}
+                </span>
+                <button type="button" class="btn-member-override" onclick="stampDelegationMember(${idx}, true)">
+                  Force Re-stamp
+                </button>
+              ` : `
+                <button type="button" class="btn-stamp-member" id="btn-stamp-m-${idx}" onclick="stampDelegationMember(${idx}, false)">
+                  Stamp Pass ➔
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      });
+
+      listContainer.innerHTML = html;
+
+      if (statsEl) {
+        if (isInspect) {
+          statsEl.textContent = `Inspection view: ${roster.length} delegates registered`;
+        } else {
+          statsEl.textContent = `Stamped ${stampedCount} of ${roster.length} delegates for this station`;
+        }
+      }
+    }
+
+    async function stampDelegationMember(memberIndex, force = false) {
+      if (!activeModalCandidate) return;
+
+      const sessionToken = getStaffSessionToken();
+      if (!sessionToken) {
+        alert('Session expired. Please log in again.');
+        logout();
+        return;
+      }
+
+      const btn = document.getElementById(`btn-stamp-m-${memberIndex}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Stamping...';
+      }
+
+      const alertBanner = document.getElementById('modal-alert-banner');
+      if (alertBanner) alertBanner.style.display = 'none';
+
+      const stationKey = activeModalStation;
+
+      try {
+        const res = await fetch('/api/update-checkpoint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionToken}`
+          },
+          body: JSON.stringify({
+            token: activeModalCandidate.token || activeModalPayload?.token,
+            id: activeModalCandidate.rawId || activeModalPayload?.id,
+            type: 'delegation',
+            memberIndex: memberIndex,
+            checkpointKey: stationKey,
+            status: true,
+            force: force,
+            staffName: 'Secretariat Staff'
+          })
+        });
+
+        if (res.status === 401) {
+          alert('Staff session expired. Please re-authenticate.');
+          logout();
+          return;
+        }
+
+        const result = await res.json();
+
+        if (result.duplicate && !force) {
+          if (alertBanner) {
+            alertBanner.className = 'modal-alert-banner warning';
+            alertBanner.innerHTML = `
+              <span>⚠️ Checkpoint was already redeemed earlier for ${escapeHtml(result.delegateName)}!</span>
+              <button type="button" class="btn-member-override" style="margin-left: 8px; color: #7C2D12;" onclick="stampDelegationMember(${memberIndex}, true)">
+                Click here to force stamp
+              </button>
+            `;
+            alertBanner.style.display = 'flex';
+          }
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Stamp Pass ➔';
+          }
+          return;
+        }
+
+        if (result.success) {
+          // Update in-memory roster checkpoints for this individual member
+          if (!activeModalCandidate.roster[memberIndex].checkpoints) {
+            activeModalCandidate.roster[memberIndex].checkpoints = {};
+          }
+          activeModalCandidate.roster[memberIndex].checkpoints[stationKey] = {
+            redeemed: true,
+            timestamp: result.redeemedAt,
+            by: result.redeemedBy || 'Secretariat Staff'
+          };
+
+          // Show in-modal banner
+          if (alertBanner) {
+            alertBanner.className = 'modal-alert-banner success';
+            alertBanner.innerHTML = `
+              ✓ Stamped <strong>${escapeHtml(result.delegateName)}</strong> (${escapeHtml(result.allocatedPortfolio || 'Delegate')}) for ${escapeHtml(STATION_META[stationKey]?.title || stationKey)}!
+            `;
+            alertBanner.style.display = 'flex';
+          }
+
+          // Re-render modal list
+          renderDelegationModalRoster();
+
+          // Also update main view #result-box
+          showDelegationMemberSuccessResult(activeModalCandidate, memberIndex, stationKey, activeModalPayload, result);
+          loadScanStats();
+        } else {
+          if (alertBanner) {
+            alertBanner.className = 'modal-alert-banner warning';
+            alertBanner.textContent = `❌ ${result.error || 'Server rejected check-in'}`;
+            alertBanner.style.display = 'flex';
+          }
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Stamp Pass ➔';
+          }
+        }
+      } catch (err) {
+        if (alertBanner) {
+          alertBanner.className = 'modal-alert-banner warning';
+          alertBanner.textContent = `Network error: ${err.message}`;
+          alertBanner.style.display = 'flex';
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Stamp Pass ➔';
+        }
+      }
+    }
+
+    function showDelegationMemberSuccessResult(candidate, memberIndex, stationKey, payload, result) {
+      const card = document.getElementById('result-box');
+      card.className = 'result-card success';
+
+      const stationName = STATION_META[stationKey]?.title || stationKey;
+      const member = candidate.roster[memberIndex] || {};
+      const delName = candidate.delegationName || candidate.name;
+      const targetName = result.delegateName || member.name;
+
+      document.getElementById('result-name').textContent = targetName;
+      
+      const badge = document.getElementById('result-badge');
+      badge.textContent = '✅ Stamped';
+      badge.style.color = '#065F46';
+
+      const passLink = candidate.passUrl || `/hub?t=${candidate.token || payload?.token}`;
+
+      document.getElementById('result-details').innerHTML = `
+        <div><strong>🏛️ Institution:</strong> ${escapeHtml(candidate.institution)}</div>
+        <div><strong>🏷️ Delegation:</strong> ${escapeHtml(delName)}</div>
+        <div><strong>👤 Individual Delegate:</strong> ${escapeHtml(targetName)} (Member #${memberIndex + 1})</div>
+        <div><strong>🇺🇳 Committee:</strong> ${escapeHtml(result.allocatedCommittee || member.committee || 'Assigned Committee')}</div>
+        <div><strong>🏷️ Portfolio:</strong> ${escapeHtml(result.allocatedPortfolio || member.portfolio || 'Assigned Portfolio')}</div>
+        <div style="margin-top: 4px; color: #065F46; font-weight: 800;">
+          ✓ Successfully checked in at: ${escapeHtml(stationName)} (${new Date().toLocaleTimeString()})
+        </div>
+      `;
+
+      document.getElementById('result-actions').innerHTML = `
+        <button type="button" class="btn-result-hub" style="background: var(--primary); color: #FFF; cursor: pointer;" onclick="openDelegationMemberModal(activeModalCandidate, '${stationKey}', activeModalPayload)">
+          👥 Stamp Another Member from this Team
+        </button>
+        <a href="${passLink}" target="_blank" class="btn-result-hub">
+          Open Official Pass ↗
+        </a>
+      `;
+    }
+
+    function showDelegationInspectionProfile(candidate, payload) {
+      const card = document.getElementById('result-box');
+      card.className = 'result-card success';
+
+      const delName = candidate.delegationName || candidate.name;
+      document.getElementById('result-name').textContent = delName;
+      const badge = document.getElementById('result-badge');
+      badge.textContent = 'Delegation Pass';
+      badge.style.color = '#000';
+
+      const passLink = candidate.passUrl || `/hub?t=${candidate.token || payload?.token}`;
+      const rosterCount = Array.isArray(candidate.roster) ? candidate.roster.length : 0;
+
+      document.getElementById('result-details').innerHTML = `
+        <div><strong>🏛️ Institution:</strong> ${escapeHtml(candidate.institution)}</div>
+        <div><strong>🏷️ Delegation Name:</strong> ${escapeHtml(delName)}</div>
+        <div><strong>👥 Team Size:</strong> ${rosterCount} Registered Delegates</div>
+        <div><strong>👑 Delegation Head:</strong> ${escapeHtml(candidate.headName || candidate.name)}</div>
+        <div style="margin-top: 4px; color: #4338CA; font-weight: 800;">
+          ℹ️ Ready for checkpoint stamping. Change station above or click below to inspect roster.
+        </div>
+      `;
+
+      document.getElementById('result-actions').innerHTML = `
+        <button type="button" class="btn-result-hub" style="background: var(--primary); color: #FFF; cursor: pointer;" onclick="openDelegationMemberModal(activeModalCandidate, 'inspect', activeModalPayload)">
+          👥 Inspect Team Roster (${rosterCount} Delegates)
+        </button>
+        <a href="${passLink}" target="_blank" class="btn-result-hub">
+          Open Official Pass ↗
+        </a>
+      `;
+    }
+
+    function showSuccessResult(candidate, stationKey, payload) {
+      const card = document.getElementById('result-box');
+      card.className = 'result-card success';
+
+      const stationName = document.getElementById('station-dropdown').selectedOptions[0].text.split('(')[0];
+      document.getElementById('result-name').textContent = candidate.name;
+      
+      const badge = document.getElementById('result-badge');
+      badge.textContent = '✅ Stamped';
+      badge.style.color = '#065F46';
+
+      const passLink = candidate.passUrl || `/hub?t=${candidate.token || payload.token}`;
+
+      document.getElementById('result-details').innerHTML = `
+        <div><strong>🏛️ Institution:</strong> ${escapeHtml(candidate.institution)}</div>
+        <div><strong>🇺🇳 Committee:</strong> ${escapeHtml(candidate.allocatedCommittee)}</div>
+        <div><strong>🏷️ Portfolio:</strong> ${escapeHtml(candidate.allocatedPortfolio)}</div>
+        <div style="margin-top: 4px; color: #065F46; font-weight: 800;">
+          ✓ Successfully checked in at: ${stationName} (${new Date().toLocaleTimeString()})
+        </div>
+      `;
+
+      document.getElementById('result-actions').innerHTML = `
+        <a href="${passLink}" target="_blank" class="btn-result-hub">
+          Open Official Pass ↗
+        </a>
+      `;
+    }
+
+    function showWarningResult(candidate, warningMsg, stationKey, payload) {
+      const card = document.getElementById('result-box');
+      card.className = 'result-card warning';
+
+      document.getElementById('result-name').textContent = candidate.name;
+      const badge = document.getElementById('result-badge');
+      badge.textContent = '⚠️ Already Redeemed';
+      badge.style.color = '#B45309';
+
+      const passLink = candidate.passUrl || `/hub?t=${candidate.token || payload.token}`;
+
+      document.getElementById('result-details').innerHTML = `
+        <div><strong>🏛️ Institution:</strong> ${escapeHtml(candidate.institution)}</div>
+        <div><strong>🇺🇳 Committee:</strong> ${escapeHtml(candidate.allocatedCommittee)}</div>
+        <div style="color: #9A3412; font-weight: 800; margin-top: 6px; background: #FFEDD5; padding: 6px 10px; border-radius: 6px;">
+          ${escapeHtml(warningMsg)}
+        </div>
+      `;
+
+      document.getElementById('result-actions').innerHTML = `
+        <a href="${passLink}" target="_blank" class="btn-result-hub">
+          View Pass
+        </a>
+        <button class="btn-result-hub" style="background:#B45309; color:#FFF; cursor:pointer;" onclick="forceOverrideCheckin('${payload.token || ''}', '${payload.id || ''}', '${payload.type || 'individual'}', '${stationKey}')">
+          Force Override Stamp
+        </button>
+      `;
+    }
+
+    async function forceOverrideCheckin(token, id, type, stationKey) {
+      const sessionToken = getStaffSessionToken();
+      if (!sessionToken) return logout();
+
+      try {
+        const res = await fetch('/api/update-checkpoint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionToken}`
+          },
+          body: JSON.stringify({
+            token,
+            id,
+            type,
+            checkpointKey: stationKey,
+            status: true,
+            force: true,
+            staffName: 'Secretariat Staff (Override)'
+          })
+        });
+        const d = await res.json();
+        if (d.success) {
+          alert('Checkpoint stamped with override!');
+          processCheckIn({ token, id, type });
+        } else {
+          alert(d.error || 'Override failed.');
+        }
+      } catch (e) {
+        alert('Network error during override.');
+      }
+    }
+
+    function showCandidateProfile(candidate, label, theme) {
+      const card = document.getElementById('result-box');
+      card.className = `result-card ${theme}`;
+
+      document.getElementById('result-name').textContent = candidate.name;
+      const badge = document.getElementById('result-badge');
+      badge.textContent = label;
+      badge.style.color = '#000';
+
+      const passLink = candidate.passUrl || `/hub?t=${candidate.token}`;
+
+      document.getElementById('result-details').innerHTML = `
+        <div><strong>🏛️ Institution:</strong> ${escapeHtml(candidate.institution)}</div>
+        <div><strong>🇺🇳 Committee:</strong> ${escapeHtml(candidate.allocatedCommittee)}</div>
+        <div><strong>🏷️ Portfolio:</strong> ${escapeHtml(candidate.allocatedPortfolio)}</div>
+      `;
+
+      document.getElementById('result-actions').innerHTML = `
+        <a href="${passLink}" target="_blank" class="btn-result-hub">
+          Open Pass Details ↗
+        </a>
+      `;
+    }
+
+    function showErrorResult(title, msg) {
+      const card = document.getElementById('result-box');
+      card.className = 'result-card error';
+
+      document.getElementById('result-name').textContent = title;
+      const badge = document.getElementById('result-badge');
+      badge.textContent = '❌ Failed';
+      badge.style.color = '#B91C1C';
+
+      document.getElementById('result-details').textContent = msg;
+      document.getElementById('result-actions').innerHTML = '';
+    }
+
+    // ─── Enhanced Manual Search Directory & Check-in ─────────────────
+    let searchDebounceTimer = null;
+    let cachedTrayMatches = [];
+
+    function clearManualSearch() {
+      const input = document.getElementById('manual-search-input');
+      const clearBtn = document.getElementById('btn-clear-search');
+      const feedback = document.getElementById('search-feedback');
+      const tray = document.getElementById('search-results-tray');
+
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      if (clearBtn) clearBtn.style.display = 'none';
+      if (feedback) {
+        feedback.innerHTML = '';
+        feedback.className = 'search-feedback';
+      }
+      if (tray) {
+        tray.innerHTML = '';
+        tray.style.display = 'none';
+      }
+      cachedTrayMatches = [];
+    }
+
+    async function searchAndCheckIn(explicitQuery = null) {
+      const inputEl = document.getElementById('manual-search-input');
+      const clearBtn = document.getElementById('btn-clear-search');
+      const feedback = document.getElementById('search-feedback');
+      const tray = document.getElementById('search-results-tray');
+      const searchBtn = document.getElementById('btn-manual-search');
+
+      const queryText = (explicitQuery !== null ? explicitQuery : inputEl?.value || '').trim();
+
+      if (clearBtn) {
+        clearBtn.style.display = queryText ? 'flex' : 'none';
+      }
+
+      if (!queryText) {
+        if (feedback) {
+          feedback.className = 'search-feedback error';
+          feedback.innerHTML = 'Please enter a delegate name, email, pass token, or ID.';
+        }
+        if (tray) tray.style.display = 'none';
+        return;
+      }
+
+      const sessionToken = getStaffSessionToken();
+      if (!sessionToken) {
+        alert('Staff session expired. Please re-authenticate.');
+        logout();
+        return;
+      }
+
+      // Check if input is a known QR payload format (token, pass URL, or explicit ID)
+      const payload = parseScanPayload(queryText);
+      const isAlphanumericToken = /^[a-zA-Z0-9]{10,24}$/.test(queryText) && !/^\d+$/.test(queryText);
+      const isPassUrl = queryText.includes('/hub');
+
+      if (payload && (isAlphanumericToken || isPassUrl)) {
+        if (feedback) {
+          feedback.className = 'search-feedback loading';
+          feedback.innerHTML = '<span class="live-dot" style="display:inline-block; margin-right:4px;"></span> Resolving official pass token...';
+        }
+        if (tray) tray.style.display = 'none';
+        await processCheckIn(payload);
+        if (feedback) {
+          feedback.className = 'search-feedback success';
+          feedback.innerHTML = '✓ Pass token processed successfully!';
+        }
+        return;
+      }
+
+      // Otherwise, query directory search (/api/hub-data?q=...)
+      if (feedback) {
+        feedback.className = 'search-feedback loading';
+        feedback.innerHTML = '<span class="live-dot" style="display:inline-block; margin-right:4px;"></span> Searching Secretariat attendee directory...';
+      }
+      if (searchBtn) {
+        searchBtn.disabled = true;
+        searchBtn.textContent = 'Searching...';
+      }
+
+      try {
+        const res = await fetch(`/api/hub-data?q=${encodeURIComponent(queryText)}`, {
+          headers: { 'Authorization': `Bearer ${sessionToken}` }
+        });
+
+        if (res.status === 401) {
+          alert('Staff session expired. Please re-authenticate.');
+          logout();
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          if (feedback) {
+            feedback.className = 'search-feedback error';
+            feedback.textContent = data.error || 'Search error occurred.';
+          }
+          if (tray) tray.style.display = 'none';
+          return;
+        }
+
+        const matches = data.matches || [];
+
+        if (matches.length === 0) {
+          // If no matches by name/email, and payload was numeric ID, fall back to processCheckIn(payload)
+          if (payload && payload.id) {
+            if (feedback) {
+              feedback.className = 'search-feedback loading';
+              feedback.innerHTML = `No name matches found. Checking numeric ID #${payload.id}...`;
+            }
+            await processCheckIn(payload);
+            if (feedback) {
+              feedback.className = 'search-feedback success';
+              feedback.innerHTML = `✓ ID #${payload.id} processed!`;
+            }
+            if (tray) tray.style.display = 'none';
+            return;
+          }
+
+          if (feedback) {
+            feedback.className = 'search-feedback error';
+            feedback.innerHTML = `❌ No delegates found matching "<strong>${escapeHtml(queryText)}</strong>". Try searching by email or full name.`;
+          }
+          if (tray) {
+            tray.innerHTML = '';
+            tray.style.display = 'none';
+          }
+          return;
+        }
+
+        // ─── Exactly 1 Delegate Match: Instant Accreditation ────────
+        if (matches.length === 1) {
+          const m = matches[0];
+          const activeStation = document.getElementById('station-dropdown')?.value || 'day1_entry';
+
+          if (feedback) {
+            feedback.className = 'search-feedback success';
+            feedback.innerHTML = `✓ Match found: <strong>${escapeHtml(m.name)}</strong> (${escapeHtml(m.committee || m.institution)})`;
+          }
+          if (tray) tray.style.display = 'none';
+
+          // Immediately process check-in for this delegate
+          await selectAndStampCandidate(m);
+          return;
+        }
+
+        // ─── Multiple Matches (2+): Interactive Directory Selection Tray ─
+        if (feedback) {
+          feedback.className = 'search-feedback info';
+          feedback.innerHTML = `Found <strong>${matches.length}</strong> matching delegates. Select a delegate to stamp:`;
+        }
+
+        renderSearchResultsTray(matches, queryText);
+
+      } catch (err) {
+        if (feedback) {
+          feedback.className = 'search-feedback error';
+          feedback.textContent = 'Network error querying directory: ' + err.message;
+        }
+        if (tray) tray.style.display = 'none';
+      } finally {
+        if (searchBtn) {
+          searchBtn.disabled = false;
+          searchBtn.textContent = 'Search & Stamp ➔';
+        }
+      }
+    }
+
+    function renderSearchResultsTray(matches, queryText) {
+      const tray = document.getElementById('search-results-tray');
+      if (!tray) return;
+
+      const activeStation = document.getElementById('station-dropdown')?.value || 'day1_entry';
+      const stationMeta = STATION_META[activeStation] || { title: activeStation, icon: '🎯' };
+      const isInspect = activeStation === 'inspect';
+
+      let html = `
+        <div class="search-tray-header">
+          <span>Found ${matches.length} matching delegates for "${escapeHtml(queryText)}"</span>
+          <span>Station: ${stationMeta.icon || '🎯'} ${escapeHtml(stationMeta.badge || stationMeta.title)}</span>
+        </div>
+      `;
+
+      matches.forEach((m, idx) => {
+        const isDelegation = m.type === 'delegation';
+        const isHead = isDelegation && m.memberIndex === 0;
+        const badgeClass = isHead ? 'head' : (isDelegation ? 'delegation' : 'individual');
+        const badgeLabel = isHead ? '👑 HEAD' : (isDelegation ? `DELEGATION • #${m.memberIndex + 1}` : 'INDIVIDUAL');
+        const passLink = m.passUrl || `/hub?t=${m.token}`;
+
+        html += `
+          <div class="search-result-card" id="search-card-${idx}">
+            <div class="search-card-top">
+              <div>
+                <span class="search-candidate-name">${escapeHtml(m.name)}</span>
+              </div>
+              <span class="search-type-badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+            <div class="search-candidate-meta">
+              <span>🏛️ ${escapeHtml(m.institution || 'Institutional Representative')}</span>
+              <span>🇺🇳 <strong>${escapeHtml(m.committee || 'General Assembly')}</strong></span>
+              <span>🏷️ <em>${escapeHtml(m.portfolio || 'Delegate')}</em></span>
+              ${m.email ? `<span>✉️ ${escapeHtml(m.email)}</span>` : ''}
+              ${m.phone ? `<span>📱 ${escapeHtml(m.phone)}</span>` : ''}
+            </div>
+            <div class="search-card-actions">
+              <button
+                type="button"
+                class="btn-stamp-direct"
+                id="btn-direct-stamp-${idx}"
+                onclick="triggerDirectStampFromCard(${idx})"
+              >
+                ${isInspect ? '🔍 Inspect Pass' : `⚡ Stamp for ${escapeHtml(stationMeta.badge || stationMeta.title)} ➔`}
+              </button>
+              <a href="${passLink}" target="_blank" class="btn-view-pass-link" title="Open delegate pass in new tab">
+                Open Pass ↗
+              </a>
+            </div>
+          </div>
+        `;
+      });
+
+      tray.innerHTML = html;
+      tray.style.display = 'flex';
+      tray.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      cachedTrayMatches = matches;
+    }
+
+    async function triggerDirectStampFromCard(index) {
+      const m = cachedTrayMatches[index];
+      if (!m) return;
+
+      const btn = document.getElementById(`btn-direct-stamp-${index}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+      }
+
+      await selectAndStampCandidate(m);
+    }
+
+    async function selectAndStampCandidate(candidateMatch) {
+      const activeStation = document.getElementById('station-dropdown')?.value || 'day1_entry';
+      const feedback = document.getElementById('search-feedback');
+
+      const payload = {
+        token: candidateMatch.token,
+        id: candidateMatch.id,
+        type: candidateMatch.type,
+        memberIndex: candidateMatch.memberIndex,
+        autoStamp: true
+      };
+
+      try {
+        await processCheckIn(payload);
+
+        if (feedback) {
+          feedback.className = 'search-feedback success';
+          feedback.innerHTML = `✓ Processed <strong>${escapeHtml(candidateMatch.name)}</strong> (${escapeHtml(candidateMatch.portfolio || 'Delegate')}) for ${escapeHtml(STATION_META[activeStation]?.title || activeStation)}!`;
+        }
+
+        // Close search tray after successful check-in
+        const tray = document.getElementById('search-results-tray');
+        if (tray) tray.style.display = 'none';
+
+      } catch (e) {
+        if (feedback) {
+          feedback.className = 'search-feedback error';
+          feedback.textContent = 'Error processing check-in: ' + e.message;
+        }
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    document.getElementById('entry-pin')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitPin();
+    });
+
+    const searchInputEl = document.getElementById('manual-search-input');
+    searchInputEl?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+        searchAndCheckIn();
+      }
+    });
+
+    searchInputEl?.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      const clearBtn = document.getElementById('btn-clear-search');
+      if (clearBtn) clearBtn.style.display = val ? 'flex' : 'none';
+
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      if (val.length >= 3) {
+        searchDebounceTimer = setTimeout(() => {
+          searchAndCheckIn(val);
+        }, 400);
+      } else if (val.length === 0) {
+        clearManualSearch();
+      }
+    });
+
+    // ─── Operational Checkpoint Statistics Controller ──────────────
+    let cachedScanStats = null;
+    let activeStatsDay = 1;
+
+    async function loadScanStats(isManual = false) {
+      const refreshBtn = document.getElementById('btn-refresh-stats');
+      if (isManual && refreshBtn) refreshBtn.classList.add('spinning');
+
+      try {
+        const sessionToken = getStaffSessionToken();
+        const headers = {};
+        if (sessionToken) headers['Authorization'] = `Bearer ${sessionToken}`;
+
+        const res = await fetch('/api/scan-stats', { headers });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (data && data.success) {
+          cachedScanStats = data;
+          renderScanStats();
+        }
+      } catch (e) {
+        console.warn('Error loading operational scan stats:', e.message);
+      } finally {
+        if (isManual && refreshBtn) {
+          setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+        }
+      }
+    }
+
+    function switchStatsDay(dayNum) {
+      activeStatsDay = dayNum;
+      const tab1 = document.getElementById('tab-day1');
+      const tab2 = document.getElementById('tab-day2');
+      if (dayNum === 1) {
+        if (tab1) tab1.classList.add('active');
+        if (tab2) tab2.classList.remove('active');
+      } else {
+        if (tab2) tab2.classList.add('active');
+        if (tab1) tab1.classList.remove('active');
+      }
+      renderScanStats();
+    }
+
+    function toggleCommitteeBreakdown() {
+      const panel = document.getElementById('committee-breakdown-panel');
+      const btn = document.getElementById('btn-toggle-committee-breakdown');
+      const chevron = document.getElementById('comm-breakdown-chevron');
+      const sub = document.getElementById('comm-breakdown-sub');
+      if (!panel || !btn) return;
+
+      const isOpen = panel.classList.contains('open');
+      if (isOpen) {
+        panel.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        if (chevron) chevron.textContent = '▼';
+        if (sub) sub.textContent = '(Click to view by council)';
+      } else {
+        panel.classList.add('open');
+        btn.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        if (chevron) chevron.textContent = '▲';
+        if (sub) sub.textContent = '(Click to collapse)';
+      }
+    }
+
+    function renderScanStats() {
+      if (!cachedScanStats) return;
+
+      const dayData = activeStatsDay === 1 ? cachedScanStats.day1 : cachedScanStats.day2;
+      const total = cachedScanStats.totalDelegates || 240;
+
+      if (dayData) {
+        // Entry
+        const entryCount = dayData.entry?.count ?? 0;
+        const entryTotal = dayData.entry?.total || total;
+        const entryPct = dayData.entry?.pct ?? (entryTotal ? Math.round((entryCount / entryTotal) * 100) : 0);
+        const elEntryCount = document.getElementById('stat-entry-count');
+        const elEntryTotal = document.getElementById('stat-entry-total');
+        const elEntryPct = document.getElementById('stat-entry-pct');
+        const elEntryFill = document.getElementById('stat-entry-fill');
+        if (elEntryCount) elEntryCount.textContent = entryCount;
+        if (elEntryTotal) elEntryTotal.textContent = entryTotal;
+        if (elEntryPct) elEntryPct.textContent = `${entryPct}%`;
+        if (elEntryFill) elEntryFill.style.width = `${Math.min(100, Math.max(0, entryPct))}%`;
+
+        // Lunch
+        const lunchCount = dayData.lunch?.count ?? 0;
+        const lunchTotal = dayData.lunch?.total || total;
+        const lunchPct = dayData.lunch?.pct ?? (lunchTotal ? Math.round((lunchCount / lunchTotal) * 100) : 0);
+        const elLunchCount = document.getElementById('stat-lunch-count');
+        const elLunchTotal = document.getElementById('stat-lunch-total');
+        const elLunchPct = document.getElementById('stat-lunch-pct');
+        const elLunchFill = document.getElementById('stat-lunch-fill');
+        if (elLunchCount) elLunchCount.textContent = lunchCount;
+        if (elLunchTotal) elLunchTotal.textContent = lunchTotal;
+        if (elLunchPct) elLunchPct.textContent = `${lunchPct}%`;
+        if (elLunchFill) elLunchFill.style.width = `${Math.min(100, Math.max(0, lunchPct))}%`;
+
+        // Refreshment
+        const teaCount = dayData.refreshment?.count ?? 0;
+        const teaTotal = dayData.refreshment?.total || total;
+        const teaPct = dayData.refreshment?.pct ?? (teaTotal ? Math.round((teaCount / teaTotal) * 100) : 0);
+        const elTeaCount = document.getElementById('stat-refreshment-count');
+        const elTeaTotal = document.getElementById('stat-refreshment-total');
+        const elTeaPct = document.getElementById('stat-refreshment-pct');
+        const elTeaFill = document.getElementById('stat-refreshment-fill');
+        if (elTeaCount) elTeaCount.textContent = teaCount;
+        if (elTeaTotal) elTeaTotal.textContent = teaTotal;
+        if (elTeaPct) elTeaPct.textContent = `${teaPct}%`;
+        if (elTeaFill) elTeaFill.style.width = `${Math.min(100, Math.max(0, teaPct))}%`;
+      }
+
+      // Committee breakdown table
+      const tbody = document.getElementById('committee-table-body');
+      if (tbody && cachedScanStats.byCommittee) {
+        const comms = cachedScanStats.byCommittee;
+        const dayKey = activeStatsDay === 1 ? 'day1' : 'day2';
+        let rows = '';
+
+        // Desired standard committee sorting order
+        const priorityOrder = ['UNSC', 'UNHRC', 'UNODC', 'DISEC', 'Lok Sabha', 'IPC'];
+        const keys = Object.keys(comms).sort((a, b) => {
+          const idxA = priorityOrder.indexOf(a);
+          const idxB = priorityOrder.indexOf(b);
+          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+          if (idxA !== -1) return -1;
+          if (idxB !== -1) return 1;
+          return a.localeCompare(b);
+        });
+
+        keys.forEach(commName => {
+          const stats = comms[commName] || {};
+          const commTot = stats.total || 0;
+          const eCnt = stats[`${dayKey}_entry`] || 0;
+          const lCnt = stats[`${dayKey}_lunch`] || 0;
+          const tCnt = stats[`${dayKey}_refreshment`] || 0;
+
+          rows += `
+            <tr>
+              <td>
+                <div class="comm-name-cell">
+                  <span class="comm-code-badge">${escapeHtml(commName)}</span>
+                </div>
+              </td>
+              <td class="comm-val-cell" style="color: #64748B;">${commTot}</td>
+              <td class="comm-val-cell ${eCnt > 0 ? 'comm-val-highlight' : ''}">${eCnt}/${commTot}</td>
+              <td class="comm-val-cell ${lCnt > 0 ? 'comm-val-highlight' : ''}">${lCnt}/${commTot}</td>
+              <td class="comm-val-cell ${tCnt > 0 ? 'comm-val-highlight' : ''}">${tCnt}/${commTot}</td>
+            </tr>
+          `;
+        });
+
+        tbody.innerHTML = rows || `
+          <tr>
+            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">
+              No committee data available.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Run Auth Check and Station Initialization on Load
+    checkAuth();
+    onStationChanged('day1_entry');
+    loadScanStats();
+  </script>
+</body>
+</html>

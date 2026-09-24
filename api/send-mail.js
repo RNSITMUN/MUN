@@ -1,6 +1,7 @@
 import { supabase } from './_supabase.js';
 import fs from 'fs';
 import path from 'path';
+import { getPublicToken } from './_token.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -89,9 +90,37 @@ export default async function handler(req, res) {
     }
 
     const publicAssetBase = 'https://mun.rnsit.ac.in/assets/';
-    const preparedHtml = htmlBody
+    let preparedHtml = htmlBody
       .replace(/src=["'](?:https?:\/\/[^\/]+)?\/?assets\//gi, `src="${publicAssetBase}`)
       .replace(/src=["']https:\/\/raw\.githubusercontent\.com\/RNSITMUN\/MUN\/main\/assets\//gi, `src="${publicAssetBase}`);
+
+    // If sending to a specific registered delegate/delegation, enforce secure public token URLs
+    const { recordId, recordType = 'individual', allocated_committee, allocated_portfolio, recipientName } = req.body || {};
+    if (allocated_committee) {
+      preparedHtml = preparedHtml.replace(/\{\{allocated_committee\}\}/g, allocated_committee);
+    }
+    if (allocated_portfolio) {
+      preparedHtml = preparedHtml.replace(/\{\{allocated_portfolio\}\}/g, allocated_portfolio);
+    }
+    if (recipientName) {
+      preparedHtml = preparedHtml.replace(/\{\{name\}\}/g, recipientName);
+    }
+    if (recordId) {
+      try {
+        const pubToken = getPublicToken(recordType, recordId);
+        const secureHubUrl = `https://mun.rnsit.ac.in/hub?t=${pubToken}`;
+        const secureQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(secureHubUrl)}`;
+        
+        preparedHtml = preparedHtml
+          .replace(/\{\{public_token\}\}/g, pubToken)
+          .replace(/\{\{hub_url\}\}/g, secureHubUrl)
+          .replace(/\{\{qr_code_url\}\}/g, secureQrUrl)
+          .replace(/\{\{registration_id\}\}/g, String(recordId).padStart(4, '0'))
+          .replace(new RegExp(`https:\\/\\/mun\\.rnsit\\.ac\\.in\\/hub\\?id=${recordId}(?:&amp;|&)type=[a-zA-Z0-9_-]+`, 'g'), secureHubUrl);
+      } catch (e) {
+        console.warn('[send-mail] Token injection error:', e.message);
+      }
+    }
 
     const payload = {
       recipient: recipient.trim(),

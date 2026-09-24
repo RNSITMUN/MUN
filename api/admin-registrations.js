@@ -2,6 +2,7 @@ import { supabase } from './_supabase.js';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import { getPublicToken } from './_token.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -205,6 +206,36 @@ export default async function handler(req, res) {
     let registrations = [];
     let delegations = [];
 
+    // Helper to read local checkpoints store
+    const localCheckpoints = (() => {
+      try {
+        const lp = path.resolve(process.cwd(), '.data', 'checkpoints.json');
+        if (fs.existsSync(lp)) return JSON.parse(fs.readFileSync(lp, 'utf8')) || {};
+      } catch (e) {}
+      return {};
+    })();
+
+    // Helper map of database allocations
+    let allocationsMap = {};
+    try {
+      const { data: cpData } = await privilegedClient
+        .from('delegate_checkpoints')
+        .select('record_id, record_type, allocated_committee, allocated_portfolio')
+        .eq('checkpoint_key', 'allocation');
+
+      if (Array.isArray(cpData)) {
+        cpData.forEach(cp => {
+          const k = `${cp.record_type}_${cp.record_id}`;
+          allocationsMap[k] = {
+            committee: cp.allocated_committee,
+            portfolio: cp.allocated_portfolio
+          };
+        });
+      }
+    } catch (e) {
+      // Non-blocking fallback to local store
+    }
+
     if (type === 'all' || type === 'individual') {
       let regQuery = privilegedClient
         .from('registrations')
@@ -219,7 +250,19 @@ export default async function handler(req, res) {
       if (regError) {
         console.error('❌ [admin-registrations] Error fetching registrations:', regError);
       } else {
-        registrations = regData || [];
+        registrations = (regData || []).map(r => {
+          const alloc = allocationsMap[`individual_${r.id}`] || (localCheckpoints[`individual_${r.id}`] ? {
+            committee: localCheckpoints[`individual_${r.id}`].allocatedCommittee,
+            portfolio: localCheckpoints[`individual_${r.id}`].allocatedPortfolio
+          } : null);
+
+          return {
+            ...r,
+            allocated_committee: alloc?.committee || r.allocated_committee || r.committee1 || '',
+            allocated_portfolio: alloc?.portfolio || r.allocated_portfolio || r.portfolio1_1 || '',
+            public_token: getPublicToken('individual', r.id)
+          };
+        });
       }
     }
 
@@ -237,7 +280,19 @@ export default async function handler(req, res) {
       if (dlgError) {
         console.error('❌ [admin-registrations] Error fetching delegations:', dlgError);
       } else {
-        delegations = dlgData || [];
+        delegations = (dlgData || []).map(d => {
+          const alloc = allocationsMap[`delegation_${d.id}`] || (localCheckpoints[`delegation_${d.id}`] ? {
+            committee: localCheckpoints[`delegation_${d.id}`].allocatedCommittee,
+            portfolio: localCheckpoints[`delegation_${d.id}`].allocatedPortfolio
+          } : null);
+
+          return {
+            ...d,
+            allocated_committee: alloc?.committee || d.allocated_committee || 'Institutional Delegation',
+            allocated_portfolio: alloc?.portfolio || d.allocated_portfolio || `${d.member_count || 1} Delegates Delegation`,
+            public_token: getPublicToken('delegation', d.id)
+          };
+        });
       }
     }
 

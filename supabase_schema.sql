@@ -145,4 +145,32 @@ CREATE POLICY "Allow select for mail_logs" ON public.mail_logs
     FOR SELECT TO anon, service_role
     USING (true);
 
+-- 8. Create 'delegate_checkpoints' Table (Logistics, Accreditation & Food Station Passes)
+CREATE TABLE IF NOT EXISTS public.delegate_checkpoints (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    record_type TEXT NOT NULL, -- 'individual' or 'delegation'
+    record_id TEXT NOT NULL,
+    member_index INTEGER DEFAULT 0 NOT NULL, -- 0 for individual or delegation head; 1..N for delegation members
+    checkpoint_key TEXT NOT NULL, -- 'day1_entry', 'day1_lunch', 'day1_refreshment', 'day2_entry', 'day2_lunch', 'day2_refreshment', 'allocation'
+    redeemed BOOLEAN DEFAULT true NOT NULL,
+    redeemed_at TIMESTAMPTZ DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    redeemed_by TEXT DEFAULT 'Organizer',
+    allocated_committee TEXT,
+    allocated_portfolio TEXT,
+    notes TEXT,
+    CONSTRAINT uq_delegate_checkpoint UNIQUE(record_type, record_id, member_index, checkpoint_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_checkpoints_lookup ON public.delegate_checkpoints (record_type, record_id);
+CREATE INDEX IF NOT EXISTS idx_checkpoints_key ON public.delegate_checkpoints (checkpoint_key, redeemed_at DESC);
+
+ALTER TABLE public.delegate_checkpoints ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow anonymous inserts and updates to delegate_checkpoints" ON public.delegate_checkpoints;
+CREATE POLICY "Allow anonymous inserts and updates to delegate_checkpoints" ON public.delegate_checkpoints
+    FOR ALL TO anon, service_role
+    USING (true)
+    WITH CHECK (true);
+
+
 

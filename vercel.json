@@ -34,6 +34,14 @@
     {
       "source": "/location",
       "destination": "/venue.html"
+    },
+    {
+      "source": "/hub",
+      "destination": "/hub.html"
+    },
+    {
+      "source": "/scan",
+      "destination": "/scan.html"
     }
   ],
   "headers": [
@@ -99,6 +107,15 @@
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/scan(.*)",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(self), microphone=(), geolocation=(), payment=()"
         }
       ]
     },
