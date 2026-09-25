@@ -2880,6 +2880,8 @@
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{allocated_portfolio}}')" style="border-color: #E5A93C; color: #000000; font-weight: 800;">🏷️ {{allocated_portfolio}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{hub_url}}')" style="border-color: #047857; color: #047857; font-weight: 800;">🎫 {{hub_url}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{qr_code_url}}')" style="border-color: #000000; font-weight: 800;">📷 {{qr_code_url}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{venue}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 800;">📍 {{venue}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{dates}}')" style="border-color: #E5A93C; color: #000; font-weight: 800;">📅 {{dates}}</button>
               </div>
             </div>
 
@@ -5566,18 +5568,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #111113; margin: 0; padding: 24px 16px; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2.5px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
+    .container { max-width: 620px; margin: 0 auto; background: #ffffff; border: 2.5px solid #000000; border-radius: 14px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
     .header { background: #6C0D2C; color: #FFF7EB; padding: 24px 20px 18px 20px; text-align: center; border-bottom: 2.5px solid #000000; }
     .header-logo { display: block; margin: 0 auto; max-width: 290px; width: 100%; height: auto; border: 0; }
     .header p { margin: 8px 0 0 0; font-size: 13px; opacity: 0.95; color: #E5A93C; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; }
     .content { padding: 28px 24px; font-size: 15px; color: #222222; }
     .salutation { font-size: 18px; font-weight: 800; color: #6C0D2C; margin-bottom: 12px; }
-    .allocation-box { background: #FFFDF9; border: 2px solid #000000; border-radius: 10px; padding: 18px; margin: 20px 0; box-shadow: 3px 3px 0px #000000; }
-    .allocation-title { font-size: 13px; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; border-bottom: 1.5px solid #000000; padding-bottom: 6px; }
-    .allocation-row { margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
-    .allocation-row:last-child { margin-bottom: 0; }
-    .qr-card-email { background: #FFF7EB; border: 2px solid #000000; border-radius: 10px; padding: 20px; text-align: center; margin: 22px 0; box-shadow: 3px 3px 0px #000000; }
-    .pass-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 15px; padding: 12px 26px; border: 2px solid #000000; border-radius: 6px; box-shadow: 3px 3px 0px #000000; margin-top: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card-box { background: #FFFDF9; border: 2px solid #000000; border-radius: 10px; padding: 18px; margin: 20px 0; box-shadow: 3px 3px 0px #000000; }
+    .card-title { font-size: 13px; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; border-bottom: 1.5px solid #000000; padding-bottom: 6px; }
+    .alloc-item { margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
+    .alloc-item:last-child { margin-bottom: 0; }
+    .alloc-label { color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 2px; }
+    .qr-card-email { background: #FFF7EB; border: 2px solid #000000; border-radius: 10px; padding: 22px 18px; text-align: center; margin: 22px 0; box-shadow: 3px 3px 0px #000000; }
+    .pass-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 15px; padding: 13px 28px; border: 2px solid #000000; border-radius: 8px; box-shadow: 3px 3px 0px #000000; margin-top: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .schedule-table { width: 100%; font-size: 13px; border-collapse: collapse; margin-top: 8px; }
+    .schedule-table td { padding: 6px 4px; vertical-align: top; }
+    .schedule-time { width: 85px; font-weight: 800; color: #6C0D2C; white-space: nowrap; font-family: monospace; font-size: 12.5px; }
+    .schedule-desc { color: #222222; font-weight: 600; }
     .guide-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.5; }
     .contacts-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 14px; }
     .contact-item { padding: 4px 0; font-weight: 600; }
@@ -5585,36 +5592,40 @@
     .contact-divider { border: 0; border-top: 1px dashed #D5C7B4; margin: 6px 0; }
     .signoff { margin-top: 24px; font-size: 14.5px; line-height: 1.5; color: #333333; }
     .logo-wrap { margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #EEEEEE; text-align: center; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; }
+    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; line-height: 1.5; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
-      <p>OFFICIAL COMMITTEE &amp; PORTFOLIO ALLOCATION</p>
+      <p>OFFICIAL COMMITTEE &amp; DIPLOMATIC PORTFOLIO ALLOCATION</p>
     </div>
     <div class="content">
       <div class="salutation">Dear {{name}},</div>
       <p>Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
-      <p>We are delighted to formally announce that your committee and diplomatic portfolio allocation has been officially confirmed for RNS MUN 2026:</p>
+      <p>We are delighted to formally communicate your confirmed committee and diplomatic portfolio assignment for the upcoming session of RNS MUN 2026:</p>
       
       <!-- Diplomatic Allotment Summary Box -->
-      <div class="allocation-box">
-        <div class="allocation-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
-        <div class="allocation-row">
-          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Delegate Name:</span>
+      <div class="card-box">
+        <div class="card-title">🏛️ OFFICIAL DIPLOMATIC ASSIGNMENT</div>
+        <div class="alloc-item">
+          <span class="alloc-label">Delegate Name:</span>
           <strong style="color: #000000; font-size: 16px; font-weight: 800;">{{name}}</strong>
         </div>
-        <div class="allocation-row" style="margin-top: 10px;">
-          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Allocated Committee:</span>
+        <div class="alloc-item" style="margin-top: 10px;">
+          <span class="alloc-label">Allocated Committee:</span>
           <strong style="color: #6C0D2C; font-size: 18px; font-weight: 800; display: block;">{{allocated_committee}}</strong>
         </div>
-        <div class="allocation-row" style="margin-top: 10px;">
-          <span style="color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block;">Allocated Portfolio / Country:</span>
+        <div class="alloc-item" style="margin-top: 10px;">
+          <span class="alloc-label">Allocated Portfolio / Country:</span>
           <strong style="color: #000000; font-size: 18px; font-weight: 800; display: block;">{{allocated_portfolio}}</strong>
         </div>
-        <div class="allocation-row" style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
+        <div class="alloc-item" style="margin-top: 10px;">
+          <span class="alloc-label">Assigned Session Chamber:</span>
+          <strong style="color: #047857; font-size: 15px; font-weight: 800; display: block;">📍 {{venue}}</strong>
+        </div>
+        <div class="alloc-item" style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
           <table style="width: 100%; font-size: 13px;" cellpadding="0" cellspacing="0">
             <tr>
               <td style="color: #666666; font-weight: 600;">Delegate ID:</td>
@@ -5624,89 +5635,139 @@
               <td style="color: #666666; font-weight: 600; padding-top: 4px;">Institution:</td>
               <td style="text-align: right; font-weight: 700; color: #222222; padding-top: 4px;">{{institution}}</td>
             </tr>
+            <tr>
+              <td style="color: #666666; font-weight: 600; padding-top: 4px;">Delegation Category:</td>
+              <td style="text-align: right; font-weight: 700; color: #222222; padding-top: 4px;">{{type}}</td>
+            </tr>
           </table>
         </div>
       </div>
 
-      <p>Your verified Digital Delegate Pass &amp; Checkpoint QR code has been generated. <strong>Please save, screenshot, or bookmark this pass</strong> on your mobile phone before arriving at campus:</p>
+      <!-- Summit Dates & Venue Details -->
+      <div class="card-box" style="background: #FFFDF9;">
+        <div class="card-title">📍 CONFERENCE DATES, VENUE &amp; REPORTING</div>
+        <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; width: 125px; vertical-align: top;">Conference Dates:</td>
+            <td style="padding: 5px 0; font-weight: 800; color: #000000; line-height: 1.4;">
+              Tuesday, 06 October 2026 &bull; Day 1<br>
+              Wednesday, 07 October 2026 &bull; Day 2
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Reporting Time:</td>
+            <td style="padding: 5px 0; font-weight: 800; color: #6C0D2C;">
+              08:30 AM IST (Accreditation desk opens at 08:00 AM)
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Summit Venue:</td>
+            <td style="padding: 5px 0; font-weight: 700; color: #111111; line-height: 1.45;">
+              <strong>RNS Institute of Technology (RNSIT) Campus</strong><br>
+              Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru &ndash; 560098
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Navigation:</td>
+            <td style="padding: 5px 0;">
+              <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Bengaluru" target="_blank" style="color: #6C0D2C; font-weight: 800; text-decoration: underline;">Open Campus Location in Google Maps &rarr;</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <p>Your official Digital Delegate Pass &amp; Checkpoint QR code has been generated. <strong>Please bookmark, screenshot, or save this pass</strong> on your mobile phone before arriving at campus:</p>
 
       <!-- Scannable QR Credential Card -->
       <div class="qr-card-email">
         <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #6C0D2C; margin-bottom: 6px;">
-          YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
+          🪪 YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
         </div>
         <p style="margin: 0 0 12px 0; font-size: 13px; color: #555555; line-height: 1.4;">
-          Scan this encrypted QR code at campus security, committee rooms, and dining counters.
+          This encrypted QR code provides accreditation at campus security, committee halls, and catering counters.
         </p>
         <div>
-          <img src="{{qr_code_url}}" alt="Delegate Pass QR Code" width="210" height="210" style="display:inline-block; border: 2.5px solid #000000; border-radius: 10px; background: #ffffff; padding: 10px; margin: 6px auto; box-shadow: 2px 2px 0px #000000;" />
+          <img src="{{qr_code_url}}" alt="Official Delegate Pass QR" width="220" height="220" style="display:inline-block; border: 2.5px solid #000000; border-radius: 10px; background: #ffffff; padding: 10px; margin: 6px auto; box-shadow: 3px 3px 0px #000000;" />
         </div>
-        <div style="margin-top: 10px; font-family: monospace; font-size: 13.5px; font-weight: 800; color: #111111;">
+        <div style="margin-top: 10px; font-family: monospace; font-size: 14px; font-weight: 800; color: #111111;">
           ID: #RNSMUN-26-{{registration_id}} &bull; {{allocated_portfolio}}
         </div>
         <div>
           <a href="{{hub_url}}" target="_blank" class="pass-btn">Open Live Delegate Pass &rarr;</a>
         </div>
-        <div style="margin-top: 10px; font-size: 11.5px; color: #555555; word-break: break-all;">
+        <div style="margin-top: 12px; font-size: 12px; color: #555555; word-break: break-all;">
           Direct Pass URL: <a href="{{hub_url}}" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">{{hub_url}}</a>
         </div>
       </div>
 
-      <!-- Logistics Checkpoint Guide -->
-      <div class="guide-box">
-        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">📋 Important Logistics Pass Instructions:</strong>
-        <p style="margin: 0 0 8px 0;">
-          This individual QR code is required for instantaneous accreditation across all 6 conference stations:
-        </p>
-        <ul style="margin: 0; padding-left: 18px; line-height: 1.6;">
-          <li><strong>Day 1 &amp; Day 2 Gate Entry:</strong> Campus security check-in &amp; kit collection.</li>
-          <li><strong>Midday Repast (Lunch):</strong> Dining hall accreditation for registered delegates.</li>
-          <li><strong>Refreshment Hour:</strong> Evening High Tea &amp; artisanal refreshments.</li>
-        </ul>
+      <!-- Itinerary & Schedule Outline -->
+      <div class="card-box" style="background: #FFFDF9;">
+        <div class="card-title">⏰ CONFERENCE SCHEDULE AT A GLANCE</div>
+        
+        <strong style="color: #6C0D2C; font-size: 13px; display: block; margin-bottom: 4px;">DAY 1 &bull; TUESDAY, 06 OCTOBER 2026</strong>
+        <table class="schedule-table">
+          <tr><td class="schedule-time">08:30 AM</td><td class="schedule-desc">Delegate Registration, Security Accreditation &amp; Kit Collection</td></tr>
+          <tr><td class="schedule-time">09:30 AM</td><td class="schedule-desc">Grand Inaugural Ceremony &amp; Address by Secretariat</td></tr>
+          <tr><td class="schedule-time">10:30 AM</td><td class="schedule-desc">Committee Session 1 (Roll Call &amp; Agenda Setting)</td></tr>
+          <tr><td class="schedule-time">01:00 PM</td><td class="schedule-desc">Midday Repast (Official Delegate Lunch)</td></tr>
+          <tr><td class="schedule-time">02:00 PM</td><td class="schedule-desc">Committee Session 2 (Formal Debate &amp; Moderated Caucuses)</td></tr>
+          <tr><td class="schedule-time">05:00 PM</td><td class="schedule-desc">Refreshment Hour (High Tea) &amp; Day 1 Adjournment</td></tr>
+        </table>
+
+        <div style="border-top: 1px dashed #D5C7B4; margin: 12px 0 10px 0;"></div>
+
+        <strong style="color: #6C0D2C; font-size: 13px; display: block; margin-bottom: 4px;">DAY 2 &bull; WEDNESDAY, 07 OCTOBER 2026</strong>
+        <table class="schedule-table">
+          <tr><td class="schedule-time">08:30 AM</td><td class="schedule-desc">Morning Assembly &amp; Day 2 Check-in</td></tr>
+          <tr><td class="schedule-time">09:00 AM</td><td class="schedule-desc">Committee Session 3 (Working Papers &amp; Draft Resolutions)</td></tr>
+          <tr><td class="schedule-time">01:00 PM</td><td class="schedule-desc">Midday Repast (Official Delegate Lunch)</td></tr>
+          <tr><td class="schedule-time">02:00 PM</td><td class="schedule-desc">Committee Session 4 (Amendments &amp; Voting Procedures)</td></tr>
+          <tr><td class="schedule-time">04:30 PM</td><td class="schedule-desc">Grand Valedictory Ceremony, Awards Presentation &amp; Plenary Adjournment</td></tr>
+        </table>
       </div>
 
       <!-- Dress Code & Rules -->
       <div class="guide-box" style="background: #FFFDF9;">
-        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">👔 Dress Code &amp; Preparation:</strong>
-        <div style="margin-bottom: 4px;"><strong>Day 1:</strong> Western Business Formal (Suits, Blazers, Formal Shirts &amp; Trousers / Formal Dresses)</div>
-        <div style="margin-bottom: 6px;"><strong>Day 2:</strong> Indian Traditional Attire or Western Business Formal</div>
-        <div style="font-size: 12.5px; color: #555555; margin-top: 6px;">
-          Study Guides and Rules of Procedure are accessible via our official portal. Please review your committee agenda thoroughly before Day 1.
+        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">👔 Dress Code &amp; Delegate Protocol:</strong>
+        <div style="margin-bottom: 4px;"><strong>DAY 1:</strong> Indian Traditional Attire</div>
+        <div style="margin-bottom: 6px;"><strong>DAY 2:</strong> Western Formals</div>
+        <div style="font-size: 12.5px; color: #555555; margin-top: 6px; line-height: 1.45;">
+          Study Guides and Rules of Procedure (RoP) are accessible on our official portal. Delegates are strongly urged to arrive thoroughly researched with their position notes and diplomatic stance.
         </div>
       </div>
 
-      <p>Should you have any questions regarding your committee, portfolio matrix, or logistics, please reach out to our team:</p>
+      <p>Should you have any questions regarding your committee agenda, position papers, or logistical arrangements, please do not hesitate to contact our Secretariat:</p>
       
       <!-- Contact Details -->
       <div class="contacts-box">
-        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider"></div>
-        <div class="contact-item">Adith (Secretariat Lead): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
         <div class="contact-divider"></div>
         <div class="contact-item">Official Secretariat Email: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
       </div>
 
-      <p>We eagerly look forward to hosting you for an unforgettable diplomatic summit!</p>
+      <p>We look forward to witnessing your diplomatic eloquence and leadership at RNS MUN 2026!</p>
 
       <div class="signoff">
         Warm regards,<br>
         <strong>Core Secretariat of RNS MUN 2026</strong><br>
-        RNSIT MUN Society
+        RNSIT MUN Society, Bengaluru
       </div>
 
       <p style="margin-top: 22px; font-size: 14px; color: #333333; line-height: 1.5; text-align: center;">
-        Follow our Instagram for live updates &amp; announcements &rarr;<br>
+        Follow our official Instagram for live alerts, committee updates &amp; announcements &rarr;<br>
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
       </p>
 
       <div class="logo-wrap">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; margin: 0 auto; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
         </a>
       </div>
     </div>
     <div class="footer">
-      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Channasandra, Bengaluru - 560098<br>Email: mun@rnsit.ac.in &bull; Web: mun.rnsit.ac.in</p>
+      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, Bengaluru - 560098<br>Official Portal: <a href="https://mun.rnsit.ac.in" target="_blank" style="color:#6C0D2C; font-weight:700;">mun.rnsit.ac.in</a> &bull; Email: <a href="mailto:mun@rnsit.ac.in" style="color:#6C0D2C;">mun@rnsit.ac.in</a></p>
     </div>
   </div>
 </body>
@@ -5800,9 +5861,9 @@
       <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
       
       <div class="contacts-box">
-        <div class="contact-item">Zeyan: <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
-        <div class="contact-item">Adith: <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
       </div>
 
       <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
@@ -5905,9 +5966,9 @@
       <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
       
       <div class="contacts-box">
-        <div class="contact-item">Zeyan: <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
-        <div class="contact-item">Adith: <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
       </div>
 
       <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
@@ -5994,7 +6055,7 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v24_committee_portfolio_allocation_with_qr';
+    const TEMPLATES_VERSION = 'v26_dress_code_and_helpline_updated';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
@@ -7267,10 +7328,26 @@
 
     // ─── Dynamic Token Helpers ─────────────────────────────────────
 
+    function resolveChamberVenue(comm) {
+      const cUpper = String(comm || '').toUpperCase();
+      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY COUNCIL')) return 'Council Chamber — MBA Seminar Hall (2nd Floor)';
+      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'Committee Room 102 — Mech Seminar Hall';
+      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN RIGHTS')) return 'Committee Room 204 — Civil Seminar Hall';
+      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'Committee Room 301 — ECE Seminar Hall';
+      if (cUpper.includes('LOK SABHA')) return 'Central Plenary Hall — Chanakya Block';
+      if (cUpper.includes('PRESS') || cUpper.includes('IP')) return 'Press Bureau & Media Lab — Academic Block 1';
+      return 'Designated Committee Hall — Academic Block';
+    }
+
     function buildTokenDataFromRecord(item, type) {
       const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
       const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}`;
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;
+      let qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;
+      if (item.qr_pass_url) {
+        qrCodeUrl = item.qr_pass_url.startsWith('http')
+          ? item.qr_pass_url
+          : 'https://mun.rnsit.ac.in' + (item.qr_pass_url.startsWith('/') ? item.qr_pass_url : '/' + item.qr_pass_url);
+      }
 
       if (type === 'individual') {
         const c1 = item.committee1 || item.committee_pref_1 || item.committee_1 || item.committee || 'None selected';
@@ -7283,6 +7360,7 @@
 
         const allocComm = item.allocated_committee || item.allocatedCommittee || c1 || 'UNODC';
         const allocPort = item.allocated_portfolio || item.allocatedPortfolio || p1_1 || 'United States of America';
+        const venue = resolveChamberVenue(allocComm);
 
         return {
           name: item.name || 'Delegate',
@@ -7292,6 +7370,10 @@
           portfolio: p1 || item.portfolio2_1 || 'General Matrix',
           allocated_committee: allocComm,
           allocated_portfolio: allocPort,
+          venue: venue,
+          chamber_venue: venue,
+          dates: '06 - 07 October 2026',
+          reporting_time: '08:30 AM IST',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
           committee1: c1,
@@ -7321,6 +7403,7 @@
 
         const allocComm = item.allocated_committee || item.allocatedCommittee || 'Institutional Delegation';
         const allocPort = item.allocated_portfolio || item.allocatedPortfolio || `${memberCount} Delegates Roster`;
+        const venue = resolveChamberVenue(allocComm);
 
         return {
           name: item.head_name || item.delegation_name || 'Delegation Head',
@@ -7330,6 +7413,10 @@
           portfolio: `Delegation Size: ${memberCount} Delegates`,
           allocated_committee: allocComm,
           allocated_portfolio: allocPort,
+          venue: venue,
+          chamber_venue: venue,
+          dates: '06 - 07 October 2026',
+          reporting_time: '08:30 AM IST',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
           committee1: 'Delegation Committees',
@@ -7365,6 +7452,10 @@
         '{{portfolio}}': data.portfolio || '',
         '{{allocated_committee}}': data.allocated_committee || data.committee || '',
         '{{allocated_portfolio}}': data.allocated_portfolio || data.portfolio || '',
+        '{{venue}}': data.venue || 'RNSIT Campus, Bengaluru',
+        '{{chamber_venue}}': data.chamber_venue || data.venue || 'RNSIT Campus, Bengaluru',
+        '{{dates}}': data.dates || '06 - 07 October 2026',
+        '{{reporting_time}}': data.reporting_time || '08:30 AM IST',
         '{{hub_url}}': data.hub_url || 'https://mun.rnsit.ac.in/hub',
         '{{qr_code_url}}': data.qr_code_url || 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp',
         '{{committee1}}': data.committee1 || '',
