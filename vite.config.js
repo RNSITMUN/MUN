@@ -12,6 +12,7 @@ import adminUpdateStatusHandler from './api/admin-update-status.js';
 import adminResyncRosterHandler from './api/admin-resync-roster.js';
 import sendMailHandler from './api/send-mail.js';
 import scannerHandler from './api/scanner.js';
+import calendarHandler from './api/calendar.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -89,6 +90,29 @@ const cleanUrlsPlugin = () => ({
         url === '/api/scanner'
       ) {
         return handleApiRequest(scannerHandler);
+      }
+      if (url === '/api/calendar') {
+        if (queryString) {
+          const params = new URLSearchParams(queryString);
+          req.query = Object.fromEntries(params.entries());
+        } else {
+          req.query = {};
+        }
+        res.status = (code) => {
+          res.statusCode = code;
+          return res;
+        };
+        res.send = (data) => {
+          res.end(data);
+          return res;
+        };
+        try {
+          await calendarHandler(req, res);
+        } catch (err) {
+          res.statusCode = 500;
+          res.end(err.message);
+        }
+        return;
       }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);

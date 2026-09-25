@@ -339,10 +339,11 @@ async function handleHubData(req, res) {
     return res.status(405).json({ success: false, error: 'Only GET supported.' });
   }
 
-  const { t: tokenParam, id: idParam, type: typeParam, q: queryParam } = req.query || {};
-
-  // ── Directory Search ──
-  if (queryParam && String(queryParam).trim().length >= 2) {
+  const tokenParam = (req.query?.t || req.query?.token || '').trim();
+  const idParam = (req.query?.id || '').trim();
+  const typeParam = (req.query?.type || '').trim();
+  const queryParam = (req.query?.q || req.query?.query || '').trim();
+  if (queryParam) {
     const rawQ = String(queryParam).trim();
     const cleanQ = rawQ.toLowerCase();
     const results = [];
@@ -351,15 +352,17 @@ async function handleHubData(req, res) {
       try {
         const { data: regList } = await supabase
           .from('registrations')
-          .select('id, full_name, email, phone, college, committee1, portfolio1_1, status')
+          .select('id, name, email, phone, institution, committee1, portfolio1_1, status, usn, delegate_type')
           .limit(50);
 
         if (Array.isArray(regList)) {
           regList.forEach(r => {
+            const rName = r.name || r.full_name || '';
             const match =
-              (r.full_name && r.full_name.toLowerCase().includes(cleanQ)) ||
+              (rName && rName.toLowerCase().includes(cleanQ)) ||
               (r.email && r.email.toLowerCase().includes(cleanQ)) ||
               (r.phone && r.phone.includes(cleanQ)) ||
+              (r.usn && r.usn.toLowerCase().includes(cleanQ)) ||
               String(r.id) === rawQ;
 
             if (match) {
@@ -368,10 +371,12 @@ async function handleHubData(req, res) {
                 type: 'individual',
                 id: r.id,
                 token: pubToken,
-                name: r.full_name,
+                name: rName,
                 email: r.email,
                 phone: r.phone,
-                institution: r.college,
+                institution: r.institution || r.college || '',
+                usn: r.usn || '',
+                delegateType: r.delegate_type || 'Individual Delegate',
                 status: r.status,
                 allocated_committee: r.committee1 || '',
                 allocated_portfolio: r.portfolio1_1 || ''
@@ -382,16 +387,17 @@ async function handleHubData(req, res) {
 
         const { data: delList } = await supabase
           .from('delegations')
-          .select('id, delegation_name, head_delegate_name, head_delegate_email, head_delegate_phone, college, status')
+          .select('id, delegation_name, head_name, email, phone, status, member_count')
           .limit(50);
 
         if (Array.isArray(delList)) {
           delList.forEach(d => {
+            const dName = d.delegation_name || d.head_name || '';
             const match =
               (d.delegation_name && d.delegation_name.toLowerCase().includes(cleanQ)) ||
-              (d.head_delegate_name && d.head_delegate_name.toLowerCase().includes(cleanQ)) ||
-              (d.head_delegate_email && d.head_delegate_email.toLowerCase().includes(cleanQ)) ||
-              (d.head_delegate_phone && d.head_delegate_phone.includes(cleanQ)) ||
+              (d.head_name && d.head_name.toLowerCase().includes(cleanQ)) ||
+              (d.email && d.email.toLowerCase().includes(cleanQ)) ||
+              (d.phone && d.phone.includes(cleanQ)) ||
               String(d.id) === rawQ;
 
             if (match) {
@@ -400,13 +406,14 @@ async function handleHubData(req, res) {
                 type: 'delegation',
                 id: d.id,
                 token: pubToken,
-                name: d.delegation_name || d.head_delegate_name,
-                email: d.head_delegate_email,
-                phone: d.head_delegate_phone,
-                institution: d.college,
+                name: dName,
+                headName: d.head_name || '',
+                email: d.email,
+                phone: d.phone,
+                institution: d.delegation_name,
                 status: d.status,
                 allocated_committee: 'Institutional Delegation',
-                allocated_portfolio: 'Multiple Portfolios'
+                allocated_portfolio: `${d.member_count || 1} Member Delegation`
               });
             }
           });
@@ -483,7 +490,8 @@ async function handleHubData(req, res) {
 
   // Merge local store checkpoints
   const localStore = readLocalCheckpoints();
-  for (let mIdx = 0; mIdx < 15; mIdx++) {
+  const maxScanIdx = Math.max(50, Array.isArray(record?.roster_data) ? record.roster_data.length : 0);
+  for (let mIdx = 0; mIdx < maxScanIdx; mIdx++) {
     const lk = `${targetType}_${targetId}_${mIdx}`;
     if (localStore[lk]) {
       if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
@@ -503,29 +511,64 @@ async function handleHubData(req, res) {
   if (!record) {
     record = {
       id: targetId,
-      full_name: `Delegate #${targetId}`,
-      college: 'Registered Institution',
+      name: `Delegate #${targetId}`,
+      institution: 'Registered Institution',
       committee1: 'UNGA — United Nations General Assembly',
       portfolio1_1: 'Delegate Portfolio',
       status: 'confirmed'
     };
   }
 
+  const delegateDisplayName = record.name || record.full_name || record.delegation_name || record.head_name || record.head_delegate_name || 'Official Delegate';
+  const delegateInstitution = record.institution || record.college || '';
+  const delegateType = record.delegate_type || record.delegation_type || (targetType === 'delegation' ? 'Delegation' : 'Individual Delegate');
+  const allocComm = checkpoints[0]?.allocation?.allocated_committee || record.allocated_committee || record.committee1 || 'General Assembly';
+  const allocPort = checkpoints[0]?.allocation?.allocated_portfolio || record.allocated_portfolio || record.portfolio1_1 || 'General Delegate';
+
+  // Parse roster if delegation
+  let roster = null;
+  if (targetType === 'delegation' && Array.isArray(record.roster_data)) {
+    roster = record.roster_data.map((m, idx) => ({
+      index: idx,
+      name: m.name || m['Delegate Name'] || `Delegate ${idx + 1}`,
+      email: m.email || m.emailAddress || m['Email Address'] || '',
+      phone: m.phone || m.mobileNumber || m['WhatsApp / Mobile Number'] || '',
+      committee: checkpoints[idx]?.allocation?.allocated_committee || m.allocated_committee || m.committee || m.committee1 || m['Committee Preference 1'] || 'Delegate',
+      portfolio: checkpoints[idx]?.allocation?.allocated_portfolio || m.allocated_portfolio || m.portfolio || m.portfolio1_1 || m['Portfolio Preference 1'] || 'Assigned Portfolio',
+      checkpoints: checkpoints[idx] || {}
+    }));
+  }
+
+  const passPayload = {
+    type: targetType,
+    id: record.id,
+    token: publicToken,
+    pass_url: passUrl,
+    passUrl: passUrl,
+    name: delegateDisplayName,
+    institution: delegateInstitution,
+    delegate_type: delegateType,
+    delegateType: delegateType,
+    usn: record.usn || '',
+    city: record.city || 'Bengaluru',
+    email: record.email || record.head_delegate_email || '',
+    phone: record.phone || record.head_delegate_phone || '',
+    status: record.status || 'Confirmed',
+    allocated_committee: allocComm,
+    allocatedCommittee: allocComm,
+    allocated_portfolio: allocPort,
+    allocatedPortfolio: allocPort,
+    checkpoints: checkpoints[0] || {},
+    allCheckpoints: checkpoints,
+    roster: roster
+  };
+
   return res.status(200).json({
     success: true,
-    pass: {
+    pass: passPayload,
+    data: {
       type: targetType,
-      id: record.id,
-      token: publicToken,
-      pass_url: passUrl,
-      name: record.full_name || record.delegation_name || record.head_delegate_name || 'Official Delegate',
-      email: record.email || record.head_delegate_email || '',
-      phone: record.phone || record.head_delegate_phone || '',
-      institution: record.college || '',
-      status: record.status || 'confirmed',
-      allocated_committee: record.allocated_committee || record.committee1 || 'UNGA — United Nations General Assembly',
-      allocated_portfolio: record.allocated_portfolio || record.portfolio1_1 || 'Delegate Portfolio',
-      checkpoints: checkpoints[0] || {}
+      pass: passPayload
     }
   });
 }

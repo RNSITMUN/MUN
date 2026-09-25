@@ -17,6 +17,7 @@
 
   <!-- Supabase JS Client v2 from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/qrcode.min.js"></script>
 
   <style>
     :root {
@@ -1789,6 +1790,52 @@
     .font-semibold { font-weight: 700; }
     .nowrap { white-space: nowrap; }
 
+    /* ─── QR Passes UI Styles ──────────────────── */
+    .qr-modal-pill {
+      background: #FFFDF9;
+      color: #000;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 1.5px 1.5px 0 #000;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .qr-modal-pill:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 2.5px 2.5px 0 #000;
+      background: #FFF7EB;
+    }
+    .qr-modal-pill.active {
+      background: #6C0D2C;
+      color: #FFF;
+      border-color: #000;
+    }
+    .btn-action-qr {
+      background: #FFFDF9;
+      color: #000000;
+      border: 1.5px solid #000000;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.32rem 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      box-shadow: 1.5px 1.5px 0px #000000;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-action-qr:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 2.5px 2.5px 0px #000000;
+      background: #FDF3E3;
+    }
+
     /* ─── Mail Templates & Send Mail UI Styles ──────────────────── */
     .btn-action-mail {
       background: #FFF7EB;
@@ -2523,6 +2570,18 @@
             </span>
             <span class="tab-badge" id="badge-count-maillog" style="background:#059669;">0</span>
           </button>
+          <button class="tab-btn" id="tab-btn-qrpasses" onclick="switchTab('qrpasses')">
+            <span class="tab-btn-content">
+              <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <span>QR Passes</span>
+            </span>
+            <span class="tab-badge" id="badge-count-qrpasses" style="background:#6C0D2C; color:#FFF;">88</span>
+          </button>
         </div>
 
         <div class="filter-actions" id="main-filter-actions">
@@ -2917,6 +2976,41 @@
 
           </div>
 
+        </div>
+
+      </div>
+
+      <!-- QR Passes Container -->
+      <div id="container-qrpasses" style="display:none; flex-direction:column; gap:1.25rem; width:100%; padding:0.5rem 0;">
+
+        <!-- Header -->
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#6C0D2C;">🪪 QR Passes Gallery</h3>
+            <p style="margin:4px 0 0; font-size:0.8rem; color:#666;">All generated delegate QR badge passes — click any card to download.</p>
+          </div>
+          <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+            <input type="text" id="qr-search" placeholder="Search delegate name..." oninput="filterQRCards()" style="padding:0.4rem 0.75rem; font-size:0.8rem; border:1.5px solid #000; border-radius:6px; background:#FFF7EB; font-family:inherit; width:220px;">
+            <button onclick="downloadAllQRs()" style="background:#6C0D2C; color:#FFF7EB; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.85rem; font-size:0.78rem; font-weight:800; cursor:pointer; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;">⬇ Download All</button>
+          </div>
+        </div>
+
+        <!-- Group pills -->
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+          <span style="font-size:0.78rem; font-weight:700; color:#555;">Filter:</span>
+          <button class="qr-modal-pill active" id="qr-pill-all" onclick="filterQRGroup('all')">All (88)</button>
+          <button class="qr-modal-pill" id="qr-pill-alliance" onclick="filterQRGroup('alliance')">Alliance (20)</button>
+          <button class="qr-modal-pill" id="qr-pill-cms" onclick="filterQRGroup('cms')">CMS (24)</button>
+          <button class="qr-modal-pill" id="qr-pill-individual" onclick="filterQRGroup('individual')">Individual (44)</button>
+        </div>
+
+        <!-- Cards Grid -->
+        <div id="qr-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1rem;"></div>
+
+        <!-- Empty state -->
+        <div id="qr-empty-state" style="display:none; text-align:center; padding:3rem 1rem; color:#999; font-size:0.88rem;">
+          <div style="font-size:2.5rem; margin-bottom:0.5rem;">🔍</div>
+          <div>No QR passes match your search.</div>
         </div>
 
       </div>
@@ -3557,23 +3651,26 @@
       const btnDlg  = document.getElementById('tab-btn-delegation');
       const btnTpl  = document.getElementById('tab-btn-templates');
       const btnLog  = document.getElementById('tab-btn-maillog');
+      const btnQR   = document.getElementById('tab-btn-qrpasses');
 
       const tableContainer    = document.getElementById('table-main-container');
       const filterActions     = document.getElementById('main-filter-actions');
       const templatesContainer= document.getElementById('container-templates');
       const maillogContainer  = document.getElementById('container-maillog');
+      const qrContainer       = document.getElementById('container-qrpasses');
 
       const tableInd  = document.getElementById('table-individuals');
       const tableDlg  = document.getElementById('table-delegations');
       const typeFilter= document.getElementById('filter-type');
 
-      [btnInd, btnDlg, btnTpl, btnLog].forEach(b => b && b.classList.remove('active'));
+      [btnInd, btnDlg, btnTpl, btnLog, btnQR].forEach(b => b && b.classList.remove('active'));
 
       // Hide all panels first
       tableContainer.style.display    = 'none';
       filterActions.style.display     = 'none';
       templatesContainer.style.display= 'none';
       if (maillogContainer) maillogContainer.style.display = 'none';
+      if (qrContainer) qrContainer.style.display = 'none';
 
       if (tab === 'individual') {
         btnInd.classList.add('active');
@@ -3601,6 +3698,12 @@
         btnLog.classList.add('active');
         if (maillogContainer) maillogContainer.style.display = 'flex';
         renderMailLog();
+      } else if (tab === 'qrpasses') {
+        btnQR.classList.add('active');
+        if (qrContainer) {
+          qrContainer.style.display = 'flex';
+          renderQRPasses();
+        }
       }
     }
 
@@ -3839,6 +3942,231 @@
       Object.values(store).forEach(v => { total += Array.isArray(v) ? v.length : (v ? 1 : 0); });
       const badge = document.getElementById('badge-count-maillog');
       if (badge) badge.textContent = total;
+    }
+
+    // ─── QR Passes Gallery ─────────────────────────────────────────
+    const QR_DATA = {
+      alliance: [
+        "DEL-67-01_Mridusha_Chetry_Head_of_Delegation_.png",
+        "DEL-67-02_Mohammad_Nezal_Arshad.png",
+        "DEL-67-03_Yashti_R_Surti.png",
+        "DEL-67-04_R_Joel_Shalom.png",
+        "DEL-67-05_Sukrithi_kallurmath.png",
+        "DEL-67-06_Shravya_s.png",
+        "DEL-67-07_Pranesh_AS.png",
+        "DEL-67-08_Danda_Shanyuth.png",
+        "DEL-67-09_Hansiga_devendra.png",
+        "DEL-67-10_Prithvi_KF.png",
+        "DEL-67-11_Vishal_Manjunath.png",
+        "DEL-67-12_Keerthan_Kariappa_O_L.png",
+        "DEL-67-13_Adrito_Jasu.png",
+        "DEL-67-14_Devang.png",
+        "DEL-67-15_Muhammed_Salman.png",
+        "DEL-67-16_Kushaal_S_Patil.png",
+        "DEL-67-17_Madhura_Meenakshi_Tanikella.png",
+        "DEL-67-18_Prachurya_Roy.png",
+        "DEL-67-19_Sai_Lochan.png",
+        "DEL-67-20_Moogambika.png"
+      ],
+      cms: [
+        "DEL-47-01_Aadya_Mittal_Head_of_Delegation_.png",
+        "DEL-47-02_Chirag_Shiyal.png",
+        "DEL-47-03_Chavi.png",
+        "DEL-47-04_Areeb_umar.png",
+        "DEL-47-05_Vaibhav_Raj_Deota.png",
+        "DEL-47-06_R_Jainav_Bohra.png",
+        "DEL-47-07_Ronith.png",
+        "DEL-47-08_Manas_Kulkarni.png",
+        "DEL-47-09_Naman_Nagori.png",
+        "DEL-47-10_Manushri.png",
+        "DEL-47-11_Joshitha_Reddy_Katterapalli.png",
+        "DEL-47-12_Simar.png",
+        "DEL-47-13_Sheik_Adnaan_Ibrahim.png",
+        "DEL-47-14_Sayyam_Sakaria_Jain.png",
+        "DEL-47-15_Syed_Taqi_Mohammed.png",
+        "DEL-47-16_Geethanjali.png",
+        "DEL-47-17_Latika_Mittal.png",
+        "DEL-47-18_Taher.png",
+        "DEL-47-19_Anish_Bose.png",
+        "DEL-47-20_Aakash_Satheesh.png",
+        "DEL-47-21_Arnav_Malhan.png",
+        "DEL-47-22_Himanshi_Jain.png",
+        "DEL-47-23_Vaishnavi_Kaki.png",
+        "DEL-47-24_Divij_Dudani.png"
+      ],
+      individual: [
+        "IND-110_Hajira_Tamanna_M_H.png",
+        "IND-113_Mukund_S_BELAWADI.png",
+        "IND-115_K_S_Bhavin.png",
+        "IND-116_Siddharth_M.png",
+        "IND-117_Poojitha_Pujari.png",
+        "IND-118_Gayathri_Kasiraja.png",
+        "IND-119_Namratha_G.png",
+        "IND-124_Debangshu_Som.png",
+        "IND-125_Riya_B_Patel.png",
+        "IND-127_Pavani_R.png",
+        "IND-129_G_Gautham_Vas.png",
+        "IND-131_Annika_Chourasia.png",
+        "IND-132_Vibha_S.png",
+        "IND-134_Rishi_Dulhani.png",
+        "IND-135_Saif_Ahmed_Shaik.png",
+        "IND-136_Vinayak_rao.png",
+        "IND-137_Thanmayee_Valekar.png",
+        "IND-138_Srishti_Krishna.png",
+        "IND-139_Varun_Km.png",
+        "IND-140_Ashish.png",
+        "IND-141_RASHMI_M_KABADI.png",
+        "IND-142_Chinmayi_V_Hegde.png",
+        "IND-149_Braghadeesh_Ruban.png",
+        "IND-150_Aaruni_Mohan_Shastri.png",
+        "IND-47_Shreekant_Sanghi.png",
+        "IND-49_Rusheel_Bhargav_NM.png",
+        "IND-50_Mayur_Navaratna.png",
+        "IND-51_Ayush_Kumar.png",
+        "IND-56_Sankalp_C_Pai.png",
+        "IND-57_Priyanshu_Jha.png",
+        "IND-59_Mayank_Kubsad.png",
+        "IND-60_Gourav.png",
+        "IND-82_Nandini_Bhatt.png",
+        "IND-84_Mohammed_Aayan.png",
+        "IND-85_Aditi_G.png",
+        "IND-86_Aditya_Kumar.png",
+        "IND-87_Charith_G.png",
+        "IND-88_Haniel_Samson_A.png",
+        "IND-89_Arsh_Saxena.png",
+        "IND-93_Gouravi_Nayak.png",
+        "IND-95_Eshaan_Hebbar.png",
+        "IND-97_GARGI_MOHAN.png",
+        "IND-98_Chethana_M_L.png",
+        "IND-99_Satvik_G.png"
+      ]
+    };
+
+    const QR_BASE = {
+      alliance: '/qrs/Alliance_delegation/',
+      cms: '/qrs/CMS_delegation/',
+      individual: '/qrs/individual_delegates/'
+    };
+
+    const QR_LABELS = {
+      alliance: { label: 'Alliance', color: '#C8902B', bg: '#FFF7EB' },
+      cms:      { label: 'CMS',      color: '#6C0D2C', bg: '#FDE8EF' },
+      individual: { label: 'Individual', color: '#1a4f8a', bg: '#E8F0FC' }
+    };
+
+    let _qrRendered = false;
+    let _activeQRGroup = 'all';
+
+    function _filenameToName(filename) {
+      // Strip prefix like DEL-67-01_ or IND-47_ and extension
+      return filename
+        .replace(/^(DEL|IND)-\d+(-\d+)?_/, '')
+        .replace(/\.png$/, '')
+        .replace(/_/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function renderQRPasses() {
+      if (_qrRendered) return; // already rendered, just filter
+      _qrRendered = true;
+      const grid = document.getElementById('qr-cards-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      ['alliance', 'cms', 'individual'].forEach(group => {
+        QR_DATA[group].forEach(filename => {
+          const name = _filenameToName(filename);
+          const imgSrc = QR_BASE[group] + filename;
+          const { label, color, bg } = QR_LABELS[group];
+
+          const card = document.createElement('div');
+          card.className = 'qr-card';
+          card.dataset.group = group;
+          card.dataset.name = name.toLowerCase();
+          card.style.cssText = `
+            background: #FFFDF9;
+            border: 1.5px solid #000;
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+          `;
+          card.onmouseenter = () => {
+            card.style.transform = 'translate(-2px,-2px)';
+            card.style.boxShadow = '4px 4px 0 #000';
+          };
+          card.onmouseleave = () => {
+            card.style.transform = '';
+            card.style.boxShadow = '2px 2px 0 #000';
+          };
+          card.onclick = () => {
+            const a = document.createElement('a');
+            a.href = imgSrc;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          };
+
+          card.innerHTML = `
+            <div style="position:relative; background:#f5f5f5; overflow:hidden; aspect-ratio:1;">
+              <img src="${imgSrc}" alt="${name}" loading="lazy"
+                   style="width:100%; height:100%; object-fit:cover; display:block;"
+                   onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\\'>🪪</div>'">
+              <span style="position:absolute; top:6px; left:6px; background:${bg}; color:${color}; border:1px solid ${color}; border-radius:999px; padding:2px 8px; font-size:0.6rem; font-weight:800; letter-spacing:0.03em;">${label}</span>
+              <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:0.62rem; padding:3px 7px; border-radius:6px 0 0 0;">⬇ Download</div>
+            </div>
+            <div style="padding:7px 8px 8px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:0.72rem; font-weight:800; color:#111; line-height:1.3; word-break:break-word;">${name}</div>
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+      });
+
+      filterQRCards();
+    }
+
+    function filterQRCards() {
+      const search = (document.getElementById('qr-search')?.value || '').toLowerCase().trim();
+      const cards = document.querySelectorAll('.qr-card');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const groupMatch = _activeQRGroup === 'all' || card.dataset.group === _activeQRGroup;
+        const nameMatch  = !search || card.dataset.name.includes(search);
+        const show = groupMatch && nameMatch;
+        card.style.display = show ? 'flex' : 'none';
+        if (show) visible++;
+      });
+
+      const empty = document.getElementById('qr-empty-state');
+      if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    function filterQRGroup(group) {
+      _activeQRGroup = group;
+      ['all','alliance','cms','individual'].forEach(g => {
+        const pill = document.getElementById('qr-pill-' + g);
+        if (pill) pill.classList.toggle('active', g === group);
+      });
+      filterQRCards();
+    }
+
+    function downloadAllQRs() {
+      const cards = document.querySelectorAll('.qr-card');
+      let delay = 0;
+      cards.forEach(card => {
+        if (card.style.display === 'none') return;
+        setTimeout(() => card.click(), delay);
+        delay += 120;
+      });
+      showToast(`Downloading ${[...cards].filter(c => c.style.display !== 'none').length} QR passes...`, 'success');
     }
 
     // ─── Mail Log Render & Clear ───────────────────────────────────

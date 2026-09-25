@@ -2,1493 +2,2211 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official Delegate Pass | RNS MUN 2026</title>
-  <meta name="description" content="Official delegate credential, diplomatic allotment, and logistics accreditation pass for RNS Model United Nations 2026.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Delegate Pass &amp; Portal | RNSMUN 2026</title>
+  <meta name="description" content="Official delegate credential, committee allotment, and entry pass for RNS Model United Nations 2026 at RNSIT Bengaluru.">
+  <link rel="canonical" href="https://mun.rnsit.ac.in/hub">
   <link rel="icon" type="image/webp" href="/assets/Logos/MUN_logo.webp">
+  <link rel="apple-touch-icon" href="/assets/Logos/MUN_logo.webp">
+  <meta name="theme-color" content="#6C0D2C">
 
-  <!-- Google Fonts -->
+  <!-- Typography: Outfit, Newsreader & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Local Bundled Client-Side QR Generator (100% Offline & Standalone) -->
+  <!-- Core Theme Stylesheet for Global Nav & Tokens -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Local Bundled Offline QR Generator -->
   <script src="/qrcode.min.js"></script>
 
   <style>
     :root {
       --bg-cream: #FFF7EB;
-      --bg-card: #FFFFFF;
+      --bg-surface: #FFFFFF;
       --bg-subtle: #FFFDF9;
       --primary: #6C0D2C;
-      --primary-dark: #4A081D;
+      --primary-hover: #520921;
+      --primary-light: rgba(108, 13, 44, 0.08);
       --accent-gold: #E5A93C;
-      --accent-gold-light: #FDF3DC;
-      --text-dark: #111113;
-      --text-muted: #555558;
-      --border-black: #000000;
-      --border-subtle: #E8DFD3;
-      --success-green: #047857;
-      --success-bg: #ECFDF5;
-      --warning-amber: #B45309;
-      --warning-bg: #FFFBEB;
-      --shadow-neobrutal: 4px 4px 0px #000000;
+      --accent-gold-hover: #D49526;
+      --accent-gold-light: #FDF4E1;
+      --border-dark: #000000;
+      --border-subtle: #E8E0D2;
+      --text-main: #000000;
+      --text-muted: rgba(0, 0, 0, 0.65);
+      --success-green: #065F46;
+      --success-bg: #D1FAE5;
+      --radius-card: 24px;
+      --radius-box: 16px;
+      --radius-pill: 9999px;
       --shadow-card: 6px 6px 0px #000000;
-      --shadow-sm: 2px 2px 0px #000000;
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --shadow-box: 3.5px 3.5px 0px #000000;
+      --shadow-btn: 2.5px 2.5px 0px #000000;
+      --shadow-sm: 1.5px 1.5px 0px #000000;
     }
 
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-cream);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem 1rem 3rem 1rem;
-      background-image: 
-        radial-gradient(var(--border-subtle) 1px, transparent 1px),
-        radial-gradient(var(--border-subtle) 1px, var(--bg-cream) 1px);
-      background-size: 24px 24px;
-      background-position: 0 0, 12px 12px;
-    }
-
-    /* Top Navigation / Brand Bar */
-    .top-header {
-      width: 100%;
-      max-width: 620px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-    }
-
-    .brand-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text-dark);
-    }
-
-    .brand-logo {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .brand-text-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      color: var(--primary);
-    }
-
-    .brand-subtitle {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-    }
-
-    .staff-portal-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.45rem 0.8rem;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      background: var(--bg-card);
-      border: 2px solid var(--border-black);
-      border-radius: 9999px;
-      box-shadow: var(--shadow-sm);
-      text-decoration: none;
-      transition: all 0.15s ease;
-      letter-spacing: 0.02em;
-    }
-
-    .staff-portal-link:hover {
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000;
-      background: var(--accent-gold-light);
-    }
-
-    /* Main Pass Container */
-    .pass-container {
-      width: 100%;
-      max-width: 620px;
-      background: var(--bg-card);
-      border: 2.5px solid var(--border-black);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-card);
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Card Banner */
-    .pass-header-ribbon {
-      background: var(--primary);
-      color: #FFF7EB;
-      padding: 1.35rem 1.25rem 1.1rem 1.25rem;
-      border-bottom: 2.5px solid var(--border-black);
-      text-align: center;
-      position: relative;
-    }
-
-    .ribbon-tag {
-      display: inline-block;
-      background: var(--accent-gold);
-      color: #000000;
-      font-size: 0.68rem;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.8rem;
-      border: 1.5px solid #000000;
-      border-radius: 9999px;
-      margin-bottom: 0.45rem;
-      box-shadow: 1.5px 1.5px 0px #000;
-    }
-
-    .pass-main-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: -0.01em;
-      color: #FFF7EB;
-      line-height: 1.2;
-    }
-
-    .pass-sub-title {
-      font-size: 0.76rem;
-      color: rgba(255, 247, 235, 0.88);
-      margin-top: 0.25rem;
-      font-weight: 500;
-    }
-
-    /* Pass Body */
-    .pass-body {
-      padding: 1.5rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    /* Identity Hero Box */
-    .identity-box {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .identity-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-
-    .delegate-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      line-height: 1.15;
-      color: var(--text-dark);
-      letter-spacing: -0.02em;
-    }
-
-    .delegate-institution {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 0.35rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .delegate-type-pill {
-      background: var(--accent-gold-light);
-      color: #78350F;
-      border: 1.5px solid var(--border-black);
-      border-radius: 9999px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.25rem 0.65rem;
-      white-space: nowrap;
-      box-shadow: 1.5px 1.5px 0px #000;
-    }
-
-    .meta-pills-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      border-top: 1.5px dashed var(--border-subtle);
-      padding-top: 0.75rem;
-    }
-
-    .meta-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-black);
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      color: var(--text-dark);
-    }
-
-    .meta-pill.id-highlight {
-      background: var(--primary);
-      color: #FFFFFF;
-      border-color: var(--border-black);
-    }
-
-    /* Diplomatic Allotment Card */
-    .allocation-card {
-      background: #FFFFFF;
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .allocation-header {
-      background: #111113;
-      color: #FFF7EB;
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 0.45rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .allocation-content {
-      padding: 1rem 1.25rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    @media (max-width: 520px) {
-      .allocation-content {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-    }
-
-    .allocation-block {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .allocation-label {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .allocation-val {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      line-height: 1.25;
-    }
-
-    .allocation-val.committee {
-      color: var(--primary);
-    }
-
-    /* Checkpoints Section */
-    .checkpoints-section {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .checkpoints-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--border-black);
-      padding-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .section-badge {
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border: 1.5px solid var(--border-black);
-      border-radius: 9999px;
-      background: #FFFFFF;
-      box-shadow: 1px 1px 0px #000;
-    }
-
-    /* Day Groups */
-    .day-group {
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-    }
-
-    .day-header {
-      background: #F3F4F6;
-      border-bottom: 1.5px solid var(--border-black);
-      padding: 0.45rem 0.85rem;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-dark);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .checkpoint-list {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .live-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      background: var(--success-green);
-      border-radius: 50%;
-      margin-right: 4px;
-      vertical-align: middle;
-      animation: pulseDot 2s infinite ease-in-out;
-    }
-
-    @keyframes pulseDot {
-      0% { transform: scale(0.9); opacity: 0.6; }
-      50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 6px rgba(4, 120, 87, 0.6); }
-      100% { transform: scale(0.9); opacity: 0.6; }
-    }
-
-    @keyframes stampPop {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.04); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .checkpoint-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0.85rem;
-      border-bottom: 1px solid var(--border-subtle);
-      transition: background 0.3s ease;
-      gap: 0.6rem;
-    }
-
-    .checkpoint-item:last-child {
-      border-bottom: none;
-    }
-
-    .checkpoint-item.redeemed {
-      background: #F0FDF4;
-    }
-
-    .checkpoint-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .checkpoint-name {
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .checkpoint-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .status-pill {
-      font-size: 0.7rem;
+      color: var(--text-main);
       font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      padding: 0.25rem 0.55rem;
-      border-radius: 9999px;
-      border: 1.5px solid var(--border-black);
-      box-shadow: 1px 1px 0px #000;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      white-space: nowrap;
-      flex-shrink: 0;
-      letter-spacing: -0.01em;
-    }
-
-    .status-pill.redeemed {
-      background: #DCFCE7;
-      color: #065F46;
-      border-color: #065F46;
-      animation: stampPop 0.35s ease-out;
-    }
-
-    .status-pill.pending {
-      background: #F3F4F6;
-      color: #6B7280;
-      border-color: #9CA3AF;
-    }
-
-    @media (max-width: 480px) {
-      .checkpoint-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.45rem;
-      }
-      .status-pill {
-        align-self: flex-start;
-      }
-    }
-
-    /* QR Matrix Box */
-    .qr-card {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.85rem;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .qr-frame {
-      background: #FFFFFF;
-      padding: 0.85rem;
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-sm);
-      display: inline-block;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .qr-frame:hover {
-      transform: translate(-1px, -1px);
-      box-shadow: 4px 4px 0px #000000;
-    }
-
-    .qr-img {
-      display: block;
-      width: 190px;
-      height: 190px;
-      object-fit: contain;
-    }
-
-    .qr-enlarge-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--primary);
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-black);
-      border-radius: 9999px;
-      padding: 0.3rem 0.75rem;
-      box-shadow: var(--shadow-sm);
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-
-    .qr-enlarge-badge:hover {
-      background: var(--bg-cream);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000;
-    }
-
-    .qr-caption-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--text-dark);
-    }
-
-    .qr-caption {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-      max-width: 440px;
-    }
-
-    /* Fullscreen High-Contrast QR Modal */
-    .qr-fullscreen-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(17, 17, 19, 0.82);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      box-sizing: border-box;
-      animation: qrFadeIn 0.2s ease-out;
-    }
-
-    @keyframes qrFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .qr-modal-content {
-      background: #FFFFFF;
-      border: 3px solid #000000;
-      border-radius: var(--radius);
-      box-shadow: 8px 8px 0px #000000;
-      width: 100%;
-      max-width: 440px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.35rem;
-      gap: 1.1rem;
-      box-sizing: border-box;
-      animation: qrScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 100vh;
+      overflow-x: hidden;
       position: relative;
+      margin: 0;
     }
 
-    @keyframes qrScaleUp {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    /* Fixed Corner Logos Matching Website Standard */
+    .top-left-logo-container {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+      pointer-events: auto;
     }
 
-    .qr-modal-header {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.75rem;
-      border-bottom: 2px solid var(--border-subtle);
-      padding-bottom: 0.85rem;
+    .top-left-logo {
+      height: 72px;
+      width: auto;
+      display: block;
+      transition: transform 0.2s ease;
     }
 
-    .qr-modal-title-wrap {
+    .top-left-logo:hover {
+      transform: scale(1.04);
+    }
+
+    .top-right-logo-container {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      pointer-events: auto;
+    }
+
+    .top-right-logo {
+      height: 72px;
+      width: auto;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .top-right-logo:hover {
+      transform: scale(1.04);
+    }
+
+    /* Main Viewport Container */
+    .hub-viewport {
+      position: relative;
+      z-index: 10;
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
-      min-width: 0;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding: 95px 20px 65px 20px;
+      box-sizing: border-box;
     }
 
-    .qr-modal-badge {
-      font-size: 0.65rem;
+    /* Editorial Header Section */
+    .hub-header {
+      text-align: center;
+      margin-bottom: 30px;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hub-kicker-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--primary);
+      color: #000000;
+      background: var(--accent-gold);
+      border: 2px solid var(--border-dark);
+      padding: 5px 18px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-btn);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .qr-modal-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.25rem;
+    .hub-display-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.3rem, 5.5vw, 3.6rem);
       font-weight: 900;
-      color: var(--text-dark);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.2;
-    }
-
-    .qr-modal-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .qr-modal-close-btn {
-      background: #FFFFFF;
-      color: var(--text-dark);
-      border: 2px solid #000000;
-      border-radius: var(--radius-sm);
-      padding: 0.35rem 0.75rem;
-      font-size: 0.78rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 2px 2px 0px #000;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-      font-family: inherit;
-    }
-
-    .qr-modal-close-btn:hover {
-      background: var(--bg-cream);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000;
-    }
-
-    .qr-modal-frame {
-      background: #FFFFFF;
-      padding: 1rem;
-      border: 3px solid #000000;
-      border-radius: var(--radius-sm);
-      box-shadow: 4px 4px 0px #000000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .qr-modal-img {
-      width: min(72vw, 290px);
-      height: min(72vw, 290px);
-      display: block;
-      object-fit: contain;
-      image-rendering: -webkit-optimize-contrast;
-    }
-
-    .qr-modal-footer {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      text-align: center;
-    }
-
-    .qr-modal-hint {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      line-height: 1.35;
-    }
-
-    .qr-modal-dismiss-btn {
-      background: transparent;
-      border: none;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--primary);
-      cursor: pointer;
-      text-decoration: underline;
-      padding: 0.2rem;
-      font-family: inherit;
-    }
-
-    /* Action Buttons */
-    .pass-actions {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 0.25rem;
-    }
-
-    @media (max-width: 480px) {
-      .pass-actions {
-        flex-direction: column;
-      }
-    }
-
-    .btn-action-primary {
-      flex: 1;
-      padding: 0.75rem 1.25rem;
-      background: var(--primary);
-      color: #FFFFFF;
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.15s ease;
-      text-align: center;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-    }
-
-    .btn-action-primary:hover {
-      background: var(--primary-dark);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000;
-    }
-
-    .btn-action-secondary {
-      flex: 1;
-      padding: 0.75rem 1.25rem;
-      background: #FFFFFF;
-      color: var(--text-dark);
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.15s ease;
-      text-align: center;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-    }
-
-    .btn-action-secondary:hover {
-      background: var(--bg-cream);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000;
-    }
-
-    /* Roster Selector (For Delegations) */
-    .delegation-roster-box {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border-black);
-      border-radius: var(--radius-sm);
-      padding: 0.85rem 1rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .roster-select-label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 800;
+      color: #000000;
+      margin: 0;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.4rem;
-      color: var(--text-dark);
+      line-height: 1.05;
     }
 
-    .roster-select {
+    .hub-display-title span {
+      color: var(--primary);
+    }
+
+    .hub-lead {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-style: italic;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.45;
+      max-width: 580px;
+    }
+
+    /* Loading & Error States */
+    .hub-state-card {
       width: 100%;
-      padding: 0.5rem 0.75rem;
-      font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: 700;
-      border: 2px solid var(--border-black);
-      border-radius: 6px;
+      max-width: 480px;
       background: #FFFFFF;
-      outline: none;
-      cursor: pointer;
-      box-shadow: 2px 2px 0px #000;
-    }
-
-    /* Loading Spinner */
-    .loading-wrap {
-      padding: 3.5rem 1.5rem;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 40px 30px;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      text-align: center;
+      gap: 16px;
+      margin: 20px auto;
     }
 
-    .spinner {
-      width: 44px;
-      height: 44px;
+    .hub-spinner {
+      width: 48px;
+      height: 48px;
       border: 4px solid var(--border-subtle);
       border-top-color: var(--primary);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.75s linear infinite;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    /* Printable Lanyard Card (Default hidden on screen) */
-    .print-lanyard-card {
+    /* =========================================================
+       THE DIPLOMATIC DOSSIER GRID (EXPANSIVE 2-COLUMN LAYOUT)
+       ========================================================= */
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      width: 100%;
+      max-width: 1020px;
+      align-items: stretch;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 900px) {
+      .dossier-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+    }
+
+    /* =========================================================
+       LEFT PANEL: THE MASTER DELEGATE CREDENTIAL CARD
+       ========================================================= */
+    .credential-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 32px 30px 28px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .credential-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    /* Card Top Ribbon */
+    .credential-top-ribbon {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 18px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .diplomatic-seal-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--bg-cream);
+      color: #000000;
+      border: 1.8px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      padding: 4px 14px;
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .accreditation-status-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--success-bg);
+      color: var(--success-green);
+      border: 1.5px solid #059669;
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      box-shadow: 1px 1px 0px #000000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+
+    /* Candidate Identity Block */
+    .candidate-identity-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .candidate-title-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .candidate-name-display {
+      font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      color: #000000;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .candidate-institution-line {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .candidate-chips-deck {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .identity-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-dark);
+      background: var(--bg-cream);
+      color: #000000;
+      box-shadow: 1.5px 1.5px 0px #000000;
+    }
+
+    .identity-tag.gold {
+      background: var(--accent-gold);
+    }
+
+    .identity-tag.maroon {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: #000000;
+    }
+
+    /* Diplomatic Allotment Box (Hero Inner Panel) */
+    .allotment-showcase-panel {
+      background: var(--bg-cream);
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-box);
+      box-shadow: var(--shadow-box);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .allotment-item-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .allotment-item-kicker {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .allotment-item-val {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #000000;
+      line-height: 1.2;
+    }
+
+    .allotment-item-val.highlight {
+      color: var(--primary);
+    }
+
+    .allotment-inner-divider {
+      border: none;
+      border-top: 1.5px dashed rgba(0, 0, 0, 0.18);
+      margin: 0;
+    }
+
+    .allotment-item-val.venue {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #1F2937;
+    }
+
+    /* Lanyard Slot (Punch Hole) */
+    .lanyard-slot-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: -16px;
+      margin-bottom: -4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .lanyard-punch-hole {
+      width: 64px;
+      height: 11px;
+      background: var(--bg-cream);
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Tactile Watermark Crest Behind Credential */
+    .credential-watermark-crest {
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-5deg);
+      width: 250px;
+      height: 250px;
+      opacity: 0.045;
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+    }
+
+    .credential-watermark-crest img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%);
+    }
+
+    /* Ticket Perforation Tear-Line & Semicircular Cutout Notches */
+    .ticket-perforation-divider {
+      position: relative;
+      width: calc(100% + 60px);
+      margin: 4px -30px;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .perforation-line {
+      flex: 1;
+      height: 0;
+      border-top: 2px dashed rgba(0, 0, 0, 0.2);
+    }
+
+    .perforation-notch {
+      width: 16px;
+      height: 26px;
+      background: var(--bg-cream);
+      border: 2.5px solid var(--border-dark);
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .perforation-notch.left {
+      border-left: none;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .perforation-notch.right {
+      border-right: none;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+
+    /* Credential Actions Deck */
+    .credential-actions-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .action-btn-primary {
+      width: 100%;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: 2px solid var(--border-dark);
+      border-radius: 14px;
+      padding: 13px 20px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .action-btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4px 4px 0px #000000;
+    }
+
+    .action-btn-primary:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .action-btn-secondary {
+      width: 100%;
+      background: #FFFFFF;
+      color: #000000;
+      border: 2px solid var(--border-dark);
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+
+    .action-btn-secondary:hover {
+      background: var(--accent-gold-light);
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 3.5px 3.5px 0px #000000;
+    }
+
+    .credential-micro-watermark {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.45);
+      letter-spacing: 0.05em;
+      padding-top: 4px;
+    }
+
+    /* =========================================================
+       RIGHT PANEL: GATE PASS & SESSION LEDGER STACK
+       ========================================================= */
+    .side-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Card A: Scannable Venue Gate Pass */
+    .gate-pass-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gate-pass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    .gate-pass-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .gate-pass-kicker {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .gate-pass-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #000000;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .gate-pass-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* The QR Tile Frame */
+    .qr-tile-frame {
+      background: #FFFFFF;
+      border: 2.2px solid var(--border-dark);
+      border-radius: var(--radius-box);
+      box-shadow: var(--shadow-box);
+      padding: 12px;
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .qr-tile-frame:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #000000;
+    }
+
+    .qr-tile-img {
+      display: block;
+      width: 175px;
+      height: 175px;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    .btn-sunlight-modal {
+      background: #FFFFFF;
+      border: 1.8px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: #000000;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .btn-sunlight-modal:hover {
+      background: var(--accent-gold-light);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    .token-chip-button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #000000;
+      background: var(--bg-cream);
+      border: 1.8px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 4px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+      box-shadow: 1.5px 1.5px 0px #000000;
+    }
+
+    .token-chip-button:hover {
+      background: #E5E7EB;
+    }
+
+    /* Card B: Session Checkpoints Ledger */
+    .checkpoints-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .checkpoints-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    .checkpoints-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .checkpoints-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+
+    .checkpoints-subtitle-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .day-checkpoint-box {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-dark);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-checkpoint-header {
+      background: #F5EEE2;
+      border-bottom: 1.5px solid var(--border-dark);
+      padding: 7px 14px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .checkpoint-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      gap: 10px;
+      background: #FFFFFF;
+      transition: background 0.15s ease;
+    }
+
+    .checkpoint-row:last-child {
+      border-bottom: none;
+    }
+
+    .checkpoint-row.verified {
+      background: var(--success-bg);
+    }
+
+    .checkpoint-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .checkpoint-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .checkpoint-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .checkpoint-stamp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border-dark);
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .checkpoint-stamp.verified {
+      background: var(--success-bg);
+      color: var(--success-green);
+      border-color: var(--success-green);
+    }
+
+    .checkpoint-stamp.pending {
+      background: #F3F4F6;
+      color: #4B5563;
+      border-color: #9CA3AF;
+    }
+
+    /* =========================================================
+       CARD C: DELEGATE BRIEFING & CONFERENCE UTILITIES
+       ========================================================= */
+    .delegate-kit-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .delegate-kit-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    .kit-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .kit-card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 0;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kit-card-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      background: var(--bg-cream);
+      border: 1.5px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      padding: 3px 8px;
+    }
+
+    .kit-actions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .kit-action-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg-subtle);
+      border: 1.8px solid var(--border-dark);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      box-shadow: 2px 2px 0px #000000;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      box-sizing: border-box;
+      width: 100%;
+      text-align: left;
+    }
+
+    .kit-action-row:hover {
+      background: var(--accent-gold-light);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    .kit-action-row:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .kit-action-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .kit-action-icon.calendar-icon {
+      background: #EFF6FF;
+      color: #1D4ED8;
+    }
+
+    .kit-action-icon.whatsapp-icon {
+      background: #ECFDF5;
+      color: #047857;
+    }
+
+    .kit-action-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .kit-action-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #000000;
+    }
+
+    .kit-action-sub {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .kit-arrow-icon {
+      color: rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+      transition: transform 0.15s ease, color 0.15s ease;
+    }
+
+    .kit-action-row:hover .kit-arrow-icon {
+      transform: translateX(2px);
+      color: #000000;
+    }
+
+    .kit-downloads-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 480px) {
+      .kit-downloads-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kit-download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 10px;
+      background: #FFFFFF;
+      border: 1.8px solid var(--border-dark);
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #000000;
+      text-decoration: none;
+      box-shadow: 2px 2px 0px #000000;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kit-download-btn:hover {
+      background: var(--accent-gold-light);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    /* =========================================================
+       BOTTOM PROTOCOL & LOGISTICS CAPSULE
+       ========================================================= */
+    .protocol-capsule-bar {
+      margin-top: 26px;
+      max-width: 1020px;
+      width: 100%;
+      background: #FFFFFF;
+      border: 2px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 14px 24px;
+      box-shadow: var(--shadow-box);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-sizing: border-box;
+    }
+
+    .protocol-capsule-bar a {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    .protocol-capsule-bar a:hover {
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .protocol-capsule-bar a strong {
+      color: #000000;
+    }
+
+    /* Delegation Roster Selector Bar */
+    .delegation-roster-box {
+      width: 100%;
+      max-width: 1020px;
+      margin-bottom: 22px;
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 16px 22px;
+      box-shadow: var(--shadow-box);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+
+    .roster-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .roster-title-text {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .roster-scroll-deck {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .roster-pill-btn {
+      padding: 6px 14px;
+      background: var(--bg-cream);
+      border: 1.8px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #000000;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .roster-pill-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--border-dark);
+    }
+
+    /* Toast Notification */
+    .hub-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #000000;
+      color: #FFFFFF;
+      padding: 9px 22px;
+      border-radius: var(--radius-pill);
+      border: 2px solid #FFFFFF;
+      font-size: 0.84rem;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+
+    .hub-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Sunlight Mode Modal */
+    .qr-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .qr-modal-dialog {
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: var(--radius-card);
+      box-shadow: 8px 8px 0px #000000;
+      padding: 30px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+    }
+
+    .qr-modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .qr-modal-close-btn:hover {
+      background: #FEE2E2;
+    }
+
+    .modal-qr-large {
+      width: 270px;
+      height: 270px;
+      display: block;
+      border: 3px solid #000000;
+      border-radius: 14px;
+      padding: 12px;
+      background: #FFFFFF;
+      box-shadow: 4px 4px 0px #000000;
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    /* =========================================================
+       PRINT / SAVE AS PDF ENGINE (ELEGANT 1-PAGE DIPLOMATIC DOSSIER)
+       ========================================================= */
+    #print-badge-container {
       display: none;
     }
 
-    /* Print Badge Media Styles (Exact 3.5" x 2.25" Physical Lanyard Card) */
-    @media print {
-      @page {
-        size: 3.5in 2.25in;
-        margin: 0;
-      }
+    .print-doc-wrap {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #000000;
+      background: #FFFFFF;
+    }
 
+    /* 1. Print Letterhead */
+    .print-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #000000;
+    }
+
+    .print-crest-logo {
+      height: 48px;
+      max-height: 48px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .print-header-center {
+      text-align: center;
+      flex: 1;
+    }
+
+    .print-mun-institution {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4B5563;
+    }
+
+    .print-mun-title {
+      font-size: 14pt;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #000000;
+      margin: 1px 0;
+      line-height: 1.1;
+    }
+
+    .print-doc-subtitle {
+      font-size: 7.2pt;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+    }
+
+    .print-date-badge {
+      font-size: 6.5pt;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #374151;
+      margin-top: 1px;
+    }
+
+    /* 2. Main Credential Card */
+    .print-credential-card {
+      border: 2px solid #000000;
+      border-radius: 12px;
+      background: #FFFFFF;
+      padding: 12px 16px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .print-card-ribbon {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid #E5E7EB;
+    }
+
+    .print-ribbon-left,
+    .print-ribbon-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .print-pill-seal {
+      background: #FFF7EB;
+      color: #000000;
+      border: 1px solid #000000;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 6.5pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .print-pill-type {
+      background: #E5A93C;
+      color: #000000;
+      border: 1px solid #000000;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 6.5pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .print-status-verified {
+      background: #D1FAE5;
+      color: #065F46;
+      border: 1px solid #059669;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 6.5pt;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .print-id-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 800;
+      background: #F3F4F6;
+      border: 1px solid #000000;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .print-identity-body {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .print-identity-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .print-role-kicker {
+      font-size: 6.5pt;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+    }
+
+    .print-candidate-name {
+      font-size: 19pt;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #000000;
+      line-height: 1.05;
+      margin: 2px 0;
+    }
+
+    .print-inst-line {
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+
+    .print-usn-line {
+      font-size: 7pt;
+      font-family: 'JetBrains Mono', monospace;
+      color: #4B5563;
+      margin-bottom: 4px;
+    }
+
+    /* Inner Allotment Panel */
+    .print-allotment-box {
+      background: #FFF7EB;
+      border: 1.5px solid #000000;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .print-allot-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .print-allot-label {
+      font-size: 5.5pt;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+    }
+
+    .print-allot-val {
+      font-size: 9.5pt;
+      font-weight: 900;
+      color: #000000;
+      line-height: 1.15;
+    }
+
+    .print-allot-val.highlight {
+      color: #6C0D2C;
+    }
+
+    .print-allot-divider {
+      border-top: 1px dashed rgba(0, 0, 0, 0.2);
+      margin: 1px 0;
+    }
+
+    /* QR Panel */
+    .print-qr-panel {
+      width: 135px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 1.5px dashed #000000;
+      padding-left: 14px;
+      text-align: center;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .print-qr-frame {
+      background: #FFFFFF;
+      border: 1.5px solid #000000;
+      border-radius: 8px;
+      padding: 6px;
+      display: inline-block;
+    }
+
+    .print-qr-image {
+      width: 95px;
+      height: 95px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .print-token-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6pt;
+      font-weight: 700;
+      background: #F3F4F6;
+      border: 1px solid #000000;
+      border-radius: 4px;
+      padding: 2px 6px;
+      margin-top: 5px;
+    }
+
+    .print-scan-legend {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 5pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #6B7280;
+      margin-top: 3px;
+    }
+
+    /* 3. Checkpoints & Schedule */
+    .print-checkpoints-section {
+      border: 1.5px solid #000000;
+      border-radius: 10px;
+      background: #FFFFFF;
+      padding: 8px 12px;
+      margin-bottom: 9px;
+      box-sizing: border-box;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .print-section-header {
+      font-size: 6.5pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #000000;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #E5E7EB;
+      margin-bottom: 6px;
+    }
+
+    .print-days-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .print-day-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .print-day-title {
+      font-size: 6.5pt;
+      font-weight: 800;
+      color: #6C0D2C;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .print-cp-item {
+      font-size: 6.8pt;
+      color: #1F2937;
+      line-height: 1.25;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .print-cp-dot {
+      font-size: 5pt;
+      color: #059669;
+    }
+
+    /* 4. Protocols Bar */
+    .print-protocols-bar {
+      background: #FFF7EB;
+      border: 1.5px solid #000000;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 9px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4px 12px;
+      box-sizing: border-box;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .print-protocol-item {
+      font-size: 6.5pt;
+      color: #374151;
+      line-height: 1.25;
+    }
+
+    .print-protocol-item strong {
+      color: #000000;
+    }
+
+    /* 5. Footer Microprint */
+    .print-footer-microprint {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 5.5pt;
+      font-weight: 700;
+      color: #6B7280;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #D1D5DB;
+      padding-top: 5px;
+    }
+
+    .print-barcode-mock {
+      letter-spacing: 2px;
+    }
+
+    /* @media print overrides */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 12mm;
+    }
+
+    @media print {
       html, body {
-        width: 100% !important;
-        height: 100% !important;
-        max-height: 2.25in !important;
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: #FFFFFF !important;
-        background-image: none !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-        color-adjust: exact !important;
-        overflow: hidden !important;
       }
 
-      /* Hide all web interface components */
-      .top-header,
-      .pass-container,
-      .pass-actions,
-      .staff-portal-link,
-      #pass-card,
+      body * {
+        visibility: hidden !important;
+      }
+
+      .nav-pill,
+      .top-left-logo-container,
+      .top-right-logo-container,
+      .topology-bg-canvas,
+      .mobile-floating-menu-root,
+      .mobile-floating-reg-btn,
+      .hub-header,
+      .delegation-roster-box,
+      .protocol-capsule-bar,
+      .credential-actions-deck,
+      .btn-sunlight-modal,
+      .hub-toast,
       #qr-modal,
-      .qr-fullscreen-modal,
-      .qr-enlarge-badge {
+      .dossier-grid,
+      .hub-viewport {
         display: none !important;
       }
 
-      /* Show and format physical lanyard badge */
-      .print-lanyard-card {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        width: 3.5in !important;
-        height: 2.25in !important;
-        max-width: 3.5in !important;
-        max-height: 2.25in !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
-        border: 1.5px solid #000000 !important;
-        border-radius: 6px !important;
-        background: #FFFDF9 !important;
-        overflow: hidden !important;
-        page-break-inside: avoid !important;
-        page-break-after: avoid !important;
-        break-inside: avoid !important;
-        break-after: avoid !important;
-        position: relative !important;
-        font-family: 'Outfit', sans-serif !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        color-adjust: exact !important;
+      #print-badge-container,
+      #print-badge-container * {
+        visibility: visible !important;
       }
 
-      .print-header {
-        background: #6C0D2C !important;
-        color: #FFFFFF !important;
-        padding: 4px 8px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        border-bottom: 1.5px solid #000000 !important;
-        height: 28px !important;
-        box-sizing: border-box !important;
-      }
-
-      .print-header-left {
-        display: flex !important;
-        align-items: center !important;
-        gap: 5px !important;
-      }
-
-      .print-logo {
-        width: 18px !important;
-        height: 18px !important;
-        border: 1px solid #000 !important;
-        border-radius: 3px !important;
-        background: #FFFFFF !important;
-      }
-
-      .print-conf-title {
-        font-family: 'Syne', sans-serif !important;
-        font-size: 10px !important;
-        font-weight: 800 !important;
-        letter-spacing: -0.01em !important;
-        color: #FFF7EB !important;
-      }
-
-      .print-tag-pill {
-        background: #E5A93C !important;
-        color: #000000 !important;
-        font-size: 7.5px !important;
-        font-weight: 900 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.06em !important;
-        padding: 1.5px 5px !important;
-        border: 1px solid #000000 !important;
-        border-radius: 9999px !important;
-      }
-
-      .print-body {
-        flex: 1 !important;
-        padding: 5px 8px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 8px !important;
-        box-sizing: border-box !important;
-      }
-
-      .print-info-col {
-        flex: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        gap: 3px !important;
-        min-width: 0 !important;
-      }
-
-      .print-delegate-name {
-        font-family: 'Syne', sans-serif !important;
-        font-size: 14.5px !important;
-        font-weight: 900 !important;
-        line-height: 1.15 !important;
-        color: #111113 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-      }
-
-      .print-delegate-inst {
-        font-size: 8px !important;
-        font-weight: 600 !important;
-        color: #4B5563 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        margin-bottom: 2px !important;
-      }
-
-      .print-allotment-box {
-        background: #FFFFFF !important;
-        border: 1px solid #000000 !important;
-        border-radius: 4px !important;
-        padding: 3px 6px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 1.5px !important;
-        box-shadow: 1px 1px 0px #000 !important;
-      }
-
-      .print-allotment-row {
-        display: flex !important;
-        align-items: baseline !important;
-        gap: 4px !important;
-        font-size: 8px !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-      }
-
-      .print-allotment-label {
-        font-size: 7px !important;
-        font-weight: 800 !important;
-        text-transform: uppercase !important;
-        color: #6B7280 !important;
-      }
-
-      .print-allotment-val {
-        font-weight: 800 !important;
-        color: #111113 !important;
-      }
-
-      .print-allotment-val.comm {
-        color: #6C0D2C !important;
-      }
-
-      .print-meta-bar {
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        margin-top: 2px !important;
-      }
-
-      .print-id-pill {
-        font-family: 'JetBrains Mono', monospace !important;
-        font-size: 7.5px !important;
-        font-weight: 800 !important;
-        background: #6C0D2C !important;
-        color: #FFFFFF !important;
-        border: 1px solid #000 !important;
-        border-radius: 3px !important;
-        padding: 1px 4px !important;
-      }
-
-      .print-status-tag {
-        font-size: 7px !important;
-        font-weight: 800 !important;
-        text-transform: uppercase !important;
-        color: #047857 !important;
-      }
-
-      .print-qr-col {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 2px !important;
-        flex-shrink: 0 !important;
-      }
-
-      .print-qr-frame {
-        background: #FFFFFF !important;
-        border: 1.2px solid #000000 !important;
-        border-radius: 5px !important;
-        padding: 2.5px !important;
-        box-shadow: 1px 1px 0px #000 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-      }
-
-      .print-qr-img {
-        width: 76px !important;
-        height: 76px !important;
-        object-fit: contain !important;
+      #print-badge-container {
         display: block !important;
-      }
-
-      .print-qr-sub {
-        font-size: 6px !important;
-        font-weight: 800 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.05em !important;
-        color: #4B5563 !important;
-      }
-
-      .print-footer {
-        background: #111113 !important;
-        color: #FFF7EB !important;
-        padding: 2px 8px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        height: 16px !important;
-        font-size: 6.5px !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.04em !important;
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        border: none !important;
+        box-shadow: none !important;
         box-sizing: border-box !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
       }
+    }
+
+    #print-badge-container {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
-  <header class="top-header">
-    <a href="/" class="brand-link">
-      <img src="/assets/Logos/MUN_logo.webp" alt="RNS MUN 2026 Logo" class="brand-logo" />
-      <div class="brand-text-wrap">
-        <span class="brand-title">RNS MUN 2026</span>
-        <span class="brand-subtitle">Official Credential Pass</span>
-      </div>
-    </a>
-    <a href="/scan" class="staff-portal-link" title="Secretariat Check-in Scanner">
-      📷 Staff Scan
-    </a>
-  </header>
+  <!-- Dynamic Fluid Topographic Contour Canvas -->
+  <canvas class="topology-bg-canvas" id="topology-canvas"></canvas>
 
-  <!-- Pass Card -->
-  <main class="pass-container" id="pass-card">
-    <div class="pass-header-ribbon">
-      <span class="ribbon-tag">RNS MUN '26 • ACCREDITED</span>
-      <h1 class="pass-main-title">OFFICIAL DELEGATE PASS</h1>
-      <p class="pass-sub-title">RNS Model United Nations 2026 • Campus & Logistics Passport</p>
+  <!-- Top Left Logo -->
+  <div class="top-left-logo-container">
+    <a href="/" aria-label="RNSMUN 2026 Home">
+      <img src="./assets/Logos/MUN_logo.webp" alt="RNSMUN 2026 Logo" class="top-left-logo" width="496" height="503">
+    </a>
+  </div>
+
+  <!-- Top Right Logo -->
+  <div class="top-right-logo-container">
+    <a href="/" aria-label="RNSIT Logo">
+      <img src="./assets/Logos/25_logo.webp" alt="RNSIT Logo" class="top-right-logo" width="159" height="170">
+    </a>
+  </div>
+
+  <!-- Navigation Pill (Matches RNSMUN standard navigation) -->
+  <nav class="nav-pill">
+    <div class="nav-items-wrap">
+      <a href="/" class="nav-item" id="nav-gallery">Home</a>
+      <a href="/past-events" class="nav-item" id="nav-past">Past Events</a>
+      <a href="/registration" class="nav-item" id="nav-registration">Registration</a>
+      <a href="/venue" class="nav-item" id="nav-venue">Venue</a>
+      <a href="/stay-connected" class="nav-item" id="nav-connected">Contact</a>
+      <a href="/team" class="nav-item" id="nav-team">Team</a>
+      <a href="/code-of-conduct" class="nav-item" id="nav-coc">Equity Policy</a>
+    </div>
+  </nav>
+
+  <!-- Main Viewport -->
+  <main class="hub-viewport">
+
+    <!-- Header Section -->
+    <header class="hub-header">
+      <div class="hub-kicker-pill">OFFICIAL ACCREDITATION &bull; 06–07 OCTOBER 2026</div>
+      <h1 class="hub-display-title">DELEGATE <span>PORTAL</span></h1>
+      <p class="hub-lead">
+        Present this QR at registration on 06 October. Keep this link bookmarked.
+      </p>
+    </header>
+
+    <!-- Delegation Roster Selector Bar (Visible if pass is a delegation) -->
+    <div id="delegation-roster-box" class="delegation-roster-box" style="display: none;">
+      <div class="roster-header-row">
+        <span class="roster-title-text">Institutional Delegation Roster</span>
+        <span id="delegation-count-tag" class="identity-tag gold" style="border-width: 1.5px;">0 Delegates</span>
+      </div>
+      <div id="roster-pills-list" class="roster-scroll-deck">
+        <!-- Injected via JavaScript -->
+      </div>
     </div>
 
-    <!-- Dynamic Content Area -->
-    <div id="content-container">
-      <div class="loading-wrap">
-        <div class="spinner"></div>
-        <p style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted);">Verifying credential with Secretariat servers...</p>
+    <!-- Main Dynamic Injection Container -->
+    <div id="hub-content" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+      <!-- Loading State Default -->
+      <div class="hub-state-card">
+        <div class="hub-spinner"></div>
+        <div>
+          <h2 style="font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin: 0 0 6px 0;">Verifying Accreditation...</h2>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;">
+            Checking token credentials with the RNSMUN 2026 registry.
+          </p>
+        </div>
       </div>
     </div>
+
   </main>
 
-  <!-- Printable Physical Lanyard Badge (3.5" x 2.25") - Hidden on screen, visible on print -->
-  <div class="print-lanyard-card" id="print-lanyard-badge" aria-hidden="true">
-    <div class="print-header">
-      <div class="print-header-left">
-        <img src="/assets/Logos/MUN_logo.webp" alt="Logo" class="print-logo" />
-        <span class="print-conf-title">RNS MUN 2026</span>
-      </div>
-      <span class="print-tag-pill" id="print-badge-type-tag">DELEGATE</span>
-    </div>
-    <div class="print-body">
-      <div class="print-info-col">
-        <div class="print-delegate-name" id="print-badge-name">Delegate Name</div>
-        <div class="print-delegate-inst" id="print-badge-institution">Institution Name</div>
-        <div class="print-allotment-box">
-          <div class="print-allotment-row">
-            <span class="print-allotment-label">Committee:</span>
-            <span class="print-allotment-val comm" id="print-badge-committee">UNSC</span>
-          </div>
-          <div class="print-allotment-row">
-            <span class="print-allotment-label">Portfolio:</span>
-            <span class="print-allotment-val" id="print-badge-portfolio">France</span>
-          </div>
+  <!-- High-Contrast Fullscreen Sunlight Lightbox -->
+  <div id="qr-modal" class="qr-modal-overlay" onclick="closeQrModal(event)">
+    <div class="qr-modal-dialog">
+      <button type="button" class="qr-modal-close-btn" onclick="closeQrModal()">&times; Close</button>
+      <div>
+        <div style="font-size: 0.72rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em;">
+          OFFICIAL ACCREDITATION
         </div>
-        <div class="print-meta-bar">
-          <span class="print-id-pill" id="print-badge-id">RNS-MUN-26-0001</span>
-          <span class="print-status-tag">★ OFFICIAL ACCREDITATION</span>
+        <h2 id="modal-qr-delegate-name" style="font-size: 1.4rem; font-weight: 900; margin: 4px 0 0 0;">Delegate Name</h2>
+        <div id="modal-qr-delegate-meta" style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+          ID &bull; Committee
         </div>
-      </div>
-      <div class="print-qr-col">
-        <div class="print-qr-frame">
-          <img src="" alt="Badge QR" class="print-qr-img" id="print-badge-qr" />
-        </div>
-        <span class="print-qr-sub">Scan for Accreditation</span>
-      </div>
-    </div>
-    <div class="print-footer">
-      <span>RNS INSTITUTE OF TECHNOLOGY, BENGALURU</span>
-      <span>mun.rnsit.ac.in</span>
-    </div>
-  </div>
-
-  <!-- Fullscreen High-Contrast QR Modal (Bright White Lightbox for Outdoor Glare) -->
-  <div id="qr-modal" class="qr-fullscreen-modal" style="display: none;" onclick="closeQrModal(event)" aria-modal="true" role="dialog" aria-label="Fullscreen QR Code">
-    <div class="qr-modal-content" onclick="event.stopPropagation()">
-      <div class="qr-modal-header">
-        <div class="qr-modal-title-wrap">
-          <span class="qr-modal-badge">★ OFFICIAL ACCREDITATION</span>
-          <h3 class="qr-modal-title" id="modal-qr-delegate-name">Delegate Name</h3>
-          <span class="qr-modal-sub" id="modal-qr-delegate-meta">RNS-MUN-26-0001 • Committee</span>
-        </div>
-        <button type="button" class="qr-modal-close-btn" onclick="closeQrModal()" aria-label="Close Fullscreen QR">
-          ✕ Close
-        </button>
       </div>
 
-      <div class="qr-modal-frame">
-        <img id="modal-qr-img" src="" alt="Fullscreen Delegate Pass QR Code" class="qr-modal-img" />
-      </div>
+      <img id="modal-qr-img" src="" alt="High Contrast QR Code" class="modal-qr-large" />
 
-      <div class="qr-modal-footer">
-        <span class="qr-modal-hint">☀️ High-contrast mode for outdoor scanning & morning glare</span>
-        <button type="button" class="qr-modal-dismiss-btn" onclick="closeQrModal()">
-          Tap anywhere to close
-        </button>
+      <div style="font-size: 0.74rem; color: #4B5563; font-weight: 600;">
+        Present this enlarged QR code at the registration desk for faster scanning.
       </div>
     </div>
   </div>
 
+  <!-- Add to Phone Calendar Modal (Works on Android, iOS & Desktop) -->
+  <div id="calendar-modal" class="qr-modal-overlay" onclick="closeCalendarModal(event)">
+    <div class="qr-modal-dialog" style="max-width: 440px; text-align: left; padding: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 800; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase;">
+          CALENDAR EXPORT
+        </span>
+        <button type="button" class="qr-modal-close-btn" onclick="closeCalendarModal()">&times; Close</button>
+      </div>
+
+      <h3 style="font-size: 1.25rem; font-weight: 900; margin: 0 0 6px 0; color: #000000; line-height: 1.2;">
+        RNS Model United Nations 2026
+      </h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">
+        <strong>06–07 October 2026</strong> &bull; Reporting Time: <strong>08:30 AM IST</strong><br>
+        <span id="cal-modal-venue-text" style="font-weight: 600; color: #1F2937;">RNSIT Campus, Bengaluru</span>
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Google Calendar (Android & Web) -->
+        <a id="btn-gcal-link" href="#" target="_blank" rel="noopener noreferrer" class="kit-action-row" style="padding: 12px 14px;">
+          <div class="kit-action-icon" style="background: #FEF3C7; color: #B45309;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
+          <div class="kit-action-info">
+            <span class="kit-action-label">Google Calendar</span>
+            <span class="kit-action-sub" id="gcal-rec-label">Instant 1-tap save (Android &amp; Google)</span>
+          </div>
+          <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+
+        <!-- Apple Calendar (.ics for iPhone / iPad / Mac) -->
+        <button type="button" class="kit-action-row" onclick="triggerIcsDownload('apple')" style="padding: 12px 14px;">
+          <div class="kit-action-icon" style="background: #EFF6FF; color: #1D4ED8;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 1.44S8.22 5 6 5a4.91 4.91 0 0 0-5 4.78C1 14 4 22 7 22c1.25 0 2.5-1.06 4-1.06z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
+          </div>
+          <div class="kit-action-info">
+            <span class="kit-action-label">Apple Calendar</span>
+            <span class="kit-action-sub" id="apple-rec-label">iPhone, iPad &amp; Mac (Direct Import)</span>
+          </div>
+          <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <!-- Download .ics File (Outlook / Samsung Calendar) -->
+        <button type="button" class="kit-action-row" onclick="triggerIcsDownload('standard')" style="padding: 12px 14px;">
+          <div class="kit-action-icon" style="background: #F3F4F6; color: #374151;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          </div>
+          <div class="kit-action-info">
+            <span class="kit-action-label">Download .ics File</span>
+            <span class="kit-action-sub">Outlook, Samsung Calendar &amp; Other</span>
+          </div>
+          <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Isolated Printable Official Diplomatic Accreditation Document (1-Page A4 / Letter) -->
+  <div id="print-badge-container">
+    <div class="print-doc-wrap">
+      <!-- 1. Header with Official Conference Crests -->
+      <div class="print-header-row">
+        <img src="./assets/Logos/MUN_logo.webp" alt="RNSMUN 2026 Logo" class="print-crest-logo" />
+        <div class="print-header-center">
+          <div class="print-mun-institution">RNS INSTITUTE OF TECHNOLOGY &bull; BENGALURU</div>
+          <div class="print-mun-title">RNS MODEL UNITED NATIONS 2026</div>
+          <div class="print-doc-subtitle">OFFICIAL DELEGATE PASS &bull; GATE ENTRY BADGE</div>
+          <div class="print-date-badge">06–07 OCTOBER 2026 &bull; BENGALURU, INDIA</div>
+        </div>
+        <img src="./assets/Logos/25_logo.webp" alt="RNSIT Logo" class="print-crest-logo" />
+      </div>
+
+      <!-- 2. The Diplomatic Credential Card -->
+      <div class="print-credential-card">
+        <div class="print-card-ribbon">
+          <div class="print-ribbon-left">
+            <span class="print-pill-seal">DIPLOMATIC ACCREDITATION</span>
+            <span id="print-badge-type-tag" class="print-pill-type">INTERNAL (RNSIT)</span>
+          </div>
+          <div class="print-ribbon-right">
+            <span class="print-status-verified">ACCREDITED DELEGATE</span>
+            <span id="print-badge-id" class="print-id-tag">ID: ---</span>
+          </div>
+        </div>
+
+        <div class="print-identity-body">
+          <div class="print-identity-details">
+            <span class="print-role-kicker">ACCREDITED DELEGATE</span>
+            <div id="print-badge-name" class="print-candidate-name">Delegate Name</div>
+            <div class="print-inst-line">
+              <span id="print-badge-institution">RNS Institute of Technology</span>
+            </div>
+            <div id="print-badge-usn-wrap" class="print-usn-line" style="display: none;">
+              <span>USN: </span><strong id="print-badge-usn">1RN26EC004</strong>
+            </div>
+
+            <!-- Allotment Box -->
+            <div class="print-allotment-box">
+              <div class="print-allot-group">
+                <span class="print-allot-label">ASSIGNED COMMITTEE</span>
+                <div id="print-badge-committee" class="print-allot-val">United Nations Security Council (UNSC)</div>
+              </div>
+              <div class="print-allot-divider"></div>
+              <div class="print-allot-group">
+                <span class="print-allot-label">REPRESENTED PORTFOLIO</span>
+                <div id="print-badge-portfolio" class="print-allot-val highlight">Republic of India</div>
+              </div>
+              <div class="print-allot-divider"></div>
+              <div class="print-allot-group">
+                <span class="print-allot-label">SESSION CHAMBER / HALL</span>
+                <div id="print-badge-venue" class="print-allot-val" style="font-size: 0.88rem;">Council Chamber &bull; MBA Seminar Hall</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="print-qr-panel">
+            <div class="print-qr-frame">
+              <img id="print-badge-qr" src="" alt="Contactless Gate QR" class="print-qr-image" />
+            </div>
+            <div id="print-badge-token-chip" class="print-token-chip">TOKEN: 01SkYaqKk62PH0</div>
+            <div class="print-scan-legend">CONTACTLESS GATE PASS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Conference Checkpoints & Access Schedule -->
+      <div class="print-checkpoints-section">
+        <div class="print-section-header">
+          <span>CONFERENCE ACCREDITATION &amp; MEAL SCHEDULE</span>
+          <span style="font-weight: 600; opacity: 0.7;">MEALS &bull; SESSIONS &bull; ROLL CALL</span>
+        </div>
+        <div class="print-days-grid">
+          <div class="print-day-box">
+            <div class="print-day-title">DAY 1 &bull; TUESDAY, 06 OCTOBER 2026</div>
+            <div class="print-cp-item">
+              <span class="print-cp-dot">●</span>
+              <span><strong>Campus Accreditation &amp; Kit Collection</strong> (08:30 AM &bull; Main Gate)</span>
+            </div>
+            <div class="print-cp-item">
+              <span class="print-cp-dot">●</span>
+              <span><strong>Delegate Luncheon</strong> (01:00 PM &bull; Conference Dining Hall)</span>
+            </div>
+          </div>
+          <div class="print-day-box">
+            <div class="print-day-title">DAY 2 &bull; WEDNESDAY, 07 OCTOBER 2026</div>
+            <div class="print-cp-item">
+              <span class="print-cp-dot">●</span>
+              <span><strong>Day 2 Campus Entry &amp; Committee Roll Call</strong> (09:00 AM)</span>
+            </div>
+            <div class="print-cp-item">
+              <span class="print-cp-dot">●</span>
+              <span><strong>Delegate Luncheon</strong> (01:00 PM &bull; Conference Dining Hall)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Important Venue & Contact Details -->
+      <div class="print-protocols-bar">
+        <div class="print-protocol-item">
+          <strong>VENUE:</strong> RNSIT Campus, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru - 560098 (Google Maps)
+        </div>
+        <div class="print-protocol-item">
+          <strong>CONTACT:</strong> Adith: +91 89702 62490
+        </div>
+        <div class="print-protocol-item">
+          <strong>OFFICIAL EMAIL:</strong> mun@rnsit.ac.in
+        </div>
+        <div class="print-protocol-item">
+          <strong>GATE CLEARANCE:</strong> Present this printed document or digital PDF at Gate 1 for entry verification.
+        </div>
+      </div>
+
+      <!-- 5. Verification Microprint & Secretariat Watermark -->
+      <div class="print-footer-microprint">
+        <div class="print-security-text">Issued by the Secretariat, RNSMUN 2026 &bull; MUN SOCIETY RNSIT, Bengaluru</div>
+        <div class="print-web-url">mun.rnsit.ac.in</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="hub-toast" class="hub-toast">Pass link copied to clipboard!</div>
+
+  <!-- JavaScript Application Logic -->
   <script>
     let passData = null;
     let selectedMemberIdx = 0;
+    let pollIntervalId = null;
 
-    // Parse URL params
-    const urlParams = new URLSearchParams(window.location.search);
-    const tokenParam = urlParams.get('t');
-    const idParam = urlParams.get('id');
-    const typeParam = (urlParams.get('type') || 'individual').toLowerCase();
-
-    // Member deep-linking: supports ?m=2 or ?member=2 (0-indexed or 1-indexed fallback)
-    const mParam = urlParams.get('m') ?? urlParams.get('member');
-    if (mParam !== null && mParam !== undefined && mParam !== '') {
-      const parsedIdx = parseInt(mParam, 10);
-      if (!isNaN(parsedIdx) && parsedIdx >= 0) {
-        selectedMemberIdx = parsedIdx;
-      }
+    function showToast(message) {
+      const toast = document.getElementById('hub-toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
     }
 
-    function formatTime(isoStr) {
-      if (!isoStr) return '';
+    function getTokenFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const t = urlParams.get('t') || urlParams.get('token');
+      if (t) return t.trim();
+
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const hubIdx = pathParts.indexOf('hub');
+      if (hubIdx !== -1 && pathParts[hubIdx + 1]) {
+        return pathParts[hubIdx + 1].trim();
+      }
+      return null;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '';
       try {
-        const d = new Date(isoStr);
-        let hours = d.getHours();
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        return `${hours}:${minutes} ${ampm}`;
+        const d = new Date(ts);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       } catch (e) {
         return '';
       }
     }
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/[&<>"']/g, function(m) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    let cachedBadgeImage = null;
+    function getQrBadgeImage() {
+      if (cachedBadgeImage && cachedBadgeImage.complete) return Promise.resolve(cachedBadgeImage);
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          cachedBadgeImage = img;
+          resolve(img);
+        };
+        img.onerror = () => {
+          resolve(null);
+        };
+        img.src = '/assets/Logos/qr_center_badge.png';
       });
     }
 
-    function updateUrlMemberParam(idx) {
-      try {
-        const url = new URL(window.location.href);
-        if (idx > 0) {
-          url.searchParams.set('m', idx);
-          url.searchParams.delete('member');
-        } else {
-          url.searchParams.delete('m');
-          url.searchParams.delete('member');
+    async function generateClientQrDataUrl(text, size = 300) {
+      const badgeImg = await getQrBadgeImage();
+
+      return new Promise((resolve) => {
+        try {
+          if (typeof QRCode !== 'undefined') {
+            const tempDiv = document.createElement('div');
+            tempDiv.style.display = 'none';
+            document.body.appendChild(tempDiv);
+
+            new QRCode(tempDiv, {
+              text: text,
+              width: size,
+              height: size,
+              colorDark: '#000000',
+              colorLight: '#FFFFFF',
+              correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.H : 2
+            });
+
+            setTimeout(() => {
+              const canvas = tempDiv.querySelector('canvas') || (function() {
+                const img = tempDiv.querySelector('img');
+                if (img && img.src) {
+                  const c = document.createElement('canvas');
+                  c.width = size;
+                  c.height = size;
+                  const ctx = c.getContext('2d');
+                  ctx.drawImage(img, 0, 0, size, size);
+                  return c;
+                }
+                return null;
+              })();
+
+              if (canvas) {
+                const ctx = canvas.getContext('2d');
+                if (badgeImg) {
+                  // Size badge at ~23% of QR code width (comfortably within 30% H-level error correction)
+                  const badgeSize = Math.round(size * 0.23);
+                  const center = size / 2;
+                  const radius = badgeSize / 2;
+
+                  // 1. Draw smooth white circular background margin around badge for clean quiet zone
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.arc(center, center, radius + 2, 0, Math.PI * 2);
+                  ctx.fillStyle = '#FFFFFF';
+                  ctx.fill();
+                  ctx.restore();
+
+                  // 2. Draw circular maroon MUN logo badge in the center
+                  ctx.drawImage(badgeImg, center - radius, center - radius, badgeSize, badgeSize);
+                }
+
+                const dataUrl = canvas.toDataURL('image/png');
+                document.body.removeChild(tempDiv);
+                resolve(dataUrl);
+                return;
+              }
+
+              document.body.removeChild(tempDiv);
+              resolve(`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`);
+            }, 60);
+            return;
+          }
+        } catch (err) {
+          console.warn('Local QRCode fallback triggered:', err);
         }
-        window.history.replaceState({ memberIdx: idx }, '', url.toString());
-      } catch (e) {}
+        resolve(`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`);
+      });
     }
 
     function copyPassLink() {
-      let url = passData?.passUrl || window.location.href;
-      if (passData?.type === 'delegation' && selectedMemberIdx > 0) {
-        try {
-          const u = new URL(url);
-          u.searchParams.set('m', selectedMemberIdx);
-          url = u.toString();
-        } catch (e) {
-          url += (url.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
-        }
+      const passUrl = window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(passUrl).then(() => {
+          showToast('Official Pass Link copied to clipboard!');
+        }).catch(() => {
+          prompt('Copy this pass link:', passUrl);
+        });
+      } else {
+        prompt('Copy this pass link:', passUrl);
       }
-      navigator.clipboard.writeText(url).then(() => {
-        const memberName = passData?.roster?.[selectedMemberIdx]?.name;
-        const msg = memberName 
-          ? `✅ Personal pass link for "${memberName}" copied to clipboard!`
-          : '✅ Pass link copied to clipboard!';
-        alert(msg);
-      }).catch(() => {
-        prompt('Copy your pass link:', url);
-      });
     }
 
-    function onRosterMemberChange(val) {
-      selectedMemberIdx = parseInt(val, 10) || 0;
-      updateUrlMemberParam(selectedMemberIdx);
-      renderPass();
+    function copyTokenText(tokenVal) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(tokenVal).then(() => {
+          showToast('Pass Token copied!');
+        }).catch(() => {
+          prompt('Copy token:', tokenVal);
+        });
+      } else {
+        prompt('Copy token:', tokenVal);
+      }
     }
 
-    window.addEventListener('popstate', (e) => {
-      const currentUrlParams = new URLSearchParams(window.location.search);
-      const m = currentUrlParams.get('m') ?? currentUrlParams.get('member');
-      if (m !== null && m !== undefined && m !== '') {
-        selectedMemberIdx = parseInt(m, 10) || 0;
-      } else {
-        selectedMemberIdx = 0;
-      }
-      renderPass();
-    });
+    async function loadPassData(isBackgroundPoll = false) {
+      const token = getTokenFromUrl();
+      const contentEl = document.getElementById('hub-content');
 
-    // ─── Live Real-Time Polling & Credential Loader ─────────────
-    let isPolling = false;
-    let pollIntervalId = null;
-
-    async function loadPassData(isBackground = false) {
-      if (isPolling && isBackground) return;
-      isPolling = true;
-
-      const container = document.getElementById('content-container');
-      
-      let apiUrl = '';
-      if (tokenParam) {
-        apiUrl = `/api/hub-data?t=${encodeURIComponent(tokenParam)}`;
-      } else if (idParam) {
-        apiUrl = `/api/hub-data?id=${encodeURIComponent(idParam)}&type=${encodeURIComponent(typeParam)}`;
-      } else {
-        if (!isBackground) {
-          container.innerHTML = `
-            <div style="padding: 3rem 1.5rem; text-align: center;">
-              <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">🎫</div>
-              <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
-                Welcome to RNS MUN 2026 Pass Hub
-              </h2>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
-                To view your Official Delegate Pass, please click the secure pass link provided in your allocation email (e.g. <code>/hub?t=...</code>), or scan your conference credential QR code.
-              </p>
-              <a href="/" class="btn-action-primary" style="display:inline-block; max-width:220px; text-decoration:none;">
-                Return to Website
+      if (!token) {
+        if (!isBackgroundPoll) {
+          contentEl.innerHTML = `
+            <div class="hub-state-card">
+              <div style="font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase;">NOTICE</div>
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 900; text-transform: uppercase;">Pass Token Missing</h2>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px;">
+                  Please open your personalized delegate pass link from your confirmation email, or proceed to registration.
+                </p>
+              </div>
+              <a href="/registration" class="action-btn-primary" style="max-width: 240px; text-decoration: none;">
+                Conference Registration
               </a>
             </div>
           `;
         }
-        isPolling = false;
         return;
       }
 
       try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
+        const res = await fetch(`/api/hub-data?t=${encodeURIComponent(token)}`);
+        const json = await res.json();
+        const pass = json.pass || json.data?.pass || json.data;
 
-        // Anti-IDOR Blocked Screen
-        if (res.status === 403 || data.idorBlocked) {
-          if (!isBackground) {
-            container.innerHTML = `
-              <div style="padding: 3rem 1.5rem; text-align: center;">
-                <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">🔒</div>
-                <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
-                  Protected Credential Pass
-                </h2>
-                <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5; max-width: 480px; margin-left: auto; margin-right: auto;">
-                  Direct sequential ID access is restricted to ensure delegate privacy and prevent unauthorized enumeration.
-                  <br><br>
-                  Please access your official pass using the secure link (<code>/hub?t=...</code>) sent to your registered email address.
-                </p>
-                <div style="display: flex; gap: 0.75rem; justify-content: center;">
-                  <a href="/" class="btn-action-primary" style="text-decoration:none; padding: 0.6rem 1.2rem;">Back to Home</a>
-                  <a href="/scan" class="btn-action-secondary" style="text-decoration:none; padding: 0.6rem 1.2rem;">Staff Portal</a>
+        if (!json.success || !pass) {
+          if (!isBackgroundPoll) {
+            contentEl.innerHTML = `
+              <div class="hub-state-card">
+                <div style="font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase;">ALERT</div>
+                <div>
+                  <h2 style="font-size: 1.3rem; font-weight: 900; text-transform: uppercase;">Invalid Accreditation</h2>
+                  <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px;">
+                    ${escapeHtml(json.error || 'The requested accreditation token could not be verified in the conference registry.')}
+                  </p>
                 </div>
+                <a href="/stay-connected" class="action-btn-primary" style="max-width: 240px; text-decoration: none;">
+                  Contact Secretariat
+                </a>
               </div>
             `;
           }
-          isPolling = false;
           return;
         }
 
-        if (!data.success) {
-          if (!isBackground) {
-            container.innerHTML = `
-              <div style="padding: 3rem 1.5rem; text-align: center;">
-                <div style="font-size: 2.8rem; margin-bottom: 0.6rem;">⚠️</div>
-                <h2 style="font-family:'Syne', sans-serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">
-                  Credential Not Found
-                </h2>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
-                  ${escapeHtml(data.error || 'The credential token is invalid or has expired.')}
-                </p>
-                <a href="/" class="btn-action-primary" style="display:inline-block; text-decoration:none;">Return to Home</a>
-              </div>
-            `;
-          }
-          isPolling = false;
-          return;
+        const raw = json.data || json;
+
+        passData = {
+          token: pass.token || token,
+          id: pass.id || raw.id,
+          delegateId: pass.delegate_id || pass.delegateId || pass.id || 'IND-00',
+          name: pass.full_name || pass.name || pass.delegation_name || 'Accredited Delegate',
+          email: pass.email || '',
+          institution: pass.institution || pass.college || 'Institutional Representative',
+          usn: pass.usn || '',
+          delegateType: pass.delegate_type || pass.delegateType || (raw.type === 'delegation' ? 'delegation' : 'internal'),
+          type: raw.type || (pass.roster_data ? 'delegation' : 'individual'),
+          status: pass.status || 'confirmed',
+          allocatedCommittee: pass.allocated_committee || pass.allocatedCommittee || pass.committee1 || 'General Assembly',
+          allocatedPortfolio: pass.allocated_portfolio || pass.allocatedPortfolio || pass.portfolio1_1 || 'General Delegate',
+          checkpoints: pass.checkpoints || pass.scans || {},
+          passUrl: pass.pass_url || pass.passUrl || window.location.href,
+          roster: pass.roster_data || pass.roster || []
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const mParam = urlParams.get('m');
+        if (mParam !== null && !isNaN(parseInt(mParam))) {
+          selectedMemberIdx = parseInt(mParam);
         }
 
-        // Check if anything relevant has changed
-        const hasChanged = !passData ||
-          JSON.stringify(passData.checkpoints) !== JSON.stringify(data.checkpoints) ||
-          JSON.stringify(passData.roster) !== JSON.stringify(data.roster) ||
-          passData.allocatedCommittee !== data.allocatedCommittee ||
-          passData.allocatedPortfolio !== data.allocatedPortfolio ||
-          passData.status !== data.status;
-
-        passData = data;
-
-        if (hasChanged) {
-          await renderPass();
-        }
+        renderPass();
 
       } catch (err) {
-        if (!isBackground) {
-          console.error('Error fetching pass data:', err);
-          container.innerHTML = `
-            <div style="padding: 3rem 1.5rem; text-align: center;">
-              <p style="color: #DC2626; font-weight: 700;">Could not connect to accreditation server. Please check your network connection and reload.</p>
+        console.error('Pass lookup error:', err);
+        if (!isBackgroundPoll && !passData) {
+          contentEl.innerHTML = `
+            <div class="hub-state-card">
+              <div style="font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase;">STATUS</div>
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 900; text-transform: uppercase;">Connection Error</h2>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px;">
+                  Failed to connect to the accreditation service. Please check your internet connection and retry.
+                </p>
+              </div>
+              <button onclick="loadPassData()" class="action-btn-primary" style="max-width: 200px;">
+                ↻ Retry
+              </button>
             </div>
           `;
         }
-      } finally {
-        isPolling = false;
       }
-    }
-
-    /**
-     * Generates a 100% offline, client-side QR Code completely in the browser.
-     * Uses local bundled qrcode.min.js with zero 3rd-party dependencies or external network requests.
-     */
-    async function generateClientQrDataUrl(text, size = 300, highRes = false) {
-      if (typeof QRCode !== 'undefined') {
-        try {
-          if (typeof QRCode.toDataURL === 'function') {
-            return await QRCode.toDataURL(text, {
-              width: size,
-              margin: highRes ? 2 : 1,
-              errorCorrectionLevel: highRes ? 'H' : 'M',
-              color: {
-                dark: '#000000',
-                light: '#FFFFFF'
-              }
-            });
-          }
-        } catch (canvasErr) {
-          console.warn('[hub] Canvas toDataURL failed, attempting SVG fallback:', canvasErr);
-        }
-
-        try {
-          if (typeof QRCode.toString === 'function') {
-            const svg = await QRCode.toString(text, {
-              type: 'svg',
-              margin: highRes ? 2 : 1,
-              errorCorrectionLevel: highRes ? 'H' : 'M'
-            });
-            if (svg) {
-              return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-            }
-          }
-        } catch (svgErr) {
-          console.warn('[hub] SVG QR generation fallback failed:', svgErr);
-        }
-      }
-      return '';
     }
 
     async function renderPass() {
       if (!passData) return;
 
+      const contentEl = document.getElementById('hub-content');
       const isDelegation = passData.type === 'delegation';
-      const container = document.getElementById('content-container');
 
-      // Delegation Member Selection
+      // Setup Delegation Roster Selector
+      const rosterBox = document.getElementById('delegation-roster-box');
+      const rosterList = document.getElementById('roster-pills-list');
+      const rosterCount = document.getElementById('delegation-count-tag');
+
       let currentMember = null;
-      let activeCheckpoints = passData.checkpoints || {};
-
       if (isDelegation && passData.roster && passData.roster.length > 0) {
-        if (selectedMemberIdx >= passData.roster.length) {
-          selectedMemberIdx = Math.max(0, passData.roster.length - 1);
-        } else if (selectedMemberIdx < 0) {
-          selectedMemberIdx = 0;
-        }
-        currentMember = passData.roster[selectedMemberIdx] || passData.roster[0];
-        activeCheckpoints = currentMember.checkpoints || passData.checkpoints;
+        rosterBox.style.display = 'flex';
+        rosterCount.textContent = `${passData.roster.length} Delegates`;
+
+        if (selectedMemberIdx >= passData.roster.length) selectedMemberIdx = 0;
+        currentMember = passData.roster[selectedMemberIdx];
+
+        rosterList.innerHTML = passData.roster.map((m, idx) => `
+          <button class="roster-pill-btn ${idx === selectedMemberIdx ? 'active' : ''}" onclick="selectMember(${idx})">
+            ${escapeHtml(m.name || 'Delegate ' + (idx + 1))}
+          </button>
+        `).join('');
+      } else {
+        rosterBox.style.display = 'none';
       }
 
       const delegateName = isDelegation 
@@ -1503,230 +2221,412 @@
         ? (currentMember ? currentMember.portfolio : passData.allocatedPortfolio)
         : passData.allocatedPortfolio;
 
-      // Tokenized Public Pass Link (Includes &m= for individual delegation member badges)
+      const delegateTypeLabel = isDelegation
+        ? 'DELEGATION'
+        : (passData.delegateType ? passData.delegateType.toUpperCase() : 'INTERNAL');
+
+      const displayDelegateId = isDelegation
+        ? (passData.id ? `DEL-${passData.id}-${String(selectedMemberIdx + 1).padStart(2, '0')}` : `DEL-${selectedMemberIdx + 1}`)
+        : (passData.id || passData.delegateId || 'IND');
+
       let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
       if (isDelegation && selectedMemberIdx > 0) {
         passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
       }
-      const qrDataUrl = await generateClientQrDataUrl(passUrl, 320, false);
+
+      const qrDataUrl = await generateClientQrDataUrl(passUrl, 320);
 
       function renderCheckpointRow(key, title, subtitle) {
-        const item = activeCheckpoints[key] || { redeemed: false, timestamp: null, by: null };
-        const isRedeemed = !!item.redeemed;
-        const timeStr = isRedeemed ? formatTime(item.timestamp) : '';
-        const staffBy = item.by || 'Secretariat Staff';
-
-        let stampedText = '✓ Stamped';
-        if (timeStr && staffBy) {
-          stampedText = `✓ Stamped ${timeStr} • ${escapeHtml(staffBy)}`;
-        } else if (timeStr) {
-          stampedText = `✓ Stamped ${timeStr}`;
-        } else if (staffBy) {
-          stampedText = `✓ Stamped • ${escapeHtml(staffBy)}`;
-        }
+        const cp = (passData.checkpoints && passData.checkpoints[key]) ? passData.checkpoints[key] : null;
+        const isDone = cp && (cp.verified || cp.scanned || cp.redeemed);
+        const timeStr = cp && cp.timestamp ? formatDate(cp.timestamp) : '';
 
         return `
-          <div class="checkpoint-item ${isRedeemed ? 'redeemed' : ''}">
+          <div class="checkpoint-row ${isDone ? 'verified' : ''}">
             <div class="checkpoint-info">
               <span class="checkpoint-name">
-                ${isRedeemed ? '✓' : '○'} ${title}
+                ${isDone 
+                  ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#065F46" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' 
+                  : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2.5"><circle cx="12" cy="12" r="7"></circle></svg>'
+                }
+                ${escapeHtml(title)}
               </span>
-              <span class="checkpoint-desc">${subtitle}</span>
+              <span class="checkpoint-sub">${escapeHtml(subtitle)}</span>
             </div>
-            <span class="status-pill ${isRedeemed ? 'redeemed' : 'pending'}">
-              ${isRedeemed ? stampedText : '○ Not Redeemed'}
+            <span class="checkpoint-stamp ${isDone ? 'verified' : 'pending'}">
+              ${isDone ? `Verified ${timeStr}` : 'Pending'}
             </span>
           </div>
         `;
       }
 
-      // Build Roster Dropdown if Delegation
-      let rosterSelectorHtml = '';
-      if (isDelegation && passData.roster && passData.roster.length > 0) {
-        const optionsHtml = passData.roster.map((m, idx) => `
-          <option value="${idx}" ${idx === selectedMemberIdx ? 'selected' : ''}>
-            ${idx + 1}. ${escapeHtml(m.name)} — ${escapeHtml(m.committee || 'Delegate')}
-          </option>
-        `).join('');
-
-        rosterSelectorHtml = `
-          <div class="delegation-roster-box">
-            <label class="roster-select-label" for="roster-select">
-              👥 Delegation Roster Member (${passData.roster.length} Delegates):
-            </label>
-            <select id="roster-select" class="roster-select" onchange="onRosterMemberChange(this.value)">
-              ${optionsHtml}
-            </select>
-            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.35rem; font-weight: 500;">
-              📌 Bookmark or copy this pass link to directly open this delegate's personal badge.
-            </div>
-          </div>
-        `;
+      // Resolve realistic campus venue hall for committee
+      let chamberVenue = passData.room || passData.venue || null;
+      if (!chamberVenue && committeeName) {
+        const cUpper = committeeName.toUpperCase();
+        if (cUpper.includes('UNSC') || cUpper.includes('SECURITY COUNCIL')) {
+          chamberVenue = 'Council Chamber • MBA Seminar Hall (2nd Floor)';
+        } else if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) {
+          chamberVenue = 'Committee Room 102 • Mech Seminar Hall';
+        } else if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN RIGHTS')) {
+          chamberVenue = 'Committee Room 204 • Civil Seminar Hall';
+        } else if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) {
+          chamberVenue = 'Committee Room 301 • ECE Seminar Hall';
+        } else if (cUpper.includes('LOK SABHA')) {
+          chamberVenue = 'Central Plenary Hall • Chanakya Block';
+        } else if (cUpper.includes('PRESS') || cUpper.includes('IP')) {
+          chamberVenue = 'Press Bureau & Media Lab • Academic Block 1';
+        } else {
+          chamberVenue = 'Designated Committee Hall • Academic Block 2';
+        }
+      } else if (!chamberVenue) {
+        chamberVenue = 'Main Plenary Hall • Academic Block 2';
       }
 
-      container.innerHTML = `
-        <div class="pass-body">
-          
-          <!-- Identity Hero Card -->
-          <div class="identity-box">
-            <div class="identity-top">
-              <div>
-                <h2 class="delegate-name">${escapeHtml(delegateName)}</h2>
-                <div class="delegate-institution">🏛️ ${escapeHtml(passData.institution)}</div>
-              </div>
-              <span class="delegate-type-pill">
-                ${isDelegation ? 'Institutional Delegation' : escapeHtml(passData.delegateType)}
-              </span>
+      // Official Committee WhatsApp Group Links
+      const COMMITTEE_WHATSAPP_MAP = {
+        'UNSC': 'https://chat.whatsapp.com/HimCmZ0ul517ru5Y9bgwfx',
+        'LOK SABHA': 'https://chat.whatsapp.com/IqqnupTXR6wK9VH0SMpfAq',
+        'UNODC': 'https://chat.whatsapp.com/DznQ1q5hGux303QmALqJmN',
+        'UNHRC': 'https://chat.whatsapp.com/CDc8hAkEr8FHqmSIQRcuC9',
+        'IPC': 'https://chat.whatsapp.com/FuLrE0UmkK0DqpihnQGQIl',
+        'DISEC': 'https://chat.whatsapp.com/BrubdIe8jqoEcRymOxBvl1'
+      };
+
+      // Match Committee and Resolve Official WhatsApp Link
+      let committeeShortCode = 'Committee';
+      let committeeWhatsAppUrl = passData.whatsappLink || '';
+
+      const cUpper = (committeeName || '').toUpperCase();
+      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY COUNCIL')) {
+        committeeShortCode = 'UNSC';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['UNSC'];
+      } else if (cUpper.includes('LOK SABHA') || cUpper.includes('PARLIAMENT')) {
+        committeeShortCode = 'Lok Sabha';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['LOK SABHA'];
+      } else if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) {
+        committeeShortCode = 'UNODC';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['UNODC'];
+      } else if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN RIGHTS')) {
+        committeeShortCode = 'UNHRC';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['UNHRC'];
+      } else if (cUpper.includes('IPC') || cUpper.includes('PRESS') || cUpper.includes('INTERNATIONAL PRESS') || cUpper.includes('IP')) {
+        committeeShortCode = 'IPC';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['IPC'];
+      } else if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) {
+        committeeShortCode = 'DISEC';
+        committeeWhatsAppUrl = committeeWhatsAppUrl || COMMITTEE_WHATSAPP_MAP['DISEC'];
+      }
+
+      if (!committeeWhatsAppUrl) {
+        const whatsappText = encodeURIComponent(
+          `Hi Secretariat! I am an accredited delegate for ${committeeName} representing ${portfolioName || 'General Delegate'}. Please add me to the delegate coordination group.`
+        );
+        committeeWhatsAppUrl = `https://wa.me/918970262490?text=${whatsappText}`;
+      }
+      window.currentChamberVenue = chamberVenue;
+      window.currentDelegateName = delegateName;
+      window.currentCommitteeName = committeeName;
+      window.currentPortfolioName = portfolioName;
+
+      // Inject The Responsive Diplomatic Dossier Grid
+      contentEl.innerHTML = `
+        <div class="dossier-grid">
+
+          <!-- ==============================================
+               LEFT PANEL: MASTER DELEGATE CREDENTIAL CARD
+               ============================================== -->
+          <div class="credential-card">
+
+            <!-- Tactile Lanyard Punch Slot -->
+            <div class="lanyard-slot-wrap" aria-hidden="true">
+              <div class="lanyard-punch-hole"></div>
             </div>
 
-            <div class="meta-pills-row">
-              <span class="meta-pill id-highlight">DELEGATE ID: ${escapeHtml(passData.delegateId)}</span>
-              <span class="meta-pill">STATUS: ${escapeHtml(passData.status)}</span>
-              ${isDelegation ? `<span class="meta-pill">HEAD: ${escapeHtml(passData.headName || 'Delegation Head')}</span>` : ''}
+            <!-- Tactile Watermark Crest -->
+            <div class="credential-watermark-crest" aria-hidden="true">
+              <img src="./assets/Logos/MUN_logo.webp" alt="" />
             </div>
+
+            <!-- 1. Top Ribbon -->
+            <div class="credential-top-ribbon">
+              <div class="diplomatic-seal-badge">
+                <span>RNSMUN 2026</span>
+                <span style="opacity: 0.4;">|</span>
+                <span>DELEGATE PASS</span>
+              </div>
+              <div class="accreditation-status-chip">
+                <span>Accredited Delegate</span>
+              </div>
+            </div>
+
+            <!-- 2. Candidate Identity Block -->
+            <div class="candidate-identity-block">
+              <span class="candidate-title-label">Official Delegate</span>
+              <h2 class="candidate-name-display">${escapeHtml(delegateName)}</h2>
+              <div class="candidate-institution-line">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2 2 7h20z"></path></svg>
+                <span>${escapeHtml(passData.institution || 'Institutional Representative')}</span>
+              </div>
+
+              <div class="candidate-chips-deck">
+                <span class="identity-tag gold">${escapeHtml(delegateTypeLabel)}</span>
+                <span class="identity-tag">ID: ${escapeHtml(displayDelegateId)}</span>
+                ${passData.usn ? `<span class="identity-tag">USN: ${escapeHtml(passData.usn)}</span>` : ''}
+              </div>
+            </div>
+
+            <!-- 3. Diplomatic Allotment Display -->
+            <div class="allotment-showcase-panel">
+              <div class="allotment-item-block">
+                <span class="allotment-item-kicker">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                  Assigned Committee
+                </span>
+                <span class="allotment-item-val">${escapeHtml(committeeName || 'General Assembly')}</span>
+              </div>
+
+              <hr class="allotment-inner-divider" />
+
+              <div class="allotment-item-block">
+                <span class="allotment-item-kicker">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  Represented Portfolio
+                </span>
+                <span class="allotment-item-val highlight">${escapeHtml(portfolioName || 'General Delegate')}</span>
+              </div>
+
+              <hr class="allotment-inner-divider" />
+
+              <div class="allotment-item-block">
+                <span class="allotment-item-kicker">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                  Session Hall / Chamber
+                </span>
+                <span class="allotment-item-val venue">${escapeHtml(chamberVenue)}</span>
+              </div>
+            </div>
+
+            <!-- Perforation Ticket Tear Notch Divider -->
+            <div class="ticket-perforation-divider" aria-hidden="true">
+              <div class="perforation-notch left"></div>
+              <div class="perforation-line"></div>
+              <div class="perforation-notch right"></div>
+            </div>
+
+            <!-- 4. Credential Actions Deck -->
+            <div class="credential-actions-deck">
+              <button type="button" class="action-btn-primary" onclick="window.print()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                <span>Save as PDF / Print Badge</span>
+              </button>
+              <button type="button" class="action-btn-secondary" onclick="copyPassLink()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Pass Link</span>
+              </button>
+              <div class="credential-micro-watermark">
+                <span>Issued by the Secretariat &bull; RNSMUN 2026</span>
+                <span>MUN SOCIETY RNSIT</span>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Roster Member Selector (If Delegation) -->
-          ${rosterSelectorHtml}
+          <!-- ==============================================
+               RIGHT PANEL: GATE PASS & SESSION LEDGER STACK
+               ============================================== -->
+          <div class="side-stack">
 
-          <!-- Diplomatic Allocation Card -->
-          <div class="allocation-card">
-            <div class="allocation-header">
-              <span>Official Diplomatic Allotment</span>
-              <span>UN • RNS MUN 2026</span>
-            </div>
-            <div class="allocation-content">
-              <div class="allocation-block">
-                <span class="allocation-label">Allocated Committee</span>
-                <span class="allocation-val committee">${escapeHtml(committeeName || 'General Assembly')}</span>
+            <!-- Card 1: Contactless Gate Pass (QR) -->
+            <div class="gate-pass-card">
+              <div class="gate-pass-header">
+                <span class="gate-pass-kicker">Gate Accreditation</span>
+                <h3 class="gate-pass-title">Contactless Entry Pass</h3>
+                <p class="gate-pass-sub">Scan at RNSIT Main Gate &amp; Registration Desk</p>
               </div>
-              <div class="allocation-block">
-                <span class="allocation-label">Allocated Portfolio</span>
-                <span class="allocation-val">${escapeHtml(portfolioName || 'General Delegate')}</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Checkpoint Status Section -->
-          <div class="checkpoints-section">
-            <div class="checkpoints-title-row">
-              <h3 class="section-title">
-                Checkpoint Status
-              </h3>
-              <span class="section-badge" title="Live accreditation updates automatically every 10 seconds">
-                <span class="live-dot"></span> Live Real-Time
-              </span>
-            </div>
+              <!-- Ticket Notch Divider -->
+              <div class="ticket-perforation-divider" style="width: calc(100% + 48px); margin: 0 -24px;" aria-hidden="true">
+                <div class="perforation-notch left"></div>
+                <div class="perforation-line"></div>
+                <div class="perforation-notch right"></div>
+              </div>
 
-            <!-- Day 1 Group -->
-            <div class="day-group">
-              <div class="day-header">
-                <span>Day 1 — Conference Kickoff</span>
-                <span>Day 1 of 2</span>
+              <!-- Centered QR Tile -->
+              <div class="qr-tile-frame" onclick="openQrModal()" role="button" tabindex="0" title="Tap to enlarge QR code">
+                <img src="${qrDataUrl}" alt="Delegate Pass QR Code" class="qr-tile-img" />
               </div>
-              <div class="checkpoint-list">
-                ${renderCheckpointRow('day1_entry', 'Day 1 Entry', 'Campus gate entry & security accreditation')}
-                ${renderCheckpointRow('day1_lunch', 'Midday Repast', 'Official conference delegate luncheon')}
-                ${renderCheckpointRow('day1_refreshment', 'Refreshment Hour', 'Evening high tea & snacks')}
-              </div>
+
+              <button type="button" class="btn-sunlight-modal" onclick="openQrModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
+                <span>Enlarge QR Code</span>
+              </button>
+
+              <button type="button" class="token-chip-button" onclick="copyTokenText('${escapeHtml(passData.token)}')" title="Click to copy pass token">
+                <span>TOKEN: ${escapeHtml(passData.token)}</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </div>
 
-            <!-- Day 2 Group -->
-            <div class="day-group">
-              <div class="day-header">
-                <span>Day 2 — Resolution & Plenary</span>
-                <span>Day 2 of 2</span>
+            <!-- Card 2: Streamlined Conference Checkpoints -->
+            <div class="checkpoints-card">
+              <div class="checkpoints-header">
+                <h4 class="checkpoints-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  <span>Attendance &amp; Meals</span>
+                </h4>
+                <span class="checkpoints-subtitle-tag">06–07 OCT 2026</span>
               </div>
-              <div class="checkpoint-list">
-                ${renderCheckpointRow('day2_entry', 'Day 2 Entry', 'Day 2 campus access & roll call')}
-                ${renderCheckpointRow('day2_lunch', 'Midday Repast', 'Official conference delegate luncheon')}
-                ${renderCheckpointRow('day2_refreshment', 'Refreshment Hour', 'Closing high tea & social mixer')}
+
+              <!-- Day 1 Block -->
+              <div class="day-checkpoint-box">
+                <div class="day-checkpoint-header">
+                  <span>Day 1 — Kickoff &amp; Committee</span>
+                  <span>06 Oct</span>
+                </div>
+                <div>
+                  ${renderCheckpointRow('day1_entry', 'Campus Check-in', 'Gate verification & delegate kit')}
+                  ${renderCheckpointRow('day1_lunch', 'Lunch & Networking', 'Campus Cafeteria / Food Court')}
+                </div>
+              </div>
+
+              <!-- Day 2 Block -->
+              <div class="day-checkpoint-box">
+                <div class="day-checkpoint-header">
+                  <span>Day 2 — Resolutions &amp; Plenary</span>
+                  <span>07 Oct</span>
+                </div>
+                <div>
+                  ${renderCheckpointRow('day2_entry', 'Day 2 Check-in', 'Campus entry & committee roll call')}
+                  ${renderCheckpointRow('day2_lunch', 'Lunch & Networking', 'Campus Cafeteria / Food Court')}
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Card 3: Delegate Briefing & Conference Utilities -->
+            <div class="delegate-kit-card">
+              <div class="kit-card-header">
+                <h4 class="kit-card-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  <span>Conference Utilities</span>
+                </h4>
+                <span class="kit-card-badge">DELEGATE DESK</span>
+              </div>
+
+              <div class="kit-actions-list">
+                <!-- 1. Add to Calendar -->
+                <button type="button" class="kit-action-row" onclick="openCalendarModal()" title="Add RNSMUN 2026 to Google or Apple Calendar">
+                  <div class="kit-action-icon calendar-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Add to Phone Calendar</span>
+                    <span class="kit-action-sub">06–07 Oct &bull; 08:30 AM IST (Google &amp; Apple)</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+
+                <!-- 2. Committee WhatsApp Group -->
+                <a class="kit-action-row" id="kit-whatsapp-link" href="${escapeHtml(committeeWhatsAppUrl)}" target="_blank" rel="noopener noreferrer" title="Join Delegate WhatsApp Channel">
+                  <div class="kit-action-icon whatsapp-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Join ${escapeHtml(committeeShortCode)} Delegate Group</span>
+                    <span class="kit-action-sub">EB announcements &amp; GSL coordination</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+
+                <!-- 3. Rules of Procedure -->
+                <a class="kit-action-row" href="/code-of-conduct" target="_blank" rel="noopener noreferrer" title="View Official Rules of Procedure (RoP) & Equity Policy">
+                  <div class="kit-action-icon" style="background: #F3F4F6; color: #1F2937;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Rules of Procedure (RoP)</span>
+                    <span class="kit-action-sub">Parliamentary conduct &amp; equity policy</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
               </div>
             </div>
-          </div>
 
-          <!-- QR Code Matrix Box -->
-          <div class="qr-card">
-            <div class="qr-frame" onclick="openQrModal()" title="Tap to expand fullscreen high-contrast QR code" role="button" tabindex="0">
-              <img src="${qrDataUrl}" alt="Official Delegate Pass QR Code" class="qr-img" id="pass-qr-img" />
-            </div>
-            <button type="button" class="qr-enlarge-badge" onclick="openQrModal()">
-              🔍 Tap to Enlarge (High Brightness)
-            </button>
-            <span class="qr-caption-title">Accreditation QR Identifier</span>
-            <p class="qr-caption">
-              Present this QR badge at campus security gates and catering stations. Tap the code above for fullscreen high-contrast mode in sunlight.
-            </p>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="pass-actions">
-            <button class="btn-action-primary" onclick="window.print()">
-              🖨️ Save / Print Pass Badge
-            </button>
-            <button class="btn-action-secondary" onclick="copyPassLink()">
-              📋 Copy Pass Link
-            </button>
           </div>
 
         </div>
+
+        <!-- Conference Logistics Capsule -->
+        <div class="protocol-capsule-bar">
+          <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Dr.+Vishnuvardhan+Road,+Channasandra,+RR+Nagar,+Bengaluru,+Karnataka+560098" target="_blank" rel="noopener noreferrer" title="Open RNSIT Campus in Google Maps">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span><strong>RNSIT Campus</strong> (View Map &nearr;)</span>
+          </a>
+          <a href="tel:+918970262490" title="Call Adith (Secretariat Lead)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span><strong>Adith:</strong> +91 89702 62490</span>
+          </a>
+          <a href="mailto:mun@rnsit.ac.in" title="Email Secretariat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span><strong>Email:</strong> mun@rnsit.ac.in</span>
+          </a>
+          <a href="/stay-connected" title="Secretariat Help Desk">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span><strong>Secretariat Desk</strong></span>
+          </a>
+        </div>
       `;
 
-      // Populate Printable Physical Lanyard Badge (3.5" x 2.25")
+      // Update Printable Official Diplomatic Accreditation Document
       const elPrintName = document.getElementById('print-badge-name');
       const elPrintInst = document.getElementById('print-badge-institution');
       const elPrintComm = document.getElementById('print-badge-committee');
       const elPrintPort = document.getElementById('print-badge-portfolio');
+      const elPrintVenue = document.getElementById('print-badge-venue');
       const elPrintId = document.getElementById('print-badge-id');
       const elPrintQr = document.getElementById('print-badge-qr');
       const elPrintTag = document.getElementById('print-badge-type-tag');
+      const elPrintUsn = document.getElementById('print-badge-usn');
+      const elPrintUsnWrap = document.getElementById('print-badge-usn-wrap');
+      const elPrintToken = document.getElementById('print-badge-token-chip');
 
       if (elPrintName) elPrintName.textContent = delegateName;
-      if (elPrintInst) elPrintInst.textContent = passData.institution || 'Institutional Representative';
+      if (elPrintInst) elPrintInst.textContent = passData.institution || 'Representative';
       if (elPrintComm) elPrintComm.textContent = committeeName || 'General Assembly';
-      if (elPrintPort) elPrintPort.textContent = portfolioName || 'General Delegate';
-      if (elPrintId) elPrintId.textContent = passData.delegateId;
+      if (elPrintPort) elPrintPort.textContent = portfolioName || 'Delegate';
+      if (elPrintVenue) elPrintVenue.textContent = chamberVenue;
+      if (elPrintId) elPrintId.textContent = `ID: ${displayDelegateId}`;
+      if (elPrintTag) elPrintTag.textContent = delegateTypeLabel;
       if (elPrintQr) elPrintQr.src = qrDataUrl;
-      if (elPrintTag) elPrintTag.textContent = isDelegation ? 'DELEGATION' : (passData.delegateType || 'DELEGATE').toUpperCase();
+      if (elPrintToken) elPrintToken.textContent = `TOKEN: ${passData.token}`;
+      if (elPrintUsn && passData.usn) {
+        elPrintUsn.textContent = passData.usn;
+        if (elPrintUsnWrap) elPrintUsnWrap.style.display = 'block';
+      } else if (elPrintUsnWrap) {
+        elPrintUsnWrap.style.display = 'none';
+      }
     }
 
-    // ─── Polling Schedule & Visibility Listeners ────────────────────
-    function startLivePolling() {
-      if (pollIntervalId) clearInterval(pollIntervalId);
-
-      // Lightweight 10-second polling check
-      pollIntervalId = setInterval(() => {
-        if (!document.hidden && document.visibilityState === 'visible') {
-          loadPassData(true);
-        }
-      }, 10000);
-
-      // Tab visibility change listener: immediate update when switching back to tab
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          loadPassData(true);
-        }
-      });
-
-      // Window focus listener (e.g. returning to browser app on mobile)
-      window.addEventListener('focus', () => {
-        loadPassData(true);
-      });
+    function selectMember(idx) {
+      selectedMemberIdx = idx;
+      const url = new URL(window.location.href);
+      url.searchParams.set('m', idx);
+      window.history.replaceState({}, '', url.toString());
+      renderPass();
     }
 
-    // ─── Fullscreen High-Contrast QR Modal Logic ───────────────────
     async function openQrModal() {
+      if (!passData) return;
       const modal = document.getElementById('qr-modal');
-      const modalImg = document.getElementById('modal-qr-img');
       const modalName = document.getElementById('modal-qr-delegate-name');
       const modalMeta = document.getElementById('modal-qr-delegate-meta');
-
-      if (!passData) return;
+      const modalImg = document.getElementById('modal-qr-img');
 
       const isDelegation = passData.type === 'delegation';
       let currentMember = null;
-      if (isDelegation && passData.roster && passData.roster.length > 0) {
-        currentMember = passData.roster[selectedMemberIdx] || passData.roster[0];
+      if (isDelegation && passData.roster && passData.roster[selectedMemberIdx]) {
+        currentMember = passData.roster[selectedMemberIdx];
       }
 
       const delegateName = isDelegation 
@@ -1734,7 +2634,7 @@
         : passData.name;
 
       const committeeName = isDelegation 
-        ? (currentMember ? currentMember.committee : passData.allocatedCommittee)
+        ? (currentMember ? currentMember.committee : passData.allocatedCommittee) 
         : passData.allocatedCommittee;
 
       let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
@@ -1742,36 +2642,237 @@
         passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
       }
 
-      // 600px high-resolution client-side QR code image for crisp scanning in bright sunlight (100% Offline)
-      const highResQrUrl = await generateClientQrDataUrl(passUrl, 600, true);
+      const displayDelegateId = isDelegation
+        ? (passData.id ? `DEL-${passData.id}-${String(selectedMemberIdx + 1).padStart(2, '0')}` : `DEL-${selectedMemberIdx + 1}`)
+        : (passData.id || passData.delegateId || 'IND');
 
-      if (modalImg && highResQrUrl) modalImg.src = highResQrUrl;
       if (modalName) modalName.textContent = delegateName;
-      if (modalMeta) modalMeta.textContent = `${passData.delegateId} • ${committeeName || 'Delegate'}`;
-      if (modal) modal.style.display = 'flex';
+      if (modalMeta) modalMeta.textContent = `${displayDelegateId} • ${committeeName}`;
+
+      const highResQr = await generateClientQrDataUrl(passUrl, 500);
+      if (modalImg) modalImg.src = highResQr;
+
+      modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
 
     function closeQrModal(e) {
-      if (e && e.target && e.target.closest && e.target.closest('.qr-modal-content') && !e.target.closest('.qr-modal-close-btn') && !e.target.closest('.qr-modal-dismiss-btn')) {
+      if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('qr-modal-close-btn')) {
         return;
       }
       const modal = document.getElementById('qr-modal');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function getCalendarEventData() {
+      if (!passData) {
+        return {
+          name: window.currentDelegateName || 'Delegate',
+          comm: window.currentCommitteeName || 'General Assembly',
+          port: window.currentPortfolioName || 'General Delegate',
+          venue: window.currentChamberVenue || 'RNSIT Campus, Bengaluru',
+          token: 'pass'
+        };
+      }
+      const isDelegation = passData.type === 'delegation';
+      let currentMember = null;
+      if (isDelegation && passData.roster && passData.roster[selectedMemberIdx]) {
+        currentMember = passData.roster[selectedMemberIdx];
+      }
+      const name = isDelegation
+        ? (currentMember ? currentMember.name : passData.name)
+        : passData.name;
+      const comm = isDelegation
+        ? (currentMember ? currentMember.committee : passData.allocatedCommittee)
+        : (passData.allocatedCommittee || passData.committee || window.currentCommitteeName || 'General Assembly');
+      const port = isDelegation
+        ? (currentMember ? currentMember.portfolio : passData.allocatedPortfolio)
+        : (passData.allocatedPortfolio || passData.portfolio || window.currentPortfolioName || 'General Delegate');
+      const venue = window.currentChamberVenue || 'RNSIT Campus, Bengaluru';
+      const token = passData.token || 'pass';
+
+      return { name, comm, port, venue, token };
+    }
+
+    function openCalendarModal() {
+      const modal = document.getElementById('calendar-modal');
+      if (!modal) return;
+
+      const data = getCalendarEventData();
+      const venueEl = document.getElementById('cal-modal-venue-text');
+      if (venueEl) venueEl.textContent = `${data.venue} • RNSIT Campus, Bengaluru`;
+
+      // 1. Google Calendar Web & App Intent (Instantly opens Google Calendar App on Android)
+      const gcalBtn = document.getElementById('btn-gcal-link');
+      if (gcalBtn) {
+        const title = encodeURIComponent('RNS Model United Nations 2026 (RNSMUN)');
+        const loc = encodeURIComponent(`RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098 (${data.venue})`);
+        const details = encodeURIComponent(
+          `Official Delegate Pass: ${data.name}\n` +
+          `Committee: ${data.comm}\n` +
+          `Portfolio: ${data.port}\n` +
+          `Session Chamber: ${data.venue}\n` +
+          `Reporting Time: 08:30 AM IST (Tuesday, 06 October & Wednesday, 07 October 2026)\n\n` +
+          `Gate Entry Pass: ${window.location.href}`
+        );
+        // Event start: 06 Oct 2026 at 08:30 AM IST (03:00 UTC) -> End: 05:30 PM IST (12:00 UTC), repeats on Day 2
+        gcalBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261006T030000Z/20261006T120000Z&recur=RRULE:FREQ=DAILY;COUNT=2&details=${details}&location=${loc}`;
+      }
+
+      // Device detection for tailored UX labels
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isAndroid = /Android/.test(navigator.userAgent);
+
+      const gcalLabel = document.getElementById('gcal-rec-label');
+      const appleLabel = document.getElementById('apple-rec-label');
+
+      if (gcalLabel) {
+        gcalLabel.textContent = isAndroid
+          ? 'Recommended for Android (Opens Google Calendar App)'
+          : 'Instant 1-tap save (Android & Google Calendar)';
+      }
+      if (appleLabel) {
+        appleLabel.textContent = isIOS
+          ? 'Recommended for iPhone & iPad (Direct Calendar Sheet)'
+          : 'iPhone, iPad & Mac (Direct Import)';
+      }
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCalendarModal(e) {
+      if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('qr-modal-close-btn')) {
+        return;
+      }
+      const modal = document.getElementById('calendar-modal');
       if (modal) modal.style.display = 'none';
       document.body.style.overflow = '';
     }
 
-    // Dismiss modal on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeQrModal();
+    function triggerIcsDownload(target) {
+      const data = getCalendarEventData();
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      // On iOS Safari, navigating to the calendar endpoint directly prompts the native Apple Calendar event sheet
+      if (target === 'apple' && isIOS) {
+        const calUrl = `/api/calendar?name=${encodeURIComponent(data.name)}&comm=${encodeURIComponent(data.comm)}&port=${encodeURIComponent(data.port)}&venue=${encodeURIComponent(data.venue)}&token=${encodeURIComponent(data.token)}`;
+        window.location.href = calUrl;
+        setTimeout(() => { closeCalendarModal(); }, 600);
+        return;
       }
+
+      // Standard RFC 5545 iCalendar generation
+      const escapeIcs = (str) =>
+        String(str || '')
+          .replace(/\\/g, '\\\\')
+          .replace(/;/g, '\\;')
+          .replace(/,/g, '\\,')
+          .replace(/\r?\n/g, '\\n');
+
+      const safeName = escapeIcs(data.name);
+      const safeComm = escapeIcs(data.comm);
+      const safePort = escapeIcs(data.port);
+      const safeVenue = escapeIcs(data.venue);
+      const fullLoc = escapeIcs(`RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098 (${data.venue})`);
+      const passUrl = window.location.href;
+
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//RNSMUN 2026//Delegate Pass System//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:RNSMUN 2026',
+        'X-WR-TIMEZONE:Asia/Kolkata',
+        'BEGIN:VTIMEZONE',
+        'TZID:Asia/Kolkata',
+        'TZURL:http://tzurl.org/zoneinfo-outlook/Asia/Kolkata',
+        'X-LIC-LOCATION:Asia/Kolkata',
+        'BEGIN:STANDARD',
+        'TZOFFSETFROM:+0530',
+        'TZOFFSETTO:+0530',
+        'TZNAME:IST',
+        'DTSTART:19700101T000000',
+        'END:STANDARD',
+        'END:VTIMEZONE',
+        'BEGIN:VEVENT',
+        `UID:rnsmun2026-day1-${data.token}@mun.rnsit.ac.in`,
+        'DTSTAMP:20260901T000000Z',
+        'DTSTART:20261006T030000Z',
+        'DTEND:20261006T120000Z',
+        'SUMMARY:RNSMUN 2026 - Day 1: Registration & Committee Session',
+        `LOCATION:${fullLoc}`,
+        `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nSession Chamber: ${safeVenue}\\nReporting Time: 08:30 AM IST.\\nDigital Pass & QR: ${passUrl}`,
+        'STATUS:CONFIRMED',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT12H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Reminder: RNSMUN 2026 starts tomorrow at 08:30 AM!',
+        'END:VALARM',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT2H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Reminder: RNSMUN 2026 reporting time is 08:30 AM today!',
+        'END:VALARM',
+        'END:VEVENT',
+        'BEGIN:VEVENT',
+        `UID:rnsmun2026-day2-${data.token}@mun.rnsit.ac.in`,
+        'DTSTAMP:20260901T000000Z',
+        'DTSTART:20261007T030000Z',
+        'DTEND:20261007T123000Z',
+        'SUMMARY:RNSMUN 2026 - Day 2: Resolutions & Plenary Adjournment',
+        `LOCATION:${fullLoc}`,
+        `DESCRIPTION:Day 2 Committee Plenary for ${safeName} (${safeComm}). Reporting Time: 08:30 AM IST.\\nDigital Pass & QR: ${passUrl}`,
+        'STATUS:CONFIRMED',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT2H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Reminder: RNSMUN 2026 Day 2 begins at 08:30 AM today!',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+
+      const blob = new Blob([icsLines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+      const dlLink = document.createElement('a');
+      dlLink.href = window.URL.createObjectURL(blob);
+      dlLink.setAttribute('download', 'RNSMUN-2026-Schedule.ics');
+      document.body.appendChild(dlLink);
+      dlLink.click();
+      document.body.removeChild(dlLink);
+      showToast('Conference schedule downloaded! (.ics)');
+      closeCalendarModal();
+    }
+
+    function downloadConferenceCalendar() {
+      openCalendarModal();
+    }
+
+    // Auto-initialize and start gentle background polling for real-time check-in updates
+    window.addEventListener('DOMContentLoaded', () => {
+      loadPassData();
+
+      // Poll every 12 seconds in background to reflect live scans without hard page reloads
+      pollIntervalId = setInterval(() => {
+        loadPassData(true);
+      }, 12000);
     });
 
-    // Initialize Pass Loading and activate live polling
-    loadPassData().then(() => {
-      startLivePolling();
+    window.addEventListener('beforeunload', () => {
+      if (pollIntervalId) clearInterval(pollIntervalId);
     });
   </script>
+
+  <!-- Interactive Morphing Nav Pill Logic -->
+  <script type="module" src="./animated-nav.js"></script>
+
+  <!-- Topographic Contour Lines Shader/Canvas Animation -->
+  <script src="./topology-background.js" defer></script>
+
+  <!-- Mobile Floating Action Bar Integration -->
+  <script type="module" src="./mobile-floating-menu.js"></script>
+
 </body>
 </html>
