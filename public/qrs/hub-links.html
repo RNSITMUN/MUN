@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Hub Links Directory — RNSMUN 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background: #0A0D14; color: #F3F4F6; min-height: 100vh; padding: 2rem 1.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    .badge { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; background: rgba(212, 175, 55, 0.15); color: #F3C969; padding: 5px 12px; border-radius: 999px; margin-bottom: 0.75rem; border: 1px solid rgba(212, 175, 55, 0.3); }
+    h1 { font-size: 2.2rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    p { color: #9CA3AF; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .toolbar { display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .search-input { flex: 1; min-width: 280px; max-width: 480px; background: #131826; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.95rem; }
+    .search-input:focus { outline: none; border-color: #D4AF37; }
+    .actions-bar { display: flex; gap: 0.75rem; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.65rem 1.1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-gold { background: #D4AF37; color: #000; }
+    .btn-gold:hover { background: #e5be4c; }
+    .btn-outline { background: transparent; color: #D4AF37; border: 1px solid #D4AF37; }
+    .btn-outline:hover { background: rgba(212, 175, 55, 0.1); }
+    .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.78rem; border-radius: 6px; }
+    .btn-copy { background: #1E293B; color: #93C5FD; border: 1px solid #334155; }
+    .btn-copy:hover { background: #334155; color: #fff; }
+    .btn-pass { background: #2563EB; color: #fff; }
+    .btn-pass:hover { background: #1D4ED8; }
+    .table-card { background: #131826; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+    thead { background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    th { padding: 0.9rem 1rem; color: #9CA3AF; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #E5E7EB; vertical-align: middle; }
+    tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+    .code-tag { font-family: monospace; font-size: 0.75rem; background: rgba(212, 175, 55, 0.15); color: #F3C969; padding: 3px 6px; border-radius: 4px; font-weight: 700; }
+    .delegation-tag { font-size: 0.75rem; color: #94A3B8; }
+    .hub-link-text { font-family: monospace; font-size: 0.75rem; color: #60A5FA; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; }
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #059669; color: #fff; padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: none; z-index: 999; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">DELEGATE RELATIONS & SECRETARIAT</span>
+      <h1>Master Delegate Hub Links</h1>
+      <p>Instant directory of all 88 accredited delegates with direct pass links, portfolios, and one-click copy.</p>
+      <div class="toolbar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by name, committee, portfolio, code, or email..." oninput="filterTable()" />
+        <div class="actions-bar">
+          <a href="./hub-links.csv" download="RNSMUN_2026_Hub_Pass_Links.csv" class="btn btn-gold">📥 Download CSV</a>
+          <a href="./index.html" class="btn btn-outline">🪪 QR Badges View</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="table-card">
+      <table id="linksTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Code</th>
+            <th>Delegate Name</th>
+            <th>Delegation</th>
+            <th>Committee & Portfolio</th>
+            <th>Direct Pass Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">1</td>
+              <td><span class="code-tag">IND-47</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Shreekant Sanghi</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">shreekantsanghi24aiml@rnsit.ac.in • 7568298793</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Chirag Paswan</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYapVuOXYoI" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYapVuOXYoI')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">2</td>
+              <td><span class="code-tag">IND-49</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Rusheel Bhargav NM</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">bhargavrusheel24@gmail.com • 9972265326</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Poland</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYaq3m8rwPH" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYaq3m8rwPH')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">3</td>
+              <td><span class="code-tag">IND-50</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mayur Navaratna</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">manasa.nm@gmail.com • 9108418248</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Rwanda</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">4</td>
+              <td><span class="code-tag">IND-51</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Ayush Kumar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">ayushkumarrk1958@gmail.com • 7061118560</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Malaysia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYaqvCyxSwz" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYaqvCyxSwz')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">5</td>
+              <td><span class="code-tag">IND-56</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Sankalp C Pai</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">sankalpcpai25cy@rnsit.ac.in • 9902514196</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Bandi Sanjay Kumar</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYasVk4UtSc" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYasVk4UtSc')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">6</td>
+              <td><span class="code-tag">IND-57</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Priyanshu Jha</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">priyanshujha9774@gmail.com • 9953722652</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Dayanidhi Maran</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYaslH9w1bY" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYaslH9w1bY')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">7</td>
+              <td><span class="code-tag">IND-59</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mayank Kubsad</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">kubsadmayank02082008@gmail.com • 9035756337</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Bhartruhari Mahtab</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYatJf9UQgJ" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYatJf9UQgJ')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">8</td>
+              <td><span class="code-tag">IND-60</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Gourav</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">gahlawatgourav439@gmail.com • 7082673580</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Republic of Estonia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYatbq3OArG" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYatbq3OArG')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">9</td>
+              <td><span class="code-tag">IND-82</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Nandini Bhatt</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">nandinibhatt423@gmail.com • 8951167700</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Slovenia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb0cgNRCYj" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb0cgNRCYj')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">10</td>
+              <td><span class="code-tag">IND-84</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mohammed Aayan</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">aayanmohammed341@gmail.com • 7019673900</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Argentina</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb17SlO0UX" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb17SlO0UX')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">11</td>
+              <td><span class="code-tag">IND-85</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Aditi G</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">aditig752008@gmail.com • 9180226296</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Saugata Roy</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb1SWMlJsO" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb1SWMlJsO')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">12</td>
+              <td><span class="code-tag">IND-86</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Aditya Kumar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">adityakumar80049@gmail.com • 8318195890</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Sarbananda Sonowal</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb1osyEJb6" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb1osyEJb6')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">13</td>
+              <td><span class="code-tag">IND-87</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Charith G</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">charithgs2008@gmail.com • 7019623366</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">T R Baalu</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb1v3zHpDD" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb1v3zHpDD')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">14</td>
+              <td><span class="code-tag">IND-88</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Haniel Samson A</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">itzhanielsamson@gmail.com • 9655142195</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kingdom of Spain</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb2J2zThkq" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb2J2zThkq')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">15</td>
+              <td><span class="code-tag">IND-89</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Arsh Saxena</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">arshsaxena168@gmail.com • 6396689873</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Republic of the Philippines</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb2XVGXcdU" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb2XVGXcdU')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">16</td>
+              <td><span class="code-tag">IND-93</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Gouravi Nayak</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">nayakgouravigagan@gmail.com • 7019959659</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Dharmendra Pradhan</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb3raAZS2D" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb3raAZS2D')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">17</td>
+              <td><span class="code-tag">IND-95</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Eshaan Hebbar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">eshaanhebbar.2008@gmail.com • 9920138442</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Mongolia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb4cYFpGuu" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb4cYFpGuu')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">18</td>
+              <td><span class="code-tag">IND-97</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">GARGI MOHAN</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">gargimohan27@gmail.com • 8340782602</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Austria</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb5GwZXbYa" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb5GwZXbYa')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">19</td>
+              <td><span class="code-tag">IND-98</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Chethana M.L</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">chethanamathr@gmail.com • 9481003855</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Italy</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb5SJQqUkM" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb5SJQqUkM')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">20</td>
+              <td><span class="code-tag">IND-99</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Satvik  G</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">satvikg2026@gmail.com • 8123701905</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Rajiv Ranjan Singh</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb5qxa0Lm0" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb5qxa0Lm0')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">21</td>
+              <td><span class="code-tag">IND-110</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Hajira Tamanna M H</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">tamannahajira777@gmail.com • 7676226678</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">IP</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">The Hindu</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYb9AFU1iFF" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYb9AFU1iFF')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">22</td>
+              <td><span class="code-tag">IND-113</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mukund S BELAWADI</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">mukundbelawadi@gmail.com • 7892311234</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">UAE</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbA6t356e6" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbA6t356e6')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">23</td>
+              <td><span class="code-tag">IND-115</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">K S Bhavin</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">bhavinsrikant@gmail.com • 9611549352</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Mexico</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbAm641rWE" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbAm641rWE')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">24</td>
+              <td><span class="code-tag">IND-116</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Siddharth M</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">sidd072k6@gmail.com • 9019068759</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Republic of Korea</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbB9HnyBaf" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbB9HnyBaf')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">25</td>
+              <td><span class="code-tag">IND-117</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Poojitha Pujari</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">pujaripoojitha11@gmail.com • 6302190997</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Federal Republic of Germany</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbBLYFGWBn" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbBLYFGWBn')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">26</td>
+              <td><span class="code-tag">IND-118</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Gayathri Kasiraja</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">gayathrikasiraja7@gmail.com • 9036925580</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">UK</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbBZhb7vbF" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbBZhb7vbF')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">27</td>
+              <td><span class="code-tag">IND-119</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Namratha G</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">namratha.1823@gmail.com • 8747938415</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Libya</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbC6TPj23g" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbC6TPj23g')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">28</td>
+              <td><span class="code-tag">IND-124</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Debangshu Som</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">debangshucontact@gmail.com • 9098988300</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Bolivia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbDe0xgyI0" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbDe0xgyI0')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">29</td>
+              <td><span class="code-tag">IND-125</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Riya B Patel</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">riyabpatel25cs@rnsit.ac.in • 9663402308</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kingdom of Belgium</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbDmWjV2X2" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbDmWjV2X2')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">30</td>
+              <td><span class="code-tag">IND-127</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Pavani R</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">pavaniraghu537@gmail.com • 7676093364</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Netherlands</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbEfUi9wHS" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbEfUi9wHS')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">31</td>
+              <td><span class="code-tag">IND-129</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">G Gautham Vas</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">g.gauthamvas@gmail.com • 9945613706</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Ireland</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbFE7L9zXK" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbFE7L9zXK')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">32</td>
+              <td><span class="code-tag">IND-131</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Annika Chourasia</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">annikachourasia@gmail.com • 7975220160</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Brazil</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbFoBhf8pV" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbFoBhf8pV')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">33</td>
+              <td><span class="code-tag">IND-132</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Vibha S</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">vibhashashi1@gmail.com • 7353655556</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kenya</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbG3YEC9n3" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbG3YEC9n3')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">34</td>
+              <td><span class="code-tag">IND-134</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Rishi Dulhani</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">rishidulhani7070@gmail.com • 9096780763</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Finland</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbGmRKL4oS" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbGmRKL4oS')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">35</td>
+              <td><span class="code-tag">IND-135</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Saif Ahmed Shaik</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">saifshk2007@gmail.com • 9632052705</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Socialist Republic of Viet Nam</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbGsVvphJn" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbGsVvphJn')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">36</td>
+              <td><span class="code-tag">IND-136</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Vinayak rao</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">vinayak6rao@gmail.com • 8467093736</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kodikunnil Suresh</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbHBylTQho" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbHBylTQho')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">37</td>
+              <td><span class="code-tag">IND-137</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Thanmayee Valekar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">thanmayeevalekar445@gmail.com • 7338317574</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Grand Duchy of Luxembourg</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbHYSEnGsc" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbHYSEnGsc')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">38</td>
+              <td><span class="code-tag">IND-138</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Srishti Krishna</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">srishtisparkles@gmail.com • 7760145153</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Chile</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbHqNk9DEu" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbHqNk9DEu')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">39</td>
+              <td><span class="code-tag">IND-139</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Varun Km</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">varunkm2020@gmail.com • 9731882189</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">USA</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbILPioDvS" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbILPioDvS')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">40</td>
+              <td><span class="code-tag">IND-140</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Ashish</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">ashishjitarwal@gmail.com • 8861066040</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Russia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbITXDowgh" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbITXDowgh')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">41</td>
+              <td><span class="code-tag">IND-141</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">RASHMI M KABADI</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">rashmi.m.kabadi@gmail.com • 9591936752</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">DRC</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbIracX0Vq" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbIracX0Vq')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">42</td>
+              <td><span class="code-tag">IND-142</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Chinmayi V Hegde</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">chinmayivhegde25ci@rnsit.ac.in • 8431534438</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Laos</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbJ9ZFwIgO" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbJ9ZFwIgO')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">43</td>
+              <td><span class="code-tag">IND-149</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Braghadeesh Ruban</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">braghadeesh190807@gmail.com • 7092339204</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Basavaraj Bommai</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbLSfORd4J" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbLSfORd4J')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">44</td>
+              <td><span class="code-tag">IND-150</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Aaruni Mohan Shastri</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">shastriaaruni@gmail.com • 6362328147</div>
+              </td>
+              <td><span class="delegation-tag">Individual Delegate</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Republic Of India</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=01SkYbLefHqGiK" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=01SkYbLefHqGiK')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">45</td>
+              <td><span class="code-tag">DEL-67-01</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mridusha Chetry (Head of Delegation)</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">misathapa25@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">IP</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Reuters</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">46</td>
+              <td><span class="code-tag">DEL-67-02</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Mohammad Nezal Arshad</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">arshadnezal070@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">G Kishan Reddy</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=1" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=1')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">47</td>
+              <td><span class="code-tag">DEL-67-03</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Yashti R Surti</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">yashtisurti211@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Brijmohan Agarwal</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=2" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=2')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">48</td>
+              <td><span class="code-tag">DEL-67-04</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">R.Joel Shalom</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">joelshalompillai@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">India</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=3" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=3')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">49</td>
+              <td><span class="code-tag">DEL-67-05</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Sukrithi kallurmath</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">sukrithi.kallurmath08@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Mahua Moitra</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=4" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=4')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">50</td>
+              <td><span class="code-tag">DEL-67-06</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Shravya s</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">shravya.sen25@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Bhutan</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=5" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=5')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">51</td>
+              <td><span class="code-tag">DEL-67-07</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Pranesh AS</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">hppaperproducts@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Ethiopia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=6" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=6')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">52</td>
+              <td><span class="code-tag">DEL-67-08</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Danda Shanyuth</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">shanyuthdanda@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Japan</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=7" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=7')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">53</td>
+              <td><span class="code-tag">DEL-67-09</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Hansiga devendra</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">jghansiga@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Myanmar</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=8" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=8')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">54</td>
+              <td><span class="code-tag">DEL-67-10</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Prithvi KF</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">prithvifattepur@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Manish Tewari</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=9" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=9')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">55</td>
+              <td><span class="code-tag">DEL-67-11</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Vishal Manjunath</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">vishal.manjunath1234@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Surendra Prasad Yadav</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=10" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=10')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">56</td>
+              <td><span class="code-tag">DEL-67-12</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Keerthan Kariappa O L</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">myselfolkk@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Arvind Sawant</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=11" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=11')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">57</td>
+              <td><span class="code-tag">DEL-67-13</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Adrito Jasu</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">adritojasu04122007@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Ghana</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=12" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=12')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">58</td>
+              <td><span class="code-tag">DEL-67-14</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Devang</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">devangdhoka123@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Mexico</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=13" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=13')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">59</td>
+              <td><span class="code-tag">DEL-67-15</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Muhammed Salman</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">salmanmain77@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Denmark</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=14" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=14')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">60</td>
+              <td><span class="code-tag">DEL-67-16</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Kushaal S Patil</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">kushaalp12@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Iraq</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=15" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=15')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">61</td>
+              <td><span class="code-tag">DEL-67-17</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Madhura Meenakshi Tanikella</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">meenakshi.tanikella@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kuwait</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=16" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=16')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">62</td>
+              <td><span class="code-tag">DEL-67-18</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Prachurya Roy</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">prachurya9532@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Finland</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=17" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=17')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">63</td>
+              <td><span class="code-tag">DEL-67-19</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Sai Lochan</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">sailochan8@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Ukraine</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=18" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=18')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">64</td>
+              <td><span class="code-tag">DEL-67-20</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Moogambika</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">moogambika.official@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">Alliance University Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Yemen</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=19" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BWYCbOTYS&m=19')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">65</td>
+              <td><span class="code-tag">DEL-47-01</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Aadya Mittal (Head of Delegation)</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">aadyamittal6@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Iceland</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">66</td>
+              <td><span class="code-tag">DEL-47-02</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Chirag Shiyal</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">chirag_shiyal2024@cms.ac.in</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Narendra Modi</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=1" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=1')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">67</td>
+              <td><span class="code-tag">DEL-47-03</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Chavi</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">chavi.1763@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Kanimozhi Karunanidhi</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=2" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=2')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">68</td>
+              <td><span class="code-tag">DEL-47-04</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Areeb umar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">umarareeb2@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Nitin Gadkari</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=3" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=3')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">69</td>
+              <td><span class="code-tag">DEL-47-05</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Vaibhav Raj Deota</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">vaibhavdeota@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Rajnath Singh</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=4" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=4')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">70</td>
+              <td><span class="code-tag">DEL-47-06</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">R Jainav Bohra</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">jainav1029@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">Lok Sabha</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Priyanka Gandhi</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=5" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=5')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">71</td>
+              <td><span class="code-tag">DEL-47-07</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Ronith</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">khantedronith@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">DRC</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=6" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=6')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">72</td>
+              <td><span class="code-tag">DEL-47-08</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Manas Kulkarni</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">mannuk2307@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">France</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=7" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=7')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">73</td>
+              <td><span class="code-tag">DEL-47-09</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Naman Nagori</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">nagorinaman07@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Canada</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=8" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=8')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">74</td>
+              <td><span class="code-tag">DEL-47-10</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Manushri</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">naveen.manushri@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Swiss Confederation</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=9" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=9')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">75</td>
+              <td><span class="code-tag">DEL-47-11</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Joshitha Reddy Katterapalli</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">joshithar869@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Malaysia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=10" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=10')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">76</td>
+              <td><span class="code-tag">DEL-47-12</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Simar</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">simar.25001505@jainuniversity.ac.in</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Singapore</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=11" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=11')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">77</td>
+              <td><span class="code-tag">DEL-47-13</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Sheik Adnaan Ibrahim</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">001adnaan@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNODC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Cambodia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=12" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=12')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">78</td>
+              <td><span class="code-tag">DEL-47-14</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Sayyam Sakaria Jain</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">sayyamsakaria1512@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">France</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=13" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=13')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">79</td>
+              <td><span class="code-tag">DEL-47-15</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Syed Taqi Mohammed</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">syedtaqimohammed971@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">DISEC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Japan</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=14" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=14')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">80</td>
+              <td><span class="code-tag">DEL-47-16</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Geethanjali</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">geethanjalivijay8@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">IPC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">BBC</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=15" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=15')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">81</td>
+              <td><span class="code-tag">DEL-47-17</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Latika Mittal</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">latikamittal2@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Netherlands</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=16" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=16')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">82</td>
+              <td><span class="code-tag">DEL-47-18</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Taher</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">taherbharmal910@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Albania</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=17" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=17')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">83</td>
+              <td><span class="code-tag">DEL-47-19</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Anish Bose</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">anishbose281107@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Indonesia</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=18" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=18')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">84</td>
+              <td><span class="code-tag">DEL-47-20</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Aakash Satheesh</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">aakashsatheesh123@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Czech Republic</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=19" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=19')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">85</td>
+              <td><span class="code-tag">DEL-47-21</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Arnav Malhan</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">arnavmalhan18@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Qatar</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=20" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=20')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">86</td>
+              <td><span class="code-tag">DEL-47-22</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Himanshi Jain</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">jainhimanshi0809@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Republic of South Africa</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=21" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=21')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">87</td>
+              <td><span class="code-tag">DEL-47-23</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Vaishnavi Kaki</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">vaishnavi.kaki1306@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNHRC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Swiss Confederation</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=22" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=22')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td style="color:#6B7280; font-weight:600;">88</td>
+              <td><span class="code-tag">DEL-47-24</span></td>
+              <td>
+                <div style="font-weight:700; color:#FFFFFF;">Divij Dudani</div>
+                <div style="font-size:0.75rem; color:#9CA3AF; margin-top:2px;">divijdudani12@gmail.com</div>
+              </td>
+              <td><span class="delegation-tag">CMS Business School Delegation</span></td>
+              <td>
+                <div style="font-weight:600; color:#F3C969;">UNSC</div>
+                <div style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Arab Republic of Egypt</div>
+              </td>
+              <td>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <a href="https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=23" target="_blank" class="btn btn-pass btn-sm">🎫 Open Pass</a>
+                  <button class="btn btn-copy btn-sm" onclick="copyUrl('https://mun.rnsit.ac.in/hub?t=02vV7BQMHQV54C&m=23')">📋 Copy</button>
+                </div>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Link copied to clipboard!</div>
+
+  <script>
+    function copyUrl(url) {
+      navigator.clipboard.writeText(url).then(() => {
+        const toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2000);
+      });
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#tableBody tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

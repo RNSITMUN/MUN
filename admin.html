@@ -2990,7 +2990,9 @@
             <p style="margin:4px 0 0; font-size:0.8rem; color:#666;">All generated delegate QR badge passes — click any card to download.</p>
           </div>
           <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-            <input type="text" id="qr-search" placeholder="Search delegate name..." oninput="filterQRCards()" style="padding:0.4rem 0.75rem; font-size:0.8rem; border:1.5px solid #000; border-radius:6px; background:#FFF7EB; font-family:inherit; width:220px;">
+            <input type="text" id="qr-search" placeholder="Search delegate name..." oninput="filterQRCards()" style="padding:0.4rem 0.75rem; font-size:0.8rem; border:1.5px solid #000; border-radius:6px; background:#FFF7EB; font-family:inherit; width:200px;">
+            <a href="/qrs/hub-links.html" target="_blank" style="background:#E5A93C; color:#000; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.85rem; font-size:0.78rem; font-weight:800; text-decoration:none; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;" title="Open Master Hub Links Directory">📋 Master Hub Links</a>
+            <a href="/qrs/hub-links.csv" download="RNSMUN_2026_Hub_Pass_Links.csv" style="background:#FFFDF9; color:#000; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.85rem; font-size:0.78rem; font-weight:800; text-decoration:none; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;" title="Download CSV with all Hub Links">📥 Export CSV</a>
             <button onclick="downloadAllQRs()" style="background:#6C0D2C; color:#FFF7EB; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.85rem; font-size:0.78rem; font-weight:800; cursor:pointer; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;">⬇ Download All</button>
           </div>
         </div>
@@ -3058,6 +3060,7 @@
               <th>Email</th>
               <th>Phone</th>
               <th>Committee / Portfolio</th>
+              <th>Hub Pass</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
@@ -4337,6 +4340,9 @@
               <a href="/hub?t=${encodeURIComponent(item.public_token || item.id)}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.35rem 0.55rem; text-decoration: none;" title="Open Official QR Pass">
                 🎫 Pass
               </a>
+              <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.35rem 0.55rem;" onclick="navigator.clipboard.writeText(window.location.origin + '/hub?t=' + encodeURIComponent('${item.public_token || item.id}')); showToast('Hub pass link copied to clipboard!', 'success');" title="Copy Hub Link">
+                📋 Copy
+              </button>
             </div>
           </td>
         `;
@@ -4533,7 +4539,7 @@
       if (!Array.isArray(roster)) roster = [];
 
       if (roster.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No individual roster members recorded for this delegation.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No individual roster members recorded for this delegation.</td></tr>`;
       } else {
         roster.forEach((member, idx) => {
           const tr = document.createElement('tr');
@@ -4541,12 +4547,18 @@
           const mEmail = member.email || member.emailAddress || member['Email Address'] || '—';
           const mPhone = member.phone || member.mobileNumber || member['WhatsApp / Mobile Number'] || '—';
           const mComm = member.committee || member.portfolio || member['Committee Preference 1'] || member.committee1 || '—';
+          const token = delegation.public_token || delegation.id;
+          const passUrl = `/hub?t=${encodeURIComponent(token)}&m=${idx}`;
           tr.innerHTML = `
             <td>${idx + 1}</td>
             <td class="font-semibold cell-title">${escapeHtml(mName)}</td>
             <td>${escapeHtml(mEmail)}</td>
             <td>${escapeHtml(mPhone)}</td>
             <td>${escapeHtml(mComm)}</td>
+            <td style="white-space: nowrap;">
+              <a href="${passUrl}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; text-decoration: none;">🎫 Open Pass</a>
+              <button type="button" class="btn btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; margin-left: 4px;" onclick="navigator.clipboard.writeText(window.location.origin + '${passUrl}'); showToast('Hub pass link copied!', 'success');">📋 Copy</button>
+            </td>
           `;
           tbody.appendChild(tr);
         });
