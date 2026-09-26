@@ -250,17 +250,15 @@ export default async function handler(req, res) {
       if (regError) {
         console.error('❌ [admin-registrations] Error fetching registrations:', regError);
       } else {
+        // Enrich each registration — never fall back to stated preferences.
+        // is_allotted is ONLY true when a real allocation row exists in delegate_checkpoints.
         registrations = (regData || []).map(r => {
-          const alloc = allocationsMap[`individual_${r.id}`] || (localCheckpoints[`individual_${r.id}`] ? {
-            committee: localCheckpoints[`individual_${r.id}`].allocatedCommittee,
-            portfolio: localCheckpoints[`individual_${r.id}`].allocatedPortfolio
-          } : null);
-
+          const alloc = allocationsMap[`individual_${r.id}`] || null;
           return {
             ...r,
-            allocated_committee: alloc?.committee || r.allocated_committee || r.committee1 || '',
-            allocated_portfolio: alloc?.portfolio || r.allocated_portfolio || r.portfolio1_1 || '',
-            public_token: getPublicToken('individual', r.id)
+            is_allotted: !!alloc,
+            allocated_committee: alloc?.committee || '',
+            allocated_portfolio: alloc?.portfolio || ''
           };
         });
       }
