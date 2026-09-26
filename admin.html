@@ -5725,10 +5725,6 @@
           <span class="alloc-label">Allocated Portfolio / Country:</span>
           <strong style="color: #000000; font-size: 18px; font-weight: 800; display: block;">{{allocated_portfolio}}</strong>
         </div>
-        <div class="alloc-item" style="margin-top: 10px;">
-          <span class="alloc-label">Assigned Session Chamber:</span>
-          <strong style="color: #047857; font-size: 15px; font-weight: 800; display: block;">{{venue}}</strong>
-        </div>
         <div class="alloc-item" style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
           <table style="width: 100%; font-size: 13px;" cellpadding="0" cellspacing="0">
             <tr>
@@ -6094,7 +6090,7 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v35_delete_allocation_pass_qr';
+    const TEMPLATES_VERSION = 'v36_remove_session_chamber_no_qr';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
