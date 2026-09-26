@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
   <!-- Site Styles & Registration Components -->
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./registration.css">
-  <link rel="icon" type="image/webp" href="./assets/Logos/MUN_logo.webp">
+  <link rel="icon" type="image/webp" href="./assets/Logos/MUN_logo.png">
 
   <!-- Supabase JS Client v2 from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1253,6 +1253,97 @@
       transform: scale(1);
     }
 
+    /* Allotment Modal Dropdown + Typable Comboboxes */
+    .alloc-combobox-wrap {
+      position: relative;
+    }
+    .alloc-combobox-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .alloc-combobox-arrow-btn {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555555;
+      border-radius: 4px;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+    .alloc-combobox-arrow-btn:hover {
+      color: #6C0D2C;
+      background: rgba(108, 13, 44, 0.08);
+    }
+    .alloc-combobox-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      max-height: 230px;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      box-shadow: 3px 3px 0px #000000;
+      z-index: 1050;
+      padding: 4px 0;
+    }
+    .alloc-combobox-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+    .alloc-combobox-menu::-webkit-scrollbar-track {
+      background: #FAF7F2;
+      border-radius: 4px;
+    }
+    .alloc-combobox-menu::-webkit-scrollbar-thumb {
+      background: #D4AF37;
+      border-radius: 4px;
+    }
+    .alloc-combobox-menu::-webkit-scrollbar-thumb:hover {
+      background: #6C0D2C;
+    }
+    .alloc-combobox-item {
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #111111;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.15s ease, color 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .alloc-combobox-item:last-child {
+      border-bottom: none;
+    }
+    .alloc-combobox-item:hover,
+    .alloc-combobox-item.is-highlighted {
+      background: #FFF7EB;
+      color: #6C0D2C;
+    }
+    .alloc-combobox-item.is-selected {
+      background: #FAF0E4;
+      color: #6C0D2C;
+      font-weight: 800;
+      border-left: 3.5px solid #6C0D2C;
+    }
+    .alloc-combobox-empty {
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      color: #777777;
+      font-style: italic;
+      text-align: center;
+    }
+
     /* Data Table Section - Card Row Pattern */
     .table-container {
       background: transparent;
@@ -2315,7 +2406,7 @@
   <header class="admin-header">
     <div class="brand-wrap">
       <a href="/" class="brand-link" title="Return to RNS MUN '26 Homepage">
-        <img src="./assets/Logos/MUN_logo.webp" alt="RNS MUN '26 Logo" class="brand-logo-img" width="40" height="40" onerror="this.onerror=null;this.src='./assets/Logos/MUN_logo.webp';" />
+        <img src="./assets/Logos/MUN_logo.png" alt="RNS MUN '26 Logo" class="brand-logo-img" width="40" height="40" onerror="this.onerror=null;this.src='./assets/Logos/MUN_logo.png';" />
       </a>
       <div class="brand-title-wrap">
         <a href="/" class="brand-title" title="Return to RNS MUN '26 Homepage">
@@ -2362,7 +2453,7 @@
       <div class="login-card">
         <div class="login-header">
           <div class="login-logo-wrap">
-            <img src="./assets/Logos/MUN_logo.webp" alt="RNS MUN '26 Crest" class="login-logo-img" width="60" height="60" onerror="this.onerror=null;this.src='./assets/Logos/MUN_logo.webp';" />
+            <img src="./assets/Logos/MUN_logo.png" alt="RNS MUN '26 Crest" class="login-logo-img" width="60" height="60" onerror="this.onerror=null;this.src='./assets/Logos/MUN_logo.png';" />
           </div>
           <div class="login-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3135,28 +3226,34 @@
               <span style="font-size: 0.82rem; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.5px;">
                 🏛️ Committee &amp; Portfolio Allocation
               </span>
-              <span class="badge badge-confirmed" style="font-size: 0.68rem; padding: 1.5px 6px;">Includes Live Pass QR</span>
             </div>
             <div style="font-size: 0.75rem; color: #555;">
               Delegate Pref 1: <strong id="modal-pref1-display" style="color: #000;">—</strong>
             </div>
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-            <div>
+            <!-- Committee Dropdown + Typable -->
+            <div class="alloc-combobox-wrap">
               <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.2rem;" for="modal-alloc-committee">Allocated Committee</label>
-              <input type="text" id="modal-alloc-committee" list="committee-options-list" class="form-input" style="padding: 0.42rem 0.65rem; font-size: 0.82rem; font-weight: 700;" placeholder="Select or type committee..." oninput="onModalAllocationChanged()">
-              <datalist id="committee-options-list">
-                <option value="UNSC — United Nations Security Council"></option>
-                <option value="UNHRC — United Nations Human Rights Council"></option>
-                <option value="DISEC — Disarmament & International Security Committee"></option>
-                <option value="UNODC — United Nations Office on Drugs and Crime"></option>
-                <option value="AIPPM — All India Political Parties Meet"></option>
-                <option value="IP — International Press"></option>
-              </datalist>
+              <div class="alloc-combobox-input-wrap">
+                <input type="text" id="modal-alloc-committee" class="form-input" style="padding-right: 1.9rem; font-size: 0.82rem; font-weight: 700; width: 100%; cursor: text;" placeholder="Select or type committee..." autocomplete="off">
+                <button type="button" id="modal-alloc-committee-arrow" class="alloc-combobox-arrow-btn" title="Toggle Committee Dropdown">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+              </div>
+              <div id="modal-alloc-committee-menu" class="alloc-combobox-menu" style="display: none;"></div>
             </div>
-            <div>
+
+            <!-- Portfolio Dropdown + Typable -->
+            <div class="alloc-combobox-wrap">
               <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.2rem;" for="modal-alloc-portfolio">Allocated Portfolio / Country</label>
-              <input type="text" id="modal-alloc-portfolio" class="form-input" style="padding: 0.42rem 0.65rem; font-size: 0.82rem; font-weight: 700;" placeholder="Assigned Country / Portfolio..." oninput="onModalAllocationChanged()">
+              <div class="alloc-combobox-input-wrap">
+                <input type="text" id="modal-alloc-portfolio" class="form-input" style="padding-right: 1.9rem; font-size: 0.82rem; font-weight: 700; width: 100%; cursor: text;" placeholder="Select or type portfolio..." autocomplete="off">
+                <button type="button" id="modal-alloc-portfolio-arrow" class="alloc-combobox-arrow-btn" title="Toggle Portfolio Dropdown">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+              </div>
+              <div id="modal-alloc-portfolio-menu" class="alloc-combobox-menu" style="display: none;"></div>
             </div>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #555;">
@@ -5559,8 +5656,8 @@
     // Default Starter Presets
     const DEFAULT_MAIL_TEMPLATES = [
       {
-        id: 'tpl-allocation-pass',
-        name: 'Committee & Portfolio Allocation (+ Pass QR)',
+        id: 'tpl-allocation-no-qr',
+        name: 'allocation without QR',
         isPreset: true,
         subject: "Official Committee & Portfolio Allocation — RNS MUN 2026 | {{name}}",
         body: `<!DOCTYPE html>
@@ -5587,8 +5684,6 @@
     .alloc-item { margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
     .alloc-item:last-child { margin-bottom: 0; }
     .alloc-label { color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 2px; }
-    .qr-card-email { background: #FFF7EB; border: 2px solid #000000; border-radius: 10px; padding: 22px 18px; text-align: center; margin: 22px 0; box-shadow: 3px 3px 0px #000000; }
-    .pass-btn { display: inline-block; background: #E5A93C; color: #000000; text-decoration: none; font-weight: 800; font-size: 15px; padding: 13px 28px; border: 2px solid #000000; border-radius: 8px; box-shadow: 3px 3px 0px #000000; margin-top: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
     .schedule-table { width: 100%; font-size: 13px; border-collapse: collapse; margin-top: 8px; }
     .schedule-table td { padding: 6px 4px; vertical-align: top; }
     .schedule-time { width: 85px; font-weight: 800; color: #6C0D2C; white-space: nowrap; font-family: monospace; font-size: 12.5px; }
@@ -5606,30 +5701,14 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
       <p>OFFICIAL COMMITTEE &amp; DIPLOMATIC PORTFOLIO ALLOCATION</p>
     </div>
     <div class="content">
       <div class="salutation">Dear {{name}},</div>
       <p>Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
-      <p>We are delighted to formally communicate your confirmed committee and diplomatic portfolio assignment for the upcoming session of RNS MUN 2026:</p>
+      <p>We are delighted to formally communicate your confirmed committee and diplomatic portfolio allocation for the upcoming conference session:</p>
       
-      <!-- Submitted Preferences Box -->
-      <div class="card-box" style="background: #FFFDF9;">
-        <div class="card-title">YOUR SUBMITTED PREFERENCES</div>
-        <div class="pref-card">
-          <div class="pref-badge">Preference 1</div>
-          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio1_1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio1_2}}</span></div>
-        </div>
-        <div class="pref-card">
-          <div class="pref-badge">Preference 2</div>
-          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee2}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio2_1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio2_2}}</span></div>
-        </div>
-      </div>
 
       <!-- Diplomatic Allotment Summary Box -->
       <div class="card-box">
@@ -5670,19 +5749,13 @@
 
       <!-- Summit Dates & Venue Details -->
       <div class="card-box" style="background: #FFFDF9;">
-        <div class="card-title">CONFERENCE DATES, VENUE &amp; REPORTING</div>
+        <div class="card-title">CONFERENCE DATES &amp; VENUE</div>
         <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
           <tr>
             <td style="padding: 5px 0; color: #666666; font-weight: 600; width: 125px; vertical-align: top;">Conference Dates:</td>
             <td style="padding: 5px 0; font-weight: 800; color: #000000; line-height: 1.4;">
               Tuesday, 06 October 2026 &bull; Day 1<br>
               Wednesday, 07 October 2026 &bull; Day 2
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Reporting Time:</td>
-            <td style="padding: 5px 0; font-weight: 800; color: #6C0D2C;">
-              08:30 AM IST (Accreditation desk opens at 08:00 AM)
             </td>
           </tr>
           <tr>
@@ -5701,65 +5774,6 @@
         </table>
       </div>
 
-      <p>Your official Digital Delegate Pass &amp; Checkpoint QR code has been generated. <strong>Please bookmark, screenshot, or save this pass</strong> on your mobile phone before arriving at campus:</p>
-
-      <!-- Scannable QR Credential Card -->
-      <div class="qr-card-email">
-        <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #6C0D2C; margin-bottom: 6px;">
-          YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
-        </div>
-        <p style="margin: 0 0 12px 0; font-size: 13px; color: #555555; line-height: 1.4;">
-          This encrypted QR code provides accreditation at campus security, committee halls, and catering counters.
-        </p>
-        <div>
-          <img src="{{qr_code_url}}" alt="Official Delegate Pass QR" width="220" height="220" style="display:inline-block; border: 2.5px solid #000000; border-radius: 10px; background: #ffffff; padding: 10px; margin: 6px auto; box-shadow: 3px 3px 0px #000000;" />
-        </div>
-        <div style="margin-top: 10px; font-family: monospace; font-size: 14px; font-weight: 800; color: #111111;">
-          ID: #RNSMUN-26-{{registration_id}} &bull; {{allocated_portfolio}}
-        </div>
-        <div>
-          <a href="{{hub_url}}" target="_blank" class="pass-btn">Open Live Delegate Pass &rarr;</a>
-        </div>
-        <div style="margin-top: 12px; font-size: 12px; color: #555555; word-break: break-all;">
-          Direct Pass URL: <a href="{{hub_url}}" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">{{hub_url}}</a>
-        </div>
-      </div>
-
-      <!-- Itinerary & Schedule Outline -->
-      <div class="card-box" style="background: #FFFDF9;">
-        <div class="card-title">CONFERENCE SCHEDULE AT A GLANCE</div>
-        
-        <strong style="color: #6C0D2C; font-size: 13px; display: block; margin-bottom: 4px;">DAY 1 &bull; TUESDAY, 06 OCTOBER 2026</strong>
-        <table class="schedule-table">
-          <tr><td class="schedule-time">08:30 AM</td><td class="schedule-desc">Delegate Registration, Security Accreditation &amp; Kit Collection</td></tr>
-          <tr><td class="schedule-time">09:30 AM</td><td class="schedule-desc">Grand Inaugural Ceremony &amp; Address by Secretariat</td></tr>
-          <tr><td class="schedule-time">10:30 AM</td><td class="schedule-desc">Committee Session 1 (Roll Call &amp; Agenda Setting)</td></tr>
-          <tr><td class="schedule-time">01:00 PM</td><td class="schedule-desc">Midday Repast (Official Delegate Lunch)</td></tr>
-          <tr><td class="schedule-time">02:00 PM</td><td class="schedule-desc">Committee Session 2 (Formal Debate &amp; Moderated Caucuses)</td></tr>
-          <tr><td class="schedule-time">05:00 PM</td><td class="schedule-desc">Refreshment Hour (High Tea) &amp; Day 1 Adjournment</td></tr>
-        </table>
-
-        <div style="border-top: 1px dashed #D5C7B4; margin: 12px 0 10px 0;"></div>
-
-        <strong style="color: #6C0D2C; font-size: 13px; display: block; margin-bottom: 4px;">DAY 2 &bull; WEDNESDAY, 07 OCTOBER 2026</strong>
-        <table class="schedule-table">
-          <tr><td class="schedule-time">08:30 AM</td><td class="schedule-desc">Morning Assembly &amp; Day 2 Check-in</td></tr>
-          <tr><td class="schedule-time">09:00 AM</td><td class="schedule-desc">Committee Session 3 (Working Papers &amp; Draft Resolutions)</td></tr>
-          <tr><td class="schedule-time">01:00 PM</td><td class="schedule-desc">Midday Repast (Official Delegate Lunch)</td></tr>
-          <tr><td class="schedule-time">02:00 PM</td><td class="schedule-desc">Committee Session 4 (Amendments &amp; Voting Procedures)</td></tr>
-          <tr><td class="schedule-time">04:30 PM</td><td class="schedule-desc">Grand Valedictory Ceremony, Awards Presentation &amp; Plenary Adjournment</td></tr>
-        </table>
-      </div>
-
-      <!-- Dress Code & Rules -->
-      <div class="guide-box" style="background: #FFFDF9;">
-        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">Dress Code &amp; Delegate Protocol:</strong>
-        <div style="margin-bottom: 4px;"><strong>DAY 1:</strong> Indian Traditional Attire</div>
-        <div style="margin-bottom: 6px;"><strong>DAY 2:</strong> Western Formals</div>
-        <div style="font-size: 12.5px; color: #555555; margin-top: 6px; line-height: 1.45;">
-          Study Guides and Rules of Procedure (RoP) are accessible on our official portal. Delegates are strongly urged to arrive thoroughly researched with their position notes and diplomatic stance.
-        </div>
-      </div>
 
       <p>Should you have any questions regarding your committee agenda, position papers, or logistical arrangements, please do not hesitate to contact our Secretariat:</p>
       
@@ -5787,7 +5801,7 @@
 
       <div class="logo-wrap">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
         </a>
       </div>
     </div>
@@ -5842,7 +5856,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
       <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
@@ -5899,14 +5913,14 @@
         RNSIT MUN Society
       </div>
 
-      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5;">
-        The MUN buzz? Right here &rarr;<br>
+      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5; text-align: center;">
+        Follow our official Instagram for live alerts, committee updates &amp; announcements &rarr;<br>
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
       </p>
 
-      <div class="logo-wrap">
+      <div class="logo-wrap" style="text-align: center;">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
         </a>
       </div>
     </div>
@@ -5957,7 +5971,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
       <p>REGISTRATION AND PAYMENT CONFIRMATION</p>
     </div>
     <div class="content">
@@ -6004,14 +6018,14 @@
         RNSIT MUN Society
       </div>
 
-      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5;">
-        The MUN buzz? Right here &rarr;<br>
+      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5; text-align: center;">
+        Follow our official Instagram for live alerts, committee updates &amp; announcements &rarr;<br>
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
       </p>
 
-      <div class="logo-wrap">
+      <div class="logo-wrap" style="text-align: center;">
         <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
         </a>
       </div>
     </div>
@@ -6080,14 +6094,14 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v28_allocation_pass_pref_box_no_emoji';
+    const TEMPLATES_VERSION = 'v35_delete_allocation_pass_qr';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
       if (stored !== null && storedVersion === TEMPLATES_VERSION) {
         try {
           mailTemplates = JSON.parse(stored);
-          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-pass')) {
+          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-no-qr')) {
             mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
             saveTemplatesToStorage();
           }
@@ -6496,7 +6510,7 @@
     }
 
     function insertMediaEmbedPrompt() {
-      const url = prompt('Enter image or media URL to embed in the email template:', 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp');
+      const url = prompt('Enter image or media URL to embed in the email template:', 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png');
       if (url) {
         const snippet = `\n<div style="text-align: center; margin: 16px 0;"><img src="${escapeHtml(url)}" alt="Media" style="max-width: 100%; height: auto; border-radius: 8px; border: 1.5px solid #000;" /></div>\n`;
         insertTokenIntoActiveField(snippet);
@@ -7007,7 +7021,7 @@
 
       // Configure Allotment Box and default template
       if (modalTargetType === 'individual') {
-        const allocTpl = mailTemplates.find(t => t.id === 'tpl-allocation-pass');
+        const allocTpl = mailTemplates.find(t => t.id === 'tpl-allocation-no-qr') || mailTemplates.find(t => t.id === 'tpl-welcome-confirmed');
         const select = document.getElementById('send-mail-template-select');
         if (allocTpl && select) {
           select.value = allocTpl.id;
@@ -7017,13 +7031,12 @@
         const allocCard = document.getElementById('modal-allotment-config-card');
         if (allocCard) {
           allocCard.style.display = 'flex';
-          const commInput = document.getElementById('modal-alloc-committee');
-          const portInput = document.getElementById('modal-alloc-portfolio');
           const prefDisplay = document.getElementById('modal-pref1-display');
           const c1 = modalTargetRecord.committee1 || modalTargetRecord.committee || 'None';
           const p1 = modalTargetRecord.portfolio1_1 || modalTargetRecord.portfolio || 'None';
-          if (commInput) commInput.value = modalTargetRecord.allocated_committee || modalTargetRecord.committee1 || 'UNSC — United Nations Security Council';
-          if (portInput) portInput.value = modalTargetRecord.allocated_portfolio || modalTargetRecord.portfolio1_1 || '';
+          const initialComm = modalTargetRecord.allocated_committee || modalTargetRecord.committee1 || 'UNSC — United Nations Security Council';
+          const initialPort = modalTargetRecord.allocated_portfolio || modalTargetRecord.portfolio1_1 || '';
+          initAllocComboboxes(initialComm, initialPort);
           if (prefDisplay) prefDisplay.textContent = `${c1} / ${p1}`;
         }
       } else {
@@ -7049,6 +7062,7 @@
       modal.classList.remove('active');
       modalAttachments = [];
       modalTargetRecord = null;
+      closeAllAllocComboboxMenus();
       const allocCard = document.getElementById('modal-allotment-config-card');
       if (allocCard) allocCard.style.display = 'none';
     }
@@ -7068,6 +7082,402 @@
       }
 
       onModalTemplateSelectChange();
+    }
+
+    // ==========================================
+    // ALLOCATION MODAL COMBOBOXES (COMMITTEE & PORTFOLIO)
+    // ==========================================
+    const MUN_COMMITTEES_LIST = [
+      { id: 'unsc', label: 'UNSC — United Nations Security Council' },
+      { id: 'loksabha', label: 'Lok Sabha — House of the People' },
+      { id: 'disec', label: "DISEC — Disarmament & Int'l Security" },
+      { id: 'unhrc', label: 'UNHRC — UN Human Rights Council' },
+      { id: 'unodc', label: 'UNODC — UN Office on Drugs & Crime' },
+      { id: 'ip', label: 'IP — International Press' }
+    ];
+
+    const MUN_COMMITTEE_PORTFOLIOS = {
+      unsc: [
+        "United States of America", "Russian Federation", "French Republic",
+        "United Kingdom of Great Britain and Northern Ireland", "People’s Republic of China",
+        "Kingdom of Bahrain", "Republic of Colombia", "Democratic Republic of the Congo",
+        "Kingdom of Denmark", "Hellenic Republic", "Republic of Latvia",
+        "Republic of Liberia", "Islamic Republic of Pakistan", "Republic of Panama",
+        "Federal Republic of Somalia", "Republic of the Sudan", "State of Libya",
+        "Republic of Yemen", "Syrian Arab Republic", "Republic of the Union of Myanmar",
+        "Lebanese Republic", "State of Palestine", "State of Israel", "Ukraine",
+        "Republic of India", "Islamic Republic of Iran", "Republic of Türkiye",
+        "Arab Republic of Egypt", "Kingdom of Saudi Arabia", "United Arab Emirates",
+        "State of Qatar", "Federal Democratic Republic of Ethiopia", "Republic of Iraq",
+        "Hashemite Kingdom of Jordan", "Republic of Rwanda"
+      ],
+      loksabha: [
+        "Narendra Modi (BJP)", "Amit Shah (BJP)", "Rajnath Singh (BJP)", "Kiren Rijiju (BJP)",
+        "Piyush Goyal (BJP)", "Nitin Gadkari (BJP)", "Pralhad Joshi (BJP)", "Basavaraj Bommai (BJP)",
+        "G. Kishan Reddy (BJP)", "Dharmendra Pradhan (BJP)", "Sarbananda Sonowal (BJP)",
+        "Nishikant Dubey (BJP)", "Bandi Sanjay Kumar (BJP)", "Bhartruhari Mahtab (BJP)",
+        "Anurag Thakur (BJP)", "Tejasvi Surya (BJP)", "Brijmohan Agrawal (BJP)",
+        "Rahul Gandhi (INC)", "Priyanka Gandhi Vadra (INC)", "K. C. Venugopal (INC)",
+        "Shashi Tharoor (INC)", "Karti Chidambaram (INC)", "Gaurav Gogoi (INC)",
+        "Manickam Tagore (INC)", "Kodikunnil Suresh (INC)", "Manish Tewari (INC)",
+        "Tariq Anwar (INC)", "A. Raja (DMK)", "T. R. Baalu (DMK)", "Kanimozhi Karunanidhi (DMK)",
+        "Dayanidhi Maran (DMK)", "Abhishek Banerjee (TMC)", "Kalyan Banerjee (TMC)",
+        "Mahua Moitra (TMC)", "Saugata Roy (TMC)", "Akhilesh Yadav (SP)", "Dimple Yadav (SP)",
+        "K. Ram Mohan Naidu (TDP)", "G. M. Harish Balayogi (TDP)", "Rajiv Ranjan Singh (JD(U))",
+        "Supriya Sule (NCP(SP))", "Arvind Sawant (SHIV SENA (UBT))", "Gurmeet Singh Meet Hayer (AAP)",
+        "Mian Altaf Ahmad (J&KNC)", "Asaduddin Owaisi (AIMIM)", "Chirag Paswan (L J P (R V))",
+        "Harsimrat Kaur Badal (SAD)", "Surendra Prasad Yadav (RJD)"
+      ],
+      disec: [
+        "United States of America", "Russian Federation", "People’s Republic of China",
+        "Republic of India", "French Republic", "United Kingdom of Great Britain and Northern Ireland",
+        "Japan", "Commonwealth of Australia", "Federal Republic of Germany", "State of Israel",
+        "Republic of Korea", "Islamic Republic of Iran", "Democratic People’s Republic of Korea",
+        "Islamic Republic of Pakistan", "Canada", "Italian Republic", "Kingdom of Spain",
+        "Kingdom of the Netherlands", "Kingdom of Belgium", "Republic of Poland",
+        "Republic of Türkiye", "Federative Republic of Brazil", "Argentine Republic",
+        "United Arab Emirates", "Kingdom of Saudi Arabia", "Republic of Kazakhstan",
+        "Republic of South Africa", "Republic of Indonesia", "Malaysia", "Republic of Singapore",
+        "Kingdom of Thailand", "Socialist Republic of Viet Nam", "Republic of the Philippines",
+        "United Mexican States", "Republic of Colombia", "Republic of Chile", "Arab Republic of Egypt",
+        "Kingdom of Morocco", "Federal Republic of Nigeria", "Swiss Confederation",
+        "Republic of Austria", "Ireland", "Kingdom of Norway", "Kingdom of Sweden",
+        "Republic of Finland", "New Zealand", "Mongolia", "Portuguese Republic",
+        "Czech Republic", "Ukraine"
+      ],
+      unhrc: [
+        "Democratic Republic of the Congo", "Federal Democratic Republic of Ethiopia",
+        "Arab Republic of Egypt", "Republic of Iraq", "Republic of India",
+        "Islamic Republic of Pakistan", "Republic of Colombia", "United Mexican States",
+        "People’s Republic of China", "Republic of Indonesia", "Kingdom of Thailand",
+        "Socialist Republic of Viet Nam", "Republic of Cuba", "State of Kuwait", "State of Qatar",
+        "Republic of Korea", "Japan", "Republic of Ghana", "Republic of Kenya",
+        "Republic of South Africa", "Federative Republic of Brazil", "Republic of Ecuador",
+        "Republic of Chile", "Plurinational State of Bolivia", "French Republic",
+        "United Kingdom of Great Britain and Northern Ireland", "Kingdom of the Netherlands",
+        "Swiss Confederation", "Kingdom of Spain", "Italian Republic", "Republic of Iceland",
+        "Republic of Estonia", "Czech Republic", "Republic of Slovenia", "Republic of Albania",
+        "Republic of The Gambia", "Dominican Republic", "Republic of Cyprus", "State of Palestine",
+        "State of Israel", "Ukraine", "Russian Federation", "Republic of the Sudan",
+        "Republic of the Union of Myanmar", "Syrian Arab Republic", "Republic of Yemen",
+        "Islamic Republic of Iran", "Islamic Emirate of Afghanistan", "Republic of Türkiye",
+        "United States of America"
+      ],
+      unodc: [
+        "Republic of the Union of Myanmar", "Kingdom of Cambodia", "Lao People’s Democratic Republic",
+        "Republic of the Philippines", "Malaysia", "Socialist Republic of Viet Nam",
+        "Kingdom of Thailand", "Republic of Indonesia", "Republic of Singapore",
+        "People’s Republic of China", "Republic of India", "People’s Republic of Bangladesh",
+        "Federal Democratic Republic of Nepal", "Islamic Republic of Pakistan",
+        "Democratic Socialist Republic of Sri Lanka", "Islamic Emirate of Afghanistan",
+        "Kingdom of Bhutan", "Mongolia", "Republic of Kenya", "Federal Republic of Nigeria",
+        "United States of America", "United Kingdom of Great Britain and Northern Ireland",
+        "United Arab Emirates", "Swiss Confederation", "Kingdom of the Netherlands",
+        "Grand Duchy of Luxembourg", "Japan", "Republic of Korea", "Commonwealth of Australia",
+        "Canada", "Federal Republic of Germany", "French Republic", "Italian Republic",
+        "Kingdom of Spain", "Kingdom of Belgium", "Republic of Austria", "Republic of Finland",
+        "Portuguese Republic", "Republic of Poland", "Republic of Malta", "State of Qatar",
+        "Kingdom of Saudi Arabia", "Republic of Türkiye", "State of Kuwait", "Kingdom of Bahrain",
+        "Republic of South Africa", "Republic of Ghana", "United Republic of Tanzania",
+        "United Mexican States", "Federative Republic of Brazil"
+      ],
+      ip: [
+        "Reuters", "Associated Press (AP)", "The Straits Times", "Al-Jazeera", "BBC",
+        "Deutsche Welle (DW)", "Russia Today (RT)", "Xinhua News Agency", "TRT World",
+        "The New York Times", "WIRED", "The Wall Street Journal", "The Diplomat",
+        "NHK World-Japan", "South China Morning Post", "The Hindu", "Financial Times",
+        "France 24", "The Africa Report", "Asia News International (ANI)",
+        "Press Trust of India (PTI)", "Times of India (TOI)"
+      ]
+    };
+
+    function detectCommitteeKey(val) {
+      if (!val) return 'unsc';
+      const s = String(val).toLowerCase();
+      if (s.includes('unsc') || s.includes('security council')) return 'unsc';
+      if (s.includes('lok sabha') || s.includes('loksabha') || s.includes('parliament') || s.includes('aippm') || s.includes('house of the people')) return 'loksabha';
+      if (s.includes('disec') || s.includes('disarmament')) return 'disec';
+      if (s.includes('unhrc') || s.includes('human rights')) return 'unhrc';
+      if (s.includes('unodc') || s.includes('drugs') || s.includes('crime')) return 'unodc';
+      if (s.includes('ip') || s.includes('press') || s.includes('international press')) return 'ip';
+      return 'unsc';
+    }
+
+    function closeAllAllocComboboxMenus() {
+      const commMenu = document.getElementById('modal-alloc-committee-menu');
+      const portMenu = document.getElementById('modal-alloc-portfolio-menu');
+      if (commMenu) commMenu.style.display = 'none';
+      if (portMenu) portMenu.style.display = 'none';
+    }
+
+    function renderAllocCommitteeMenu(filterText = '') {
+      const menu = document.getElementById('modal-alloc-committee-menu');
+      if (!menu) return;
+      const currentVal = (document.getElementById('modal-alloc-committee')?.value || '').trim().toLowerCase();
+      const q = filterText.trim().toLowerCase();
+
+      const matched = MUN_COMMITTEES_LIST.filter(c => !q || c.label.toLowerCase().includes(q) || c.id.toLowerCase().includes(q));
+      if (matched.length === 0) {
+        menu.innerHTML = `<div class="alloc-combobox-empty">No matching committee found (custom input allowed)</div>`;
+      } else {
+        menu.innerHTML = matched.map(c => {
+          const isSel = currentVal === c.label.toLowerCase() || currentVal === c.id.toLowerCase();
+          return `<div class="alloc-combobox-item${isSel ? ' is-selected' : ''}" data-label="${escapeHtml(c.label)}" data-id="${c.id}">
+            <span>${escapeHtml(c.label)}</span>
+            ${isSel ? '<span style="color:#6C0D2C; font-weight:900;">✓</span>' : ''}
+          </div>`;
+        }).join('');
+      }
+      menu.style.display = 'block';
+
+      // Scroll selected into view
+      const sel = menu.querySelector('.alloc-combobox-item.is-selected');
+      if (sel) {
+        sel.scrollIntoView({ block: 'nearest' });
+      }
+
+      // Item click handling
+      menu.querySelectorAll('.alloc-combobox-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const label = item.getAttribute('data-label');
+          const commInput = document.getElementById('modal-alloc-committee');
+          if (commInput) commInput.value = label;
+          menu.style.display = 'none';
+          
+          // When committee is selected from dropdown, reload portfolios for this committee
+          syncPortfoliosForChosenCommittee(true);
+          onModalAllocationChanged();
+        });
+      });
+    }
+
+    function renderAllocPortfolioMenu(filterText = '') {
+      const menu = document.getElementById('modal-alloc-portfolio-menu');
+      if (!menu) return;
+      const commVal = (document.getElementById('modal-alloc-committee')?.value || '').trim();
+      const commKey = detectCommitteeKey(commVal);
+      const portList = MUN_COMMITTEE_PORTFOLIOS[commKey] || MUN_COMMITTEE_PORTFOLIOS.unsc;
+
+      const currentPort = (document.getElementById('modal-alloc-portfolio')?.value || '').trim().toLowerCase();
+      const q = filterText.trim().toLowerCase();
+
+      const matched = portList.filter(p => !q || p.toLowerCase().includes(q));
+      if (matched.length === 0) {
+        menu.innerHTML = `<div class="alloc-combobox-empty">No matching portfolio in ${commKey.toUpperCase()} (custom input allowed)</div>`;
+      } else {
+        menu.innerHTML = matched.map(p => {
+          const isSel = currentPort === p.toLowerCase();
+          return `<div class="alloc-combobox-item${isSel ? ' is-selected' : ''}" data-val="${escapeHtml(p)}">
+            <span>${escapeHtml(p)}</span>
+            ${isSel ? '<span style="color:#6C0D2C; font-weight:900;">✓</span>' : ''}
+          </div>`;
+        }).join('');
+      }
+      menu.style.display = 'block';
+
+      // Scroll selected into view
+      const sel = menu.querySelector('.alloc-combobox-item.is-selected');
+      if (sel) {
+        sel.scrollIntoView({ block: 'nearest' });
+      }
+
+      // Item click handling
+      menu.querySelectorAll('.alloc-combobox-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = item.getAttribute('data-val');
+          const portInput = document.getElementById('modal-alloc-portfolio');
+          if (portInput) portInput.value = val;
+          menu.style.display = 'none';
+          onModalAllocationChanged();
+        });
+      });
+    }
+
+    function syncPortfoliosForChosenCommittee(isUserInitiatedChange = false) {
+      const commInput = document.getElementById('modal-alloc-committee');
+      const portInput = document.getElementById('modal-alloc-portfolio');
+      if (!commInput || !portInput) return;
+
+      const commKey = detectCommitteeKey(commInput.value);
+      const portList = MUN_COMMITTEE_PORTFOLIOS[commKey] || MUN_COMMITTEE_PORTFOLIOS.unsc;
+
+      const currentPort = portInput.value.trim();
+      // If user changed committee and current portfolio is not in this committee's portfolios:
+      if (isUserInitiatedChange) {
+        const matchesExisting = portList.some(p => p.toLowerCase() === currentPort.toLowerCase());
+        if (!matchesExisting) {
+          portInput.value = portList[0] || '';
+        }
+      } else if (!currentPort && portList.length > 0) {
+        portInput.value = portList[0];
+      }
+    }
+
+    function handleComboboxKeynav(e, menu, input, renderFn, onSelect) {
+      if (!menu) return;
+      if (menu.style.display !== 'block') {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          renderFn('');
+        }
+        return;
+      }
+
+      const items = Array.from(menu.querySelectorAll('.alloc-combobox-item'));
+      if (items.length === 0) return;
+
+      let curIdx = items.findIndex(it => it.classList.contains('is-highlighted'));
+      if (curIdx === -1) {
+        curIdx = items.findIndex(it => it.classList.contains('is-selected'));
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (curIdx >= 0) items[curIdx].classList.remove('is-highlighted');
+        const nextIdx = (curIdx + 1) % items.length;
+        items[nextIdx].classList.add('is-highlighted');
+        items[nextIdx].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (curIdx >= 0) items[curIdx].classList.remove('is-highlighted');
+        const prevIdx = (curIdx - 1 + items.length) % items.length;
+        items[prevIdx].classList.add('is-highlighted');
+        items[prevIdx].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const active = menu.querySelector('.alloc-combobox-item.is-highlighted') || menu.querySelector('.alloc-combobox-item.is-selected') || items[0];
+        if (active) active.click();
+      } else if (e.key === 'Escape') {
+        menu.style.display = 'none';
+      }
+    }
+
+    let allocComboboxesInitialized = false;
+    function setupAllocComboboxesOnce() {
+      if (allocComboboxesInitialized) return;
+      allocComboboxesInitialized = true;
+
+      const commInput = document.getElementById('modal-alloc-committee');
+      const commArrow = document.getElementById('modal-alloc-committee-arrow');
+      const commMenu = document.getElementById('modal-alloc-committee-menu');
+
+      const portInput = document.getElementById('modal-alloc-portfolio');
+      const portArrow = document.getElementById('modal-alloc-portfolio-arrow');
+      const portMenu = document.getElementById('modal-alloc-portfolio-menu');
+
+      // Committee input events
+      if (commInput) {
+        commInput.addEventListener('focus', () => {
+          if (portMenu) portMenu.style.display = 'none';
+          renderAllocCommitteeMenu('');
+          try { commInput.select(); } catch (_) {}
+        });
+        commInput.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (portMenu) portMenu.style.display = 'none';
+          if (commMenu && commMenu.style.display !== 'block') {
+            renderAllocCommitteeMenu('');
+          }
+        });
+        commInput.addEventListener('input', () => {
+          renderAllocCommitteeMenu(commInput.value);
+          syncPortfoliosForChosenCommittee(false);
+          onModalAllocationChanged();
+        });
+        commInput.addEventListener('keydown', (e) => {
+          handleComboboxKeynav(e, commMenu, commInput, renderAllocCommitteeMenu);
+        });
+      }
+
+      // Committee arrow toggle
+      if (commArrow) {
+        commArrow.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (portMenu) portMenu.style.display = 'none';
+          if (commMenu && commMenu.style.display === 'block') {
+            commMenu.style.display = 'none';
+          } else {
+            renderAllocCommitteeMenu('');
+            if (commInput) commInput.focus();
+          }
+        });
+      }
+
+      // Portfolio input events
+      if (portInput) {
+        portInput.addEventListener('focus', () => {
+          if (commMenu) commMenu.style.display = 'none';
+          renderAllocPortfolioMenu('');
+          try { portInput.select(); } catch (_) {}
+        });
+        portInput.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (commMenu) commMenu.style.display = 'none';
+          if (portMenu && portMenu.style.display !== 'block') {
+            renderAllocPortfolioMenu('');
+          }
+        });
+        portInput.addEventListener('input', () => {
+          renderAllocPortfolioMenu(portInput.value);
+          onModalAllocationChanged();
+        });
+        portInput.addEventListener('keydown', (e) => {
+          handleComboboxKeynav(e, portMenu, portInput, renderAllocPortfolioMenu);
+        });
+      }
+
+      // Portfolio arrow toggle
+      if (portArrow) {
+        portArrow.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (commMenu) commMenu.style.display = 'none';
+          if (portMenu && portMenu.style.display === 'block') {
+            portMenu.style.display = 'none';
+          } else {
+            renderAllocPortfolioMenu('');
+            if (portInput) portInput.focus();
+          }
+        });
+      }
+
+      // Global click outside to close menus
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.alloc-combobox-wrap')) {
+          closeAllAllocComboboxMenus();
+        }
+      });
+
+      // Escape key to close menus
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAllAllocComboboxMenus();
+        }
+      });
+    }
+
+    function initAllocComboboxes(initialComm, initialPort) {
+      setupAllocComboboxesOnce();
+      closeAllAllocComboboxMenus();
+
+      const commInput = document.getElementById('modal-alloc-committee');
+      const portInput = document.getElementById('modal-alloc-portfolio');
+
+      if (commInput) {
+        commInput.value = initialComm || 'UNSC — United Nations Security Council';
+      }
+
+      syncPortfoliosForChosenCommittee(false);
+
+      if (portInput && initialPort) {
+        portInput.value = initialPort;
+      }
+
+      if (modalTargetRecord && modalTargetType === 'individual') {
+        modalTargetRecord.allocated_committee = commInput ? commInput.value : (initialComm || 'UNSC — United Nations Security Council');
+        modalTargetRecord.allocated_portfolio = portInput ? portInput.value : (initialPort || '');
+      }
     }
 
     function populateModalTemplateOptions() {
@@ -7398,7 +7808,7 @@
           venue: venue,
           chamber_venue: venue,
           dates: '06 - 07 October 2026',
-          reporting_time: '08:30 AM IST',
+          reporting_time: '8:00 AM',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
           committee1: c1,
@@ -7415,8 +7825,6 @@
           registration_id: item.id ? String(item.id).substring(0, 8).toUpperCase() : 'REG-001',
           usn: item.usn || '',
           city: item.city || '',
-          allocated_committee: item.allocated_committee || '',
-          allocated_portfolio: item.allocated_portfolio || '',
           sheet_link: '',
           roster_sheet_url: '',
           roster_table: '',
@@ -7443,7 +7851,7 @@
           venue: venue,
           chamber_venue: venue,
           dates: '06 - 07 October 2026',
-          reporting_time: '08:30 AM IST',
+          reporting_time: '8:00 AM',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
           committee1: 'Delegation Committees',
@@ -7482,9 +7890,9 @@
         '{{venue}}': data.venue || 'RNSIT Campus, Bengaluru',
         '{{chamber_venue}}': data.chamber_venue || data.venue || 'RNSIT Campus, Bengaluru',
         '{{dates}}': data.dates || '06 - 07 October 2026',
-        '{{reporting_time}}': data.reporting_time || '08:30 AM IST',
+        '{{reporting_time}}': data.reporting_time || '8:00 AM',
         '{{hub_url}}': data.hub_url || 'https://mun.rnsit.ac.in/hub',
-        '{{qr_code_url}}': data.qr_code_url || 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp',
+        '{{qr_code_url}}': data.qr_code_url || 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png',
         '{{committee1}}': data.committee1 || '',
         '{{committee_pref_1}}': data.committee1 || '',
         '{{portfolio1_1}}': data.portfolio1_1 || '',
