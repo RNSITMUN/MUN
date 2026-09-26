@@ -5578,6 +5578,12 @@
     .salutation { font-size: 18px; font-weight: 800; color: #6C0D2C; margin-bottom: 12px; }
     .card-box { background: #FFFDF9; border: 2px solid #000000; border-radius: 10px; padding: 18px; margin: 20px 0; box-shadow: 3px 3px 0px #000000; }
     .card-title { font-size: 13px; font-weight: 800; color: #6C0D2C; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; border-bottom: 1.5px solid #000000; padding-bottom: 6px; }
+    .pref-card { background: #ffffff; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+    .pref-card:last-child { margin-bottom: 0; }
+    .pref-badge { display: inline-block; background: #6C0D2C; color: #ffffff; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 5px; margin-bottom: 8px; }
+    .pref-row { font-size: 13.5px; line-height: 1.7; color: #333333; margin-bottom: 3px; }
+    .pref-label { color: #555555; font-weight: 600; }
+    .pref-val { font-weight: 700; color: #111111; }
     .alloc-item { margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
     .alloc-item:last-child { margin-bottom: 0; }
     .alloc-label { color: #666666; font-size: 11.5px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 2px; }
@@ -5608,9 +5614,26 @@
       <p>Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
       <p>We are delighted to formally communicate your confirmed committee and diplomatic portfolio assignment for the upcoming session of RNS MUN 2026:</p>
       
+      <!-- Submitted Preferences Box -->
+      <div class="card-box" style="background: #FFFDF9;">
+        <div class="card-title">YOUR SUBMITTED PREFERENCES</div>
+        <div class="pref-card">
+          <div class="pref-badge">Preference 1</div>
+          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee1}}</span></div>
+          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio1_1}}</span></div>
+          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio1_2}}</span></div>
+        </div>
+        <div class="pref-card">
+          <div class="pref-badge">Preference 2</div>
+          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee2}}</span></div>
+          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio2_1}}</span></div>
+          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio2_2}}</span></div>
+        </div>
+      </div>
+
       <!-- Diplomatic Allotment Summary Box -->
       <div class="card-box">
-        <div class="card-title">🏛️ OFFICIAL DIPLOMATIC ASSIGNMENT</div>
+        <div class="card-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
         <div class="alloc-item">
           <span class="alloc-label">Delegate Name:</span>
           <strong style="color: #000000; font-size: 16px; font-weight: 800;">{{name}}</strong>
@@ -5625,7 +5648,7 @@
         </div>
         <div class="alloc-item" style="margin-top: 10px;">
           <span class="alloc-label">Assigned Session Chamber:</span>
-          <strong style="color: #047857; font-size: 15px; font-weight: 800; display: block;">📍 {{venue}}</strong>
+          <strong style="color: #047857; font-size: 15px; font-weight: 800; display: block;">{{venue}}</strong>
         </div>
         <div class="alloc-item" style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
           <table style="width: 100%; font-size: 13px;" cellpadding="0" cellspacing="0">
@@ -5647,7 +5670,7 @@
 
       <!-- Summit Dates & Venue Details -->
       <div class="card-box" style="background: #FFFDF9;">
-        <div class="card-title">📍 CONFERENCE DATES, VENUE &amp; REPORTING</div>
+        <div class="card-title">CONFERENCE DATES, VENUE &amp; REPORTING</div>
         <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
           <tr>
             <td style="padding: 5px 0; color: #666666; font-weight: 600; width: 125px; vertical-align: top;">Conference Dates:</td>
@@ -5683,7 +5706,7 @@
       <!-- Scannable QR Credential Card -->
       <div class="qr-card-email">
         <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #6C0D2C; margin-bottom: 6px;">
-          🪪 YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
+          YOUR OFFICIAL CREDENTIAL &amp; MEAL PASS
         </div>
         <p style="margin: 0 0 12px 0; font-size: 13px; color: #555555; line-height: 1.4;">
           This encrypted QR code provides accreditation at campus security, committee halls, and catering counters.
@@ -5704,7 +5727,7 @@
 
       <!-- Itinerary & Schedule Outline -->
       <div class="card-box" style="background: #FFFDF9;">
-        <div class="card-title">⏰ CONFERENCE SCHEDULE AT A GLANCE</div>
+        <div class="card-title">CONFERENCE SCHEDULE AT A GLANCE</div>
         
         <strong style="color: #6C0D2C; font-size: 13px; display: block; margin-bottom: 4px;">DAY 1 &bull; TUESDAY, 06 OCTOBER 2026</strong>
         <table class="schedule-table">
@@ -5730,7 +5753,7 @@
 
       <!-- Dress Code & Rules -->
       <div class="guide-box" style="background: #FFFDF9;">
-        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">👔 Dress Code &amp; Delegate Protocol:</strong>
+        <strong style="color: #6C0D2C; display: block; margin-bottom: 6px; font-size: 14px;">Dress Code &amp; Delegate Protocol:</strong>
         <div style="margin-bottom: 4px;"><strong>DAY 1:</strong> Indian Traditional Attire</div>
         <div style="margin-bottom: 6px;"><strong>DAY 2:</strong> Western Formals</div>
         <div style="font-size: 12.5px; color: #555555; margin-top: 6px; line-height: 1.45;">
@@ -5999,131 +6022,6 @@
 </body>
 </html>`,
         attachments: []
-      },
-      {
-        id: 'tpl-allocation-mail',
-        name: 'Allocation Mail',
-        isPreset: true,
-        subject: "Your Committee Allotment – RNS MUN 2026",
-        body: <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #FFF7EB; color: #111113; margin: 0; padding: 24px 16px; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 2px solid #000000; border-radius: 12px; box-shadow: 4px 4px 0px #000000; overflow: hidden; }
-    .header { background: #6C0D2C; color: #FFF7EB; padding: 24px 20px 18px 20px; text-align: center; border-bottom: 2px solid #000000; }
-    .header-logo { display: block; margin: 0 auto; max-width: 290px; width: 100%; height: auto; border: 0; }
-    .header p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.95; color: #E5A93C; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; }
-    .content { padding: 28px 24px; font-size: 15px; color: #222222; }
-    .salutation { font-size: 18px; font-weight: 700; color: #6C0D2C; margin-bottom: 12px; }
-    .section-box { border: 1.5px solid #000000; border-radius: 12px; padding: 18px; margin: 22px 0; }
-    .section-title { font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
-    .section-hr { border: 0; border-top: 1.5px solid #000000; margin: 0 0 14px 0; height: 0; }
-    .pref-card { background: #ffffff; border: 1.5px solid #DDDDDD; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
-    .pref-card:last-child { margin-bottom: 0; }
-    .pref-badge { display: inline-block; background: #555555; color: #ffffff; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 5px; margin-bottom: 10px; }
-    .pref-row { font-size: 14px; line-height: 1.75; color: #333333; margin-bottom: 3px; }
-    .pref-label { color: #555555; font-weight: 600; }
-    .pref-val { font-weight: 700; color: #111111; }
-    .alloc-box { background: #F0FDF4; border: 2px solid #047857; border-radius: 12px; padding: 20px; margin: 22px 0; }
-    .alloc-title { color: #047857; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
-    .alloc-hr { border: 0; border-top: 1.5px solid #047857; margin: 0 0 14px 0; height: 0; opacity: 0.4; }
-    .alloc-item { font-size: 15px; margin-bottom: 8px; line-height: 1.6; }
-    .alloc-label { font-weight: 700; color: #065F46; }
-    .alloc-value { font-weight: 800; color: #000000; font-size: 16px; }
-    .alloc-sub { font-size: 13px; color: #047857; font-weight: 600; margin-top: 2px; }
-    .contacts-box { background: #FAF5EE; border: 1.5px solid #000000; border-radius: 8px; padding: 14px 18px; margin: 18px 0; font-size: 14.5px; }
-    .contact-item { padding: 4px 0; font-weight: 600; }
-    .contact-item a { color: #6C0D2C; text-decoration: none; font-weight: 700; }
-    .contact-divider { border: 0; border-top: 1px dashed #D5C7B4; margin: 6px 0; }
-    .signoff { margin-top: 24px; font-size: 14.5px; line-height: 1.5; color: #333333; }
-    .logo-wrap { margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #EEEEEE; }
-    .logo-wrap img { display: block; max-width: 120px; height: auto; border: 0; }
-    .footer { background: #FFFDF9; border-top: 2px solid #000000; padding: 18px; text-align: center; font-size: 12px; color: #666666; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.webp" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.webp';">
-      <p>COMMITTEE ALLOTMENT NOTICE</p>
-    </div>
-    <div class="content">
-      <div class="salutation">Dear {{name}},</div>
-      <p>Greetings from the RNSIT MUN Society!</p>
-      <p>The Secretariat has completed the committee and portfolio allotment process. We are pleased to share your official diplomatic assignment for RNS MUN 2026.</p>
-
-      <div class="section-box" style="background: #FFFDF9;">
-        <div class="section-title" style="color: #6C0D2C;">YOUR SUBMITTED PREFERENCES</div>
-        <div class="section-hr"></div>
-
-        <div class="pref-card">
-          <div class="pref-badge">Preference 1</div>
-          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio1_1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio1_2}}</span></div>
-        </div>
-
-        <div class="pref-card">
-          <div class="pref-badge">Preference 2</div>
-          <div class="pref-row"><span class="pref-label">Committee: </span><span class="pref-val">{{committee2}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 1: </span><span class="pref-val">{{portfolio2_1}}</span></div>
-          <div class="pref-row"><span class="pref-label">Portfolio Pref 2: </span><span class="pref-val">{{portfolio2_2}}</span></div>
-        </div>
-      </div>
-
-      <div class="alloc-box">
-        <div class="alloc-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
-        <div class="alloc-hr"></div>
-        <div class="alloc-item">
-          <span class="alloc-label">Committee: </span><br>
-          <span class="alloc-value">{{allocated_committee}}</span>
-        </div>
-        <div class="alloc-item">
-          <span class="alloc-label">Portfolio: </span><br>
-          <span class="alloc-value">{{allocated_portfolio}}</span>
-        </div>
-        <div class="alloc-sub" style="margin-top:10px;">This is your confirmed allotment. Please note this for event day entry.</div>
-      </div>
-
-      <p>Please carry a printed or digital copy of this email on the day of the conference. Your QR code will be issued separately.</p>
-
-      <p>If you have any questions regarding your allotment, please contact our team:</p>
-
-      <div class="contacts-box">
-        <div class="contact-item">Zeyan: <a href="tel:+919155973955">+91 91559 73955</a></div>
-        <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
-        <div class="contact-item">Adith: <a href="tel:+918970262490">+91 89702 62490</a></div>
-      </div>
-
-      <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
-
-      <div class="signoff">
-        Warm regards,<br>
-        <strong>Core Secretariat of RNS MUN 2026</strong><br>
-        RNSIT MUN Society
-      </div>
-
-      <p style="margin-top: 22px; font-size: 14.5px; color: #333333; line-height: 1.5;">
-        The MUN buzz? Right here &rarr;<br>
-        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
-      </p>
-
-      <div class="logo-wrap">
-        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.webp" alt="RNSIT MUN Society Logo" width="120" height="120" style="display:block; max-width:120px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.webp';">
-        </a>
-      </div>
-    </div>
-    <div class="footer">
-      <p><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Channasandra, Bengaluru - 560098<br>Email: mun@rnsit.ac.in</p>
-    </div>
-  </div>
-</body>
-</html>,
-        attachments: []
       }
     ];
 
@@ -6182,14 +6080,14 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v27_allocation_8col_table';
+    const TEMPLATES_VERSION = 'v28_allocation_pass_pref_box_no_emoji';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
       if (stored !== null && storedVersion === TEMPLATES_VERSION) {
         try {
           mailTemplates = JSON.parse(stored);
-          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-mail') || !mailTemplates.some(t => t.id === 'tpl-allocation-pass')) {
+          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-pass')) {
             mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
             saveTemplatesToStorage();
           }
