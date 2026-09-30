@@ -2601,6 +2601,80 @@
       border: 1px solid rgba(229, 169, 60, 0.6);
     }
 
+    .type-badge-closed {
+      background: rgba(108, 13, 44, 0.08);
+      color: #6C0D2C;
+      border: 1px solid rgba(108, 13, 44, 0.28);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    /* Closed / Disabled Delegate Type Button (Faded Pale Look) */
+    .delegate-type-btn.is-closed,
+    .delegate-type-btn:disabled {
+      opacity: 0.72;
+      cursor: not-allowed !important;
+      background: #FAF6F2 !important;
+      border-color: #B5A89E !important;
+      box-shadow: 2.5px 2.5px 0px #B5A89E !important;
+      transform: none !important;
+      pointer-events: auto;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .delegate-type-btn.is-closed:hover,
+      .delegate-type-btn:disabled:hover {
+        transform: none !important;
+        box-shadow: 2.5px 2.5px 0px #B5A89E !important;
+        border-color: #B5A89E !important;
+        background: #FAF6F2 !important;
+      }
+
+      .delegate-type-btn.is-closed:hover .type-btn-icon,
+      .delegate-type-btn:disabled:hover .type-btn-icon {
+        transform: none !important;
+      }
+
+      .delegate-type-btn.is-closed:hover .type-btn-arrow-pill,
+      .delegate-type-btn:disabled:hover .type-btn-arrow-pill {
+        background: #EDE6DF !important;
+        color: #8C7B74 !important;
+        transform: none !important;
+      }
+    }
+
+    .delegate-type-btn.is-closed:active,
+    .delegate-type-btn:disabled:active {
+      transform: none !important;
+      box-shadow: 2.5px 2.5px 0px #B5A89E !important;
+    }
+
+    .delegate-type-btn.is-closed .type-btn-icon,
+    .delegate-type-btn:disabled .type-btn-icon {
+      background: #A66579 !important;
+      color: #FFFDF9 !important;
+      border-color: #8E4E62 !important;
+      box-shadow: 1.5px 1.5px 0px #8E4E62 !important;
+    }
+
+    .delegate-type-btn.is-closed .type-btn-title,
+    .delegate-type-btn:disabled .type-btn-title {
+      color: #3E3035 !important;
+    }
+
+    .delegate-type-btn.is-closed .type-btn-desc,
+    .delegate-type-btn:disabled .type-btn-desc {
+      color: #7A696F !important;
+    }
+
+    .delegate-type-btn.is-closed .type-btn-arrow-pill,
+    .delegate-type-btn:disabled .type-btn-arrow-pill {
+      background: #EDE6DF !important;
+      border-color: #BDB0A4 !important;
+      color: #8C7B74 !important;
+      box-shadow: 1px 1px 0px #BDB0A4 !important;
+    }
+
     .type-btn-title {
       font-size: 0.98rem;
       font-weight: 900;

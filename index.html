@@ -858,6 +858,46 @@
       letter-spacing: -0.02em;
     }
 
+    .hpm-item.is-closed {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .hpm-item.is-closed .hpm-lbl {
+      color: #8C7B74;
+    }
+
+    .hpm-scratched {
+      position: relative;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      text-decoration: none;
+    }
+
+    .hpm-scratched .hpm-lbl {
+      color: #8C7B74;
+    }
+
+    .hpm-scratched .hpm-val-internal {
+      color: #7A696F;
+    }
+
+    .hpm-scratched::after {
+      content: "";
+      position: absolute;
+      left: -3px;
+      right: -3px;
+      top: 50%;
+      height: 1.5px;
+      background: #8B1139;
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+
 
     .hero-btn-row {
       display: inline-flex;
@@ -2612,15 +2652,17 @@
         <span class="hero-date-text">06–07 OCTOBER 2026</span>
       </p>
       <div class="hero-pricing-minimal">
-        <a href="/registration" class="hpm-pill" aria-label="Delegate Passes: External ₹1,350, RNSIT ₹999">
+        <a href="/registration" class="hpm-pill" aria-label="Delegate Passes: External ₹1,350, RNSIT Internal Registrations Closed">
           <span class="hpm-item">
             <span class="hpm-lbl">External</span>
             <span class="hpm-val">₹1,350</span>
           </span>
           <span class="hpm-sep" aria-hidden="true"></span>
-          <span class="hpm-item">
-            <span class="hpm-lbl">RNSIT</span>
-            <span class="hpm-val-internal">₹999</span>
+          <span class="hpm-item is-closed" title="RNSIT Internal Registrations Closed">
+            <span class="hpm-scratched">
+              <span class="hpm-lbl">RNSIT</span>
+              <span class="hpm-val-internal">₹999</span>
+            </span>
           </span>
         </a>
         <div class="hero-btn-row">

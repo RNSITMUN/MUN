@@ -1404,6 +1404,16 @@
     }
 
     function selectDelegateType(type) {
+      if (type === 'internal') {
+        if (typeof showToast === 'function') {
+          showToast('Internal Delegate registrations are officially closed.', 'error');
+        } else if (typeof showNotification === 'function') {
+          showNotification('Internal Delegate registrations are officially closed.', 'error');
+        } else {
+          alert('Internal Delegate registrations are officially closed.');
+        }
+        return;
+      }
       currentDelegateType = type;
 
       // Clear any prior draft of a different delegate type so it doesn't cross-contaminate
