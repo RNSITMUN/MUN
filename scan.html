@@ -2285,7 +2285,7 @@
     let currentCameraId = null;
     let cameraList = [];
     let isScannerRunning = false;
-    let scanCooldown = false;
+    let isProcessing = false;
 
     // ─── Persistent Staff Session Management (localStorage with 24-hr Expiry) ───
     const STAFF_SESSION_KEY = 'rns_staff_session_token';
@@ -2682,17 +2682,31 @@
 
     // Handle Detected QR code
     async function onQrCodeDetected(decodedText) {
-      if (scanCooldown) return;
-      scanCooldown = true;
-      setTimeout(() => { scanCooldown = false; }, 1800); // 1.8s cooldown
+      if (isProcessing) return;
+      isProcessing = true;
 
-      const payload = parseScanPayload(decodedText);
-      if (!payload || (!payload.token && !payload.id)) {
-        showErrorResult('Invalid QR Code', 'The scanned QR code is not recognized as an official RNS MUN 2026 pass.');
-        return;
+      if (html5QrCode && isScannerRunning) {
+        try {
+          html5QrCode.pause(true);
+        } catch (e) {}
       }
 
-      await processCheckIn(payload);
+      try {
+        const payload = parseScanPayload(decodedText);
+        if (!payload || (!payload.token && !payload.id)) {
+          showErrorResult('Invalid QR Code', 'The scanned QR code is not recognized as an official RNS MUN 2026 pass.');
+          return;
+        }
+
+        await processCheckIn(payload);
+      } finally {
+        if (html5QrCode && isScannerRunning) {
+          try {
+            html5QrCode.resume();
+          } catch (e) {}
+        }
+        isProcessing = false;
+      }
     }
 
     let activeModalCandidate = null;
@@ -2709,6 +2723,19 @@
       }
     }
 
+    function unwrapHubResponse(json) {
+      if (!json) return null;
+      if (json.success === false) return json;
+      const pass = json.pass || json.data?.pass || json.data;
+      if (!pass) return json;
+      return {
+        ...pass,
+        rawId: pass.id,
+        success: json.success !== false,
+        error: json.error || pass.error
+      };
+    }
+
     // Process Check-in & Station Accreditation
     async function processCheckIn(payload) {
       const sessionToken = getStaffSessionToken();
@@ -2717,7 +2744,7 @@
         return;
       }
 
-      const activeStation = document.getElementById('station-dropdown').value;
+      const activeStation = document.getElementById('station-dropdown')?.value || 'day1_entry';
 
       try {
         // Step 1: Fetch delegate profile
@@ -2728,14 +2755,14 @@
             headers: { 'Authorization': `Bearer ${sessionToken}` }
           });
           if (hubRes.status === 401) { logout(); return; }
-          candidate = await hubRes.json();
+          candidate = unwrapHubResponse(await hubRes.json());
         } else if (payload.type === 'auto') {
           // Check individual first
           let hubRes = await fetch(`/api/hub-data?id=${encodeURIComponent(payload.id)}&type=individual`, {
             headers: { 'Authorization': `Bearer ${sessionToken}` }
           });
           if (hubRes.status === 401) { logout(); return; }
-          let cData = await hubRes.json();
+          let cData = unwrapHubResponse(await hubRes.json());
           if (cData && cData.success) {
             candidate = cData;
           } else {
@@ -2744,18 +2771,18 @@
               headers: { 'Authorization': `Bearer ${sessionToken}` }
             });
             if (hubRes.status === 401) { logout(); return; }
-            candidate = await hubRes.json();
+            candidate = unwrapHubResponse(await hubRes.json());
           }
         } else {
           const hubRes = await fetch(`/api/hub-data?id=${encodeURIComponent(payload.id)}&type=${encodeURIComponent(payload.type || 'individual')}`, {
             headers: { 'Authorization': `Bearer ${sessionToken}` }
           });
           if (hubRes.status === 401) { logout(); return; }
-          candidate = await hubRes.json();
+          candidate = unwrapHubResponse(await hubRes.json());
         }
 
-        if (!candidate.success) {
-          showErrorResult('Record Not Found', candidate.error || 'No delegate found for this credential.');
+        if (!candidate || !candidate.success) {
+          showErrorResult('Record Not Found', candidate?.error || 'No delegate found for this credential.');
           return;
         }
 
@@ -2790,10 +2817,12 @@
             'Authorization': `Bearer ${sessionToken}`
           },
           body: JSON.stringify({
-            token: payload.token,
-            id: payload.id,
-            type: payload.type,
+            token: payload.token || candidate.token,
+            id: payload.id || candidate.id,
+            type: candidate.type || payload.type || 'individual',
+            checkpoint_key: activeStation,
             checkpointKey: activeStation,
+            redeemed: true,
             status: true,
             staffName: 'Secretariat Staff'
           })
@@ -3142,7 +3171,7 @@
       const card = document.getElementById('result-box');
       card.className = 'result-card success';
 
-      const stationName = document.getElementById('station-dropdown').selectedOptions[0].text.split('(')[0];
+      const stationName = document.getElementById('station-dropdown')?.selectedOptions?.[0]?.text?.split('(')[0] || stationKey;
       document.getElementById('result-name').textContent = candidate.name;
       
       const badge = document.getElementById('result-badge');
@@ -3372,7 +3401,7 @@
           return;
         }
 
-        const matches = data.matches || [];
+        const matches = data.results || [];
 
         if (matches.length === 0) {
           // If no matches by name/email, and payload was numeric ID, fall back to processCheckIn(payload)
@@ -3408,7 +3437,7 @@
 
           if (feedback) {
             feedback.className = 'search-feedback success';
-            feedback.innerHTML = `✓ Match found: <strong>${escapeHtml(m.name)}</strong> (${escapeHtml(m.committee || m.institution)})`;
+            feedback.innerHTML = `✓ Match found: <strong>${escapeHtml(m.name)}</strong> (${escapeHtml(m.allocated_committee || m.institution)})`;
           }
           if (tray) tray.style.display = 'none';
 
@@ -3471,8 +3500,8 @@
             </div>
             <div class="search-candidate-meta">
               <span>🏛️ ${escapeHtml(m.institution || 'Institutional Representative')}</span>
-              <span>🇺🇳 <strong>${escapeHtml(m.committee || 'General Assembly')}</strong></span>
-              <span>🏷️ <em>${escapeHtml(m.portfolio || 'Delegate')}</em></span>
+              <span>🇺🇳 <strong>${escapeHtml(m.allocated_committee || 'General Assembly')}</strong></span>
+              <span>🏷️ <em>${escapeHtml(m.allocated_portfolio || 'Delegate')}</em></span>
               ${m.email ? `<span>✉️ ${escapeHtml(m.email)}</span>` : ''}
               ${m.phone ? `<span>📱 ${escapeHtml(m.phone)}</span>` : ''}
             </div>
@@ -3529,7 +3558,7 @@
 
         if (feedback) {
           feedback.className = 'search-feedback success';
-          feedback.innerHTML = `✓ Processed <strong>${escapeHtml(candidateMatch.name)}</strong> (${escapeHtml(candidateMatch.portfolio || 'Delegate')}) for ${escapeHtml(STATION_META[activeStation]?.title || activeStation)}!`;
+          feedback.innerHTML = `✓ Processed <strong>${escapeHtml(candidateMatch.name)}</strong> (${escapeHtml(candidateMatch.allocated_portfolio || 'Delegate')}) for ${escapeHtml(STATION_META[activeStation]?.title || activeStation)}!`;
         }
 
         // Close search tray after successful check-in
