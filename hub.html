@@ -47,14 +47,24 @@
       --shadow-sm: 1.5px 1.5px 0px #000000;
     }
 
+    html {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+
     body {
       background-color: var(--bg-cream);
       color: var(--text-main);
       font-family: 'Outfit', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
       position: relative;
       margin: 0;
+      box-sizing: border-box;
     }
 
     /* Fixed Corner Logos Matching Website Standard */
@@ -104,9 +114,11 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
+      max-width: 100vw;
       min-height: 100vh;
       padding: 95px 20px 65px 20px;
       box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     /* Editorial Header Section */
@@ -197,19 +209,39 @@
        ========================================================= */
     .dossier-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 28px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
       width: 100%;
-      max-width: 1020px;
-      align-items: stretch;
+      max-width: 1040px;
+      align-items: start;
       box-sizing: border-box;
     }
 
     @media (max-width: 900px) {
       .dossier-grid {
-        grid-template-columns: 1fr;
-        gap: 22px;
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 480px;
+        margin: 0 auto;
+        gap: 20px;
+        width: 100%;
       }
+      .main-stack,
+      .side-stack {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        align-items: stretch;
+      }
+    }
+
+    .main-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     /* =========================================================
@@ -220,13 +252,17 @@
       border: 2.5px solid var(--border-dark);
       border-radius: var(--radius-card);
       box-shadow: var(--shadow-card);
-      padding: 32px 30px 28px 30px;
+      padding: 24px 26px 20px 26px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 24px;
+      justify-content: flex-start;
+      gap: 16px;
       position: relative;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .credential-card:hover {
@@ -234,196 +270,16 @@
       box-shadow: 8px 8px 0px #000000;
     }
 
-    /* Card Top Ribbon */
-    .credential-top-ribbon {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding-bottom: 18px;
-      border-bottom: 1.5px solid var(--border-subtle);
-    }
-
-    .diplomatic-seal-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: var(--bg-cream);
-      color: #000000;
-      border: 1.8px solid var(--border-dark);
-      border-radius: var(--radius-pill);
-      padding: 4px 14px;
-      box-shadow: var(--shadow-sm);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .accreditation-status-chip {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: var(--success-bg);
-      color: var(--success-green);
-      border: 1.5px solid #059669;
-      border-radius: var(--radius-pill);
-      padding: 4px 12px;
-      box-shadow: 1px 1px 0px #000000;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-
-    /* Candidate Identity Block */
-    .candidate-identity-block {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .candidate-title-label {
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--primary);
-    }
-
-    .candidate-name-display {
-      font-size: clamp(1.9rem, 3.8vw, 2.7rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      text-transform: uppercase;
-      line-height: 1.05;
-      color: #000000;
-      margin: 0;
-      word-break: break-word;
-    }
-
-    .candidate-institution-line {
-      font-size: 1.02rem;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.75);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .candidate-chips-deck {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .identity-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 8px;
-      border: 1.5px solid var(--border-dark);
-      background: var(--bg-cream);
-      color: #000000;
-      box-shadow: 1.5px 1.5px 0px #000000;
-    }
-
-    .identity-tag.gold {
-      background: var(--accent-gold);
-    }
-
-    .identity-tag.maroon {
-      background: var(--primary);
-      color: #FFFFFF;
-      border-color: #000000;
-    }
-
-    /* Diplomatic Allotment Box (Hero Inner Panel) */
-    .allotment-showcase-panel {
-      background: var(--bg-cream);
-      border: 2px solid var(--border-dark);
-      border-radius: var(--radius-box);
-      box-shadow: var(--shadow-box);
-      padding: 22px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .allotment-item-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .allotment-item-kicker {
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .allotment-item-val {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #000000;
-      line-height: 1.2;
-    }
-
-    .allotment-item-val.highlight {
-      color: var(--primary);
-    }
-
-    .allotment-inner-divider {
-      border: none;
-      border-top: 1.5px dashed rgba(0, 0, 0, 0.18);
-      margin: 0;
-    }
-
-    .allotment-item-val.venue {
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: #1F2937;
-    }
-
-    /* Lanyard Slot (Punch Hole) */
-    .lanyard-slot-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: -16px;
-      margin-bottom: -4px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .lanyard-punch-hole {
-      width: 64px;
-      height: 11px;
-      background: var(--bg-cream);
-      border: 2px solid var(--border-dark);
-      border-radius: var(--radius-pill);
-      box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.22);
-    }
-
-    /* Tactile Watermark Crest Behind Credential */
+    /* Watermark Crest behind Credential */
     .credential-watermark-crest {
       position: absolute;
-      top: 42%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(-5deg);
-      width: 250px;
-      height: 250px;
-      opacity: 0.045;
+      top: 18%;
+      right: 0;
+      width: 220px;
+      height: 220px;
+      max-width: 50%;
+      max-height: 50%;
+      opacity: 0.05;
       pointer-events: none;
       z-index: 0;
       user-select: none;
@@ -436,15 +292,331 @@
       filter: grayscale(100%);
     }
 
+    /* Minimal Lanyard Punch Slot */
+    .badge-lanyard-slot {
+      width: 48px;
+      height: 7px;
+      background: #EFE9DD;
+      border: 1.8px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      margin: -10px auto 2px auto;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Card Top Ribbon */
+    .credential-top-ribbon {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .badge-crest-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-brand-crest {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-dark);
+      background: #FFFFFF;
+      padding: 2px;
+    }
+
+    .badge-brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .badge-brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #000000;
+    }
+
+    .badge-brand-sub {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .accreditation-status-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--success-bg);
+      color: var(--success-green);
+      border: 1.5px solid #059669;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      box-shadow: 1px 1px 0px #000000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #059669;
+      box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.25);
+      animation: pulseGreen 1.8s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Candidate Identity Block */
+    .candidate-identity-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .candidate-kicker {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.01em;
+      margin-bottom: -2px;
+    }
+
+    .candidate-name-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      color: #000000;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .candidate-institution-line {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .candidate-chips-deck {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .identity-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border-dark);
+      background: var(--bg-cream);
+      color: #000000;
+      box-shadow: 1.5px 1.5px 0px #000000;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .identity-tag.gold {
+      background: var(--accent-gold);
+    }
+
+    /* Diplomatic Allotment Display (Hero Centerpiece) */
+    .allotment-showcase-panel {
+      background: var(--bg-cream);
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-box);
+      box-shadow: var(--shadow-box);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .allotment-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .allot-header-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .allot-header-edition {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 800;
+      background: #000000;
+      color: #FFF7EB;
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .allotment-hero-portfolio {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px dashed rgba(0, 0, 0, 0.15);
+    }
+
+    .portfolio-hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .allotment-dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .allotment-dual-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    .allotment-item-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .allotment-item-kicker {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .allotment-item-val {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #000000;
+      line-height: 1.25;
+    }
+
+    .allotment-item-val.venue {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    /* Minimal Single-Row Essentials Bar */
+    .credential-essentials-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFFFFF;
+      border: 1.8px solid var(--border-dark);
+      border-radius: 10px;
+      padding: 9px 14px;
+      box-shadow: 1.5px 1.5px 0px #000000;
+      position: relative;
+      z-index: 1;
+    }
+
+    .essential-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .essential-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .essential-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #000000;
+      white-space: nowrap;
+    }
+
+    .essential-divider {
+      width: 1px;
+      height: 22px;
+      background: rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+    }
+
     /* Ticket Perforation Tear-Line & Semicircular Cutout Notches */
     .ticket-perforation-divider {
       position: relative;
-      width: calc(100% + 60px);
-      margin: 4px -30px;
+      width: calc(100% + 52px);
+      margin: 2px -26px;
       display: flex;
       align-items: center;
       pointer-events: none;
       z-index: 2;
+      box-sizing: border-box;
+    }
+
+    .gate-pass-perforation {
+      width: calc(100% + 48px);
+      margin: 0 -24px;
     }
 
     .perforation-line {
@@ -454,8 +626,8 @@
     }
 
     .perforation-notch {
-      width: 16px;
-      height: 26px;
+      width: 14px;
+      height: 24px;
       background: var(--bg-cream);
       border: 2.5px solid var(--border-dark);
       box-sizing: border-box;
@@ -478,8 +650,11 @@
     .credential-actions-deck {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding-top: 10px;
+      gap: 9px;
+      margin-top: 4px;
+      padding-top: 4px;
+      position: relative;
+      z-index: 1;
     }
 
     .action-btn-primary {
@@ -580,6 +755,10 @@
       gap: 14px;
       position: relative;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .gate-pass-card:hover {
@@ -696,6 +875,10 @@
       flex-direction: column;
       gap: 16px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .checkpoints-card:hover {
@@ -816,6 +999,205 @@
     }
 
     /* =========================================================
+       CARD D: DAY-AT-A-GLANCE SCHEDULE TIMELINE
+       ========================================================= */
+    .schedule-glance-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 20px 20px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .schedule-glance-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    .schedule-glance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .schedule-glance-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #000000;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .schedule-glance-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .schedule-day-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .schedule-day-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      padding: 3px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .schedule-time-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 0;
+    }
+
+    .schedule-time-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #000000;
+      background: var(--bg-cream);
+      border: 1.5px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 2px 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 1px 1px 0px #000000;
+      min-width: 64px;
+      text-align: center;
+    }
+
+    .schedule-event-text {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .schedule-event-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .schedule-divider {
+      height: 0;
+      border-top: 1px dashed rgba(0,0,0,0.12);
+      margin: 2px 0;
+    }
+
+    /* =========================================================
+       CARD D: DELEGATE ESSENTIALS REMINDER
+       ========================================================= */
+    .essentials-card {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .essentials-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+
+    .essentials-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+
+    .essentials-card-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #000000;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .essentials-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .essentials-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.10);
+    }
+
+    .essentials-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .essentials-item-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #FFF7EB;
+      border: 1.5px solid var(--border-dark);
+      box-shadow: 1px 1px 0px #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .essentials-item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .essentials-item-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #000000;
+      line-height: 1.3;
+    }
+
+    .essentials-item-sub {
+      font-size: 0.69rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* =========================================================
        CARD C: DELEGATE BRIEFING & CONFERENCE UTILITIES
        ========================================================= */
     .delegate-kit-card {
@@ -829,6 +1211,10 @@
       gap: 14px;
       position: relative;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .delegate-kit-card:hover {
@@ -878,10 +1264,10 @@
     .kit-action-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: var(--bg-subtle);
-      border: 1.8px solid var(--border-dark);
+      gap: 13px;
+      padding: 12px 15px;
+      background: #FFFFFF;
+      border: 2px solid var(--border-dark);
       border-radius: 12px;
       text-decoration: none;
       color: var(--text-main);
@@ -895,9 +1281,9 @@
     }
 
     .kit-action-row:hover {
-      background: var(--accent-gold-light);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000000;
+      background: #FFFDF9;
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 3.5px 3.5px 0px #000000;
     }
 
     .kit-action-row:active {
@@ -906,25 +1292,35 @@
     }
 
     .kit-action-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      border: 1.5px solid var(--border-dark);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.8px solid var(--border-dark);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 1px 1px 0px #000000;
+      box-shadow: 2px 2px 0px #000000;
+      transition: transform 0.15s ease;
+    }
+
+    .kit-action-row:hover .kit-action-icon {
+      transform: translate(-1px, -1px);
     }
 
     .kit-action-icon.calendar-icon {
-      background: #EFF6FF;
-      color: #1D4ED8;
+      background: #FFF7EB;
+      color: var(--primary);
     }
 
     .kit-action-icon.whatsapp-icon {
-      background: #ECFDF5;
-      color: #047857;
+      background: #FFF7EB;
+      color: var(--primary);
+    }
+
+    .kit-action-icon.rop-icon {
+      background: #FFF7EB;
+      color: var(--primary);
     }
 
     .kit-action-info {
@@ -936,9 +1332,10 @@
     }
 
     .kit-action-label {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 800;
       color: #000000;
+      letter-spacing: -0.01em;
     }
 
     .kit-action-sub {
@@ -948,14 +1345,15 @@
     }
 
     .kit-arrow-icon {
-      color: rgba(0, 0, 0, 0.4);
+      color: #000000;
+      opacity: 0.45;
       flex-shrink: 0;
-      transition: transform 0.15s ease, color 0.15s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
     .kit-action-row:hover .kit-arrow-icon {
-      transform: translateX(2px);
-      color: #000000;
+      transform: translateX(3px);
+      opacity: 1;
     }
 
     .kit-downloads-grid {
@@ -1568,8 +1966,189 @@
       padding-top: 5px;
     }
 
-    .print-barcode-mock {
-      letter-spacing: 2px;
+    /* =========================================================
+       MOBILE CENTERING & RESPONSIVE POLISH (≤ 768px & ≤ 480px)
+       ========================================================= */
+    @media (max-width: 768px) {
+      .top-left-logo-container {
+        top: max(12px, env(safe-area-inset-top, 12px));
+        left: max(14px, env(safe-area-inset-left, 14px));
+      }
+      .top-right-logo-container {
+        top: max(12px, env(safe-area-inset-top, 12px));
+        right: max(14px, env(safe-area-inset-right, 14px));
+      }
+      .top-left-logo,
+      .top-right-logo {
+        height: 38px !important;
+        max-height: 38px !important;
+        width: auto !important;
+      }
+      .hub-viewport {
+        padding: 72px 16px 85px 16px;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+      }
+      .hub-header {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 4px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+      .hub-display-title {
+        font-size: clamp(1.85rem, 7.5vw, 2.75rem);
+        letter-spacing: -0.03em;
+        word-break: break-word;
+      }
+      .hub-lead {
+        font-size: 0.95rem;
+        padding: 0 6px;
+        line-height: 1.4;
+      }
+      .hub-kicker-pill {
+        font-size: 0.68rem;
+        padding: 4px 12px;
+      }
+      .dossier-grid {
+        max-width: 480px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 18px;
+        box-sizing: border-box;
+      }
+      .credential-card,
+      .gate-pass-card,
+      .delegate-kit-card,
+      .checkpoints-card,
+      .hub-logistics-capsule {
+        box-shadow: 4px 4px 0px #000000 !important;
+      }
+      .credential-card:hover,
+      .gate-pass-card:hover,
+      .delegate-kit-card:hover,
+      .checkpoints-card:hover,
+      .hub-logistics-capsule:hover {
+        box-shadow: 5px 5px 0px #000000 !important;
+        transform: translateY(-1px) !important;
+      }
+      .delegation-roster-box {
+        max-width: 480px;
+        margin: 0 auto 18px auto;
+        padding: 14px 16px;
+      }
+      .protocol-capsule-bar {
+        max-width: 480px;
+        margin: 20px auto 0 auto;
+        padding: 12px 16px;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .top-left-logo-container {
+        top: max(10px, env(safe-area-inset-top, 10px));
+        left: max(10px, env(safe-area-inset-left, 10px));
+      }
+      .top-right-logo-container {
+        top: max(10px, env(safe-area-inset-top, 10px));
+        right: max(10px, env(safe-area-inset-right, 10px));
+      }
+      .top-left-logo,
+      .top-right-logo {
+        height: 32px !important;
+        max-height: 32px !important;
+      }
+      .hub-viewport {
+        padding: 68px 12px 85px 12px;
+      }
+      .credential-card {
+        padding: 18px 14px 16px 14px;
+      }
+      .gate-pass-card {
+        padding: 20px 14px;
+      }
+      .delegate-kit-card {
+        padding: 18px 14px;
+      }
+      .checkpoints-card {
+        padding: 18px 14px;
+      }
+      .ticket-perforation-divider,
+      .credential-perforation {
+        width: calc(100% + 28px) !important;
+        margin-left: -14px !important;
+        margin-right: -14px !important;
+      }
+      .gate-pass-perforation {
+        width: calc(100% + 28px) !important;
+        margin-left: -14px !important;
+        margin-right: -14px !important;
+      }
+      .credential-essentials-row {
+        padding: 7px 6px;
+        gap: 3px;
+      }
+      .essential-value {
+        font-size: 0.68rem;
+      }
+      .essential-label {
+        font-size: 0.52rem;
+      }
+      .candidate-name-display {
+        font-size: clamp(1.45rem, 6.8vw, 1.95rem);
+      }
+      .allotment-showcase-panel {
+        padding: 12px 12px;
+      }
+      .allotment-item-val {
+        font-size: 0.9rem;
+      }
+      .kit-action-row {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+      .kit-action-label {
+        font-size: 0.82rem;
+      }
+      .kit-action-sub {
+        font-size: 0.68rem;
+      }
+      .qr-tile-img {
+        width: 155px;
+        height: 155px;
+      }
+      .qr-tile-frame {
+        padding: 10px;
+      }
+      .candidate-chips-deck {
+        gap: 4px;
+      }
+      .identity-tag {
+        font-size: 0.62rem;
+        padding: 2px 7px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hub-viewport {
+        padding: 64px 8px 85px 8px;
+      }
+      .credential-card,
+      .gate-pass-card,
+      .delegate-kit-card,
+      .checkpoints-card {
+        padding: 16px 10px;
+      }
+      .ticket-perforation-divider,
+      .credential-perforation,
+      .gate-pass-perforation {
+        width: calc(100% + 20px) !important;
+        margin-left: -10px !important;
+        margin-right: -10px !important;
+      }
     }
 
     /* @media print overrides */
@@ -1750,7 +2329,7 @@
         RNS Model United Nations 2026
       </h3>
       <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">
-        <strong>06–07 October 2026</strong> &bull; Reporting Time: <strong>08:30 AM IST</strong><br>
+        <strong>06–07 October 2026</strong> &bull; Reporting: <strong>08:00 AM (Registration Desk) &bull; 08:30 AM (Opening Plenary)</strong><br>
         <span id="cal-modal-venue-text" style="font-weight: 600; color: #1F2937;">RNSIT Campus, Bengaluru</span>
       </p>
 
@@ -1873,7 +2452,7 @@
             <div class="print-day-title">DAY 1 &bull; TUESDAY, 06 OCTOBER 2026</div>
             <div class="print-cp-item">
               <span class="print-cp-dot">●</span>
-              <span><strong>Campus Accreditation &amp; Kit Collection</strong> (08:30 AM &bull; Main Gate)</span>
+              <span><strong>Campus Accreditation &amp; Kit Collection</strong> (08:00 AM Desk &bull; 08:30 AM Plenary &bull; Main Gate)</span>
             </div>
             <div class="print-cp-item">
               <span class="print-cp-dot">●</span>
@@ -2059,7 +2638,14 @@
     }
 
     function copyPassLink() {
-      const passUrl = window.location.href;
+      let passUrl = window.location.href;
+      if (passData && passData.type === 'delegation') {
+        try {
+          const u = new URL(passUrl);
+          u.searchParams.set('m', selectedMemberIdx);
+          passUrl = u.toString();
+        } catch (_) {}
+      }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(passUrl).then(() => {
           showToast('Official Pass Link copied to clipboard!');
@@ -2084,10 +2670,13 @@
     }
 
     async function loadPassData(isBackgroundPoll = false) {
+      const urlParams = new URLSearchParams(window.location.search);
       const token = getTokenFromUrl();
+      const id = (urlParams.get('id') || '').trim();
+      const type = (urlParams.get('type') || 'individual').trim();
       const contentEl = document.getElementById('hub-content');
 
-      if (!token) {
+      if (!token && !id) {
         if (!isBackgroundPoll) {
           contentEl.innerHTML = `
             <div class="hub-state-card">
@@ -2108,7 +2697,12 @@
       }
 
       try {
-        const res = await fetch(`/api/hub-data?t=${encodeURIComponent(token)}`);
+        let res;
+        if (token) {
+          res = await fetch(`/api/hub-data?t=${encodeURIComponent(token)}`);
+        } else {
+          res = await fetch(`/api/hub-data?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`);
+        }
         const json = await res.json();
         const pass = json.pass || json.data?.pass || json.data;
 
@@ -2120,7 +2714,7 @@
                 <div>
                   <h2 style="font-size: 1.3rem; font-weight: 900; text-transform: uppercase;">Invalid Accreditation</h2>
                   <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px;">
-                    ${escapeHtml(json.error || 'The requested accreditation token could not be verified in the conference registry.')}
+                    ${escapeHtml(json.error || 'The requested accreditation could not be verified in the conference registry.')}
                   </p>
                 </div>
                 <a href="/stay-connected" class="action-btn-primary" style="max-width: 240px; text-decoration: none;">
@@ -2135,18 +2729,19 @@
         const raw = json.data || json;
 
         passData = {
-          token: pass.token || token,
-          id: pass.id || raw.id,
-          delegateId: pass.delegate_id || pass.delegateId || pass.id || 'IND-00',
+          token: pass.token || token || '',
+          id: pass.id || raw.id || id,
+          delegateId: pass.delegate_id || pass.delegateId || pass.id || id || 'IND-00',
           name: pass.full_name || pass.name || pass.delegation_name || 'Accredited Delegate',
           email: pass.email || '',
           institution: pass.institution || pass.college || 'Institutional Representative',
           usn: pass.usn || '',
           delegateType: pass.delegate_type || pass.delegateType || (raw.type === 'delegation' ? 'delegation' : 'internal'),
-          type: raw.type || (pass.roster_data ? 'delegation' : 'individual'),
+          type: raw.type || pass.type || (pass.roster_data ? 'delegation' : 'individual'),
           status: pass.status || 'confirmed',
           allocatedCommittee: pass.allocated_committee || pass.allocatedCommittee || pass.committee1 || 'General Assembly',
           allocatedPortfolio: pass.allocated_portfolio || pass.allocatedPortfolio || pass.portfolio1_1 || 'General Delegate',
+          bg_guide_url: pass.bg_guide_url || pass.bgGuideUrl || pass.gdrive_link || pass.drive_url || raw.bg_guide_url || '',
           checkpoints: pass.checkpoints || pass.scans || {},
           passUrl: pass.pass_url || pass.passUrl || window.location.href,
           roster: pass.roster_data || pass.roster || []
@@ -2156,6 +2751,16 @@
         const mParam = urlParams.get('m');
         if (mParam !== null && !isNaN(parseInt(mParam))) {
           selectedMemberIdx = parseInt(mParam);
+        }
+
+        if (!token && pass.token) {
+          try {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete('id');
+            newUrl.searchParams.delete('type');
+            newUrl.searchParams.set('t', pass.token);
+            window.history.replaceState({}, '', newUrl.toString());
+          } catch (_) {}
         }
 
         renderPass();
@@ -2230,8 +2835,14 @@
         : (passData.id || passData.delegateId || 'IND');
 
       let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
-      if (isDelegation && selectedMemberIdx > 0) {
-        passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+      if (isDelegation) {
+        try {
+          const u = new URL(passUrl, window.location.origin);
+          u.searchParams.set('m', selectedMemberIdx);
+          passUrl = u.toString();
+        } catch (_) {
+          passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+        }
       }
 
       const qrDataUrl = await generateClientQrDataUrl(passUrl, 320);
@@ -2285,12 +2896,12 @@
 
       // Official Committee WhatsApp Group Links
       const COMMITTEE_WHATSAPP_MAP = {
-        'UNSC': 'https://chat.whatsapp.com/HimCmZ0ul517ru5Y9bgwfx',
-        'LOK SABHA': 'https://chat.whatsapp.com/IqqnupTXR6wK9VH0SMpfAq',
-        'UNODC': 'https://chat.whatsapp.com/DznQ1q5hGux303QmALqJmN',
-        'UNHRC': 'https://chat.whatsapp.com/CDc8hAkEr8FHqmSIQRcuC9',
-        'IPC': 'https://chat.whatsapp.com/FuLrE0UmkK0DqpihnQGQIl',
-        'DISEC': 'https://chat.whatsapp.com/BrubdIe8jqoEcRymOxBvl1'
+        'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+        'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
+        'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
+        'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
+        'IPC': 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm',
+        'DISEC': 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2'
       };
 
       // Match Committee and Resolve Official WhatsApp Link
@@ -2324,6 +2935,15 @@
         );
         committeeWhatsAppUrl = `https://wa.me/918970262490?text=${whatsappText}`;
       }
+
+      // Committee Background Guide & Research Dossier
+      const bgGuideUrl = (currentMember && (currentMember.bg_guide_url || currentMember.bgGuideUrl || currentMember.gdrive_link))
+        || passData.bg_guide_url
+        || passData.bgGuideUrl
+        || passData.gdrive_link
+        || passData.drive_url
+        || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY';
+
       window.currentChamberVenue = chamberVenue;
       window.currentDelegateName = delegateName;
       window.currentCommitteeName = committeeName;
@@ -2334,106 +2954,208 @@
         <div class="dossier-grid">
 
           <!-- ==============================================
-               LEFT PANEL: MASTER DELEGATE CREDENTIAL CARD
+               LEFT COLUMN: MASTER CREDENTIAL & UTILITIES STACK
                ============================================== -->
-          <div class="credential-card">
+          <div class="main-stack">
 
-            <!-- Tactile Lanyard Punch Slot -->
-            <div class="lanyard-slot-wrap" aria-hidden="true">
-              <div class="lanyard-punch-hole"></div>
+            <!-- Card 1: Official Delegate Credential Badge -->
+            <div class="credential-card">
+
+              <!-- Subtle Watermark Crest -->
+              <div class="credential-watermark-crest" aria-hidden="true">
+                <img src="./assets/Logos/MUN_logo.webp" alt="" />
+              </div>
+
+              <!-- Minimal Lanyard Slot -->
+              <div class="badge-lanyard-slot" aria-hidden="true"></div>
+
+              <!-- 1. Top Ribbon: Clean Diplomatic Header -->
+              <div class="credential-top-ribbon">
+                <div class="badge-crest-brand">
+                  <img src="./assets/Logos/MUN_logo.webp" alt="RNSMUN Logo" class="badge-brand-crest" />
+                  <div class="badge-brand-text">
+                    <span class="badge-brand-title">RNSMUN 2026</span>
+                    <span class="badge-brand-sub">Diplomatic Pass</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Candidate Identity Block: Editorial Elegance -->
+              <div class="candidate-identity-block">
+                <span class="candidate-kicker">Honorable Delegate</span>
+                <h2 class="candidate-name-display">${escapeHtml(delegateName)}</h2>
+                <div class="candidate-institution-line">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2 2 7h20z"></path></svg>
+                  <span>${escapeHtml(passData.institution || 'Institutional Representative')}</span>
+                </div>
+
+                <div class="candidate-chips-deck">
+                  <span class="identity-tag">DELEGATE #${escapeHtml(displayDelegateId)}</span>
+                  ${passData.usn ? `<span class="identity-tag">USN: ${escapeHtml(passData.usn)}</span>` : ''}
+                </div>
+              </div>
+
+              <!-- 3. Diplomatic Allotment Display: The Hero Centerpiece -->
+              <div class="allotment-showcase-panel">
+                <div class="allotment-panel-header">
+                  <span class="allot-header-kicker">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                    SESSION ALLOTMENT
+                  </span>
+                  <span class="allot-header-edition">OCT 06–07 &bull; 2026</span>
+                </div>
+
+                <!-- Represented Portfolio (Hero highlight) -->
+                <div class="allotment-hero-portfolio">
+                  <span class="allotment-item-kicker">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Represented Portfolio
+                  </span>
+                  <div class="portfolio-hero-title">${escapeHtml(portfolioName || 'General Delegate')}</div>
+                </div>
+
+                <!-- Committee & Chamber Dual Grid -->
+                <div class="allotment-dual-grid">
+                  <div class="allotment-item-block">
+                    <span class="allotment-item-kicker">Assigned Committee</span>
+                    <span class="allotment-item-val">${escapeHtml(committeeName || 'General Assembly')}</span>
+                  </div>
+                  <div class="allotment-item-block">
+                    <span class="allotment-item-kicker">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                      Session Chamber
+                    </span>
+                    <span class="allotment-item-val venue">${escapeHtml(chamberVenue)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Conference Quick Essentials Strip -->
+              <div class="credential-essentials-row">
+                <div class="essential-item">
+                  <span class="essential-label">Dates</span>
+                  <span class="essential-value">06–07 Oct 2026</span>
+                </div>
+                <div class="essential-divider"></div>
+                <div class="essential-item">
+                  <span class="essential-label">Reporting</span>
+                  <span class="essential-value" style="white-space: normal; line-height: 1.25; font-size: 0.76rem;" title="08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)">08:00 AM (Desk) &bull; 08:30 AM (Plenary)</span>
+                </div>
+                <div class="essential-divider"></div>
+                <div class="essential-item">
+                  <span class="essential-label">Entry</span>
+                  <span class="essential-value">Gate 1 Desk</span>
+                </div>
+              </div>
+
+              <!-- Ticket Perforation Tear Notch Divider -->
+              <div class="ticket-perforation-divider credential-perforation" aria-hidden="true">
+                <div class="perforation-notch left"></div>
+                <div class="perforation-line"></div>
+                <div class="perforation-notch right"></div>
+              </div>
+
+              <!-- 5. Credential Actions Deck -->
+              <div class="credential-actions-deck">
+                <button type="button" class="action-btn-primary" onclick="window.print()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                  <span>Save as PDF / Print Badge</span>
+                </button>
+                <button type="button" class="action-btn-secondary" onclick="copyPassLink()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Copy Pass Link</span>
+                </button>
+                <div class="credential-micro-watermark">
+                  <span>Official Delegate Credential &bull; RNSMUN 2026</span>
+                  <span>MUN SOCIETY RNSIT</span>
+                </div>
+              </div>
+
             </div>
 
-            <!-- Tactile Watermark Crest -->
-            <div class="credential-watermark-crest" aria-hidden="true">
-              <img src="./assets/Logos/MUN_logo.webp" alt="" />
-            </div>
-
-            <!-- 1. Top Ribbon -->
-            <div class="credential-top-ribbon">
-              <div class="diplomatic-seal-badge">
-                <span>RNSMUN 2026</span>
-                <span style="opacity: 0.4;">|</span>
-                <span>DELEGATE PASS</span>
-              </div>
-              <div class="accreditation-status-chip">
-                <span>Accredited Delegate</span>
-              </div>
-            </div>
-
-            <!-- 2. Candidate Identity Block -->
-            <div class="candidate-identity-block">
-              <span class="candidate-title-label">Official Delegate</span>
-              <h2 class="candidate-name-display">${escapeHtml(delegateName)}</h2>
-              <div class="candidate-institution-line">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2 2 7h20z"></path></svg>
-                <span>${escapeHtml(passData.institution || 'Institutional Representative')}</span>
+            <!-- Card 2: Delegate Briefing & Conference Utilities (Left Column Companion) -->
+            <div class="delegate-kit-card">
+              <div class="kit-card-header">
+                <h4 class="kit-card-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  <span>Conference Utilities</span>
+                </h4>
+                <span class="kit-card-badge">DELEGATE DESK</span>
               </div>
 
-              <div class="candidate-chips-deck">
-                <span class="identity-tag gold">${escapeHtml(delegateTypeLabel)}</span>
-                <span class="identity-tag">ID: ${escapeHtml(displayDelegateId)}</span>
-                ${passData.usn ? `<span class="identity-tag">USN: ${escapeHtml(passData.usn)}</span>` : ''}
-              </div>
-            </div>
+              <div class="kit-actions-list">
+                <!-- 1. Add to Calendar -->
+                <button type="button" class="kit-action-row" onclick="openCalendarModal()" title="Add RNSMUN 2026 to Google or Apple Calendar">
+                  <div class="kit-action-icon calendar-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path>
+                    </svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Add to Phone Calendar</span>
+                    <span class="kit-action-sub">06–07 Oct &bull; 08:30 AM IST (Google &amp; Apple)</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
 
-            <!-- 3. Diplomatic Allotment Display -->
-            <div class="allotment-showcase-panel">
-              <div class="allotment-item-block">
-                <span class="allotment-item-kicker">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
-                  Assigned Committee
-                </span>
-                <span class="allotment-item-val">${escapeHtml(committeeName || 'General Assembly')}</span>
-              </div>
+                <!-- 2. Committee WhatsApp Group -->
+                <a class="kit-action-row" id="kit-whatsapp-link" href="${escapeHtml(committeeWhatsAppUrl)}" target="_blank" rel="noopener noreferrer" title="Join Delegate WhatsApp Channel">
+                  <div class="kit-action-icon whatsapp-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Join ${escapeHtml(committeeShortCode)} Delegate Group</span>
+                    <span class="kit-action-sub">EB announcements &amp; GSL coordination</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
 
-              <hr class="allotment-inner-divider" />
+                <!-- 3. Rules of Procedure -->
+                <a class="kit-action-row" href="/code-of-conduct" target="_blank" rel="noopener noreferrer" title="View Official Rules of Procedure (RoP) & Equity Policy">
+                  <div class="kit-action-icon rop-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                      <line x1="9" y1="7" x2="15" y2="7"></line>
+                      <line x1="9" y1="11" x2="13" y2="11"></line>
+                    </svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label">Rules of Procedure (RoP)</span>
+                    <span class="kit-action-sub">Parliamentary conduct &amp; equity policy</span>
+                  </div>
+                  <svg class="kit-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
 
-              <div class="allotment-item-block">
-                <span class="allotment-item-kicker">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                  Represented Portfolio
-                </span>
-                <span class="allotment-item-val highlight">${escapeHtml(portfolioName || 'General Delegate')}</span>
-              </div>
-
-              <hr class="allotment-inner-divider" />
-
-              <div class="allotment-item-block">
-                <span class="allotment-item-kicker">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                  Session Hall / Chamber
-                </span>
-                <span class="allotment-item-val venue">${escapeHtml(chamberVenue)}</span>
-              </div>
-            </div>
-
-            <!-- Perforation Ticket Tear Notch Divider -->
-            <div class="ticket-perforation-divider" aria-hidden="true">
-              <div class="perforation-notch left"></div>
-              <div class="perforation-line"></div>
-              <div class="perforation-notch right"></div>
-            </div>
-
-            <!-- 4. Credential Actions Deck -->
-            <div class="credential-actions-deck">
-              <button type="button" class="action-btn-primary" onclick="window.print()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                <span>Save as PDF / Print Badge</span>
-              </button>
-              <button type="button" class="action-btn-secondary" onclick="copyPassLink()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                <span>Copy Pass Link</span>
-              </button>
-              <div class="credential-micro-watermark">
-                <span>Issued by the Secretariat &bull; RNSMUN 2026</span>
-                <span>MUN SOCIETY RNSIT</span>
+                <!-- 4. Background Guide is out now (Google Drive) -->
+                <a class="kit-action-row" href="${escapeHtml(bgGuideUrl)}" target="_blank" rel="noopener noreferrer" title="Background Guide is out now — View on Google Drive">
+                  <div class="kit-action-icon guide-icon" aria-hidden="true" style="background: rgba(229, 169, 60, 0.15); color: #C48215;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </div>
+                  <div class="kit-action-info">
+                    <span class="kit-action-label" style="display: flex; align-items: center; gap: 6px;">
+                      Background Guide is out now
+                      <span style="display: inline-block; background: #6C0D2C; color: #FFF7EB; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Out Now</span>
+                    </span>
+                    <span class="kit-action-sub">Research dossier &amp; agenda guide on Google Drive</span>
+                  </div>
+                  <span style="display: inline-flex; align-items: center; justify-content: center; background: #E5A93C; color: #1A1A1A; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 6px; border: 1.5px solid #1A1A1A; box-shadow: 1.5px 1.5px 0px #1A1A1A; text-transform: uppercase; text-decoration: none; margin-left: auto;">View ↗</span>
+                </a>
               </div>
             </div>
 
           </div>
 
           <!-- ==============================================
-               RIGHT PANEL: GATE PASS & SESSION LEDGER STACK
+               RIGHT COLUMN: GATE PASS & SESSION LEDGER STACK
                ============================================== -->
           <div class="side-stack">
 
@@ -2446,7 +3168,7 @@
               </div>
 
               <!-- Ticket Notch Divider -->
-              <div class="ticket-perforation-divider" style="width: calc(100% + 48px); margin: 0 -24px;" aria-hidden="true">
+              <div class="ticket-perforation-divider gate-pass-perforation" aria-hidden="true">
                 <div class="perforation-notch left"></div>
                 <div class="perforation-line"></div>
                 <div class="perforation-notch right"></div>
@@ -2504,77 +3226,40 @@
 
             </div>
 
-            <!-- Card 3: Delegate Briefing & Conference Utilities -->
-            <div class="delegate-kit-card">
-              <div class="kit-card-header">
-                <h4 class="kit-card-title">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                  <span>Conference Utilities</span>
-                </h4>
-                <span class="kit-card-badge">DELEGATE DESK</span>
-              </div>
-
-              <div class="kit-actions-list">
-                <!-- 1. Add to Calendar -->
-                <button type="button" class="kit-action-row" onclick="openCalendarModal()" title="Add RNSMUN 2026 to Google or Apple Calendar">
-                  <div class="kit-action-icon calendar-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                  </div>
-                  <div class="kit-action-info">
-                    <span class="kit-action-label">Add to Phone Calendar</span>
-                    <span class="kit-action-sub">06–07 Oct &bull; 08:30 AM IST (Google &amp; Apple)</span>
-                  </div>
-                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-
-                <!-- 2. Committee WhatsApp Group -->
-                <a class="kit-action-row" id="kit-whatsapp-link" href="${escapeHtml(committeeWhatsAppUrl)}" target="_blank" rel="noopener noreferrer" title="Join Delegate WhatsApp Channel">
-                  <div class="kit-action-icon whatsapp-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                  </div>
-                  <div class="kit-action-info">
-                    <span class="kit-action-label">Join ${escapeHtml(committeeShortCode)} Delegate Group</span>
-                    <span class="kit-action-sub">EB announcements &amp; GSL coordination</span>
-                  </div>
-                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </a>
-
-                <!-- 3. Rules of Procedure -->
-                <a class="kit-action-row" href="/code-of-conduct" target="_blank" rel="noopener noreferrer" title="View Official Rules of Procedure (RoP) & Equity Policy">
-                  <div class="kit-action-icon" style="background: #F3F4F6; color: #1F2937;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                  </div>
-                  <div class="kit-action-info">
-                    <span class="kit-action-label">Rules of Procedure (RoP)</span>
-                    <span class="kit-action-sub">Parliamentary conduct &amp; equity policy</span>
-                  </div>
-                  <svg class="kit-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </a>
-              </div>
+            <!-- Conference Logistics Capsule (inline in side-stack) -->
+            <div class="hub-logistics-capsule" style="
+              background: #FFFFFF;
+              border: 2.5px solid #000000;
+              border-radius: var(--radius-card);
+              box-shadow: var(--shadow-card);
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+              transition: transform 0.2s ease, box-shadow 0.2s ease;
+              margin-top: -4px;
+            "
+            onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='8px 8px 0px #000000'"
+            onmouseleave="this.style.transform='';this.style.boxShadow='var(--shadow-card)'">
+              <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Dr.+Vishnuvardhan+Road,+Channasandra,+RR+Nagar,+Bengaluru,+Karnataka+560098" target="_blank" rel="noopener noreferrer" title="Open RNSIT Campus in Google Maps" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.08);transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span><strong>RNSIT Campus</strong> (View Map &nearr;)</span>
+              </a>
+              <a href="tel:+918970262490" title="Call Adith (Secretariat Lead)" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.08);transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span><strong>Adith:</strong> +91 89702 62490</span>
+              </a>
+              <a href="mailto:mun@rnsit.ac.in" title="Email Secretariat" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.08);transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span><strong>Email:</strong> mun@rnsit.ac.in</span>
+              </a>
+              <a href="/stay-connected" title="Secretariat Help Desk" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span><strong>Secretariat Desk</strong></span>
+              </a>
             </div>
 
           </div>
 
-        </div>
-
-        <!-- Conference Logistics Capsule -->
-        <div class="protocol-capsule-bar">
-          <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Dr.+Vishnuvardhan+Road,+Channasandra,+RR+Nagar,+Bengaluru,+Karnataka+560098" target="_blank" rel="noopener noreferrer" title="Open RNSIT Campus in Google Maps">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <span><strong>RNSIT Campus</strong> (View Map &nearr;)</span>
-          </a>
-          <a href="tel:+918970262490" title="Call Adith (Secretariat Lead)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            <span><strong>Adith:</strong> +91 89702 62490</span>
-          </a>
-          <a href="mailto:mun@rnsit.ac.in" title="Email Secretariat">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            <span><strong>Email:</strong> mun@rnsit.ac.in</span>
-          </a>
-          <a href="/stay-connected" title="Secretariat Help Desk">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            <span><strong>Secretariat Desk</strong></span>
-          </a>
         </div>
       `;
 
@@ -2638,8 +3323,14 @@
         : passData.allocatedCommittee;
 
       let passUrl = passData.passUrl || `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(passData.token)}`;
-      if (isDelegation && selectedMemberIdx > 0) {
-        passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+      if (isDelegation) {
+        try {
+          const u = new URL(passUrl, window.location.origin);
+          u.searchParams.set('m', selectedMemberIdx);
+          passUrl = u.toString();
+        } catch (_) {
+          passUrl += (passUrl.includes('?') ? '&' : '?') + `m=${selectedMemberIdx}`;
+        }
       }
 
       const displayDelegateId = isDelegation
@@ -2713,11 +3404,11 @@
           `Committee: ${data.comm}\n` +
           `Portfolio: ${data.port}\n` +
           `Session Chamber: ${data.venue}\n` +
-          `Reporting Time: 08:30 AM IST (Tuesday, 06 October & Wednesday, 07 October 2026)\n\n` +
+          `Reporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary) (Tuesday, 06 October & Wednesday, 07 October 2026)\n\n` +
           `Gate Entry Pass: ${window.location.href}`
         );
-        // Event start: 06 Oct 2026 at 08:30 AM IST (03:00 UTC) -> End: 05:30 PM IST (12:00 UTC), repeats on Day 2
-        gcalBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261006T030000Z/20261006T120000Z&recur=RRULE:FREQ=DAILY;COUNT=2&details=${details}&location=${loc}`;
+        // Event start: 06 Oct 2026 at 08:00 AM IST (02:30 UTC) -> End: 05:30 PM IST (12:00 UTC), repeats on Day 2
+        gcalBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261006T023000Z/20261006T120000Z&recur=RRULE:FREQ=DAILY;COUNT=2&details=${details}&location=${loc}`;
       }
 
       // Device detection for tailored UX labels
@@ -2800,36 +3491,36 @@
         'BEGIN:VEVENT',
         `UID:rnsmun2026-day1-${data.token}@mun.rnsit.ac.in`,
         'DTSTAMP:20260901T000000Z',
-        'DTSTART:20261006T030000Z',
+        'DTSTART:20261006T023000Z',
         'DTEND:20261006T120000Z',
         'SUMMARY:RNSMUN 2026 - Day 1: Registration & Committee Session',
         `LOCATION:${fullLoc}`,
-        `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nSession Chamber: ${safeVenue}\\nReporting Time: 08:30 AM IST.\\nDigital Pass & QR: ${passUrl}`,
+        `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nSession Chamber: ${safeVenue}\\nReporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
         'STATUS:CONFIRMED',
         'BEGIN:VALARM',
         'TRIGGER:-PT12H',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Reminder: RNSMUN 2026 starts tomorrow at 08:30 AM!',
+        'DESCRIPTION:Reminder: RNSMUN 2026 starts tomorrow (08:00 AM Desk • 08:30 AM Plenary)!',
         'END:VALARM',
         'BEGIN:VALARM',
         'TRIGGER:-PT2H',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Reminder: RNSMUN 2026 reporting time is 08:30 AM today!',
+        'DESCRIPTION:Reminder: RNSMUN 2026 registration desk opens at 08:00 AM today!',
         'END:VALARM',
         'END:VEVENT',
         'BEGIN:VEVENT',
         `UID:rnsmun2026-day2-${data.token}@mun.rnsit.ac.in`,
         'DTSTAMP:20260901T000000Z',
-        'DTSTART:20261007T030000Z',
+        'DTSTART:20261007T023000Z',
         'DTEND:20261007T123000Z',
         'SUMMARY:RNSMUN 2026 - Day 2: Resolutions & Plenary Adjournment',
         `LOCATION:${fullLoc}`,
-        `DESCRIPTION:Day 2 Committee Plenary for ${safeName} (${safeComm}). Reporting Time: 08:30 AM IST.\\nDigital Pass & QR: ${passUrl}`,
+        `DESCRIPTION:Day 2 Committee Plenary for ${safeName} (${safeComm}). Reporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
         'STATUS:CONFIRMED',
         'BEGIN:VALARM',
         'TRIGGER:-PT2H',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Reminder: RNSMUN 2026 Day 2 begins at 08:30 AM today!',
+        'DESCRIPTION:Reminder: RNSMUN 2026 Day 2 reporting begins at 08:00 AM today!',
         'END:VALARM',
         'END:VEVENT',
         'END:VCALENDAR'

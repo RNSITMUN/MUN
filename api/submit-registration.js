@@ -50,6 +50,17 @@ export default async function handler(req, res) {
 
   console.log('📥 [submit-registration] Received registration request for:', email, name);
 
+  // ─── Closed Registration Guard ──────────────────────────────
+  const normalizedType = String(delegateType || '').trim().toLowerCase();
+  if (normalizedType === 'internal' || normalizedType.includes('internal')) {
+    console.warn('⚠️ [submit-registration] Rejected closed internal registration request for:', email);
+    return res.status(403).json({
+      success: false,
+      closed: true,
+      error: 'Internal delegate registrations are officially closed. Only external delegate passes remain available.'
+    });
+  }
+
   if (!name || !String(name).trim()) {
     return res.status(400).json({ success: false, error: 'Full name is required.' });
   }

@@ -110,14 +110,14 @@
         "name": "Internal Delegate Pass",
         "price": "999",
         "priceCurrency": "INR",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/SoldOut"
       },
       {
         "@type": "Offer",
         "name": "External Delegate Pass (Early Bird)",
         "price": "1200",
         "priceCurrency": "INR",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/Discontinued"
       },
       {
         "@type": "Offer",
@@ -531,8 +531,7 @@
   <!-- ================================================= -->
   <!-- ENLARGED COMMITTEE PROFILE CARD VIEW (FLIP TARGET) -->
   <!-- ================================================= -->
-  <div id="committee-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true"
-    aria-hidden="true">
+  <div id="committee-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true">
     <div id="committee-modal-card" class="committee-modal-card" tabindex="-1">
 
       <!-- Close Button -->
@@ -584,8 +583,7 @@
   <!-- ================================================= -->
   <!-- DELEGATION REGISTRATION MODAL FORM -->
   <!-- ================================================= -->
-  <div id="delegation-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true"
-    aria-hidden="true" style="display: none;">
+  <div id="delegation-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true" style="display: none;">
     <div id="delegation-modal-card" class="modal-registration-card" tabindex="-1">
       <button id="dlg-modal-close" class="modal-close-btn modal-close-btn-light"
         onclick="closeDelegationRegistrationModal()" aria-label="Close Delegation Registration Form">
@@ -861,7 +859,7 @@
           <!-- Step 2 Navigation Buttons -->
           <div style="display: flex; gap: 12px; margin-top: 20px;">
             <button type="button" class="btn-wizard-back" id="dlg-step2-back-btn" onclick="goToDelegationStep(1)" style="flex: 1;">
-              ← Back to Roster
+              &larr; Back to Roster
             </button>
             <button type="submit" class="submit-btn" id="dlg-submit-btn" style="flex: 1.5; display: inline-flex; align-items: center; justify-content: center; opacity: 0.45; cursor: not-allowed;" disabled>
               Submit Registration
@@ -959,8 +957,7 @@
   <!-- ================================================= -->
   <!-- DELEGATE TYPE SELECTION MODAL -->
   <!-- ================================================= -->
-  <div id="delegate-type-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true"
-    aria-hidden="true" style="display: none;">
+  <div id="delegate-type-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true" style="display: none;">
     <div id="delegate-type-modal-card" class="modal-registration-card type-selection-card" tabindex="-1">
       <button id="type-modal-close" class="modal-close-btn modal-close-btn-light" onclick="closeDelegateTypeModal()"
         aria-label="Close Delegate Type Selection">
@@ -975,6 +972,15 @@
         <div class="type-modal-kicker">APPLICATION PATH // CATEGORY</div>
         <h2 class="reg-form-title">Select Delegate Type</h2>
         <p class="reg-form-subtitle">Choose your registration category to proceed to application</p>
+      </div>
+
+      <!-- Capacity Notice Banner -->
+      <div class="type-modal-notice"
+        style="background: #FFFDF9; border: 1.5px solid #111113; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; box-shadow: 2px 2px 0px #111113; display: flex; align-items: center; gap: 10px; font-size: 0.78rem; line-height: 1.45; color: #3E3035;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(108, 13, 44, 0.1); color: var(--accent-color); font-weight: 900; font-size: 0.72rem; flex-shrink: 0; border: 1px solid rgba(108, 13, 44, 0.3);" aria-hidden="true">ℹ</span>
+        <span>
+          <strong>Notice:</strong> RNSIT Internal registrations have reached capacity and are now closed. External delegate passes remain open at <strong>₹1,350</strong>.
+        </span>
       </div>
 
       <div class="delegate-type-grid">
@@ -1041,8 +1047,7 @@
   <!-- ================================================= -->
   <!-- DELEGATE REGISTRATION MODAL FORM -->
   <!-- ================================================= -->
-  <div id="registration-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true"
-    aria-hidden="true">
+  <div id="registration-modal-backdrop" class="committee-modal-backdrop" role="dialog" aria-modal="true">
     <div id="registration-modal-card" class="modal-registration-card" tabindex="-1">
       <button id="reg-modal-close" class="modal-close-btn modal-close-btn-light" onclick="closeRegistrationModal()"
         aria-label="Close Registration Form">
@@ -1351,71 +1356,28 @@
         <!-- STEP 4: Payment Panel -->
         <div class="wizard-step-panel" id="wizard-step-4" style="display: none;">
 
-          <!-- 1. INTERNAL DELEGATE PAYMENT PANEL -->
+          <!-- 1. INTERNAL DELEGATE PAYMENT PANEL (CLOSED) -->
           <div id="internal-payment-panel" style="display: none;">
-
-            <!-- Fee Badge & Header Card -->
             <div class="neo-payment-tier-card"
-              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; position: relative; overflow: hidden;">
-              <div
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-                <div
-                  style="display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: #FFF7EB; padding: 4px 10px; border-radius: 4px; border: 1.5px solid var(--text-primary); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
-                  [ RNSIT STUDENT EXCLUSIVE ]
-                </div>
-                <div style="display: flex; align-items: baseline; gap: 4px;">
-                  <span
-                    style="font-size: 0.8rem; font-weight: 800; color: rgba(0,0,0,0.5); text-transform: uppercase;">FEE:</span>
-                  <span
-                    style="font-size: 1.75rem; font-weight: 900; color: var(--accent-color); font-family: var(--font-sans); line-height: 1;">₹999</span>
-                </div>
-              </div>
-              <p
-                style="margin: 0; font-size: 0.84rem; color: var(--text-primary); font-weight: 500; line-height: 1.45;">
-                Subsidized delegate registration pass for RNS Institute of Technology students.
-              </p>
-            </div>
-
-            <!-- BillDesk Payment Gateway Card -->
-            <div class="neo-qr-card"
-              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 22px 18px; text-align: center; margin-bottom: 18px;">
+              style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 26px 20px; text-align: center; margin-bottom: 18px;">
               <div
                 style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;">
-                OFFICIAL RNSIT PAYMENT GATEWAY
+                REGISTRATIONS CLOSED
               </div>
-
-              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.02em;">
-                RNS Institute of Technology Collect
-              </div>
-              <p style="font-size: 0.8rem; color: rgba(17, 17, 19, 0.68); font-weight: 500; margin-bottom: 14px; line-height: 1.4;">
-                Pay securely using UPI, Credit/Debit Card, or Net Banking on the official college BillDesk portal. Click <strong>Submit and Pay</strong> below to submit your registration and proceed to payment.
+              <h3 style="font-size: 1.2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 8px;">
+                Internal Delegate Passes Are Full
+              </h3>
+              <p style="font-size: 0.85rem; color: rgba(17, 17, 19, 0.72); font-weight: 500; margin-bottom: 18px; line-height: 1.5; max-width: 480px; margin-left: auto; margin-right: auto;">
+                Subsidized delegate registration for RNSIT students has reached maximum capacity and is now closed. Standard External Delegate passes remain open for all committees.
               </p>
-
-              <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; font-size: 0.74rem; font-weight: 700; color: rgba(17, 17, 19, 0.55);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>SSL 256-Bit Encrypted &bull; Direct RNSIT Account Credit</span>
-              </div>
-            </div>
-
-            <!-- Non-Refundable Policy Notice -->
-            <div class="neo-note-callout"
-              style="background: #FFFDF9; border: 1.5px solid var(--text-primary); border-radius: 8px; padding: 8px 12px; margin-top: 12px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.76rem; color: #444; line-height: 1.35;">
-              <span style="font-weight: 800; color: #6C0D2C; text-transform: uppercase; flex-shrink: 0;">Policy:</span>
-              <span>All registration payments are strictly non-refundable under all circumstances, including cancellation, withdrawal, non-attendance, or any personal reasons.</span>
-            </div>
-
-            <!-- Submit Button (The ONLY Clickable Action for Internal Delegates) -->
-            <div class="wizard-btn-row">
-              <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
-              <button type="submit" class="submit-btn wizard-next-btn" id="internal-submit-btn" style="flex: 1.5; background: var(--accent-color); color: #FFF7EB; font-weight: 900; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; display: inline-flex; align-items: center; justify-content: center; gap: 8px; opacity: 1; cursor: pointer;">
-                <span>Submit and Pay</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
+              <button type="button" class="submit-btn" onclick="selectDelegateType('external'); goToStep(4);"
+                style="background: #E5A93C; color: #000; font-weight: 900; font-size: 0.88rem; padding: 10px 22px; border: 2px solid #000; border-radius: 999px; box-shadow: 2.5px 2.5px 0 #000; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em;">
+                Switch to External Pass (₹1,350) &rarr;
               </button>
             </div>
-
+            <div class="wizard-btn-row">
+              <button type="button" class="btn-wizard-back" onclick="goToStep(3)">Back</button>
+            </div>
           </div>
 
           <!-- 2. EXTERNAL DELEGATE PAYMENT PANEL -->

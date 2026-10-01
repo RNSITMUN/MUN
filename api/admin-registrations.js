@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase.js';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { getPublicToken } from '../lib/token.js';
 
 function getEnv(key) {
@@ -209,7 +210,9 @@ export default async function handler(req, res) {
     // Helper to read local checkpoints store
     const localCheckpoints = (() => {
       try {
-        const lp = path.resolve(process.cwd(), '.data', 'checkpoints.json');
+        const lp = process.env.VERCEL
+          ? path.join(os.tmpdir(), 'checkpoints.json')
+          : path.resolve(process.cwd(), '.data', 'checkpoints.json');
         if (fs.existsSync(lp)) return JSON.parse(fs.readFileSync(lp, 'utf8')) || {};
       } catch (e) {}
       return {};
@@ -258,7 +261,8 @@ export default async function handler(req, res) {
             ...r,
             is_allotted: !!alloc,
             allocated_committee: alloc?.committee || '',
-            allocated_portfolio: alloc?.portfolio || ''
+            allocated_portfolio: alloc?.portfolio || '',
+            public_token: getPublicToken('individual', r.id)
           };
         });
       }

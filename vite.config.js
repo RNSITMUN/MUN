@@ -21,6 +21,15 @@ const cleanUrlsPlugin = () => ({
       const [urlPath, queryString] = req.url.split('?');
       const url = urlPath;
 
+      // Bypass Vite internal assets, HMR client, and node_modules
+      if (
+        url.startsWith('/@') ||
+        url.startsWith('/__') ||
+        url.startsWith('/node_modules')
+      ) {
+        return next();
+      }
+
       const handleApiRequest = (handler) => {
         let body = '';
         req.on('data', chunk => { body += chunk; });

@@ -2646,7 +2646,7 @@
               </svg>
               <span>Mail Templates</span>
             </span>
-            <span class="tab-badge" id="badge-count-templates">2</span>
+            <span class="tab-badge" id="badge-count-templates">4</span>
           </button>
           <button class="tab-btn" id="tab-btn-maillog" onclick="switchTab('maillog')">
             <span class="tab-btn-content">
@@ -2977,6 +2977,8 @@
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{allocated_portfolio}}')" style="border-color: #E5A93C; color: #000000; font-weight: 800;">🏷️ {{allocated_portfolio}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{hub_url}}')" style="border-color: #047857; color: #047857; font-weight: 800;">🎫 {{hub_url}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{qr_code_url}}')" style="border-color: #000000; font-weight: 800;">📷 {{qr_code_url}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{whatsapp_link}}')" style="border-color: #25D366; color: #047857; font-weight: 800;">💬 {{whatsapp_link}}</button>
+                <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{bg_guide_url}}')" style="border-color: #047857; color: #047857; font-weight: 800;">📁 {{bg_guide_url}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{venue}}')" style="border-color: #6C0D2C; color: #6C0D2C; font-weight: 800;">📍 {{venue}}</button>
                 <button type="button" class="token-pill" onclick="insertTokenIntoActiveField('{{dates}}')" style="border-color: #E5A93C; color: #000; font-weight: 800;">📅 {{dates}}</button>
               </div>
@@ -3133,7 +3135,7 @@
       <div class="modal-footer">
         <div style="display: flex; gap: 0.5rem;">
           <button class="btn btn-outline btn-sm" onclick="rotateImage()">🔄 Rotate</button>
-          <a class="btn btn-outline btn-sm" id="lightbox-open-external" href="" target="_blank" rel="noopener">↗ Open Original</a>
+          <a class="btn btn-outline btn-sm" id="lightbox-open-external" href="#" target="_blank" rel="noopener" style="pointer-events: none; opacity: 0.5;">↗ Open Original</a>
         </div>
         <div style="display: flex; gap: 0.5rem;" id="lightbox-action-buttons">
           <button class="btn btn-sm" style="background: #D1FAE5; color: #047857; border: 1.5px solid #000000; box-shadow: 1.5px 1.5px 0 #000; font-weight: 800;" onclick="updateActiveRecordStatus('Confirmed')">✅ Confirm Payment</button>
@@ -3709,6 +3711,9 @@
         if (activeTab === 'maillog') {
           renderMailLog();
         }
+        if (activeTab === 'qrpasses') {
+          renderQRPasses();
+        }
 
       } catch (err) {
         console.error('Fetch error:', err);
@@ -4052,189 +4057,156 @@
       if (badge) badge.textContent = total;
     }
 
-    // ─── QR Passes Gallery ─────────────────────────────────────────
-    const QR_DATA = {
-      alliance: [
-        "DEL-67-01_Mridusha_Chetry_Head_of_Delegation_.png",
-        "DEL-67-02_Mohammad_Nezal_Arshad.png",
-        "DEL-67-03_Yashti_R_Surti.png",
-        "DEL-67-04_R_Joel_Shalom.png",
-        "DEL-67-05_Sukrithi_kallurmath.png",
-        "DEL-67-06_Shravya_s.png",
-        "DEL-67-07_Pranesh_AS.png",
-        "DEL-67-08_Danda_Shanyuth.png",
-        "DEL-67-09_Hansiga_devendra.png",
-        "DEL-67-10_Prithvi_KF.png",
-        "DEL-67-11_Vishal_Manjunath.png",
-        "DEL-67-12_Keerthan_Kariappa_O_L.png",
-        "DEL-67-13_Adrito_Jasu.png",
-        "DEL-67-14_Devang.png",
-        "DEL-67-15_Muhammed_Salman.png",
-        "DEL-67-16_Kushaal_S_Patil.png",
-        "DEL-67-17_Madhura_Meenakshi_Tanikella.png",
-        "DEL-67-18_Prachurya_Roy.png",
-        "DEL-67-19_Sai_Lochan.png",
-        "DEL-67-20_Moogambika.png"
-      ],
-      cms: [
-        "DEL-47-01_Aadya_Mittal_Head_of_Delegation_.png",
-        "DEL-47-02_Chirag_Shiyal.png",
-        "DEL-47-03_Chavi.png",
-        "DEL-47-04_Areeb_umar.png",
-        "DEL-47-05_Vaibhav_Raj_Deota.png",
-        "DEL-47-06_R_Jainav_Bohra.png",
-        "DEL-47-07_Ronith.png",
-        "DEL-47-08_Manas_Kulkarni.png",
-        "DEL-47-09_Naman_Nagori.png",
-        "DEL-47-10_Manushri.png",
-        "DEL-47-11_Joshitha_Reddy_Katterapalli.png",
-        "DEL-47-12_Simar.png",
-        "DEL-47-13_Sheik_Adnaan_Ibrahim.png",
-        "DEL-47-14_Sayyam_Sakaria_Jain.png",
-        "DEL-47-15_Syed_Taqi_Mohammed.png",
-        "DEL-47-16_Geethanjali.png",
-        "DEL-47-17_Latika_Mittal.png",
-        "DEL-47-18_Taher.png",
-        "DEL-47-19_Anish_Bose.png",
-        "DEL-47-20_Aakash_Satheesh.png",
-        "DEL-47-21_Arnav_Malhan.png",
-        "DEL-47-22_Himanshi_Jain.png",
-        "DEL-47-23_Vaishnavi_Kaki.png",
-        "DEL-47-24_Divij_Dudani.png"
-      ],
-      individual: [
-        "IND-110_Hajira_Tamanna_M_H.png",
-        "IND-113_Mukund_S_BELAWADI.png",
-        "IND-115_K_S_Bhavin.png",
-        "IND-116_Siddharth_M.png",
-        "IND-117_Poojitha_Pujari.png",
-        "IND-118_Gayathri_Kasiraja.png",
-        "IND-119_Namratha_G.png",
-        "IND-124_Debangshu_Som.png",
-        "IND-125_Riya_B_Patel.png",
-        "IND-127_Pavani_R.png",
-        "IND-129_G_Gautham_Vas.png",
-        "IND-131_Annika_Chourasia.png",
-        "IND-132_Vibha_S.png",
-        "IND-134_Rishi_Dulhani.png",
-        "IND-135_Saif_Ahmed_Shaik.png",
-        "IND-136_Vinayak_rao.png",
-        "IND-137_Thanmayee_Valekar.png",
-        "IND-138_Srishti_Krishna.png",
-        "IND-139_Varun_Km.png",
-        "IND-140_Ashish.png",
-        "IND-141_RASHMI_M_KABADI.png",
-        "IND-142_Chinmayi_V_Hegde.png",
-        "IND-149_Braghadeesh_Ruban.png",
-        "IND-150_Aaruni_Mohan_Shastri.png",
-        "IND-47_Shreekant_Sanghi.png",
-        "IND-49_Rusheel_Bhargav_NM.png",
-        "IND-50_Mayur_Navaratna.png",
-        "IND-51_Ayush_Kumar.png",
-        "IND-56_Sankalp_C_Pai.png",
-        "IND-57_Priyanshu_Jha.png",
-        "IND-59_Mayank_Kubsad.png",
-        "IND-60_Gourav.png",
-        "IND-82_Nandini_Bhatt.png",
-        "IND-84_Mohammed_Aayan.png",
-        "IND-85_Aditi_G.png",
-        "IND-86_Aditya_Kumar.png",
-        "IND-87_Charith_G.png",
-        "IND-88_Haniel_Samson_A.png",
-        "IND-89_Arsh_Saxena.png",
-        "IND-93_Gouravi_Nayak.png",
-        "IND-95_Eshaan_Hebbar.png",
-        "IND-97_GARGI_MOHAN.png",
-        "IND-98_Chethana_M_L.png",
-        "IND-99_Satvik_G.png"
-      ]
-    };
-
-    const QR_BASE = {
-      alliance: '/qrs/Alliance_delegation/',
-      cms: '/qrs/CMS_delegation/',
-      individual: '/qrs/individual_delegates/'
-    };
-
-    const QR_LABELS = {
-      alliance: { label: 'Alliance', color: '#C8902B', bg: '#FFF7EB' },
-      cms:      { label: 'CMS',      color: '#6C0D2C', bg: '#FDE8EF' },
-      individual: { label: 'Individual', color: '#1a4f8a', bg: '#E8F0FC' }
-    };
-
-    let _qrRendered = false;
+    // ─── QR Passes Gallery (Dynamic live generation) ──────────────
     let _activeQRGroup = 'all';
 
-    function _filenameToName(filename) {
-      // Strip prefix like DEL-67-01_ or IND-47_ and extension
-      return filename
-        .replace(/^(DEL|IND)-\d+(-\d+)?_/, '')
-        .replace(/\.png$/, '')
-        .replace(/_/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
     function renderQRPasses() {
-      if (_qrRendered) return; // already rendered, just filter
-      _qrRendered = true;
       const grid = document.getElementById('qr-cards-grid');
       if (!grid) return;
       grid.innerHTML = '';
 
-      ['alliance', 'cms', 'individual'].forEach(group => {
-        QR_DATA[group].forEach(filename => {
-          const name = _filenameToName(filename);
-          const imgSrc = QR_BASE[group] + filename;
-          const { label, color, bg } = QR_LABELS[group];
+      const items = [];
 
-          const card = document.createElement('div');
-          card.className = 'qr-card';
-          card.dataset.group = group;
-          card.dataset.name = name.toLowerCase();
-          card.style.cssText = `
-            background: #FFFDF9;
-            border: 1.5px solid #000;
-            border-radius: 10px;
-            box-shadow: 2px 2px 0 #000;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-          `;
-          card.onmouseenter = () => {
-            card.style.transform = 'translate(-2px,-2px)';
-            card.style.boxShadow = '4px 4px 0 #000';
-          };
-          card.onmouseleave = () => {
-            card.style.transform = '';
-            card.style.boxShadow = '2px 2px 0 #000';
-          };
-          card.onclick = () => {
+      // 1. Process Individual Delegates
+      (rawRegistrations || []).forEach(r => {
+        const name = r.name || `Delegate #${r.id}`;
+        const token = r.public_token || r.id;
+        const passUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(token)}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
+        const comm = r.allocated_committee || r.committee1 || 'Allotted Committee';
+        items.push({
+          group: 'individual',
+          label: 'Individual',
+          color: '#1a4f8a',
+          bg: '#E8F0FC',
+          name: name,
+          code: `IND-${r.id}`,
+          committee: comm,
+          passUrl: passUrl,
+          qrUrl: qrUrl
+        });
+      });
+
+      // 2. Process Delegations & Rosters
+      (rawDelegations || []).forEach(d => {
+        let roster = d.roster_data;
+        if (typeof roster === 'string') {
+          try { roster = JSON.parse(roster); } catch (e) { roster = []; }
+        }
+        if (!Array.isArray(roster)) roster = [];
+
+        const dName = d.delegation_name || 'Delegation';
+        const isAlliance = dName.toLowerCase().includes('alliance');
+        const isCms = dName.toLowerCase().includes('cms');
+        const group = isAlliance ? 'alliance' : (isCms ? 'cms' : 'delegation');
+        const label = isAlliance ? 'Alliance' : (isCms ? 'CMS' : dName);
+        const color = isAlliance ? '#C8902B' : (isCms ? '#6C0D2C' : '#065F46');
+        const bg = isAlliance ? '#FFF7EB' : (isCms ? '#FDE8EF' : '#D1FAE5');
+        const token = d.public_token || d.id;
+
+        if (roster.length === 0) {
+          const name = d.head_name || dName;
+          const passUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(token)}&m=0`;
+          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
+          items.push({
+            group,
+            label,
+            color,
+            bg,
+            name,
+            code: `DEL-${d.id}`,
+            committee: 'Head of Delegation',
+            passUrl,
+            qrUrl
+          });
+        } else {
+          roster.forEach((m, idx) => {
+            const name = m.name || m.delegateName || m['Delegate Name'] || `Delegate ${idx + 1}`;
+            const comm = m.committee || m.portfolio || m.committee1 || 'Allotted Matrix';
+            const passUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(token)}&m=${idx}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
+            items.push({
+              group,
+              label,
+              color,
+              bg,
+              name,
+              code: `DEL-${d.id}-${String(idx + 1).padStart(2, '0')}`,
+              committee: comm,
+              passUrl,
+              qrUrl
+            });
+          });
+        }
+      });
+
+      // Update pill counters
+      const allPill = document.getElementById('qr-pill-all');
+      if (allPill) allPill.textContent = `All (${items.length})`;
+
+      const alliancePill = document.getElementById('qr-pill-alliance');
+      if (alliancePill) alliancePill.textContent = `Alliance (${items.filter(x => x.group === 'alliance').length})`;
+
+      const cmsPill = document.getElementById('qr-pill-cms');
+      if (cmsPill) cmsPill.textContent = `CMS (${items.filter(x => x.group === 'cms').length})`;
+
+      const indPill = document.getElementById('qr-pill-individual');
+      if (indPill) indPill.textContent = `Individual (${items.filter(x => x.group === 'individual').length})`;
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'qr-card';
+        card.dataset.group = item.group;
+        card.dataset.name = item.name.toLowerCase();
+        card.style.cssText = `
+          background: #FFFDF9;
+          border: 1.5px solid #000;
+          border-radius: 10px;
+          box-shadow: 2px 2px 0 #000;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        `;
+        card.onmouseenter = () => {
+          card.style.transform = 'translate(-2px,-2px)';
+          card.style.boxShadow = '4px 4px 0 #000';
+        };
+        card.onmouseleave = () => {
+          card.style.transform = '';
+          card.style.boxShadow = '2px 2px 0 #000';
+        };
+        card.onclick = (e) => {
+          if (e.target.closest('.qr-download-btn')) {
+            e.stopPropagation();
             const a = document.createElement('a');
-            a.href = imgSrc;
-            a.download = filename;
+            a.href = item.qrUrl;
+            a.download = `${item.code}_${item.name.replace(/[^a-zA-Z0-9_-]/g, '_')}_QR.png`;
+            a.target = '_blank';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-          };
+            return;
+          }
+          window.open(item.passUrl, '_blank');
+        };
 
-          card.innerHTML = `
-            <div style="position:relative; background:#f5f5f5; overflow:hidden; aspect-ratio:1;">
-              <img src="${imgSrc}" alt="${name}" loading="lazy"
-                   style="width:100%; height:100%; object-fit:cover; display:block;"
-                   onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\\'>🪪</div>'">
-              <span style="position:absolute; top:6px; left:6px; background:${bg}; color:${color}; border:1px solid ${color}; border-radius:999px; padding:2px 8px; font-size:0.6rem; font-weight:800; letter-spacing:0.03em;">${label}</span>
-              <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:0.62rem; padding:3px 7px; border-radius:6px 0 0 0;">⬇ Download</div>
-            </div>
-            <div style="padding:7px 8px 8px; flex:1; display:flex; flex-direction:column; justify-content:center;">
-              <div style="font-size:0.72rem; font-weight:800; color:#111; line-height:1.3; word-break:break-word;">${name}</div>
-            </div>
-          `;
+        card.innerHTML = `
+          <div style="position:relative; background:#f5f5f5; overflow:hidden; aspect-ratio:1;">
+            <img src="${item.qrUrl}" alt="${escapeHtml(item.name)}" loading="lazy"
+                 style="width:100%; height:100%; object-fit:cover; display:block;"
+                 onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\\'>🪪</div>'">
+            <span style="position:absolute; top:6px; left:6px; background:${item.bg}; color:${item.color}; border:1px solid ${item.color}; border-radius:999px; padding:2px 8px; font-size:0.6rem; font-weight:800; letter-spacing:0.03em;">${escapeHtml(item.label)}</span>
+            <div class="qr-download-btn" style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.65); color:#fff; font-size:0.62rem; font-weight:700; padding:3px 7px; border-radius:6px 0 0 0; cursor:pointer;" title="Download QR Image">⬇ QR</div>
+          </div>
+          <div style="padding:7px 8px 8px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+            <div style="font-size:0.72rem; font-weight:800; color:#111; line-height:1.3; word-break:break-word;">${escapeHtml(item.name)}</div>
+            <div style="font-size:0.65rem; color:#666; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHtml(item.committee)}">${escapeHtml(item.committee)}</div>
+          </div>
+        `;
 
-          grid.appendChild(card);
-        });
+        grid.appendChild(card);
       });
 
       filterQRCards();
@@ -4268,13 +4240,21 @@
 
     function downloadAllQRs() {
       const cards = document.querySelectorAll('.qr-card');
+      const visible = [...cards].filter(c => c.style.display !== 'none');
+      if (visible.length === 0) {
+        showToast('No QR passes to download.', 'info');
+        return;
+      }
       let delay = 0;
-      cards.forEach(card => {
-        if (card.style.display === 'none') return;
-        setTimeout(() => card.click(), delay);
-        delay += 120;
+      visible.forEach(card => {
+        const btn = card.querySelector('.qr-download-btn');
+        setTimeout(() => {
+          if (btn) btn.click();
+          else card.click();
+        }, delay);
+        delay += 150;
       });
-      showToast(`Downloading ${[...cards].filter(c => c.style.display !== 'none').length} QR passes...`, 'success');
+      showToast(`Downloading ${visible.length} QR passes...`, 'success');
     }
 
     // ─── Mail Log Render & Clear ───────────────────────────────────
@@ -4601,8 +4581,17 @@
 
       title.textContent = `Payment Verification: ${name}`;
       img.src = url;
-      img.style.transform = 'rotate(0deg)';
-      extLink.href = url;
+      if (extLink) {
+        if (url && String(url).trim()) {
+          extLink.href = url;
+          extLink.style.pointerEvents = 'auto';
+          extLink.style.opacity = '1';
+        } else {
+          extLink.href = '#';
+          extLink.style.pointerEvents = 'none';
+          extLink.style.opacity = '0.5';
+        }
+      }
 
       modal.classList.add('active');
     }
@@ -4610,6 +4599,12 @@
     function closeLightbox() {
       document.getElementById('lightbox-modal').classList.remove('active');
       activeModalRecord = null;
+      const extLink = document.getElementById('lightbox-open-external');
+      if (extLink) {
+        extLink.href = '#';
+        extLink.style.pointerEvents = 'none';
+        extLink.style.opacity = '0.5';
+      }
     }
 
     function rotateImage() {
@@ -5656,6 +5651,529 @@
     // Default Starter Presets
     const DEFAULT_MAIL_TEMPLATES = [
       {
+        id: 'tpl-qr-and-whatsapp',
+        name: 'Official Pass (QR & WhatsApp)',
+        isPreset: true,
+        subject: "Official Delegate Pass, QR Code & Committee WhatsApp Group — RNS MUN 2026 | {{name}}",
+        body: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RNS MUN 2026 — Official Delegate Pass &amp; Committee Dossier</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFF7EB;
+      color: #111113;
+      margin: 0;
+      padding: 24px 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 2.5px solid #000000;
+      border-radius: 14px;
+      box-shadow: 4px 4px 0px #000000;
+      overflow: hidden;
+    }
+    .header {
+      background: #6C0D2C;
+      color: #FFF7EB;
+      padding: 24px 20px 18px 20px;
+      text-align: center;
+      border-bottom: 2.5px solid #000000;
+    }
+    .header-logo {
+      display: block;
+      margin: 0 auto;
+      max-width: 290px;
+      width: 100%;
+      height: auto;
+      border: 0;
+    }
+    .header p {
+      margin: 8px 0 0 0;
+      font-size: 13px;
+      opacity: 0.95;
+      color: #E5A93C;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      text-align: center;
+    }
+    .content {
+      padding: 28px 24px;
+      font-size: 15px;
+      color: #222222;
+    }
+    .salutation {
+      font-size: 18px;
+      font-weight: 800;
+      color: #6C0D2C;
+      margin-bottom: 12px;
+    }
+    .card-box {
+      background: #FFFDF9;
+      border: 2px solid #000000;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 20px 0;
+      box-shadow: 3px 3px 0px #000000;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #6C0D2C;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      border-bottom: 1.5px solid #000000;
+      padding-bottom: 6px;
+    }
+    .alloc-item {
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    .alloc-item:last-child {
+      margin-bottom: 0;
+    }
+    .alloc-label {
+      color: #666666;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .pass-card {
+      background: #FFFDF9;
+      border: 2.5px solid #000000;
+      border-radius: 12px;
+      margin: 24px 0;
+      box-shadow: 4px 4px 0px #000000;
+      overflow: hidden;
+      text-align: center;
+    }
+    .pass-header {
+      background: #6C0D2C;
+      color: #FFF7EB;
+      padding: 12px 16px;
+      border-bottom: 2px solid #000000;
+      text-align: center;
+    }
+    .pass-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #E5A93C;
+    }
+    .pass-subtitle {
+      font-size: 11.5px;
+      color: #FFF7EB;
+      opacity: 0.95;
+      margin-top: 2px;
+    }
+    .pass-body {
+      padding: 22px 18px 20px 18px;
+      text-align: center;
+    }
+    .qr-frame {
+      display: inline-block;
+      background: #ffffff;
+      border: 2px solid #000000;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 2px 2px 0px #000000;
+      margin: 4px auto 10px auto;
+    }
+    .qr-image {
+      width: 180px;
+      height: 180px;
+      display: block;
+      border: 0;
+    }
+    .pass-badge-pill {
+      display: inline-block;
+      background: #FAF5EE;
+      border: 1.5px solid #000000;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #6C0D2C;
+      margin-top: 6px;
+    }
+    .pass-instruction {
+      font-size: 13px;
+      color: #444444;
+      line-height: 1.5;
+      margin: 12px auto 18px auto;
+      max-width: 480px;
+    }
+    .btn-pass {
+      display: inline-block;
+      background-color: #6C0D2C;
+      color: #FFFFFF !important;
+      font-weight: 800;
+      font-size: 13.5px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      box-shadow: 3px 3px 0px #000000;
+      text-decoration: none;
+    }
+    .pass-link-fallback {
+      font-size: 11.5px;
+      color: #666666;
+      margin-top: 14px;
+      word-break: break-all;
+    }
+    .whatsapp-card {
+      background: #F0FDF4;
+      border: 2px solid #000000;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 24px 0;
+      box-shadow: 3px 3px 0px #000000;
+    }
+    .whatsapp-head-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+      border-bottom: 1.5px solid #000000;
+      padding-bottom: 6px;
+    }
+    .whatsapp-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #047857;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding-bottom: 6px;
+    }
+    .whatsapp-status-badge {
+      display: inline-block;
+      background: #25D366;
+      color: #064E3B;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #000000;
+    }
+    .whatsapp-chamber-box {
+      background: #ffffff;
+      border: 1.5px solid #000000;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+    .whatsapp-chamber-lbl {
+      font-size: 11px;
+      color: #555555;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .whatsapp-chamber-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #065F46;
+      margin-top: 3px;
+    }
+    .whatsapp-text {
+      font-size: 13.5px;
+      color: #1F2937;
+      line-height: 1.5;
+      margin: 0 0 16px 0;
+    }
+    .btn-whatsapp {
+      display: inline-block;
+      background-color: #25D366;
+      color: #052e16 !important;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      box-shadow: 3px 3px 0px #000000;
+      text-decoration: none;
+    }
+    .whatsapp-link-fallback {
+      text-align: center;
+      font-size: 11.5px;
+      color: #047857;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+    .btn-guide {
+      display: inline-block;
+      background-color: #E5A93C;
+      color: #111111 !important;
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 11px 24px;
+      border: 2px solid #000000;
+      border-radius: 6px;
+      box-shadow: 2px 2px 0px #000000;
+      text-decoration: none;
+    }
+    .contacts-box {
+      background: #FAF5EE;
+      border: 1.5px solid #000000;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 14px;
+    }
+    .contact-item {
+      padding: 4px 0;
+      font-weight: 600;
+    }
+    .contact-item a {
+      color: #6C0D2C;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .contact-divider {
+      border: 0;
+      border-top: 1px dashed #D5C7B4;
+      margin: 6px 0;
+    }
+    .signoff {
+      margin-top: 24px;
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: #333333;
+    }
+    .logo-wrap {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1.5px solid #EEEEEE;
+      text-align: center;
+    }
+    .footer {
+      background: #FFFDF9;
+      border-top: 2px solid #000000;
+      padding: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: #666666;
+      line-height: 1.5;
+    }
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 12px 8px;
+      }
+      .content {
+        padding: 20px 14px;
+      }
+      .btn-pass, .btn-whatsapp {
+        display: block;
+        padding: 13px 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
+      <p>OFFICIAL DIGITAL DELEGATE PASS &amp; COMMITTEE DOSSIER</p>
+    </div>
+    <div class="content">
+      <div class="salutation">Dear {{name}},</div>
+      <p style="font-size: 15px; color: #222222; line-height: 1.6; margin: 0 0 14px 0;">Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
+      <p style="font-size: 15px; color: #222222; line-height: 1.6; margin: 0 0 20px 0;">We are delighted to formally convey your diplomatic appointment, verified Digital QR Pass, and exclusive invitation to your committee's official caucus WhatsApp channel. Please inspect your credentials and conference schedule below:</p>
+
+      <!-- Diplomatic Allotment Summary Box -->
+      <div class="card-box">
+        <div class="card-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
+        <div class="alloc-item">
+          <span class="alloc-label">Delegate Name:</span>
+          <strong style="color: #000000; font-size: 16px; font-weight: 800;">{{name}}</strong>
+        </div>
+        <div class="alloc-item" style="margin-top: 10px;">
+          <span class="alloc-label">Allocated Committee:</span>
+          <strong style="color: #6C0D2C; font-size: 18px; font-weight: 800; display: block;">{{allocated_committee}}</strong>
+        </div>
+        <div class="alloc-item" style="margin-top: 10px;">
+          <span class="alloc-label">Allocated Portfolio / Country:</span>
+          <strong style="color: #000000; font-size: 18px; font-weight: 800; display: block;">{{allocated_portfolio}}</strong>
+        </div>
+        <div style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
+          <table style="width: 100%; font-size: 13px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Delegate ID:</td>
+              <td style="text-align: right; font-family: monospace; font-weight: 800; color: #6C0D2C; padding: 3px 0;">#RNSMUN-26-{{registration_id}}</td>
+            </tr>
+            <tr>
+              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Institution:</td>
+              <td style="text-align: right; font-weight: 700; color: #222222; padding: 3px 0;">{{institution}}</td>
+            </tr>
+            <tr>
+              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Delegation Category:</td>
+              <td style="text-align: right; font-weight: 700; color: #222222; padding: 3px 0;">{{type}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Official Digital Delegate Pass -->
+      <div class="pass-card">
+        <div class="pass-header">
+          <div class="pass-title">★ OFFICIAL DIGITAL DELEGATE PASS ★</div>
+          <div class="pass-subtitle">Conference Credential &amp; Chamber Entry Token</div>
+        </div>
+        <div class="pass-body">
+          <div class="qr-frame">
+            <img src="{{qr_code_url}}" alt="Delegate QR Pass" class="qr-image" width="180" height="180" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&amp;data=' + encodeURIComponent('{{hub_url}}');">
+          </div>
+          <div style="margin-top: 6px;">
+            <span class="pass-badge-pill">#RNSMUN-26-{{registration_id}}</span>
+          </div>
+          <p class="pass-instruction">
+            Present this QR code on your mobile phone or printed at the registration desk on Day 1 for rapid badge issuance and committee room check-in.
+          </p>
+          <div style="margin: 8px 0 12px 0;">
+            <a href="{{hub_url}}" target="_blank" class="btn-pass">
+              Open Live Delegate Hub &amp; Pass &rarr;
+            </a>
+          </div>
+          <div class="pass-link-fallback">
+            Direct Portal Link: <br><a href="{{hub_url}}" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">{{hub_url}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Official Committee WhatsApp Caucus Group -->
+      <div class="whatsapp-card">
+        <table class="whatsapp-head-table">
+          <tr>
+            <td class="whatsapp-title">OFFICIAL COMMITTEE WHATSAPP GROUP</td>
+            <td style="text-align: right; padding-bottom: 6px;">
+              <span class="whatsapp-status-badge">OFFICIAL CAUCUS</span>
+            </td>
+          </tr>
+        </table>
+        <div class="whatsapp-chamber-box">
+          <div class="whatsapp-chamber-lbl">Your Assigned Chamber</div>
+          <div class="whatsapp-chamber-name">{{allocated_committee}}</div>
+        </div>
+        <p class="whatsapp-text">
+          Join your fellow diplomats and the Executive Board in the official committee channel. Real-time announcements, unmoderated caucus coordination, and session updates will be communicated here.
+        </p>
+        <div style="text-align: center; margin: 12px 0 8px 0;">
+          <a href="{{whatsapp_link}}" target="_blank" class="btn-whatsapp">
+            💬 Join Official WhatsApp Group &rarr;
+          </a>
+        </div>
+        <div class="whatsapp-link-fallback">
+          Invite link: <a href="{{whatsapp_link}}" target="_blank" style="color: #065F46; font-weight: 700; text-decoration: underline;">{{whatsapp_link}}</a>
+        </div>
+      </div>
+
+      <!-- Study Dossier & Resources -->
+      <div class="card-box">
+        <div class="card-title">BACKGROUND GUIDE &amp; STUDY DOSSIER</div>
+        <p style="font-size: 13.5px; color: #333333; line-height: 1.5; margin: 0 0 14px 0;">
+          Official background guides, committee rules of procedure (RoP), and position paper guidelines have been compiled by the Executive Board to guide your research and debate.
+        </p>
+        <div style="text-align: center; margin: 8px 0 4px 0;">
+          <a href="{{bg_guide_url}}" target="_blank" class="btn-guide">
+            📂 Open Background Guide &amp; Resources &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Summit Dates & Venue Details -->
+      <div class="card-box">
+        <div class="card-title">CONFERENCE DATES &amp; VENUE</div>
+        <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; width: 125px; vertical-align: top;">Conference Dates:</td>
+            <td style="padding: 5px 0; font-weight: 800; color: #000000; line-height: 1.4;">
+              Tuesday, 06 October 2026 &bull; Day 1<br>
+              Wednesday, 07 October 2026 &bull; Day 2
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Schedule &amp; Reporting:</td>
+            <td style="padding: 5px 0; font-weight: 700; color: #111111; line-height: 1.45;">
+              08:00 AM Registration Desk Opens &bull; 08:30 AM Opening Ceremony
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Summit Venue:</td>
+            <td style="padding: 5px 0; font-weight: 700; color: #111111; line-height: 1.45;">
+              <strong>RNS Institute of Technology (RNSIT) Campus</strong><br>
+              Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru &ndash; 560098
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Navigation:</td>
+            <td style="padding: 5px 0;">
+              <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Bengaluru" target="_blank" style="color: #6C0D2C; font-weight: 800; text-decoration: underline;">Open Campus Location in Google Maps &rarr;</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <p style="font-size: 14.5px; color: #333333; line-height: 1.5;">Should you have any questions regarding your committee agenda, position papers, or logistical arrangements, please do not hesitate to contact our Secretariat:</p>
+      
+      <!-- Contact Details -->
+      <div class="contacts-box">
+        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-item">Adith (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-item">Official Secretariat Email: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
+      </div>
+
+      <p style="font-size: 14.5px; color: #333333; line-height: 1.5;">We look forward to witnessing your diplomatic eloquence and leadership at RNS MUN 2026!</p>
+
+      <div class="signoff">
+        Warm regards,<br>
+        <strong>Core Secretariat of RNS MUN 2026</strong><br>
+        RNSIT MUN Society, Bengaluru
+      </div>
+
+      <p style="margin-top: 22px; font-size: 14px; color: #333333; line-height: 1.5; text-align: center;">
+        Follow our official Instagram for live alerts, committee updates &amp; announcements &rarr;<br>
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
+      </p>
+
+      <div class="logo-wrap">
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
+        </a>
+      </div>
+    </div>
+    <div class="footer">
+      <p style="margin: 0;"><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, Bengaluru - 560098<br>Official Portal: <a href="https://mun.rnsit.ac.in" target="_blank" style="color:#6C0D2C; font-weight:700;">mun.rnsit.ac.in</a> &bull; Email: <a href="mailto:mun@rnsit.ac.in" style="color:#6C0D2C;">mun@rnsit.ac.in</a></p>
+    </div>
+  </div>
+</body>
+</html>`,
+        attachments: []
+      },
+      {
         id: 'tpl-allocation-no-qr',
         name: 'allocation without QR',
         isPreset: true,
@@ -5775,9 +6293,9 @@
       
       <!-- Contact Details -->
       <div class="contacts-box">
-        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider"></div>
-        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
         <div class="contact-divider"></div>
         <div class="contact-item">Official Secretariat Email: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
       </div>
@@ -5896,9 +6414,9 @@
       <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
       
       <div class="contacts-box">
-        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
-        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
       </div>
 
       <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
@@ -6001,9 +6519,9 @@
       <p>If you have any questions or require assistance in the meantime, please feel free to reach out to our team:</p>
       
       <div class="contacts-box">
-        <div class="contact-item">Zeyan (Head - Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
         <div class="contact-divider" style="border-top: 1px dashed #D5C7B4; margin: 6px 0; height: 0;"></div>
-        <div class="contact-item">Adith (Head - Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-item">Adith (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
       </div>
 
       <p>We look forward to welcoming you to RNSMUN 2026 for an engaging and memorable diplomatic experience!</p>
@@ -6090,14 +6608,14 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v36_remove_session_chamber_no_qr';
+    const TEMPLATES_VERSION = 'v42_aesthetic_qr_whatsapp';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
       if (stored !== null && storedVersion === TEMPLATES_VERSION) {
         try {
           mailTemplates = JSON.parse(stored);
-          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-no-qr')) {
+          if (!Array.isArray(mailTemplates) || mailTemplates.length === 0 || !mailTemplates.some(t => t.id === 'tpl-qr-and-whatsapp') || !mailTemplates.some(t => t.id === 'tpl-welcome-confirmed') || !mailTemplates.some(t => t.id === 'tpl-delegation-confirmed') || !mailTemplates.some(t => t.id === 'tpl-allocation-no-qr')) {
             mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
             saveTemplatesToStorage();
           }
@@ -6106,7 +6624,16 @@
           saveTemplatesToStorage();
         }
       } else {
-        mailTemplates = JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES));
+        let customTemplates = [];
+        try {
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+              customTemplates = parsed.filter(t => !t.isPreset && !DEFAULT_MAIL_TEMPLATES.some(d => d.id === t.id));
+            }
+          }
+        } catch (e) {}
+        mailTemplates = [...JSON.parse(JSON.stringify(DEFAULT_MAIL_TEMPLATES)), ...customTemplates];
         localStorage.setItem('rns_mun_mail_templates_version', TEMPLATES_VERSION);
         saveTemplatesToStorage();
       }
@@ -6381,6 +6908,9 @@
           allocated_portfolio: 'Federal Republic of Germany',
           hub_url: 'https://mun.rnsit.ac.in/hub?t=01SkYaqPrya001',
           qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent('https://mun.rnsit.ac.in/hub?t=01SkYaqPrya001'),
+          whatsapp_link: 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
+          bg_guide_url: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+          gdrive_link: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
           usn: '',
           city: 'Bengaluru',
           roster_table: '',
@@ -6421,6 +6951,9 @@
         allocated_portfolio: "People's Republic of China",
         hub_url: 'https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0',
         qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent('https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0'),
+        whatsapp_link: 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+        bg_guide_url: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+        gdrive_link: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         committee1: 'UNSC — United Nations Security Council',
         portfolio1_1: "People's Republic of China",
         portfolio1_2: 'Kingdom of Bahrain',
@@ -6801,17 +7334,26 @@
             };
             sampleData = buildTokenDataFromRecord(sampleDelegation, 'delegation');
           } else {
+            const testHubUrl = 'https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0';
+            const testComm = 'UNSC — United Nations Security Council';
             sampleData = {
               name: defaultName,
               email: targetEmail,
               phone: '+91 98765 43210',
-              committee: 'UNSC (Security Council)',
+              committee: testComm,
               portfolio: 'Federation of Russia',
+              allocated_committee: testComm,
+              allocated_portfolio: 'Federation of Russia',
               institution: 'RNS Institute of Technology',
               status: 'Confirmed',
               amount: '₹999',
               type: 'Internal (RNSIT)',
               registration_id: 'TEST-' + Math.floor(1000 + Math.random() * 9000),
+              hub_url: testHubUrl,
+              qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(testHubUrl),
+              whatsapp_link: resolveCommitteeWhatsApp(testComm),
+              bg_guide_url: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+              gdrive_link: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
               usn: '1RN22CS045',
               city: 'Bengaluru',
               roster_table: '',
@@ -6934,7 +7476,13 @@
             htmlBody,
             attachments: modalAttachments,
             senderName,
-            replyTo
+            replyTo,
+            recordId: modalTargetRecord?.id,
+            recordType: modalTargetType,
+            recipientName: delegateName,
+            allocated_committee: modalTargetRecord?.allocated_committee,
+            allocated_portfolio: modalTargetRecord?.allocated_portfolio,
+            bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
           })
         });
 
@@ -7017,7 +7565,7 @@
 
       // Configure Allotment Box and default template
       if (modalTargetType === 'individual') {
-        const allocTpl = mailTemplates.find(t => t.id === 'tpl-allocation-no-qr') || mailTemplates.find(t => t.id === 'tpl-welcome-confirmed');
+        const allocTpl = mailTemplates.find(t => t.id === 'tpl-qr-and-whatsapp') || mailTemplates.find(t => t.id === 'tpl-allocation-no-qr') || mailTemplates.find(t => t.id === 'tpl-welcome-confirmed');
         const select = document.getElementById('send-mail-template-select');
         if (allocTpl && select) {
           select.value = allocTpl.id;
@@ -7706,7 +8254,10 @@
             recordType: modalTargetType,
             recordId: modalTargetRecord.id,
             templateId: tplId,
-            templateName
+            templateName,
+            allocated_committee: modalTargetRecord.allocated_committee,
+            allocated_portfolio: modalTargetRecord.allocated_portfolio,
+            bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
           })
         });
 
@@ -7770,6 +8321,17 @@
       return 'Designated Committee Hall — Academic Block';
     }
 
+    function resolveCommitteeWhatsApp(comm) {
+      const cUpper = String(comm || '').toUpperCase();
+      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY')) return 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh';
+      if (cUpper.includes('LOK') || cUpper.includes('SABHA') || cUpper.includes('PARLIAMENT')) return 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5';
+      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm';
+      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN')) return 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC';
+      if (cUpper.includes('IPC') || cUpper.includes('PRESS') || cUpper.includes('IP')) return 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm';
+      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2';
+      return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+    }
+
     function buildTokenDataFromRecord(item, type) {
       const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
       const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}`;
@@ -7792,6 +8354,7 @@
         const allocComm = item.allocated_committee || item.allocatedCommittee || c1 || 'UNODC';
         const allocPort = item.allocated_portfolio || item.allocatedPortfolio || p1_1 || 'United States of America';
         const venue = resolveChamberVenue(allocComm);
+        const waLink = item.whatsapp_link || resolveCommitteeWhatsApp(allocComm);
 
         return {
           name: item.name || 'Delegate',
@@ -7804,9 +8367,12 @@
           venue: venue,
           chamber_venue: venue,
           dates: '06 - 07 October 2026',
-          reporting_time: '8:00 AM',
+          reporting_time: '08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
+          whatsapp_link: waLink,
+          bg_guide_url: item.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+          gdrive_link: item.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
           committee1: c1,
           portfolio1_1: p1_1,
           portfolio1_2: p1_2,
@@ -7835,6 +8401,7 @@
         const allocComm = item.allocated_committee || item.allocatedCommittee || 'Institutional Delegation';
         const allocPort = item.allocated_portfolio || item.allocatedPortfolio || `${memberCount} Delegates Roster`;
         const venue = resolveChamberVenue(allocComm);
+        const waLink = item.whatsapp_link || resolveCommitteeWhatsApp(allocComm);
 
         return {
           name: item.head_name || item.delegation_name || 'Delegation Head',
@@ -7847,9 +8414,12 @@
           venue: venue,
           chamber_venue: venue,
           dates: '06 - 07 October 2026',
-          reporting_time: '8:00 AM',
+          reporting_time: '08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)',
           hub_url: hubUrl,
           qr_code_url: qrCodeUrl,
+          whatsapp_link: waLink,
+          bg_guide_url: item.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+          gdrive_link: item.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
           committee1: 'Delegation Committees',
           portfolio1_1: `Allotted to ${memberCount} delegates`,
           portfolio1_2: 'See matrix sheet',
@@ -7886,9 +8456,15 @@
         '{{venue}}': data.venue || 'RNSIT Campus, Bengaluru',
         '{{chamber_venue}}': data.chamber_venue || data.venue || 'RNSIT Campus, Bengaluru',
         '{{dates}}': data.dates || '06 - 07 October 2026',
-        '{{reporting_time}}': data.reporting_time || '8:00 AM',
+        '{{reporting_time}}': data.reporting_time || '08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)',
         '{{hub_url}}': data.hub_url || 'https://mun.rnsit.ac.in/hub',
-        '{{qr_code_url}}': data.qr_code_url || 'https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png',
+        '{{qr_code_url}}': data.qr_code_url || ('https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(data.hub_url || 'https://mun.rnsit.ac.in/hub')),
+        '{{whatsapp_link}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
+        '{{committee_whatsapp}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
+        '{{whatsapp_url}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
+        '{{bg_guide_url}}': data.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+        '{{background_guide_url}}': data.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
+        '{{gdrive_link}}': data.bg_guide_url || data.gdrive_link || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         '{{committee1}}': data.committee1 || '',
         '{{committee_pref_1}}': data.committee1 || '',
         '{{portfolio1_1}}': data.portfolio1_1 || '',
@@ -7910,8 +8486,6 @@
         '{{registration_id}}': data.registration_id || '',
         '{{usn}}': data.usn || '',
         '{{city}}': data.city || '',
-        '{{allocated_committee}}': data.allocated_committee || '',
-        '{{allocated_portfolio}}': data.allocated_portfolio || '',
         '{{sheet_link}}': data.sheet_link || '',
         '{{roster_sheet_url}}': data.roster_sheet_url || '',
         '{{roster_table}}': data.roster_table || '',

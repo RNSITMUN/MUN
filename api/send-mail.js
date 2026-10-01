@@ -32,6 +32,27 @@ function getEnv(key) {
   return process.env[key] || '';
 }
 
+const COMMITTEE_WHATSAPP_MAP = {
+  'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+  'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
+  'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
+  'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
+  'IPC': 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm',
+  'DISEC': 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2'
+};
+
+function resolveCommitteeWhatsApp(committee) {
+  if (!committee) return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+  const c = String(committee).toUpperCase();
+  if (c.includes('UNSC') || c.includes('SECURITY')) return COMMITTEE_WHATSAPP_MAP['UNSC'];
+  if (c.includes('LOK') || c.includes('SABHA') || c.includes('PARLIAMENT')) return COMMITTEE_WHATSAPP_MAP['LOK SABHA'];
+  if (c.includes('UNODC') || c.includes('DRUGS')) return COMMITTEE_WHATSAPP_MAP['UNODC'];
+  if (c.includes('UNHRC') || c.includes('HUMAN')) return COMMITTEE_WHATSAPP_MAP['UNHRC'];
+  if (c.includes('IPC') || c.includes('PRESS') || c.includes('IP')) return COMMITTEE_WHATSAPP_MAP['IPC'];
+  if (c.includes('DISEC') || c.includes('DISARMAMENT')) return COMMITTEE_WHATSAPP_MAP['DISEC'];
+  return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+}
+
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
   const allowedOrigins = [
@@ -95,9 +116,19 @@ export default async function handler(req, res) {
       .replace(/src=["']https:\/\/raw\.githubusercontent\.com\/RNSITMUN\/MUN\/main\/assets\//gi, `src="${publicAssetBase}`);
 
     // If sending to a specific registered delegate/delegation, enforce secure public token URLs
-    const { recordId, recordType = 'individual', allocated_committee, allocated_portfolio, recipientName } = req.body || {};
+    const { recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type } = req.body || {};
+    const driveUrl = bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY';
+    preparedHtml = preparedHtml
+      .replace(/\{\{bg_guide_url\}\}/g, driveUrl)
+      .replace(/\{\{background_guide_url\}\}/g, driveUrl)
+      .replace(/\{\{gdrive_link\}\}/g, driveUrl);
     if (allocated_committee) {
       preparedHtml = preparedHtml.replace(/\{\{allocated_committee\}\}/g, allocated_committee);
+      const waLink = resolveCommitteeWhatsApp(allocated_committee);
+      preparedHtml = preparedHtml
+        .replace(/\{\{whatsapp_link\}\}/g, waLink)
+        .replace(/\{\{committee_whatsapp\}\}/g, waLink)
+        .replace(/\{\{whatsapp_url\}\}/g, waLink);
     }
     if (allocated_portfolio) {
       preparedHtml = preparedHtml.replace(/\{\{allocated_portfolio\}\}/g, allocated_portfolio);
@@ -105,18 +136,34 @@ export default async function handler(req, res) {
     if (recipientName) {
       preparedHtml = preparedHtml.replace(/\{\{name\}\}/g, recipientName);
     }
+    if (institution) {
+      preparedHtml = preparedHtml.replace(/\{\{institution\}\}/g, institution);
+    }
+    const safeType = type || delegateType || (String(recordType || '').toLowerCase() === 'delegation' ? 'Delegation' : 'Individual');
+    preparedHtml = preparedHtml.replace(/\{\{type\}\}/g, safeType);
     if (recordId) {
       try {
-        const pubToken = getPublicToken(recordType, recordId);
-        const secureHubUrl = `https://mun.rnsit.ac.in/hub?t=${pubToken}`;
+        const cleanRecType = String(recordType || 'individual').toLowerCase() === 'delegation' ? 'delegation' : 'individual';
+        const pubToken = getPublicToken(cleanRecType, recordId);
+        const mIdx = memberIndex !== undefined ? memberIndex : (member_index !== undefined ? member_index : null);
+        const mSuffix = (cleanRecType === 'delegation' && mIdx !== null && mIdx !== undefined && mIdx !== '') ? `&m=${encodeURIComponent(mIdx)}` : '';
+        const secureHubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}${mSuffix}`;
         const secureQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(secureHubUrl)}`;
         
         preparedHtml = preparedHtml
+          // 1. Literal token replacements
           .replace(/\{\{public_token\}\}/g, pubToken)
           .replace(/\{\{hub_url\}\}/g, secureHubUrl)
           .replace(/\{\{qr_code_url\}\}/g, secureQrUrl)
           .replace(/\{\{registration_id\}\}/g, String(recordId).padStart(4, '0'))
-          .replace(new RegExp(`https:\\/\\/mun\\.rnsit\\.ac\\.in\\/hub\\?id=${recordId}(?:&amp;|&)type=[a-zA-Z0-9_-]+`, 'g'), secureHubUrl);
+          // 2. Standardize credential pass ID header
+          .replace(/#RNSMUN-26-(?:\{\{registration_id\}\}|REG-[a-zA-Z0-9_-]+|\d+)/g, `#RNSMUN-26-${String(recordId).padStart(4, '0')}`)
+          // 3. Replace any QR code image URLs pointing to any hub URL with the recipient's own QR code URL
+          .replace(/https:\/\/api\.qrserver\.com\/v1\/create-qr-code\/\?size=\d+x\d+&(?:amp;)?data=(?:https%3A%2F%2F|http%3A%2F%2F)[^"'\s<>]+/g, secureQrUrl)
+          // 4. Replace any onerror fallback on QR images with the recipient's own QR code URL
+          .replace(/onerror="this\.onerror=null;this\.src='https:\/\/api\.qrserver\.com\/v1\/create-qr-code\/\?[^']+'(?:\s*\+\s*encodeURIComponent\('[^']+'\))?;?"/g, `onerror="this.onerror=null;this.src='${secureQrUrl}';"`)
+          // 5. Replace any existing hub URLs (dev, vercel, production, with ?t= or ?id=) with the recipient's own secureHubUrl
+          .replace(/https?:\/\/(?:mun\.rnsit\.ac\.in|localhost:\d+|127\.0\.0\.1:\d+|mun[a-zA-Z0-9-]*\.vercel\.app)\/hub\?(?:t=[a-zA-Z0-9_-]+|id=[^"'&<>\s]+(?:&amp;|&)type=[^"'&<>\s]+)/g, secureHubUrl);
       } catch (e) {
         console.warn('[send-mail] Token injection error:', e.message);
       }

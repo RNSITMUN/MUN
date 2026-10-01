@@ -352,6 +352,10 @@
         return;
       }
 
+      if (document.activeElement && (modalCard.contains(document.activeElement) || backdrop.contains(document.activeElement))) {
+        try { document.activeElement.blur(); } catch (e) {}
+      }
+
       isCardAnimating = true;
 
       const currentCardRect = targetCard ? targetCard.getBoundingClientRect() : {
@@ -1370,6 +1374,10 @@
       const typeCard = document.getElementById('delegate-type-modal-card');
       const closeBtn = document.getElementById('type-modal-close');
       if (!typeBackdrop || !typeCard) return;
+
+      if (document.activeElement && (typeCard.contains(document.activeElement) || typeBackdrop.contains(document.activeElement))) {
+        try { document.activeElement.blur(); } catch (e) {}
+      }
 
       if (window.gsap) {
         if (closeBtn) {
@@ -2532,7 +2540,10 @@
 
     function openRegistrationModal(preferredCommitteeId = 'unsc', forceType = null) {
       if (forceType) {
-        currentDelegateType = forceType;
+        currentDelegateType = forceType === 'internal' ? 'external' : forceType;
+      }
+      if (currentDelegateType === 'internal') {
+        currentDelegateType = 'external';
       }
       const regBackdrop = document.getElementById('registration-modal-backdrop');
       const regCard = document.getElementById('registration-modal-card');
@@ -2592,6 +2603,10 @@
       const closeBtn = document.getElementById('reg-modal-close');
       closeAllCustomSelects();
       if (!regBackdrop || !regCard) return;
+
+      if (document.activeElement && (regCard.contains(document.activeElement) || regBackdrop.contains(document.activeElement))) {
+        try { document.activeElement.blur(); } catch (e) {}
+      }
 
       if (window.gsap) {
         if (closeBtn) {
@@ -2692,6 +2707,10 @@
       const closeBtn = document.getElementById('dlg-modal-close');
       closeAllCustomSelects();
       if (!dlgBackdrop || !dlgCard) return;
+
+      if (document.activeElement && (dlgCard.contains(document.activeElement) || dlgBackdrop.contains(document.activeElement))) {
+        try { document.activeElement.blur(); } catch (e) {}
+      }
 
       if (window.gsap) {
         if (closeBtn) {
@@ -4720,6 +4739,17 @@
       const nameInput = document.getElementById('reg-name');
       const delegateName = sanitize(nameInput ? nameInput.value.trim() : 'Delegate');
 
+      if (currentDelegateType === 'internal') {
+        if (typeof showToast === 'function') {
+          showToast('Internal registrations are closed. Please register as an External Delegate.', 'error');
+        } else {
+          alert('Internal registrations are closed. Please register as an External Delegate.');
+        }
+        selectDelegateType('external');
+        goToStep(4);
+        return;
+      }
+
       if (currentDelegateType === 'external') {
         const screenshotInput = document.getElementById('reg-external-payment-screenshot');
         const screenshotErr = document.getElementById('reg-external-payment-screenshot-error');
@@ -5572,9 +5602,13 @@
 
       // 1. Restore delegate type (giving priority to explicitly chosen type)
       if (explicitType) {
-        currentDelegateType = explicitType;
+        currentDelegateType = explicitType === 'internal' ? 'external' : explicitType;
       } else if (data['_delegateType']) {
-        currentDelegateType = data['_delegateType'];
+        currentDelegateType = data['_delegateType'] === 'internal' ? 'external' : data['_delegateType'];
+      }
+      if (currentDelegateType === 'internal') {
+        currentDelegateType = 'external';
+        data['_delegateType'] = 'external';
       }
       applyDelegateTypeUI(currentDelegateType);
 

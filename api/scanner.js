@@ -1,11 +1,14 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { supabase } from '../lib/supabase.js';
 import { resolvePublicToken, decodePublicTokenPayload, getPublicToken, createStaffSession, verifyStaffSession } from '../lib/token.js';
 
 // Local storage fallback for checkpoints
-const LOCAL_STORE_PATH = path.resolve(process.cwd(), '.data', 'checkpoints.json');
+const LOCAL_STORE_PATH = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'checkpoints.json')
+  : path.resolve(process.cwd(), '.data', 'checkpoints.json');
 
 function ensureDataDir() {
   const dir = path.dirname(LOCAL_STORE_PATH);
@@ -151,8 +154,17 @@ async function handleUpdateCheckpoint(req, res) {
   }
 
   const body = req.body || {};
-  let { token, id, type, member_index, checkpoint_key, checkpointKey, redeemed, redeemed_by, notes, allocated_committee, allocated_portfolio } = body;
-  checkpoint_key = checkpoint_key || checkpointKey;
+  let token = body.token;
+  let id = body.id;
+  let type = body.type;
+  let member_index = body.member_index ?? body.memberIndex ?? 0;
+  let checkpoint_key = body.checkpoint_key || body.checkpointKey;
+  let redeemed = body.redeemed !== undefined ? body.redeemed : (body.status !== undefined ? body.status : true);
+  let redeemed_by = body.redeemed_by || body.staffName || 'Secretariat Staff';
+  let force = body.force === true;
+  let notes = body.notes || null;
+  let allocated_committee = body.allocated_committee || body.allocatedCommittee;
+  let allocated_portfolio = body.allocated_portfolio || body.allocatedPortfolio;
 
   let recordType = type;
   let recordId = id;
@@ -238,8 +250,90 @@ async function handleUpdateCheckpoint(req, res) {
   }
 
   const localKey = `${recordType}_${recordId}_${memberIdx}`;
+  const baseLocalKey = `${recordType}_${recordId}`;
   const localStore = readLocalCheckpoints();
-  if (!localStore[localKey]) localStore[localKey] = {};
+  const existingLocal = localStore[localKey]?.[cleanKey] || (memberIdx === 0 ? localStore[baseLocalKey]?.[cleanKey] : undefined);
+
+  let existingRedeemed = existingLocal?.redeemed;
+  let existingRedeemedAt = existingLocal?.redeemed_at;
+  let existingRedeemedBy = existingLocal?.redeemed_by;
+
+  let delegateName = '';
+  let allocComm = allocated_committee || '';
+  let allocPort = allocated_portfolio || '';
+
+  // Check Supabase if available
+  if (supabase) {
+    try {
+      const { data: existingDb } = await supabase
+        .from('delegate_checkpoints')
+        .select('*')
+        .eq('record_type', recordType)
+        .eq('record_id', String(recordId))
+        .eq('member_index', memberIdx)
+        .eq('checkpoint_key', cleanKey)
+        .maybeSingle();
+
+      if (existingDb && existingDb.redeemed) {
+        existingRedeemed = true;
+        existingRedeemedAt = existingDb.redeemed_at;
+        existingRedeemedBy = existingDb.redeemed_by;
+      }
+    } catch (e) {}
+
+    // Resolve delegate name & committee for rich responses
+    try {
+      if (recordType === 'individual') {
+        const { data: indRecord } = await supabase
+          .from('registrations')
+          .select('name, institution, committee1, portfolio1_1')
+          .eq('id', recordId)
+          .maybeSingle();
+        if (indRecord) {
+          delegateName = indRecord.name || '';
+          if (!allocComm) allocComm = indRecord.committee1 || '';
+          if (!allocPort) allocPort = indRecord.portfolio1_1 || '';
+        }
+      } else {
+        const { data: delRecord } = await supabase
+          .from('delegations')
+          .select('delegation_name, head_name, roster_data')
+          .eq('id', recordId)
+          .maybeSingle();
+        if (delRecord) {
+          const roster = Array.isArray(delRecord.roster_data) ? delRecord.roster_data : [];
+          if (roster[memberIdx]) {
+            delegateName = roster[memberIdx].name || roster[memberIdx]['Delegate Name'] || '';
+            if (!allocComm) allocComm = roster[memberIdx].allocated_committee || roster[memberIdx].committee || '';
+            if (!allocPort) allocPort = roster[memberIdx].allocated_portfolio || roster[memberIdx].portfolio || '';
+          }
+          if (!delegateName) delegateName = delRecord.head_name || delRecord.delegation_name || '';
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (!delegateName) {
+    delegateName = recordType === 'delegation' ? `Delegation #${recordId} Member ${memberIdx + 1}` : `Delegate #${recordId}`;
+  }
+
+  // If already redeemed and not forced, return duplicate alert!
+  if (existingRedeemed && !force && isRedeemed) {
+    const timeFormatted = existingRedeemedAt ? new Date(existingRedeemedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
+    return res.status(200).json({
+      success: false,
+      duplicate: true,
+      message: `Pass was already stamped for ${cleanKey} at ${timeFormatted} by ${existingRedeemedBy || 'Staff'}.`,
+      delegateName,
+      allocatedCommittee: allocComm,
+      allocatedPortfolio: allocPort,
+      redeemedAt: existingRedeemedAt,
+      redeemed_at: existingRedeemedAt,
+      redeemedBy: existingRedeemedBy,
+      redeemed_by: existingRedeemedBy,
+      checkpoint: existingLocal || { checkpoint_key: cleanKey, redeemed: true, redeemed_at: existingRedeemedAt, redeemed_by: existingRedeemedBy }
+    });
+  }
 
   const nowIso = new Date().toISOString();
   let updatedRecord = {
@@ -250,10 +344,15 @@ async function handleUpdateCheckpoint(req, res) {
     notes: notes || null
   };
 
-  if (allocated_committee !== undefined) updatedRecord.allocated_committee = allocated_committee;
-  if (allocated_portfolio !== undefined) updatedRecord.allocated_portfolio = allocated_portfolio;
+  if (allocComm) updatedRecord.allocated_committee = allocComm;
+  if (allocPort) updatedRecord.allocated_portfolio = allocPort;
 
+  if (!localStore[localKey]) localStore[localKey] = {};
   localStore[localKey][cleanKey] = updatedRecord;
+  if (memberIdx === 0) {
+    if (!localStore[baseLocalKey]) localStore[baseLocalKey] = {};
+    localStore[baseLocalKey][cleanKey] = updatedRecord;
+  }
   writeLocalCheckpoints(localStore);
 
   if (supabase) {
@@ -273,8 +372,8 @@ async function handleUpdateCheckpoint(req, res) {
         notes: notes || null
       };
 
-      if (allocated_committee !== undefined) payload.allocated_committee = allocated_committee;
-      if (allocated_portfolio !== undefined) payload.allocated_portfolio = allocated_portfolio;
+      if (allocComm) payload.allocated_committee = allocComm;
+      if (allocPort) payload.allocated_portfolio = allocPort;
 
       const { data, error } = await supabase
         .from('delegate_checkpoints')
@@ -294,7 +393,16 @@ async function handleUpdateCheckpoint(req, res) {
       if (data) {
         return res.status(200).json({
           success: true,
+          duplicate: false,
           source: 'database',
+          message: `Checkpoint ${cleanKey} successfully stamped.`,
+          delegateName,
+          allocatedCommittee: allocComm,
+          allocatedPortfolio: allocPort,
+          redeemedAt: nowIso,
+          redeemed_at: nowIso,
+          redeemedBy: staffName,
+          redeemed_by: staffName,
           checkpoint: data
         });
       }
@@ -310,7 +418,16 @@ async function handleUpdateCheckpoint(req, res) {
 
   return res.status(200).json({
     success: true,
+    duplicate: false,
     source: 'local_store',
+    message: `Checkpoint ${cleanKey} stamped in local cache.`,
+    delegateName,
+    allocatedCommittee: allocComm,
+    allocatedPortfolio: allocPort,
+    redeemedAt: nowIso,
+    redeemed_at: nowIso,
+    redeemedBy: staffName,
+    redeemed_by: staffName,
     checkpoint: updatedRecord
   });
 }
@@ -430,7 +547,7 @@ async function handleHubData(req, res) {
         const { data: regList, error: regErr } = await supabase
           .from('registrations')
           .select('id, name, email, phone, institution, committee1, portfolio1_1, status, usn, delegate_type')
-          .limit(50);
+          .limit(500);
 
         if (regErr) {
           console.error('Supabase error searching registrations:', regErr);
@@ -457,8 +574,11 @@ async function handleHubData(req, res) {
                 usn: r.usn || '',
                 delegateType: r.delegate_type || 'Individual Delegate',
                 status: r.status,
+                committee: r.committee1 || 'General Assembly',
+                portfolio: r.portfolio1_1 || 'Delegate',
                 allocated_committee: r.committee1 || '',
-                allocated_portfolio: r.portfolio1_1 || ''
+                allocated_portfolio: r.portfolio1_1 || '',
+                passUrl: `/hub?t=${encodeURIComponent(pubToken)}`
               });
             }
           });
@@ -466,26 +586,27 @@ async function handleHubData(req, res) {
 
         const { data: delList, error: delErr } = await supabase
           .from('delegations')
-          .select('id, delegation_name, head_name, email, phone, status, member_count')
-          .limit(50);
+          .select('id, delegation_name, head_name, email, phone, status, member_count, roster_data')
+          .limit(100);
 
         if (delErr) {
           console.error('Supabase error searching delegations:', delErr);
         } else if (Array.isArray(delList)) {
           delList.forEach(d => {
             const dName = d.delegation_name || d.head_name || '';
-            const match =
+            const pubToken = getPublicToken('delegation', d.id);
+            const delMatch =
               (d.delegation_name && d.delegation_name.toLowerCase().includes(cleanQ)) ||
               (d.head_name && d.head_name.toLowerCase().includes(cleanQ)) ||
               (d.email && d.email.toLowerCase().includes(cleanQ)) ||
               (d.phone && d.phone.includes(cleanQ)) ||
               String(d.id) === rawQ;
 
-            if (match) {
-              const pubToken = getPublicToken('delegation', d.id);
+            if (delMatch) {
               results.push({
                 type: 'delegation',
                 id: d.id,
+                memberIndex: 0,
                 token: pubToken,
                 name: dName,
                 headName: d.head_name || '',
@@ -493,8 +614,52 @@ async function handleHubData(req, res) {
                 phone: d.phone,
                 institution: d.delegation_name,
                 status: d.status,
+                committee: 'Institutional Delegation',
+                portfolio: `${d.member_count || 1} Member Delegation`,
                 allocated_committee: 'Institutional Delegation',
-                allocated_portfolio: `${d.member_count || 1} Member Delegation`
+                allocated_portfolio: `${d.member_count || 1} Member Delegation`,
+                passUrl: `/hub?t=${encodeURIComponent(pubToken)}&m=0`
+              });
+            }
+
+            // Also search individual delegation roster members
+            if (Array.isArray(d.roster_data)) {
+              d.roster_data.forEach((mem, memIdx) => {
+                const mName = mem.name || mem.delegateName || mem['Delegate Name'] || '';
+                const mEmail = mem.email || mem.emailAddress || mem['Email Address'] || '';
+                const mPhone = mem.phone || mem.mobileNumber || mem['WhatsApp / Mobile Number'] || '';
+                const mUsn = mem.slNo || mem.usn || mem['USN / Roll No'] || '';
+                const mComm = mem.committee || mem.committee1 || mem['Committee Preference 1'] || '';
+                const mPort = mem.portfolio || mem.portfolio1_1 || mem['Portfolio Preference 1'] || '';
+
+                const memberMatch =
+                  (mName && mName.toLowerCase().includes(cleanQ)) ||
+                  (mEmail && mEmail.toLowerCase().includes(cleanQ)) ||
+                  (mPhone && mPhone.includes(cleanQ)) ||
+                  (mUsn && mUsn.toLowerCase().includes(cleanQ));
+
+                if (memberMatch) {
+                  const alreadyPresent = results.some(x => x.type === 'delegation' && x.id === d.id && x.memberIndex === memIdx);
+                  if (!alreadyPresent) {
+                    results.push({
+                      type: 'delegation',
+                      id: d.id,
+                      memberIndex: memIdx,
+                      token: pubToken,
+                      name: mName,
+                      headName: d.head_name || '',
+                      email: mEmail,
+                      phone: mPhone,
+                      institution: d.delegation_name,
+                      status: d.status,
+                      committee: mComm || 'Institutional Delegation',
+                      portfolio: mPort || `Member #${memIdx + 1}`,
+                      allocated_committee: mComm || 'Institutional Delegation',
+                      allocated_portfolio: mPort || `Member #${memIdx + 1}`,
+                      passUrl: `/hub?t=${encodeURIComponent(pubToken)}&m=${memIdx}`
+                    });
+                  }
+                }
               });
             }
           });
@@ -507,6 +672,7 @@ async function handleHubData(req, res) {
     return res.status(200).json({
       success: true,
       query: rawQ,
+      matches: results.slice(0, 15),
       results: results.slice(0, 15)
     });
   }
@@ -617,16 +783,36 @@ async function handleHubData(req, res) {
     }
   }
 
+  if (!record) {
+    return res.status(404).json({
+      success: false,
+      error: 'Accreditation credential not found in conference registry.'
+    });
+  }
+
   // Merge local store checkpoints
   const localStore = readLocalCheckpoints();
   const maxScanIdx = Math.max(50, Array.isArray(record?.roster_data) ? record.roster_data.length : 0);
   for (let mIdx = 0; mIdx < maxScanIdx; mIdx++) {
     const lk = `${targetType}_${targetId}_${mIdx}`;
-    if (localStore[lk]) {
+    const baseLk = `${targetType}_${targetId}`;
+    const localEntry = localStore[lk] || (mIdx === 0 ? localStore[baseLk] : null);
+
+    if (localEntry) {
       if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
-      for (const [cpKey, cpVal] of Object.entries(localStore[lk])) {
-        if (!checkpoints[mIdx][cpKey] || cpVal.redeemed) {
+      for (const [cpKey, cpVal] of Object.entries(localEntry)) {
+        if (typeof cpVal === 'object' && cpVal !== null && (!checkpoints[mIdx][cpKey] || cpVal.redeemed)) {
           checkpoints[mIdx][cpKey] = cpVal;
+        }
+      }
+      if (mIdx === 0 && (localEntry.allocatedCommittee || localEntry.allocatedPortfolio)) {
+        if (!checkpoints[0].allocation) {
+          checkpoints[0].allocation = {
+            checkpoint_key: 'allocation',
+            redeemed: true,
+            allocated_committee: localEntry.allocatedCommittee,
+            allocated_portfolio: localEntry.allocatedPortfolio
+          };
         }
       }
     }
@@ -652,7 +838,6 @@ async function handleHubData(req, res) {
       });
     }
   }
-
   const delegateDisplayName = record.name || record.full_name || record.delegation_name || record.head_name || record.head_delegate_name || 'Official Delegate';
   const delegateInstitution = record.institution || record.college || '';
   const delegateType = record.delegate_type || record.delegation_type || (targetType === 'delegation' ? 'Delegation' : 'Individual Delegate');
@@ -697,6 +882,7 @@ async function handleHubData(req, res) {
     allocatedPortfolio: allocPort,
     checkpoints: checkpoints[0] || {},
     allCheckpoints: checkpoints,
+    bg_guide_url: record.bg_guide_url || record.gdrive_link || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
     roster: roster
   };
 

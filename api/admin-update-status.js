@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase.js';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -153,7 +154,9 @@ export default async function handler(req, res) {
 
       // Update local checkpoints store
       try {
-        const lp = path.resolve(process.cwd(), '.data', 'checkpoints.json');
+        const lp = process.env.VERCEL
+          ? path.join(os.tmpdir(), 'checkpoints.json')
+          : path.resolve(process.cwd(), '.data', 'checkpoints.json');
         const lDir = path.dirname(lp);
         if (!fs.existsSync(lDir)) fs.mkdirSync(lDir, { recursive: true });
 
@@ -161,12 +164,28 @@ export default async function handler(req, res) {
         if (fs.existsSync(lp)) {
           try { localData = JSON.parse(fs.readFileSync(lp, 'utf8')) || {}; } catch(e) {}
         }
-        const k = `${targetType}_${id}`;
-        if (!localData[k]) {
-          localData[k] = { checkpoints: {}, memberCheckpoints: {}, allocatedCommittee: '', allocatedPortfolio: '' };
-        }
-        if (allocComm !== null) localData[k].allocatedCommittee = allocComm;
-        if (allocPort !== null) localData[k].allocatedPortfolio = allocPort;
+        const memberIdx = parseInt(body.member_index ?? body.memberIndex ?? 0, 10) || 0;
+        const kWithMember = `${targetType}_${id}_${memberIdx}`;
+        const kBase = `${targetType}_${id}`;
+
+        const cpData = {
+          checkpoint_key: 'allocation',
+          redeemed: true,
+          redeemed_at: new Date().toISOString(),
+          redeemed_by: adminUser.email || 'Admin',
+          allocated_committee: allocComm,
+          allocated_portfolio: allocPort
+        };
+
+        [kWithMember, kBase].forEach(k => {
+          if (!localData[k]) localData[k] = {};
+          localData[k].allocation = {
+            ...(localData[k].allocation || {}),
+            ...cpData
+          };
+          if (allocComm !== null) localData[k].allocatedCommittee = allocComm;
+          if (allocPort !== null) localData[k].allocatedPortfolio = allocPort;
+        });
 
         fs.writeFileSync(lp, JSON.stringify(localData, null, 2), 'utf8');
         allocationSaved = true;
