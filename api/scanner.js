@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { supabase } from '../lib/supabase.js';
-import { resolvePublicToken, decodePublicTokenPayload, getPublicToken, createStaffSession, verifyStaffSession } from '../lib/token.js';
+import { resolvePublicToken, decodePublicTokenPayload, getPublicToken, createStaffSession, verifyStaffSession, getStaffSessionName } from '../lib/token.js';
 
 // Local storage fallback for checkpoints
 const LOCAL_STORE_PATH = process.env.VERCEL
@@ -89,6 +89,7 @@ async function handleStaffAuth(req, res) {
 
   const body = req.body || {};
   const submittedPin = String(body.pin || '').trim();
+  const submittedName = String(body.staffName || body.name || '').trim().slice(0, 80);
 
   const isProduction = !!process.env.VERCEL || process.env.NODE_ENV === 'production';
   let serverPin = (process.env.ORGANIZER_PIN || '').trim();
@@ -108,6 +109,9 @@ async function handleStaffAuth(req, res) {
   if (!submittedPin) {
     return res.status(400).json({ success: false, error: 'PIN is required.' });
   }
+  if (!submittedName) {
+    return res.status(400).json({ success: false, error: 'Staff name is required.' });
+  }
 
   let isValid = false;
   try {
@@ -124,11 +128,12 @@ async function handleStaffAuth(req, res) {
     return res.status(401).json({ success: false, error: 'Invalid Organizer PIN.' });
   }
 
-  const sessionToken = createStaffSession();
+  const sessionToken = createStaffSession(submittedName);
   return res.status(200).json({
     success: true,
     message: 'Staff authentication successful.',
     sessionToken,
+    staffName: submittedName,
     expiresIn: 86400,
     role: 'organizer'
   });
@@ -153,6 +158,11 @@ async function handleUpdateCheckpoint(req, res) {
     });
   }
 
+  const authenticatedStaffName = getStaffSessionName(sessionToken);
+  if (!authenticatedStaffName) {
+    return res.status(401).json({ success: false, error: 'Staff session has no authenticated name. Please sign in again.' });
+  }
+
   const body = req.body || {};
   let token = body.token;
   let id = body.id;
@@ -160,7 +170,7 @@ async function handleUpdateCheckpoint(req, res) {
   let member_index = body.member_index ?? body.memberIndex ?? 0;
   let checkpoint_key = body.checkpoint_key || body.checkpointKey;
   let redeemed = body.redeemed !== undefined ? body.redeemed : (body.status !== undefined ? body.status : true);
-  let redeemed_by = body.redeemed_by || body.staffName || 'Secretariat Staff';
+  let redeemed_by = authenticatedStaffName;
   let force = body.force === true;
   let notes = body.notes || null;
   let allocated_committee = body.allocated_committee || body.allocatedCommittee;
@@ -198,7 +208,7 @@ async function handleUpdateCheckpoint(req, res) {
   const cleanKey = String(checkpoint_key || '').trim().toLowerCase();
   const memberIdx = parseInt(member_index || 0, 10) || 0;
   const isRedeemed = redeemed !== false;
-  const staffName = String(redeemed_by || 'Organizer').trim();
+  const staffName = authenticatedStaffName;
 
   if (!VALID_CHECKPOINTS.includes(cleanKey)) {
     return res.status(400).json({

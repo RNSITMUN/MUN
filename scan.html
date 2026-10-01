@@ -153,20 +153,6 @@
       color: var(--error-red);
     }
 
-    .sound-toggle-btn {
-      width: 40px;
-      height: 40px;
-      display: inline-grid;
-      place-items: center;
-      color: var(--text-dark);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-box);
-      cursor: pointer;
-    }
-
-    .sound-toggle-btn[aria-pressed="true"] { color: var(--error-red); }
-
     /* Main Container */
     .scanner-card {
       width: 100%;
@@ -806,6 +792,72 @@
       color: var(--error-red);
       font-size: 0.85rem;
     }
+
+    .scan-start-overlay,
+    .checkin-sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(15, 23, 42, 0.66);
+      backdrop-filter: blur(5px);
+    }
+
+    .scan-start-overlay {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .scan-start-card {
+      width: min(100%, 380px);
+      padding: 1.5rem;
+      text-align: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+    }
+
+    .scan-start-card h2 { color: var(--primary); font: 800 1.2rem 'Syne', sans-serif; }
+    .scan-start-card p { margin: 0.55rem 0 1rem; color: var(--text-muted); font-size: 0.85rem; }
+    .scan-start-btn { width: 100%; min-height: 52px; border: 0; border-radius: var(--radius-box); background: var(--primary); color: #fff; font: 700 0.95rem 'Outfit', sans-serif; cursor: pointer; }
+
+    .checkin-sheet-backdrop {
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 2500;
+    }
+
+    .checkin-sheet {
+      width: min(100%, 580px);
+      max-height: min(88vh, 760px);
+      overflow: auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
+      padding: 1.1rem;
+      padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
+      box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .checkin-sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .checkin-sheet-title { margin: 0; color: var(--text-dark); font-size: 1.1rem; font-weight: 800; }
+    .checkin-sheet-details { display: grid; gap: 0.55rem; margin: 0.75rem 0 1rem; }
+    .checkin-sheet-detail { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.5rem; font-size: 0.85rem; }
+    .checkin-sheet-detail dt { color: var(--text-muted); }
+    .checkin-sheet-detail dd { min-width: 0; margin: 0; color: var(--text-dark); font-weight: 600; overflow-wrap: anywhere; }
+    .checkin-sheet-actions { display: grid; gap: 0.55rem; margin-top: 1rem; }
+    .checkin-sheet-primary, .checkin-sheet-secondary { width: 100%; min-height: 52px; border-radius: var(--radius-box); font: 700 0.9rem 'Outfit', sans-serif; cursor: pointer; }
+    .checkin-sheet-primary { border: 0; background: var(--primary); color: #fff; }
+    .checkin-sheet-primary:disabled { opacity: 0.7; cursor: wait; }
+    .checkin-sheet-secondary { border: 1px solid var(--border-subtle); background: #fff; color: var(--text-dark); }
+    .checkin-sheet-alert { display: none; margin-top: 0.65rem; padding: 0.65rem; border-radius: var(--radius-box); font-size: 0.82rem; }
+    .checkin-sheet-alert.error { display: block; color: var(--error-red); background: var(--error-bg); }
+    .checkin-sheet-alert.warning { display: block; color: var(--warning-amber); background: var(--warning-bg); }
+    .scan-sound-banner { display: none; position: fixed; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 4000; padding: 0.55rem 0.8rem; border-radius: var(--radius-box); background: #1F2937; color: #fff; font-size: 0.78rem; box-shadow: var(--shadow-card); }
+    .scan-sound-banner.visible { display: block; }
 
     .btn-retry-camera {
       background: var(--primary);
@@ -1687,16 +1739,6 @@
       <polyline points="15 3 21 3 21 9"/>
       <line x1="10" y1="14" x2="21" y2="3"/>
     </symbol>
-    <symbol id="icon-speaker-on" viewBox="0 0 24 24">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </symbol>
-    <symbol id="icon-speaker-off" viewBox="0 0 24 24">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-    </symbol>
   </svg>
 
   <!-- Staff PIN Auth Overlay -->
@@ -1704,13 +1746,36 @@
     <div class="auth-modal">
       <div>
         <h2 class="auth-title">Organizer check-in access</h2>
-        <p class="auth-subtitle">Enter your 4-digit staff PIN to unlock scanner operations.</p>
+        <p class="auth-subtitle">Enter your staff name and PIN to unlock scanner operations.</p>
       </div>
+      <input type="text" id="staff-name-input" class="auth-input" placeholder="Staff name" maxlength="80" autocomplete="name" style="letter-spacing:normal; text-align:left;">
       <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
       <div id="auth-error" class="auth-error-msg">Invalid organizer PIN.</div>
       <button type="button" id="btn-auth-submit" class="auth-btn" onclick="loginWithPin()">Authenticate</button>
     </div>
   </div>
+
+  <div id="scan-start-overlay" class="scan-start-overlay" role="dialog" aria-modal="true" aria-labelledby="scan-start-title">
+    <div class="scan-start-card">
+      <h2 id="scan-start-title">Ready to scan</h2>
+      <p>Tap to enable scan audio and start the camera.</p>
+      <button type="button" id="btn-start-scanning" class="scan-start-btn" onclick="startScanningFromGesture()">Tap to start scanning</button>
+    </div>
+  </div>
+
+  <div id="checkin-sheet-backdrop" class="checkin-sheet-backdrop" onclick="handleCheckinBackdrop(event)" aria-hidden="true">
+    <section id="checkin-sheet" class="checkin-sheet" role="dialog" aria-modal="true" aria-labelledby="checkin-sheet-title" aria-describedby="checkin-sheet-details" tabindex="-1">
+      <div class="checkin-sheet-head">
+        <h2 id="checkin-sheet-title" class="checkin-sheet-title">Confirm check-in</h2>
+        <div id="checkin-sheet-status"></div>
+      </div>
+      <dl id="checkin-sheet-details" class="checkin-sheet-details"></dl>
+      <div id="checkin-sheet-alert" class="checkin-sheet-alert" role="alert"></div>
+      <div id="checkin-sheet-actions" class="checkin-sheet-actions"></div>
+    </section>
+  </div>
+  <div id="scan-sound-banner" class="scan-sound-banner" role="status" aria-live="polite">Sound is off. Tap anywhere to enable.</div>
+  <audio id="scan-silent-audio" loop preload="auto" playsinline aria-hidden="true" style="display:none" src="data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"></audio>
 
   <!-- Top Bar -->
   <header class="scanner-header">
@@ -1721,9 +1786,6 @@
         <span class="brand-badge">Accreditation desk</span>
       </div>
     </a>
-    <button type="button" class="sound-toggle-btn" id="sound-toggle" onclick="toggleScanMute()" aria-label="Mute scan sounds" title="Mute scan sounds" aria-pressed="false">
-      <svg class="icon sm"><use href="#icon-speaker-on"></use></svg>
-    </button>
     <button type="button" class="logout-btn" onclick="logout()">
       <svg class="icon sm"><use href="#icon-lock"></use></svg>
       <span>Sign out</span>
@@ -1746,7 +1808,7 @@
         <div class="section-kicker">
           <span>Active checkpoint</span>
           <span class="station-mode-tag" id="station-mode-indicator">
-            <span class="live-dot"></span> Auto-stamp on scan
+            <span class="live-dot"></span> Confirm before check-in
           </span>
         </div>
 
@@ -2155,90 +2217,181 @@
     let lastScannedCode = null;
     let lastScannedTime = 0;
     const SAME_CODE_COOLDOWN_MS = 4000;
-    const SCAN_MUTE_KEY = 'rns_scan_muted';
     let audioCtx = null;
-    let scanMuted = false;
+    let masterGain = null;
+    let audioCompressor = null;
+    let audioUnlockPromise = null;
+    let confirmation = null;
+    let isCheckingIn = false;
+    let sheetPreviousFocus = null;
+    let sheetUndoTimer = null;
+    let confirmationTimer = null;
+    let audioBannerTimer = null;
+    let scannerStartPromise = null;
 
-    function getAudioCtx() {
-      if (audioCtx) return audioCtx;
+    function createAudioCtx() {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return null;
+      if (!AudioContextClass) throw new Error('Web Audio is unavailable.');
       audioCtx = new AudioContextClass();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.9;
+      audioCompressor = audioCtx.createDynamicsCompressor();
+      audioCompressor.threshold.value = -18;
+      audioCompressor.knee.value = 18;
+      audioCompressor.ratio.value = 4;
+      audioCompressor.attack.value = 0.003;
+      audioCompressor.release.value = 0.18;
+      masterGain.connect(audioCompressor).connect(audioCtx.destination);
       return audioCtx;
     }
 
-    function unlockAudio() {
-      try {
-        const context = getAudioCtx();
-        if (context?.state === 'suspended') void context.resume();
-      } catch (error) {}
+    function getAudioCtx() {
+      if (!audioCtx || audioCtx.state === 'closed' || audioCtx.state === 'interrupted') return createAudioCtx();
+      return audioCtx;
     }
 
-    function updateMuteControl() {
-      const button = document.getElementById('sound-toggle');
-      const use = button?.querySelector('use');
-      if (button) {
-        button.setAttribute('aria-pressed', String(scanMuted));
-        button.setAttribute('aria-label', scanMuted ? 'Unmute scan sounds' : 'Mute scan sounds');
-        button.title = scanMuted ? 'Unmute scan sounds' : 'Mute scan sounds';
+    function showSoundOffBanner() {
+      const banner = document.getElementById('scan-sound-banner');
+      if (!banner) return;
+      banner.classList.add('visible');
+      clearTimeout(audioBannerTimer);
+      audioBannerTimer = setTimeout(() => banner.classList.remove('visible'), 4500);
+    }
+
+    async function unlockAudio(playCheck = false) {
+      if (audioUnlockPromise) {
+        if (!playCheck) return audioUnlockPromise;
+        return audioUnlockPromise.then(async running => {
+          if (!running) return false;
+          try {
+            await playTone(1046.5, { duration: 0.12, peak: 0.16 });
+            await new Promise(resolve => setTimeout(resolve, 150));
+            return audioCtx?.state === 'running';
+          } catch (error) {
+            console.warn('Sound check failed:', error);
+            return false;
+          }
+        });
       }
-      if (use) use.setAttribute('href', scanMuted ? '#icon-speaker-off' : '#icon-speaker-on');
-    }
-
-    function toggleScanMute() {
-      scanMuted = !scanMuted;
-      try { localStorage.setItem(SCAN_MUTE_KEY, scanMuted ? 'true' : 'false'); } catch (error) {}
-      updateMuteControl();
-    }
-
-    function playTone({ frequency, type = 'sine', start, attack = 0.005, decay = 0.12, peak = 0.18, endFrequency, filterFrequency }) {
-      const context = getAudioCtx();
-      if (!context || scanMuted) return;
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      const startAt = start ?? context.currentTime;
-      oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, startAt);
-      if (endFrequency !== undefined) oscillator.frequency.linearRampToValueAtTime(endFrequency, startAt + decay);
-      gain.gain.setValueAtTime(0.0001, startAt);
-      gain.gain.linearRampToValueAtTime(peak, startAt + attack);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startAt + decay);
-      if (filterFrequency) {
-        const filter = context.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(filterFrequency, startAt);
-        oscillator.connect(filter).connect(gain);
-      } else {
-        oscillator.connect(gain);
-      }
-      gain.connect(context.destination);
-      oscillator.start(startAt);
-      oscillator.stop(startAt + decay + 0.01);
-    }
-
-    function playScanFeedback(kind) {
-      const vibration = { success: 40, duplicate: [40, 60, 40], error: 200 }[kind];
-      try { if (vibration !== undefined && navigator.vibrate) navigator.vibrate(vibration); } catch (error) {}
-      if (scanMuted) return;
-      try {
-        const context = getAudioCtx();
-        if (!context) return;
-        if (context.state === 'suspended') void context.resume();
-        const now = context.currentTime;
-        if (kind === 'success') {
-          playTone({ frequency: 880, start: now, attack: 0.005, decay: 0.12, peak: 0.18 });
-          playTone({ frequency: 1318, start: now + 0.1, attack: 0.005, decay: 0.12, peak: 0.18 });
-        } else if (kind === 'duplicate') {
-          playTone({ frequency: 660, type: 'triangle', start: now, attack: 0.004, decay: 0.055, peak: 0.16 });
-          playTone({ frequency: 660, type: 'triangle', start: now + 0.07, attack: 0.004, decay: 0.055, peak: 0.16 });
-        } else if (kind === 'error') {
-          playTone({ frequency: 220, endFrequency: 165, filterFrequency: 800, start: now, attack: 0.005, decay: 0.22, peak: 0.18 });
+      audioUnlockPromise = (async () => {
+        try {
+          if (navigator.audioSession) navigator.audioSession.type = 'playback';
+        } catch (error) {
+          console.warn('Audio session playback mode is unavailable:', error);
         }
-      } catch (error) {}
+        try {
+          const context = getAudioCtx();
+          const resumePromise = context.state === 'running' ? Promise.resolve() : context.resume();
+          const silentAudio = document.getElementById('scan-silent-audio');
+          let silentPlayPromise = Promise.resolve();
+          if (silentAudio?.paused) {
+            silentPlayPromise = silentAudio.play().catch(error => {
+              console.warn('Silent playback unlock was blocked:', error);
+            });
+          }
+          const soundCheckPromise = playCheck
+            ? playTone(1046.5, { duration: 0.12, peak: 0.16 })
+            : Promise.resolve(true);
+          await Promise.all([resumePromise, silentPlayPromise, soundCheckPromise]);
+          if (playCheck) await new Promise(resolve => setTimeout(resolve, 150));
+          const running = context.state === 'running';
+          if (running) document.getElementById('scan-sound-banner')?.classList.remove('visible');
+          return running;
+        } catch (error) {
+          console.warn('Audio unlock failed:', error);
+          showSoundOffBanner();
+          return false;
+        } finally {
+          audioUnlockPromise = null;
+        }
+      })();
+      return audioUnlockPromise;
     }
+
+    async function resumeAudio() {
+      try {
+        if (audioCtx && audioCtx.state !== 'running') await unlockAudio(false);
+      } catch (error) {
+        console.warn('Audio resume failed:', error);
+      }
+    }
+
+    async function playTone(frequency, options = {}) {
+      const context = getAudioCtx();
+      if (context.state !== 'running') await context.resume();
+      if (context.state !== 'running') {
+        showSoundOffBanner();
+        return false;
+      }
+      const { type = 'sine', delay = 0, duration = 0.22, peak = 0.42, filterFrequency, partial = true } = options;
+      const startAt = context.currentTime + delay;
+      const playOscillator = (oscillatorType, hz, gainScale) => {
+        const oscillator = context.createOscillator();
+        const envelope = context.createGain();
+        oscillator.type = oscillatorType;
+        oscillator.frequency.setValueAtTime(hz, startAt);
+        envelope.gain.setValueAtTime(0.0001, startAt);
+        envelope.gain.linearRampToValueAtTime(peak * gainScale, startAt + 0.003);
+        envelope.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+        let source = oscillator;
+        if (filterFrequency) {
+          const filter = context.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(filterFrequency, startAt);
+          oscillator.connect(filter);
+          source = filter;
+        }
+        source.connect(envelope).connect(masterGain);
+        oscillator.start(startAt);
+        oscillator.stop(startAt + duration + 0.01);
+      };
+      playOscillator(type, frequency, 1);
+      if (partial) playOscillator('sine', frequency * 2.76, 0.25);
+      return true;
+    }
+
+    async function playScanFeedback(kind) {
+      try {
+        const context = getAudioCtx();
+        if (context.state !== 'running') await context.resume();
+        if (context.state !== 'running') {
+          showSoundOffBanner();
+          return;
+        }
+        if (/Android/i.test(navigator.userAgent || '') && navigator.vibrate) {
+          const vibration = { recognized: 35, checkedin: 40, duplicate: [40, 60, 40], error: [70, 50, 70] }[kind];
+          if (vibration) navigator.vibrate(vibration);
+        }
+        if (kind === 'recognized') {
+          await playTone(1046.5, { duration: 0.45, delay: 0, peak: 0.4 });
+          await playTone(1568, { duration: 0.45, delay: 0.11, peak: 0.4 });
+        } else if (kind === 'checkedin') {
+          await playTone(784, { duration: 0.22, delay: 0, peak: 0.48 });
+          await playTone(1046.5, { duration: 0.22, delay: 0.09, peak: 0.48 });
+        } else if (kind === 'duplicate') {
+          await playTone(660, { type: 'triangle', partial: true, duration: 0.08, delay: 0, peak: 0.38 });
+          await playTone(660, { type: 'triangle', partial: true, duration: 0.08, delay: 0.07, peak: 0.38 });
+        } else if (kind === 'error') {
+          await playTone(196, { duration: 0.13, delay: 0, peak: 0.4, filterFrequency: 900 });
+          await playTone(196, { duration: 0.13, delay: 0.17, peak: 0.4, filterFrequency: 900 });
+        }
+      } catch (error) {
+        console.warn('Scan feedback failed:', error);
+        showSoundOffBanner();
+      }
+    }
+
+    function unlockOnFirstGesture() { void unlockAudio(false); }
+    document.addEventListener('pointerdown', unlockOnFirstGesture, { passive: true });
+    document.addEventListener('touchend', unlockOnFirstGesture, { passive: true });
+    document.addEventListener('click', unlockOnFirstGesture);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) void resumeAudio(); });
+    window.addEventListener('pageshow', () => { void resumeAudio(); });
+    window.addEventListener('focus', () => { void resumeAudio(); });
 
     // ─── Persistent Staff Session Management (localStorage with 24-hr Expiry) ───
     const STAFF_SESSION_KEY = 'rns_staff_session_token';
+    const STAFF_NAME_KEY = 'rns_staff_name';
     const MAX_SESSION_AGE_MS = 24 * 60 * 60 * 1000;
 
     function getStaffSessionToken() {
@@ -2255,7 +2408,7 @@
         if (!token || typeof token !== 'string') return null;
 
         const parts = token.trim().split('.');
-        if (parts.length === 4 && parts[0] === 'staff') {
+        if ((parts.length === 4 || parts.length === 5) && parts[0] === 'staff') {
           const timestamp = parseInt(parts[1], 10);
           if (!isNaN(timestamp)) {
             const age = Date.now() - timestamp;
@@ -2281,6 +2434,7 @@
     function clearStaffSessionToken() {
       try {
         localStorage.removeItem(STAFF_SESSION_KEY);
+        localStorage.removeItem(STAFF_NAME_KEY);
         sessionStorage.removeItem(STAFF_SESSION_KEY);
       } catch (e) {}
     }
@@ -2347,13 +2501,55 @@
         .replace(/'/g, '&#039;');
     }
 
+    function getStaffName() {
+      try { return localStorage.getItem(STAFF_NAME_KEY) || ''; } catch (error) { return ''; }
+    }
+
+    function showScanStartGate() {
+      const gate = document.getElementById('scan-start-overlay');
+      if (gate) {
+        gate.style.display = 'flex';
+        gate.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => document.getElementById('btn-start-scanning')?.focus());
+      }
+    }
+
+    async function startScanningFromGesture() {
+      if (scannerStartPromise) return scannerStartPromise;
+      const button = document.getElementById('btn-start-scanning');
+      scannerStartPromise = (async () => {
+        if (button) { button.disabled = true; button.textContent = 'Enabling audio...'; }
+        try {
+          await unlockAudio(true);
+          const gate = document.getElementById('scan-start-overlay');
+          if (gate) { gate.style.display = 'none'; gate.setAttribute('aria-hidden', 'true'); }
+          await initCameraScanner();
+          await loadScanStats();
+        } catch (error) {
+          console.warn('Scanner start failed:', error);
+          showSoundOffBanner();
+          showScanStartGate();
+        } finally {
+          if (button) { button.disabled = false; button.textContent = 'Tap to start scanning'; }
+          scannerStartPromise = null;
+        }
+      })();
+      return scannerStartPromise;
+    }
+
     // ─── Authentication Handlers ─────────────────────────────────────
     async function loginWithPin() {
-      unlockAudio();
       const input = document.getElementById('pin-input');
+      const staffInput = document.getElementById('staff-name-input');
       const errBox = document.getElementById('auth-error');
       const submitBtn = document.getElementById('btn-auth-submit');
       const pin = input ? input.value.trim() : '';
+      const staffName = staffInput ? staffInput.value.trim().slice(0, 80) : '';
+
+      if (!staffName) {
+        if (errBox) { errBox.textContent = 'Please enter your staff name.'; errBox.style.display = 'block'; }
+        return;
+      }
 
       if (!pin) {
         if (errBox) {
@@ -2373,15 +2569,15 @@
         const { ok, data } = await fetchJson('/api/staff-auth', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pin })
+          body: JSON.stringify({ pin, staffName })
         }, 12000);
 
         if (ok && data?.success && data?.sessionToken) {
           setStaffSessionToken(data.sessionToken);
+          try { localStorage.setItem(STAFF_NAME_KEY, data.staffName || staffName); } catch (error) {}
           const overlay = document.getElementById('auth-overlay');
           if (overlay) overlay.style.display = 'none';
-          initCameraScanner();
-          loadScanStats();
+          showScanStartGate();
         } else {
           if (errBox) {
             errBox.textContent = data?.error || 'Invalid organizer PIN.';
@@ -2403,6 +2599,9 @@
 
     function logout() {
       clearStaffSessionToken();
+      closeCheckinSheet({ resume: false });
+      const startGate = document.getElementById('scan-start-overlay');
+      if (startGate) { startGate.style.display = 'none'; startGate.setAttribute('aria-hidden', 'true'); }
       if (html5QrCode && isScannerRunning) {
         html5QrCode.stop().catch(() => {});
       }
@@ -2418,18 +2617,18 @@
     // Check session on load
     document.addEventListener('DOMContentLoaded', () => {
       try {
-        scanMuted = localStorage.getItem(SCAN_MUTE_KEY) === 'true';
+        localStorage.removeItem('rns_scan_muted');
       } catch (error) {
-        scanMuted = false;
+        console.warn('Could not clear old audio preference:', error);
       }
-      updateMuteControl();
       const token = getStaffSessionToken();
+      const staffName = getStaffName();
       const overlay = document.getElementById('auth-overlay');
-      if (token) {
+      if (token && staffName) {
         if (overlay) overlay.style.display = 'none';
-        initCameraScanner();
-        loadScanStats();
+        showScanStartGate();
       } else {
+        if (token) clearStaffSessionToken();
         if (overlay) overlay.style.display = 'flex';
       }
 
@@ -2569,7 +2768,7 @@
           modeTag.innerHTML = '<span class="live-dot"></span> Inspection only (no stamp)';
         } else {
           modeTag.className = 'station-mode-tag';
-          modeTag.innerHTML = '<span class="live-dot"></span> Auto-stamp on scan';
+          modeTag.innerHTML = '<span class="live-dot"></span> Confirm before check-in';
         }
       }
 
@@ -2583,6 +2782,22 @@
     });
 
     document.addEventListener('keydown', (e) => {
+      const sheet = document.getElementById('checkin-sheet');
+      const sheetOpen = document.getElementById('checkin-sheet-backdrop')?.style.display === 'flex';
+      if (sheetOpen && e.key === 'Escape') {
+        e.preventDefault();
+        if (!isCheckingIn) cancelConfirmCheckin();
+        return;
+      }
+      if (sheetOpen && e.key === 'Tab' && sheet) {
+        const focusable = [...sheet.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), [tabindex]:not([tabindex="-1"])')];
+        if (focusable.length) {
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
       if (e.key === 'Escape') {
         closeStationMenu();
         closeDelegationMemberModal();
@@ -2719,7 +2934,8 @@
       if (isProcessing) return;
 
       const modal = document.getElementById('delegation-member-modal');
-      if (modal && modal.classList.contains('open')) return;
+      const checkinSheet = document.getElementById('checkin-sheet-backdrop');
+      if ((modal && modal.classList.contains('open')) || checkinSheet?.style.display === 'flex') return;
       if (isResultCardActive) return;
 
       const now = Date.now();
@@ -2743,6 +2959,7 @@
       try {
         const payload = parseScanPayload(decodedText);
         if (!payload || (!payload.token && !payload.id)) {
+          confirmation = { payload: null, rawScan: decodedText, mode: 'error' };
           showErrorResult('Invalid pass', 'The scanned QR code is not recognized as an official pass.');
           return;
         }
@@ -2752,7 +2969,8 @@
         if (verifyingOverlay) verifyingOverlay.style.display = 'none';
 
         const modalOpen = document.getElementById('delegation-member-modal')?.classList.contains('open');
-        if (!modalOpen && !isResultCardActive && html5QrCode && isScannerRunning) {
+        const sheetOpen = document.getElementById('checkin-sheet-backdrop')?.style.display === 'flex';
+        if (!modalOpen && !sheetOpen && !isResultCardActive && html5QrCode && isScannerRunning) {
           try {
             html5QrCode.resume();
           } catch (e) {}
@@ -2789,6 +3007,339 @@
       };
     }
 
+    function checkpointForCandidate(candidate, memberIndex, stationKey) {
+      if (candidate.type === 'delegation') return candidate.roster?.[memberIndex]?.checkpoints?.[stationKey] || null;
+      return candidate.checkpoints?.[stationKey] || candidate.allCheckpoints?.[0]?.[stationKey] || null;
+    }
+
+    function getConfirmationMember(candidate, memberIndex) {
+      return candidate.type === 'delegation' ? candidate.roster?.[memberIndex] || null : null;
+    }
+
+    function sheetField(label, value) {
+      return `<div class="checkin-sheet-detail"><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value || 'Not available')}</dd></div>`;
+    }
+
+    function setCheckinSheetStatus(label, type) {
+      const status = document.getElementById('checkin-sheet-status');
+      if (!status) return;
+      const className = type === 'success' ? 'chip-success' : type === 'warning' ? 'chip-warning' : type === 'error' ? 'chip-error' : 'chip-neutral';
+      const icon = type === 'success' ? 'check' : type === 'error' ? 'x' : type === 'warning' ? 'alert-triangle' : 'shield';
+      status.innerHTML = `<span class="status-chip ${className}"><svg class="icon sm"><use href="#icon-${icon}"></use></svg><span>${escapeHtml(label)}</span></span>`;
+    }
+
+    function closeCheckinSheet({ resume = true, clearResult = true } = {}) {
+      clearTimeout(confirmationTimer);
+      const backdrop = document.getElementById('checkin-sheet-backdrop');
+      if (backdrop) { backdrop.style.display = 'none'; backdrop.setAttribute('aria-hidden', 'true'); }
+      confirmation = null;
+      isCheckingIn = false;
+      if (clearResult) isResultCardActive = false;
+      if (sheetPreviousFocus?.isConnected) sheetPreviousFocus.focus();
+      sheetPreviousFocus = null;
+      if (resume && isScannerRunning && html5QrCode) {
+        try { html5QrCode.resume(); } catch (error) { console.warn('Camera resume failed:', error); }
+      }
+    }
+
+    function renderCheckinSheet(mode, details = {}) {
+      const backdrop = document.getElementById('checkin-sheet-backdrop');
+      const title = document.getElementById('checkin-sheet-title');
+      const description = document.getElementById('checkin-sheet-details');
+      const alert = document.getElementById('checkin-sheet-alert');
+      const actions = document.getElementById('checkin-sheet-actions');
+      if (!backdrop || !title || !description || !actions) return;
+      if (html5QrCode && isScannerRunning) {
+        try { html5QrCode.pause(true); } catch (error) { console.warn('Camera pause failed:', error); }
+      }
+      title.textContent = details.title || (mode === 'confirm' ? 'Confirm check-in' : mode === 'success' ? 'Check-in complete' : mode === 'duplicate' ? 'Already checked in' : mode === 'inspect' ? 'Pass details' : 'Unable to verify pass');
+      setCheckinSheetStatus(details.status || (mode === 'confirm' ? 'Ready to check in' : mode === 'success' ? 'Checked in' : mode === 'duplicate' ? 'Already checked in' : mode === 'inspect' ? 'Inspection mode' : 'Error'), mode === 'success' ? 'success' : mode === 'duplicate' ? 'warning' : mode === 'error' ? 'error' : 'neutral');
+      description.innerHTML = details.fields || '';
+      if (alert) {
+        alert.className = 'checkin-sheet-alert';
+        alert.textContent = '';
+        if (details.message) {
+          alert.className = `checkin-sheet-alert ${mode === 'duplicate' ? 'warning' : 'error'}`;
+          alert.textContent = details.message;
+        }
+      }
+
+      if (mode === 'confirm') {
+        actions.innerHTML = `
+          <button type="button" class="checkin-sheet-primary" id="btn-confirm-checkin" onclick="submitConfirmCheckin()">Check in</button>
+          <button type="button" class="checkin-sheet-secondary" id="btn-cancel-checkin" onclick="cancelConfirmCheckin()">Cancel</button>
+        `;
+      } else if (mode === 'success') {
+        actions.innerHTML = `
+          <button type="button" class="checkin-sheet-primary" id="btn-sheet-undo" onclick="undoLastCheckin()">Undo</button>
+          <button type="button" class="checkin-sheet-secondary" onclick="scanNextFromSheet()">Scan next</button>
+        `;
+        const undoButton = document.getElementById('btn-sheet-undo');
+        if (undoButton) undoButton.disabled = Date.now() >= (undoCheckin?.expiresAt || 0);
+      } else if (mode === 'duplicate') {
+        actions.innerHTML = `
+          <button type="button" class="checkin-sheet-primary" onclick="scanNextFromSheet()">Scan next</button>
+          ${details.allowOverride ? '<button type="button" class="checkin-sheet-secondary" onclick="forceOverrideFromSheet()">Override check-in</button>' : ''}
+        `;
+      } else if (mode === 'error') {
+        actions.innerHTML = `
+          <button type="button" class="checkin-sheet-primary" onclick="retryCheckinFromSheet()">Retry</button>
+          <button type="button" class="checkin-sheet-secondary" onclick="cancelConfirmCheckin()">Cancel</button>
+        `;
+      } else {
+        actions.innerHTML = '<button type="button" class="checkin-sheet-secondary" onclick="scanNextFromSheet()">Scan next</button>';
+      }
+
+      if (backdrop.style.display !== 'flex') sheetPreviousFocus = document.activeElement;
+      backdrop.style.display = 'flex';
+      backdrop.setAttribute('aria-hidden', 'false');
+      isResultCardActive = true;
+      requestAnimationFrame(() => actions.querySelector('button:not(:disabled)')?.focus());
+    }
+
+    function openCandidateCheckin(candidate, payload, stationKey, memberIndex = 0, mode = 'confirm') {
+      const member = getConfirmationMember(candidate, memberIndex);
+      const checkpoint = checkpointForCandidate(candidate, memberIndex, stationKey);
+      const personName = member?.name || candidate.name || '';
+      const committee = member?.committee || candidate.allocatedCommittee || candidate.allocated_committee || '';
+      const portfolio = member?.portfolio || candidate.allocatedPortfolio || candidate.allocated_portfolio || '';
+      confirmation = {
+        candidate,
+        payload,
+        stationKey,
+        memberIndex,
+        mode,
+        member,
+        personName,
+        checkpoint,
+        type: candidate.type || payload?.type || 'individual',
+        id: candidate.rawId || candidate.id || payload?.id,
+        token: candidate.token || payload?.token
+      };
+      if (mode === 'confirm' && checkpoint?.redeemed) {
+        mode = 'duplicate';
+        confirmation.mode = mode;
+      }
+      const fields = [
+        sheetField('Name', personName),
+        sheetField('Institution', candidate.institution || ''),
+        sheetField('Committee', committee),
+        sheetField('Portfolio', portfolio),
+        sheetField('Station', STATION_META[stationKey]?.title || stationKey)
+      ];
+      if (mode === 'duplicate') {
+        fields.push(sheetField('Checked in', formatTime(checkpoint?.redeemed_at) || 'Previously checked in'));
+        fields.push(sheetField('Staff', checkpoint?.redeemed_by || 'Staff'));
+        void playScanFeedback('duplicate');
+      } else if (mode === 'confirm' || mode === 'inspect') {
+        void playScanFeedback('recognized');
+      }
+      renderCheckinSheet(mode, {
+        title: mode === 'confirm' ? 'Confirm check-in' : mode === 'inspect' ? 'Pass details' : mode === 'duplicate' ? 'Already checked in' : undefined,
+        status: mode === 'confirm' ? 'Ready to check in' : undefined,
+        fields: fields.join(''),
+        message: mode === 'duplicate' ? 'This pass is already checked in at this station.' : '',
+        allowOverride: mode === 'duplicate' && !!checkpoint?.redeemed
+      });
+    }
+
+    async function submitConfirmCheckin(force = false) {
+      if (!confirmation || isCheckingIn) return;
+      const current = confirmation;
+      const sessionToken = getStaffSessionToken();
+      if (!sessionToken) { logout(); return; }
+      isCheckingIn = true;
+      const button = document.getElementById('btn-confirm-checkin');
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<svg class="icon sm spin"><use href="#icon-refresh"></use></svg> Checking in...';
+      }
+      const cancelButton = document.getElementById('btn-cancel-checkin');
+      if (cancelButton) cancelButton.disabled = true;
+      try {
+        const { ok, status, data } = await fetchJson('/api/update-checkpoint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
+          body: JSON.stringify({
+            token: current.token,
+            id: current.id,
+            type: current.type,
+            member_index: current.memberIndex,
+            checkpoint_key: current.stationKey,
+            redeemed: true,
+            force,
+            redeemed_by: getStaffName(),
+            staffName: getStaffName()
+          })
+        }, 12000);
+        if (status === 401) { logout(); return; }
+        if (data?.duplicate) {
+          isCheckingIn = false;
+          current.checkpoint = data.checkpoint || { redeemed: true, redeemed_at: data.redeemed_at, redeemed_by: data.redeemed_by };
+          current.mode = 'duplicate';
+          void playScanFeedback('duplicate');
+          renderCheckinSheet('duplicate', {
+            fields: sheetDetailsForConfirmation(current, data),
+            message: data.message || 'This pass is already checked in at this station.',
+            allowOverride: true
+          });
+          return;
+        }
+        if (!ok || !data?.success) throw new Error(getFriendlyErrorMessage(data, 'Server rejected check-in.'));
+
+        isCheckingIn = false;
+        current.mode = 'success';
+        current.checkpoint = data.checkpoint || { redeemed: true, redeemed_at: data.redeemed_at, redeemed_by: data.redeemed_by };
+        if (current.member) {
+          if (!current.member.checkpoints) current.member.checkpoints = {};
+          current.member.checkpoints[current.stationKey] = current.checkpoint;
+        } else if (current.candidate.checkpoints) {
+          current.candidate.checkpoints[current.stationKey] = current.checkpoint;
+        }
+        undoCheckin = {
+          token: current.token,
+          id: current.id,
+          type: current.type,
+          memberIndex: current.memberIndex,
+          stationKey: current.stationKey,
+          expiresAt: Date.now() + 30000
+        };
+        clearTimeout(sheetUndoTimer);
+        sheetUndoTimer = setTimeout(() => {
+          const undo = document.getElementById('btn-sheet-undo');
+          if (undo) undo.remove();
+          const cardUndo = document.getElementById('btn-result-undo');
+          if (cardUndo) cardUndo.remove();
+          undoCheckin = null;
+        }, 30000);
+        void playScanFeedback('checkedin');
+        renderCheckinSheet('success', {
+          fields: sheetDetailsForConfirmation(current, data),
+          status: 'Checked in'
+        });
+        loadScanStats();
+        clearTimeout(confirmationTimer);
+        confirmationTimer = setTimeout(() => scanNextFromSheet(), 4000);
+      } catch (error) {
+        isCheckingIn = false;
+        current.retryStamp = true;
+        console.warn('Check-in request failed:', error);
+        void playScanFeedback('error');
+        renderCheckinSheet('error', {
+          fields: sheetDetailsForConfirmation(current),
+          status: 'Check-in failed',
+          message: error.message || 'Unable to check in. Check the network and retry.'
+        });
+      }
+    }
+
+    function sheetDetailsForConfirmation(current, result = {}) {
+      const checkpoint = result.checkpoint || current.checkpoint || {};
+      const member = current.member;
+      return [
+        sheetField('Name', result.delegateName || current.personName),
+        sheetField('Institution', current.candidate.institution || ''),
+        sheetField('Committee', member?.committee || result.allocatedCommittee || current.candidate.allocatedCommittee || current.candidate.allocated_committee || ''),
+        sheetField('Portfolio', member?.portfolio || result.allocatedPortfolio || current.candidate.allocatedPortfolio || current.candidate.allocated_portfolio || ''),
+        sheetField('Station', STATION_META[current.stationKey]?.title || current.stationKey),
+        ...(checkpoint.redeemed ? [sheetField('Time', formatTime(checkpoint.redeemed_at)), sheetField('Staff', checkpoint.redeemed_by || result.redeemed_by || getStaffName())] : [])
+      ].join('');
+    }
+
+    function cancelConfirmCheckin() {
+      if (isCheckingIn) return;
+      closeCheckinSheet({ resume: true });
+    }
+
+    function scanNextFromSheet() {
+      clearTimeout(confirmationTimer);
+      if (confirmation?.mode === 'success') {
+        showSuccessResult(confirmation.candidate, confirmation.stationKey, confirmation.payload, confirmation.checkpoint);
+      }
+      closeCheckinSheet({ resume: true, clearResult: false });
+      isResultCardActive = false;
+    }
+
+    function handleCheckinBackdrop(event) {
+      if (!isCheckingIn && event.target?.id === 'checkin-sheet-backdrop') cancelConfirmCheckin();
+    }
+
+    function retryCheckinFromSheet() {
+      const current = confirmation;
+      if (current?.retryUndo) {
+        current.retryUndo = false;
+        void undoLastCheckin();
+        return;
+      }
+      if (current?.candidate && current.retryStamp) {
+        current.retryStamp = false;
+        renderCheckinSheet('confirm', { fields: sheetDetailsForConfirmation(current) });
+        void submitConfirmCheckin();
+      } else if (current?.payload) {
+        closeCheckinSheet({ resume: false });
+        void processCheckIn(current.payload);
+      } else if (current?.rawScan) {
+        lastScannedCode = null;
+        lastScannedTime = 0;
+        closeCheckinSheet({ resume: false });
+        void onQrCodeDetected(current.rawScan);
+      } else {
+        scanNextFromSheet();
+      }
+    }
+
+    async function forceOverrideFromSheet() {
+      if (!confirmation) return;
+      const current = confirmation;
+      current.mode = 'confirm';
+      renderCheckinSheet('confirm', { fields: sheetDetailsForConfirmation(current), status: 'Override check-in' });
+      await submitConfirmCheckin(true);
+    }
+
+    async function undoLastCheckin() {
+      if (!undoCheckin || Date.now() >= undoCheckin.expiresAt) return;
+      const undo = undoCheckin;
+      try {
+        clearTimeout(confirmationTimer);
+        const { ok, status, data } = await fetchJson('/api/update-checkpoint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getStaffSessionToken()}` },
+          body: JSON.stringify({
+            token: undo.token,
+            id: undo.id,
+            type: undo.type,
+            member_index: undo.memberIndex,
+            checkpoint_key: undo.stationKey,
+            redeemed: false,
+            redeemed_by: getStaffName(),
+            staffName: getStaffName()
+          })
+        }, 12000);
+        if (status === 401) { logout(); return; }
+        if (!ok || !data?.success) throw new Error(data?.error || 'Unable to undo check-in.');
+        clearTimeout(sheetUndoTimer);
+        undoCheckin = null;
+        document.getElementById('btn-sheet-undo')?.remove();
+        document.getElementById('btn-result-undo')?.remove();
+        if (confirmation) {
+          confirmation.mode = 'reversed';
+          confirmation.checkpoint = { redeemed: false };
+          renderCheckinSheet('inspect', { title: 'Check-in reversed', status: 'Reversed', fields: sheetDetailsForConfirmation(confirmation) });
+        } else {
+          const badge = document.getElementById('result-badge');
+          const details = document.getElementById('result-details');
+          if (badge) badge.innerHTML = '<span class="status-chip chip-warning">Reversed</span>';
+          if (details) details.insertAdjacentHTML('beforeend', '<div class="result-notice warning-box">Check-in reversed.</div>');
+        }
+        await loadScanStats();
+      } catch (error) {
+        console.warn('Undo request failed:', error);
+        if (!confirmation) confirmation = { payload: null, retryUndo: true };
+        else confirmation.retryUndo = true;
+        renderCheckinSheet('error', { title: 'Undo failed', status: 'Undo failed', message: error.message || 'Unable to reverse this check-in.' });
+      }
+    }
+
     // ─── Core Process Check-in ──────────────────────────────────────
     async function processCheckIn(payload) {
       const sessionToken = getStaffSessionToken();
@@ -2798,6 +3349,7 @@
       }
 
       const activeStation = document.getElementById('station-dropdown')?.value || 'day1_entry';
+      confirmation = { payload, mode: 'lookup' };
 
       try {
         let candidate = null;
@@ -2837,7 +3389,7 @@
         if (!candidate || !candidate.success) {
           const errMsg = getFriendlyErrorMessage(candidate, 'No registration found for this pass.');
           const title = candidate?.code === 'TOKEN_INVALID' ? 'Invalid pass' : 'Record not found';
-          showErrorResult(title, errMsg);
+          showErrorResult(title, errMsg, payload);
           return;
         }
 
@@ -2846,71 +3398,28 @@
           activeModalPayload = payload;
           activeModalStation = activeStation;
 
-          if (activeStation === 'inspect') {
-            showDelegationInspectionProfile(candidate, payload);
+          if (payload.memberIndex !== undefined) {
+            openCandidateCheckin(candidate, payload, activeStation, payload.memberIndex, activeStation === 'inspect' ? 'inspect' : 'confirm');
           } else {
+            void playScanFeedback('recognized');
             openDelegationMemberModal(candidate, activeStation, payload);
-            if (payload.autoStamp && payload.memberIndex !== undefined) {
-              stampDelegationMember(payload.memberIndex, false);
-            }
           }
           return;
         }
 
-        if (activeStation === 'inspect') {
-          showCandidateProfile(candidate, 'Inspection mode', 'success');
-          return;
-        }
-
-        const { ok, status, data: result } = await fetchJson('/api/update-checkpoint', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionToken}`
-          },
-          body: JSON.stringify({
-            token: payload.token || candidate.token,
-            id: payload.id || candidate.id,
-            type: candidate.type || payload.type || 'individual',
-            checkpoint_key: activeStation,
-            checkpointKey: activeStation,
-            redeemed: true,
-            status: true,
-            staffName: 'Secretariat Staff'
-          })
-        }, 12000);
-
-        if (status === 401) {
-          alert('Staff session expired. Please re-authenticate.');
-          logout();
-          return;
-        }
-
-        if (result?.duplicate) {
-          showWarningResult(candidate, result.message, activeStation, payload);
-          return;
-        }
-
-        if (result?.success) {
-          showSuccessResult(candidate, activeStation, payload, result);
-          loadScanStats();
-        } else {
-          showErrorResult('Check-in rejected', getFriendlyErrorMessage(result, 'Server rejected check-in.'));
-        }
+        openCandidateCheckin(candidate, payload, activeStation, 0, activeStation === 'inspect' ? 'inspect' : 'confirm');
 
       } catch (err) {
         const msg = err.code === 'TIMEOUT'
           ? 'Check-in request timed out. Please tap to retry.'
           : (err.message || 'Could not connect to server.');
-        showErrorResult('Connection error', msg);
+        showErrorResult('Connection error', msg, payload);
       }
     }
 
     // ─── Result Card Presentations ──────────────────────────────────
     function dismissResultCard() {
       isResultCardActive = false;
-      lastScannedCode = null;
-      lastScannedTime = 0;
 
       const card = document.getElementById('result-box');
       if (card) {
@@ -2929,7 +3438,6 @@
     }
 
     function showSuccessResult(candidate, stationKey, payload, result) {
-      playScanFeedback('success');
       isResultCardActive = true;
       const card = document.getElementById('result-box');
       card.className = 'result-card success';
@@ -2960,11 +3468,13 @@
         </div>
         <div class="result-timestamp">
           <svg class="icon sm"><use href="#icon-check"></use></svg>
-          <span>Checked in at ${escapeHtml(stationName)} (${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>
+          <span>Checked in at ${escapeHtml(stationName)} (${escapeHtml(formatTime(result?.redeemed_at || result?.redeemedAt) || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))})</span>
+          ${escapeHtml(result?.redeemed_by || result?.redeemedBy || getStaffName())}
         </div>
       `;
 
       document.getElementById('result-actions').innerHTML = `
+        ${undoCheckin && Date.now() < undoCheckin.expiresAt ? '<button type="button" class="btn-action secondary" id="btn-result-undo" onclick="undoLastCheckin()">Undo</button>' : ''}
         <button type="button" class="btn-action primary" onclick="dismissResultCard()">
           <span>Next pass</span>
           <svg class="icon sm"><use href="#icon-arrow-right"></use></svg>
@@ -3026,36 +3536,10 @@
       `;
     }
 
-    function showErrorResult(title, message) {
+    function showErrorResult(title, message, payload = null) {
       playScanFeedback('error');
-      isResultCardActive = true;
-      const card = document.getElementById('result-box');
-      card.className = 'result-card error';
-
-      const isInvalid = title.toLowerCase().includes('invalid');
-      const chipLabel = isInvalid ? 'Invalid pass' : 'Record not found';
-
-      document.getElementById('result-badge').innerHTML = `
-        <span class="status-chip chip-error">
-          <svg class="icon sm"><use href="#icon-x"></use></svg>
-          <span>${chipLabel}</span>
-        </span>
-      `;
-
-      document.getElementById('result-name').textContent = title;
-
-      document.getElementById('result-details').innerHTML = `
-        <div class="result-notice error-box">
-          ${escapeHtml(message || 'Unable to verify credential.')}
-        </div>
-      `;
-
-      document.getElementById('result-actions').innerHTML = `
-        <button type="button" class="btn-action primary" onclick="dismissResultCard()">
-          <span>Scan next pass</span>
-          <svg class="icon sm"><use href="#icon-arrow-right"></use></svg>
-        </button>
-      `;
+          if (!confirmation?.candidate && !confirmation?.rawScan) confirmation = { payload, mode: 'error' };
+      renderCheckinSheet('error', { title, status: 'Unable to verify', message });
     }
 
     function showCandidateProfile(candidate, label, theme) {
@@ -3175,11 +3659,12 @@
         </div>
         <div class="result-timestamp">
           <svg class="icon sm"><use href="#icon-check"></use></svg>
-          <span>Checked in at ${escapeHtml(stationName)} (${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</span>
+          <span>Checked in at ${escapeHtml(stationName)} (${escapeHtml(formatTime(result?.redeemed_at || result?.redeemedAt) || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}) · ${escapeHtml(result?.redeemed_by || result?.redeemedBy || getStaffName())}</span>
         </div>
       `;
 
       document.getElementById('result-actions').innerHTML = `
+        ${undoCheckin && Date.now() < undoCheckin.expiresAt ? '<button type="button" class="btn-action secondary" id="btn-result-undo" onclick="undoLastCheckin()">Undo</button>' : ''}
         <button type="button" class="btn-action primary" onclick="openDelegationMemberModal(activeModalCandidate, '${stationKey}', activeModalPayload)">
           <span>Check in another team member</span>
           <svg class="icon sm"><use href="#icon-users"></use></svg>
@@ -3191,40 +3676,9 @@
     }
 
     async function forceOverrideCheckin(token, id, type, stationKey) {
-      const sessionToken = getStaffSessionToken();
-      if (!sessionToken) return logout();
-
-      try {
-        const { ok, status, data: d } = await fetchJson('/api/update-checkpoint', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionToken}`
-          },
-          body: JSON.stringify({
-            token,
-            id,
-            type,
-            checkpoint_key: stationKey,
-            checkpointKey: stationKey,
-            redeemed: true,
-            status: true,
-            force: true,
-            staffName: 'Secretariat Staff (Override)'
-          })
-        }, 12000);
-
-        if (status === 401) { logout(); return; }
-
-        if (d?.success) {
-          dismissResultCard();
-          await processCheckIn({ token, id, type });
-        } else {
-          alert(getFriendlyErrorMessage(d, 'Override failed.'));
-        }
-      } catch (e) {
-        alert(e.code === 'TIMEOUT' ? 'Override request timed out.' : 'Network error during override.');
-      }
+      if (!getStaffSessionToken()) return logout();
+      if (!confirmation) await processCheckIn({ token, id, type });
+      if (confirmation?.candidate) await submitConfirmCheckin(true);
     }
 
     // ─── Delegation Modal ────────────────────────────────────────────
@@ -3234,6 +3688,9 @@
       activeModalPayload = payload;
 
       const modal = document.getElementById('delegation-member-modal');
+      if (html5QrCode && isScannerRunning) {
+        try { html5QrCode.pause(true); } catch (error) { console.warn('Camera pause failed:', error); }
+      }
       const instNameEl = document.getElementById('modal-institution-name');
       const delNameEl = document.getElementById('modal-delegation-name');
       const stationPillEl = document.getElementById('modal-station-pill');
@@ -3355,8 +3812,10 @@
 
     async function stampDelegationMember(memberIndex, force = false) {
       if (!activeModalCandidate || !activeModalStation) return;
+      if (isCheckingIn) return;
       const sessionToken = getStaffSessionToken();
       if (!sessionToken) { logout(); return; }
+      isCheckingIn = true;
 
       const stationKey = activeModalStation;
       const btn = document.getElementById(`btn-stamp-m-${memberIndex}`);
@@ -3385,13 +3844,16 @@
             redeemed: true,
             status: true,
             force: force,
-            staffName: force ? 'Secretariat Staff (Override)' : 'Secretariat Staff'
+            redeemed_by: getStaffName(),
+            staffName: getStaffName()
           })
         }, 12000);
 
-        if (status === 401) { logout(); return; }
+        if (status === 401) { isCheckingIn = false; logout(); return; }
 
         if (result?.duplicate && !force) {
+          isCheckingIn = false;
+          void playScanFeedback('duplicate');
           if (alertBanner) {
             alertBanner.className = 'modal-alert-banner warning';
             alertBanner.innerHTML = `
@@ -3408,6 +3870,8 @@
         }
 
         if (result?.success) {
+          isCheckingIn = false;
+          void playScanFeedback('checkedin');
           if (alertBanner) alertBanner.style.display = 'none';
 
           if (!activeModalCandidate.roster[memberIndex].checkpoints) {
@@ -3415,13 +3879,31 @@
           }
           activeModalCandidate.roster[memberIndex].checkpoints[stationKey] = {
             redeemed: true,
-            redeemed_at: new Date().toISOString()
+            redeemed_at: result.redeemed_at || new Date().toISOString(),
+            redeemed_by: result.redeemed_by || getStaffName()
           };
+
+          undoCheckin = {
+            token: activeModalCandidate.token || activeModalPayload?.token,
+            id: activeModalCandidate.rawId || activeModalCandidate.id || activeModalPayload?.id,
+            type: 'delegation',
+            memberIndex,
+            stationKey,
+            expiresAt: Date.now() + 30000
+          };
+          clearTimeout(sheetUndoTimer);
+          sheetUndoTimer = setTimeout(() => {
+            document.getElementById('btn-sheet-undo')?.remove();
+            document.getElementById('btn-result-undo')?.remove();
+            undoCheckin = null;
+          }, 30000);
 
           renderDelegationModalRoster();
           showDelegationMemberSuccessResult(activeModalCandidate, memberIndex, stationKey, activeModalPayload, result);
           loadScanStats();
         } else {
+          isCheckingIn = false;
+          void playScanFeedback('error');
           if (alertBanner) {
             alertBanner.className = 'modal-alert-banner error';
             alertBanner.textContent = getFriendlyErrorMessage(result, 'Server rejected check-in.');
@@ -3433,6 +3915,8 @@
           }
         }
       } catch (err) {
+        isCheckingIn = false;
+        void playScanFeedback('error');
         if (alertBanner) {
           alertBanner.className = 'modal-alert-banner error';
           alertBanner.textContent = err.code === 'TIMEOUT' ? 'Request timed out. Please try again.' : (err.message || 'Network error.');
@@ -3664,6 +4148,10 @@
       }
 
       await selectAndStampCandidate(m);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Confirm check-in</span><svg class="icon sm"><use href="#icon-arrow-right"></use></svg>';
+      }
     }
 
     async function selectAndStampCandidate(candidateMatch) {
@@ -3678,7 +4166,6 @@
         id: candidateMatch.id,
         type: candidateMatch.type,
         memberIndex: candidateMatch.memberIndex,
-        autoStamp: true
       };
 
       try {
@@ -3686,7 +4173,9 @@
 
         if (feedback) {
           feedback.className = 'search-feedback success';
-          feedback.textContent = `Processed ${candidateMatch.name} (${candidateMatch.allocated_portfolio || 'Delegate'}) for ${STATION_META[activeStation]?.title || activeStation}.`;
+          feedback.textContent = activeStation === 'inspect'
+            ? `Pass details opened for ${candidateMatch.name}.`
+            : `Ready to confirm ${candidateMatch.name} for ${STATION_META[activeStation]?.title || activeStation}.`;
         }
 
         const tray = document.getElementById('search-results-tray');
