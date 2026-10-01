@@ -2286,6 +2286,9 @@
     let cameraList = [];
     let isScannerRunning = false;
     let isProcessing = false;
+    let lastScannedCode = null;
+    let lastScannedTime = 0;
+    const SAME_CODE_COOLDOWN_MS = 3000;
 
     // ─── Persistent Staff Session Management (localStorage with 24-hr Expiry) ───
     const STAFF_SESSION_KEY = 'rns_staff_session_token';
@@ -2683,7 +2686,18 @@
     // Handle Detected QR code
     async function onQrCodeDetected(decodedText) {
       if (isProcessing) return;
+
+      const modal = document.getElementById('delegation-member-modal');
+      if (modal && modal.classList.contains('open')) return;
+
+      const now = Date.now();
+      if (decodedText && decodedText === lastScannedCode && (now - lastScannedTime) < SAME_CODE_COOLDOWN_MS) {
+        return;
+      }
+
       isProcessing = true;
+      lastScannedCode = decodedText;
+      lastScannedTime = now;
 
       if (html5QrCode && isScannerRunning) {
         try {
@@ -2700,7 +2714,8 @@
 
         await processCheckIn(payload);
       } finally {
-        if (html5QrCode && isScannerRunning) {
+        const modalOpen = document.getElementById('delegation-member-modal')?.classList.contains('open');
+        if (!modalOpen && html5QrCode && isScannerRunning) {
           try {
             html5QrCode.resume();
           } catch (e) {}
@@ -2909,6 +2924,12 @@
       if (modal) {
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
+      }
+      lastScannedTime = Date.now();
+      if (html5QrCode && isScannerRunning) {
+        try {
+          html5QrCode.resume();
+        } catch (e) {}
       }
     }
 

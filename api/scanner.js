@@ -507,16 +507,12 @@ async function handleHubData(req, res) {
   const publicToken = getPublicToken(targetType, targetId);
   const passUrl = `https://mun.rnsit.ac.in/hub?t=${publicToken}`;
 
-  // If no record found in db, provide clean fallback structure
+  // If no record found in db, return 404
   if (!record) {
-    record = {
-      id: targetId,
-      name: `Delegate #${targetId}`,
-      institution: 'Registered Institution',
-      committee1: 'UNGA — United Nations General Assembly',
-      portfolio1_1: 'Delegate Portfolio',
-      status: 'confirmed'
-    };
+    return res.status(404).json({
+      success: false,
+      error: `No ${targetType} pass found for ID or token '${targetId}'.`
+    });
   }
 
   const delegateDisplayName = record.name || record.full_name || record.delegation_name || record.head_name || record.head_delegate_name || 'Official Delegate';
