@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { supabase } from '../lib/supabase.js';
-import { resolvePublicToken, getPublicToken, createStaffSession, verifyStaffSession } from '../lib/token.js';
+import { resolvePublicToken, decodePublicTokenPayload, getPublicToken, createStaffSession, verifyStaffSession } from '../lib/token.js';
 
 // Local storage fallback for checkpoints
 const LOCAL_STORE_PATH = path.resolve(process.cwd(), '.data', 'checkpoints.json');
@@ -151,21 +151,35 @@ async function handleUpdateCheckpoint(req, res) {
   }
 
   const body = req.body || {};
-  let { token, id, type, member_index, checkpoint_key, redeemed, redeemed_by, notes, allocated_committee, allocated_portfolio } = body;
+  let { token, id, type, member_index, checkpoint_key, checkpointKey, redeemed, redeemed_by, notes, allocated_committee, allocated_portfolio } = body;
+  checkpoint_key = checkpoint_key || checkpointKey;
 
   let recordType = type;
   let recordId = id;
 
   if (token) {
-    const resolved = resolvePublicToken(token);
+    let resolved = resolvePublicToken(token);
+    if (!resolved) {
+      resolved = decodePublicTokenPayload(token);
+    }
     if (resolved) {
       recordType = resolved.type;
       recordId = resolved.id;
+    } else {
+      return res.status(400).json({
+        success: false,
+        code: 'TOKEN_INVALID',
+        error: 'This QR code is not a valid RNS MUN pass.'
+      });
     }
   }
 
   if (!recordId) {
-    return res.status(400).json({ success: false, error: 'Missing delegate identification (token or id).' });
+    return res.status(400).json({
+      success: false,
+      code: 'TOKEN_INVALID',
+      error: 'Missing delegate identification (token or id).'
+    });
   }
 
   recordType = String(recordType || 'individual').toLowerCase() === 'delegation' ? 'delegation' : 'individual';
@@ -177,8 +191,50 @@ async function handleUpdateCheckpoint(req, res) {
   if (!VALID_CHECKPOINTS.includes(cleanKey)) {
     return res.status(400).json({
       success: false,
+      code: 'INVALID_CHECKPOINT',
       error: `Invalid checkpoint_key. Must be one of: ${VALID_CHECKPOINTS.join(', ')}`
     });
+  }
+
+  if (supabase) {
+    try {
+      const table = recordType === 'delegation' ? 'delegations' : 'registrations';
+      const { data: rec, error: recError } = await supabase
+        .from(table)
+        .select('id')
+        .eq('id', recordId)
+        .single();
+
+      if (recError) {
+        if (recError.code === 'PGRST116' || recError.message?.includes('0 rows')) {
+          return res.status(404).json({
+            success: false,
+            code: 'RECORD_NOT_FOUND',
+            error: 'No registration found for this pass.'
+          });
+        }
+        console.error('Supabase error verifying record in updateCheckpoint:', recError);
+        return res.status(502).json({
+          success: false,
+          code: 'DB_ERROR',
+          error: 'Database error verifying delegate record: ' + recError.message
+        });
+      }
+      if (!rec) {
+        return res.status(404).json({
+          success: false,
+          code: 'RECORD_NOT_FOUND',
+          error: 'No registration found for this pass.'
+        });
+      }
+    } catch (e) {
+      console.error('Unexpected error checking record in updateCheckpoint:', e);
+      return res.status(502).json({
+        success: false,
+        code: 'DB_ERROR',
+        error: 'Database error verifying delegate record.'
+      });
+    }
   }
 
   const localKey = `${recordType}_${recordId}_${memberIdx}`;
@@ -226,14 +282,30 @@ async function handleUpdateCheckpoint(req, res) {
         .select()
         .single();
 
-      if (!error && data) {
+      if (error) {
+        console.error('Supabase error upserting checkpoint:', error);
+        return res.status(502).json({
+          success: false,
+          code: 'DB_ERROR',
+          error: 'Database error recording checkpoint stamp: ' + error.message
+        });
+      }
+
+      if (data) {
         return res.status(200).json({
           success: true,
           source: 'database',
           checkpoint: data
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error('Unexpected exception during checkpoint upsert:', e);
+      return res.status(502).json({
+        success: false,
+        code: 'DB_ERROR',
+        error: 'Failed to record checkpoint stamp in database.'
+      });
+    }
   }
 
   return res.status(200).json({
@@ -339,6 +411,11 @@ async function handleHubData(req, res) {
     return res.status(405).json({ success: false, error: 'Only GET supported.' });
   }
 
+  const authHeader = req.headers.authorization || '';
+  const tokenFromHeader = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : '';
+  const sessionToken = tokenFromHeader || req.query?.sessionToken || '';
+  const isStaff = !!sessionToken && verifyStaffSession(sessionToken);
+
   const tokenParam = (req.query?.t || req.query?.token || '').trim();
   const idParam = (req.query?.id || '').trim();
   const typeParam = (req.query?.type || '').trim();
@@ -350,12 +427,14 @@ async function handleHubData(req, res) {
 
     if (supabase) {
       try {
-        const { data: regList } = await supabase
+        const { data: regList, error: regErr } = await supabase
           .from('registrations')
           .select('id, name, email, phone, institution, committee1, portfolio1_1, status, usn, delegate_type')
           .limit(50);
 
-        if (Array.isArray(regList)) {
+        if (regErr) {
+          console.error('Supabase error searching registrations:', regErr);
+        } else if (Array.isArray(regList)) {
           regList.forEach(r => {
             const rName = r.name || r.full_name || '';
             const match =
@@ -385,12 +464,14 @@ async function handleHubData(req, res) {
           });
         }
 
-        const { data: delList } = await supabase
+        const { data: delList, error: delErr } = await supabase
           .from('delegations')
           .select('id, delegation_name, head_name, email, phone, status, member_count')
           .limit(50);
 
-        if (Array.isArray(delList)) {
+        if (delErr) {
+          console.error('Supabase error searching delegations:', delErr);
+        } else if (Array.isArray(delList)) {
           delList.forEach(d => {
             const dName = d.delegation_name || d.head_name || '';
             const match =
@@ -418,7 +499,9 @@ async function handleHubData(req, res) {
             }
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error('Unexpected error searching directory:', e);
+      }
     }
 
     return res.status(200).json({
@@ -433,51 +516,90 @@ async function handleHubData(req, res) {
   let targetId = idParam;
 
   if (tokenParam) {
-    const resolved = resolvePublicToken(tokenParam);
+    let resolved = resolvePublicToken(tokenParam);
+    if (!resolved && isStaff) {
+      resolved = decodePublicTokenPayload(tokenParam);
+    }
     if (resolved) {
       targetType = resolved.type;
       targetId = resolved.id;
     } else {
-      targetType = 'individual';
-      targetId = tokenParam;
+      return res.status(400).json({
+        success: false,
+        code: 'TOKEN_INVALID',
+        error: 'This QR code is not a valid RNS MUN pass.'
+      });
     }
   }
 
   if (!targetId) {
-    return res.status(400).json({ success: false, error: 'Missing token or id parameter.' });
+    return res.status(400).json({
+      success: false,
+      code: 'TOKEN_INVALID',
+      error: 'Missing token or id parameter.'
+    });
   }
 
   targetType = String(targetType || 'individual').toLowerCase() === 'delegation' ? 'delegation' : 'individual';
 
+  const isProduction = !!process.env.VERCEL || process.env.NODE_ENV === 'production';
   let record = null;
   let checkpoints = {};
 
   if (supabase) {
     try {
       if (targetType === 'individual') {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('registrations')
           .select('*')
           .eq('id', targetId)
           .single();
-        record = data;
+        if (error) {
+          if (error.code === 'PGRST116' || error.message?.includes('0 rows')) {
+            record = null;
+          } else {
+            console.error('Supabase error fetching individual registration:', error);
+            return res.status(502).json({
+              success: false,
+              code: 'DB_ERROR',
+              error: 'Database error fetching delegate record: ' + error.message
+            });
+          }
+        } else {
+          record = data;
+        }
       } else {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('delegations')
           .select('*')
           .eq('id', targetId)
           .single();
-        record = data;
+        if (error) {
+          if (error.code === 'PGRST116' || error.message?.includes('0 rows')) {
+            record = null;
+          } else {
+            console.error('Supabase error fetching delegation record:', error);
+            return res.status(502).json({
+              success: false,
+              code: 'DB_ERROR',
+              error: 'Database error fetching delegation record: ' + error.message
+            });
+          }
+        } else {
+          record = data;
+        }
       }
 
       if (record) {
-        const { data: cpRows } = await supabase
+        const { data: cpRows, error: cpError } = await supabase
           .from('delegate_checkpoints')
           .select('*')
           .eq('record_type', targetType)
           .eq('record_id', String(targetId));
 
-        if (Array.isArray(cpRows)) {
+        if (cpError) {
+          console.error('Supabase error fetching delegate checkpoints:', cpError);
+        } else if (Array.isArray(cpRows)) {
           cpRows.forEach(row => {
             const mIdx = row.member_index || 0;
             if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
@@ -485,7 +607,14 @@ async function handleHubData(req, res) {
           });
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error('Unexpected exception during Supabase query:', e);
+      return res.status(502).json({
+        success: false,
+        code: 'DB_ERROR',
+        error: 'Database connection error.'
+      });
+    }
   }
 
   // Merge local store checkpoints
@@ -503,16 +632,25 @@ async function handleHubData(req, res) {
     }
   }
 
-  // Generate tokens
-  const publicToken = getPublicToken(targetType, targetId);
-  const passUrl = `https://mun.rnsit.ac.in/hub?t=${publicToken}`;
-
-  // If no record found in db, return 404
+  // If no record found in db, check fallback rule:
+  // "Keep the old local-store fallback only when Supabase is not configured AND the environment is not production."
   if (!record) {
-    return res.status(404).json({
-      success: false,
-      error: `No ${targetType} pass found for ID or token '${targetId}'.`
-    });
+    if (!supabase && !isProduction) {
+      record = {
+        id: targetId,
+        name: `Delegate #${targetId}`,
+        institution: 'Registered Institution',
+        committee1: 'UNGA — United Nations General Assembly',
+        portfolio1_1: 'Delegate Portfolio',
+        status: 'confirmed'
+      };
+    } else {
+      return res.status(404).json({
+        success: false,
+        code: 'RECORD_NOT_FOUND',
+        error: 'No registration found for this pass.'
+      });
+    }
   }
 
   const delegateDisplayName = record.name || record.full_name || record.delegation_name || record.head_name || record.head_delegate_name || 'Official Delegate';
@@ -534,6 +672,9 @@ async function handleHubData(req, res) {
       checkpoints: checkpoints[idx] || {}
     }));
   }
+
+  const publicToken = tokenParam || getPublicToken(targetType, record.id);
+  const passUrl = `https://mun.rnsit.ac.in/hub?t=${publicToken}`;
 
   const passPayload = {
     type: targetType,
