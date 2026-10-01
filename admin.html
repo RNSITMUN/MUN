@@ -762,6 +762,40 @@
       border-color: #000000;
     }
 
+    .committee-alloc-panel {
+      background: #FFFDF9;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      box-shadow: 2px 2px 0 #000000;
+    }
+
+    .committee-alloc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
+    .committee-alloc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .committee-alloc-pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #6C0D2C;
+      background: #FDE8EF;
+      border: 1.2px solid #6C0D2C;
+      border-radius: 999px;
+      padding: 0.3rem 0.65rem;
+      white-space: nowrap;
+    }
+
     /* Dashboard Navigation & Controls */
     .controls-panel {
       background: #FFFFFF;
@@ -2613,6 +2647,14 @@
 
       </div>
 
+      <section id="committee-alloc-panel" class="committee-alloc-panel" aria-labelledby="committee-alloc-heading">
+        <div class="committee-alloc-header">
+          <h2 id="committee-alloc-heading" style="margin:0; font-size:0.9rem; font-weight:800; color:#6C0D2C;">Committee-wise allocation (individuals)</h2>
+          <span id="committee-alloc-total" class="stat-sub-pill" aria-live="polite">0 allotted</span>
+        </div>
+        <div id="committee-alloc-grid" class="committee-alloc-grid" aria-live="polite"></div>
+      </section>
+
       <!-- Navigation & Controls Panel -->
       <div class="controls-panel">
         <div class="tabs-wrap">
@@ -3848,6 +3890,32 @@
       showToast('Filters reset — displaying all records.', 'info');
     }
 
+    function renderCommitteeAllocationStats() {
+      const totalElement = document.getElementById('committee-alloc-total');
+      const grid = document.getElementById('committee-alloc-grid');
+      if (!totalElement || !grid) return;
+
+      const counts = new Map();
+      let total = 0;
+      (rawRegistrations || []).forEach(record => {
+        if (record.is_allotted !== true) return;
+        total++;
+        const committee = String(record.allocated_committee || '').trim() || 'Unspecified committee';
+        counts.set(committee, (counts.get(committee) || 0) + 1);
+      });
+
+      totalElement.textContent = `${total} allotted`;
+      grid.replaceChildren();
+      [...counts.entries()]
+        .sort((first, second) => second[1] - first[1] || first[0].localeCompare(second[0]))
+        .forEach(([committee, count]) => {
+          const pill = document.createElement('span');
+          pill.className = 'committee-alloc-pill';
+          pill.textContent = `${committee}: ${count}`;
+          grid.appendChild(pill);
+        });
+    }
+
     function applyFilters() {
       const searchQuery = (document.getElementById('filter-search').value || '').toLowerCase().trim();
       const statusFilter = document.getElementById('filter-status').value;
@@ -3901,6 +3969,7 @@
         sortData(filteredDelegations);
         renderDelegationTable(filteredDelegations);
       }
+      renderCommitteeAllocationStats();
     }
 
     // ─── Table Sorting ─────────────────────────────────────────────

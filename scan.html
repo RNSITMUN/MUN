@@ -153,6 +153,20 @@
       color: var(--error-red);
     }
 
+    .sound-toggle-btn {
+      width: 40px;
+      height: 40px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--text-dark);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-box);
+      cursor: pointer;
+    }
+
+    .sound-toggle-btn[aria-pressed="true"] { color: var(--error-red); }
+
     /* Main Container */
     .scanner-card {
       width: 100%;
@@ -1673,6 +1687,16 @@
       <polyline points="15 3 21 3 21 9"/>
       <line x1="10" y1="14" x2="21" y2="3"/>
     </symbol>
+    <symbol id="icon-speaker-on" viewBox="0 0 24 24">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </symbol>
+    <symbol id="icon-speaker-off" viewBox="0 0 24 24">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+    </symbol>
   </svg>
 
   <!-- Staff PIN Auth Overlay -->
@@ -1697,6 +1721,9 @@
         <span class="brand-badge">Accreditation desk</span>
       </div>
     </a>
+    <button type="button" class="sound-toggle-btn" id="sound-toggle" onclick="toggleScanMute()" aria-label="Mute scan sounds" title="Mute scan sounds" aria-pressed="false">
+      <svg class="icon sm"><use href="#icon-speaker-on"></use></svg>
+    </button>
     <button type="button" class="logout-btn" onclick="logout()">
       <svg class="icon sm"><use href="#icon-lock"></use></svg>
       <span>Sign out</span>
@@ -2128,6 +2155,87 @@
     let lastScannedCode = null;
     let lastScannedTime = 0;
     const SAME_CODE_COOLDOWN_MS = 4000;
+    const SCAN_MUTE_KEY = 'rns_scan_muted';
+    let audioCtx = null;
+    let scanMuted = false;
+
+    function getAudioCtx() {
+      if (audioCtx) return audioCtx;
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      audioCtx = new AudioContextClass();
+      return audioCtx;
+    }
+
+    function unlockAudio() {
+      try {
+        const context = getAudioCtx();
+        if (context?.state === 'suspended') void context.resume();
+      } catch (error) {}
+    }
+
+    function updateMuteControl() {
+      const button = document.getElementById('sound-toggle');
+      const use = button?.querySelector('use');
+      if (button) {
+        button.setAttribute('aria-pressed', String(scanMuted));
+        button.setAttribute('aria-label', scanMuted ? 'Unmute scan sounds' : 'Mute scan sounds');
+        button.title = scanMuted ? 'Unmute scan sounds' : 'Mute scan sounds';
+      }
+      if (use) use.setAttribute('href', scanMuted ? '#icon-speaker-off' : '#icon-speaker-on');
+    }
+
+    function toggleScanMute() {
+      scanMuted = !scanMuted;
+      try { localStorage.setItem(SCAN_MUTE_KEY, scanMuted ? 'true' : 'false'); } catch (error) {}
+      updateMuteControl();
+    }
+
+    function playTone({ frequency, type = 'sine', start, attack = 0.005, decay = 0.12, peak = 0.18, endFrequency, filterFrequency }) {
+      const context = getAudioCtx();
+      if (!context || scanMuted) return;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const startAt = start ?? context.currentTime;
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, startAt);
+      if (endFrequency !== undefined) oscillator.frequency.linearRampToValueAtTime(endFrequency, startAt + decay);
+      gain.gain.setValueAtTime(0.0001, startAt);
+      gain.gain.linearRampToValueAtTime(peak, startAt + attack);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startAt + decay);
+      if (filterFrequency) {
+        const filter = context.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(filterFrequency, startAt);
+        oscillator.connect(filter).connect(gain);
+      } else {
+        oscillator.connect(gain);
+      }
+      gain.connect(context.destination);
+      oscillator.start(startAt);
+      oscillator.stop(startAt + decay + 0.01);
+    }
+
+    function playScanFeedback(kind) {
+      const vibration = { success: 40, duplicate: [40, 60, 40], error: 200 }[kind];
+      try { if (vibration !== undefined && navigator.vibrate) navigator.vibrate(vibration); } catch (error) {}
+      if (scanMuted) return;
+      try {
+        const context = getAudioCtx();
+        if (!context) return;
+        if (context.state === 'suspended') void context.resume();
+        const now = context.currentTime;
+        if (kind === 'success') {
+          playTone({ frequency: 880, start: now, attack: 0.005, decay: 0.12, peak: 0.18 });
+          playTone({ frequency: 1318, start: now + 0.1, attack: 0.005, decay: 0.12, peak: 0.18 });
+        } else if (kind === 'duplicate') {
+          playTone({ frequency: 660, type: 'triangle', start: now, attack: 0.004, decay: 0.055, peak: 0.16 });
+          playTone({ frequency: 660, type: 'triangle', start: now + 0.07, attack: 0.004, decay: 0.055, peak: 0.16 });
+        } else if (kind === 'error') {
+          playTone({ frequency: 220, endFrequency: 165, filterFrequency: 800, start: now, attack: 0.005, decay: 0.22, peak: 0.18 });
+        }
+      } catch (error) {}
+    }
 
     // ─── Persistent Staff Session Management (localStorage with 24-hr Expiry) ───
     const STAFF_SESSION_KEY = 'rns_staff_session_token';
@@ -2241,6 +2349,7 @@
 
     // ─── Authentication Handlers ─────────────────────────────────────
     async function loginWithPin() {
+      unlockAudio();
       const input = document.getElementById('pin-input');
       const errBox = document.getElementById('auth-error');
       const submitBtn = document.getElementById('btn-auth-submit');
@@ -2308,6 +2417,12 @@
 
     // Check session on load
     document.addEventListener('DOMContentLoaded', () => {
+      try {
+        scanMuted = localStorage.getItem(SCAN_MUTE_KEY) === 'true';
+      } catch (error) {
+        scanMuted = false;
+      }
+      updateMuteControl();
       const token = getStaffSessionToken();
       const overlay = document.getElementById('auth-overlay');
       if (token) {
@@ -2537,6 +2652,7 @@
     }
 
     function toggleScannerStream() {
+      unlockAudio();
       if (!html5QrCode) return;
       const btn = document.getElementById('btn-toggle-camera');
       if (isScannerRunning) {
@@ -2813,6 +2929,7 @@
     }
 
     function showSuccessResult(candidate, stationKey, payload, result) {
+      playScanFeedback('success');
       isResultCardActive = true;
       const card = document.getElementById('result-box');
       card.className = 'result-card success';
@@ -2860,6 +2977,7 @@
     }
 
     function showWarningResult(candidate, warningMsg, stationKey, payload) {
+      playScanFeedback('duplicate');
       isResultCardActive = true;
       const card = document.getElementById('result-box');
       card.className = 'result-card warning';
@@ -2909,6 +3027,7 @@
     }
 
     function showErrorResult(title, message) {
+      playScanFeedback('error');
       isResultCardActive = true;
       const card = document.getElementById('result-box');
       card.className = 'result-card error';
