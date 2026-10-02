@@ -13,6 +13,7 @@ import adminResyncRosterHandler from './api/admin-resync-roster.js';
 import sendMailHandler from './api/send-mail.js';
 import scannerHandler from './api/scanner.js';
 import calendarHandler from './api/calendar.js';
+import adminMailLogHandler from './api/admin-mail-log.js';
 
 const cleanUrlsPlugin = () => ({
   name: 'clean-urls',
@@ -90,6 +91,9 @@ const cleanUrlsPlugin = () => ({
       }
       if (url === '/api/send-mail') {
         return handleApiRequest(sendMailHandler);
+      }
+      if (url === '/api/admin-mail-log') {
+        return handleApiRequest(adminMailLogHandler);
       }
       if (
         url === '/api/hub-data' ||
