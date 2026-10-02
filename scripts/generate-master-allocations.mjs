@@ -61,7 +61,7 @@ function resolveWhatsApp(committee) {
   if (c.includes('UNHRC')) return COMMITTEE_WHATSAPP_MAP['UNHRC'];
   if (c.includes('IP') || c.includes('PRESS')) return COMMITTEE_WHATSAPP_MAP['IPC'];
   if (c.includes('DISEC')) return COMMITTEE_WHATSAPP_MAP['DISEC'];
-  return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+  return 'https://mun.rnsit.ac.in/channels';
 }
 
 function normalizeCommittee(comm) {

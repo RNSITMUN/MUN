@@ -7869,8 +7869,8 @@
       return {
         committee: unset(committee) ? '' : committee,
         portfolio: unset(committee) ? '' : (unset(portfolio) ? 'Portfolio to be announced in committee' : portfolio),
-        chamber: clean(master?.session_chamber) || (unset(committee) ? '' : resolveChamberVenue(committee)),
-        whatsapp: unset(committee) ? '' : resolveCommitteeWhatsApp(committee),
+        chamber: unset(committee) ? '' : resolveChamberVenue(committee),
+        whatsapp: unset(committee) ? '' : resolveCommitteeWhatsApp(committee), // always derived from committee, never from stale data
         hasAllocation: !unset(committee)
       };
     }
@@ -8836,26 +8836,38 @@
 
     // ─── Dynamic Token Helpers ─────────────────────────────────────
 
+    // Mirrors lib/committees.js (single source of truth). Order matters: DISEC must be tested
+    // before "security" so "Disarmament & Int'l Security" never resolves to UNSC.
+    function normalizeCommitteeCode(raw) {
+      const l = String(raw || '').trim().replace(/\s+/g, ' ').toLowerCase();
+      if (!l) return null;
+      if (l.includes('lok') || l.includes('sabha') || l.includes('parliament')) return 'LOK SABHA';
+      if (l.includes('disec') || l.includes('disarmament')) return 'DISEC';
+      if (l.includes('unsc') || l.includes('security')) return 'UNSC';
+      if (l.includes('unhrc') || l.includes('human')) return 'UNHRC';
+      if (l.includes('unodc') || l.includes('drugs')) return 'UNODC';
+      if (l === 'ip' || l === 'ipc' || l.includes('press') || /^ip\b/.test(l)) return 'IP';
+      return null;
+    }
+    const COMMITTEE_INFO = {
+      'UNSC': { wa: 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh', venue: 'Council Chamber — MBA Seminar Hall (2nd Floor)' },
+      'LOK SABHA': { wa: 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5', venue: 'Central Plenary Hall — Chanakya Block' },
+      'UNODC': { wa: 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm', venue: 'Committee Room 301 — ECE Seminar Hall' },
+      'UNHRC': { wa: 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC', venue: 'Committee Room 102 — Mech Seminar Hall' },
+      'IP': { wa: 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm', venue: 'Press Bureau & Media Lab — Academic Block 1' },
+      'DISEC': { wa: 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2', venue: 'Committee Room 204 — Civil Seminar Hall' }
+    };
+    // Used only when a committee is not recognised; a real, working page instead of an invalid invite code.
+    const WHATSAPP_FALLBACK_URL = 'https://mun.rnsit.ac.in/channels';
+
     function resolveChamberVenue(comm) {
-      const cUpper = String(comm || '').toUpperCase();
-      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY COUNCIL')) return 'Council Chamber — MBA Seminar Hall (2nd Floor)';
-      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'Committee Room 102 — Mech Seminar Hall';
-      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN RIGHTS')) return 'Committee Room 204 — Civil Seminar Hall';
-      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'Committee Room 301 — ECE Seminar Hall';
-      if (cUpper.includes('LOK SABHA')) return 'Central Plenary Hall — Chanakya Block';
-      if (cUpper.includes('PRESS') || cUpper.includes('IP')) return 'Press Bureau & Media Lab — Academic Block 1';
-      return 'Designated Committee Hall — Academic Block';
+      const c = COMMITTEE_INFO[normalizeCommitteeCode(comm)];
+      return c ? c.venue : 'Designated Committee Hall — Academic Block';
     }
 
     function resolveCommitteeWhatsApp(comm) {
-      const cUpper = String(comm || '').toUpperCase();
-      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY')) return 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh';
-      if (cUpper.includes('LOK') || cUpper.includes('SABHA') || cUpper.includes('PARLIAMENT')) return 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5';
-      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm';
-      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN')) return 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC';
-      if (cUpper.includes('IPC') || cUpper.includes('PRESS') || cUpper.includes('IP')) return 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm';
-      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2';
-      return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+      const c = COMMITTEE_INFO[normalizeCommitteeCode(comm)];
+      return c ? c.wa : WHATSAPP_FALLBACK_URL;
     }
 
     function buildTokenDataFromRecord(item, type, recipientOverride) {

@@ -8,6 +8,7 @@ import {
   checkAlreadySent
 } from '../lib/mail-logger.js';
 import adminMailLogHandler from '../lib/admin-mail-log.js';
+import { resolveCommitteeWhatsApp as resolveCommitteeWhatsAppStrict } from '../lib/committees.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -38,25 +39,10 @@ function getEnv(key) {
   return process.env[key] || '';
 }
 
-const COMMITTEE_WHATSAPP_MAP = {
-  'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
-  'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
-  'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
-  'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
-  'IPC': 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm',
-  'DISEC': 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2'
-};
-
+// Shown only when a committee cannot be recognised (never an invented invite code).
+const WHATSAPP_FALLBACK_URL = 'https://mun.rnsit.ac.in/channels';
 function resolveCommitteeWhatsApp(committee) {
-  if (!committee) return 'https://chat.whatsapp.com/G5y1o155s6y9017';
-  const c = String(committee).toUpperCase();
-  if (c.includes('UNSC') || c.includes('SECURITY')) return COMMITTEE_WHATSAPP_MAP['UNSC'];
-  if (c.includes('LOK') || c.includes('SABHA') || c.includes('PARLIAMENT')) return COMMITTEE_WHATSAPP_MAP['LOK SABHA'];
-  if (c.includes('UNODC') || c.includes('DRUGS')) return COMMITTEE_WHATSAPP_MAP['UNODC'];
-  if (c.includes('UNHRC') || c.includes('HUMAN')) return COMMITTEE_WHATSAPP_MAP['UNHRC'];
-  if (c.includes('IPC') || c.includes('PRESS') || c.includes('IP')) return COMMITTEE_WHATSAPP_MAP['IPC'];
-  if (c.includes('DISEC') || c.includes('DISARMAMENT')) return COMMITTEE_WHATSAPP_MAP['DISEC'];
-  return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+  return resolveCommitteeWhatsAppStrict(committee) || WHATSAPP_FALLBACK_URL;
 }
 
 export default async function handler(req, res) {
@@ -169,13 +155,17 @@ export default async function handler(req, res) {
         .replace(/\{\{allocated_committee\}\}/g, allocated_committee)
         .replace(/\{\{committee\}\}/g, allocated_committee);
 
-      const waLink = resolveCommitteeWhatsApp(allocated_committee);
+      const strictWa = resolveCommitteeWhatsAppStrict(allocated_committee);
+      const waLink = strictWa || WHATSAPP_FALLBACK_URL;
       preparedHtml = preparedHtml
         .replace(/\{\{whatsapp_link\}\}/g, waLink)
         .replace(/\{\{committee_whatsapp\}\}/g, waLink)
-        .replace(/\{\{whatsapp_url\}\}/g, waLink)
-        // Enforce that any committee caucus link in the mail points strictly to this delegate's assigned committee group
-        .replace(/https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+/g, waLink);
+        .replace(/\{\{whatsapp_url\}\}/g, waLink);
+      // Enforce that any committee caucus link points strictly to this delegate's assigned committee group
+      // (only when the committee is recognised, so an unknown one can never overwrite a valid link).
+      if (strictWa) {
+        preparedHtml = preparedHtml.replace(/https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+/g, strictWa);
+      }
     }
 
     if (allocated_portfolio) {
@@ -226,7 +216,7 @@ export default async function handler(req, res) {
           // 4. Replace any onerror fallback on QR images with the recipient's own QR code URL
           .replace(/onerror="this\.onerror=null;this\.src='https:\/\/api\.qrserver\.com\/v1\/create-qr-code\/\?[^']+'(?:\s*\+\s*encodeURIComponent\('[^']+'\))?;?"/g, `onerror="this.onerror=null;this.src='${secureQrUrl}';"`)
           // 5. Replace any existing hub URLs (dev, vercel, production, with ?t= or ?id=) with the recipient's own secureHubUrl
-          .replace(/https?:\/\/(?:mun\.rnsit\.ac\.in|localhost:\d+|127\.0\.0\.1:\d+|mun[a-zA-Z0-9-]*\.vercel\.app)\/hub\?(?:t=[a-zA-Z0-9_-]+|id=[^"'&<>\s]+(?:&amp;|&)type=[^"'&<>\s]+)/g, secureHubUrl);
+          .replace(/https?:\/\/(?:mun\.rnsit\.ac\.in|localhost:\d+|127\.0\.0\.1:\d+|mun[a-zA-Z0-9-]*\.vercel\.app)\/hub\?(?:t=[a-zA-Z0-9_-]+(?:(?:&amp;|&)m=\d+)?|id=[^"'&<>\s]+(?:&amp;|&)type=[^"'&<>\s]+)/g, secureHubUrl);
       } catch (e) {
         console.warn('[send-mail] Token injection error:', e.message);
       }
