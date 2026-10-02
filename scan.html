@@ -753,10 +753,9 @@
       transform: translate(-50%, -50%);
       width: 200px;
       height: 200px;
-      border: 2px dashed rgba(255, 255, 255, 0.45);
+      border: 2px dashed rgba(255, 255, 255, 0.75);
       border-radius: 16px;
       pointer-events: none;
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
     }
 
     /* Hide HTML5-QRCode default pause/status overlay text */
@@ -2236,6 +2235,18 @@
         const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
         if (AudioCtxClass) {
           audioCtx = new AudioCtxClass({ latencyHint: 'interactive' });
+          const prewarm = () => {
+            try {
+              ['recognized', 'checkedin', 'duplicate', 'error'].forEach(k => {
+                getAudioCueBuffer(audioCtx, k);
+              });
+            } catch (e) {}
+          };
+          if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(prewarm);
+          } else {
+            setTimeout(prewarm, 0);
+          }
         }
       }
       return audioCtx;
@@ -2369,10 +2380,10 @@
           { freq: 440.00, start: 0.06, duration: 0.14, decay: 0.08 }
         ]);
       } else if (kind === 'error') {
-        // error: single low falling pair G3 to E3, soft thud, about 300 ms, no square or sawtooth waves
+        // error: falling pair G4 to E4 (392.00 to 329.63 Hz), soft falling contour audible on phone speakers
         buf = createAdditiveAudioBuffer(ctx, 0.30, [
-          { freq: 196.00, start: 0.00, duration: 0.16, decay: 0.10 },
-          { freq: 164.81, start: 0.10, duration: 0.20, decay: 0.12 }
+          { freq: 392.00, start: 0.00, duration: 0.16, decay: 0.11 },
+          { freq: 329.63, start: 0.09, duration: 0.21, decay: 0.13 }
         ]);
       }
 
@@ -2784,6 +2795,7 @@
     }
 
     function onStationChanged(val) {
+      clearSearchCache();
       const meta = STATION_META[val] || STATION_META.day1_entry;
 
       const badge = document.getElementById('active-station-badge');
@@ -2892,10 +2904,36 @@
       return html5QrCode;
     }
 
+    function buildVideoConstraints(cameraConfig) {
+      const constraints = {
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      };
+
+      if (typeof cameraConfig === 'string' && cameraConfig.trim()) {
+        constraints.deviceId = { exact: cameraConfig.trim() };
+      } else if (cameraConfig && typeof cameraConfig === 'object') {
+        if (cameraConfig.deviceId) {
+          constraints.deviceId = typeof cameraConfig.deviceId === 'string'
+            ? { exact: cameraConfig.deviceId }
+            : cameraConfig.deviceId;
+        } else if (cameraConfig.facingMode) {
+          constraints.facingMode = cameraConfig.facingMode;
+        } else {
+          constraints.facingMode = { ideal: 'environment' };
+        }
+      } else {
+        constraints.facingMode = { ideal: 'environment' };
+      }
+
+      return constraints;
+    }
+
     function startScannerWithConfig(cameraConfig) {
       const scanner = createScannerInstance();
       if (!scanner) return Promise.reject(new Error('Scanner not initialized'));
 
+      const videoConstraints = buildVideoConstraints(cameraConfig);
       const scanConfig = {
         fps: getScannerFps(),
         qrbox: (w, h) => {
@@ -2903,11 +2941,7 @@
           return { width: edge, height: edge };
         },
         disableFlip: true,
-        videoConstraints: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          facingMode: { ideal: 'environment' }
-        }
+        videoConstraints
       };
 
       return scanner.start(
@@ -2934,7 +2968,7 @@
 
       // Start with { facingMode: { ideal: 'environment' } } or cached choice directly without calling getCameras()
       try {
-        await startScannerWithConfig(workingCameraConfig);
+        await startScannerWithConfig(workingCameraConfig || { facingMode: { ideal: 'environment' } });
         return;
       } catch (directErr) {
         console.warn('Direct camera start failed, enumerating cameras lazily:', directErr);
@@ -2996,11 +3030,16 @@
           cameraList = await Html5Qrcode.getCameras();
         }
         if (!cameraList || cameraList.length < 2) {
-          alert('Only one camera is detected on this device.');
           return;
         }
-        const currentId = typeof workingCameraConfig === 'string' ? workingCameraConfig : cameraList[0]?.id;
-        const nextIdx = (cameraList.findIndex(c => c.id === currentId) + 1) % cameraList.length;
+        const currentId = typeof workingCameraConfig === 'string'
+          ? workingCameraConfig
+          : (typeof workingCameraConfig?.deviceId === 'string'
+              ? workingCameraConfig.deviceId
+              : (workingCameraConfig?.deviceId?.exact || currentCameraId));
+        let currentIdx = cameraList.findIndex(c => c.id === currentId);
+        if (currentIdx === -1) currentIdx = 0;
+        const nextIdx = (currentIdx + 1) % cameraList.length;
         currentCameraId = cameraList[nextIdx].id;
 
         if (isScannerRunning && html5QrCode) {
@@ -3306,6 +3345,7 @@
 
         isCheckingIn = false;
         current.mode = 'success';
+        clearSearchCache();
         current.checkpoint = data.checkpoint || { redeemed: true, redeemed_at: data.redeemed_at, redeemed_by: data.redeemed_by };
         if (current.member) {
           if (!current.member.checkpoints) current.member.checkpoints = {};
@@ -3772,7 +3812,7 @@
         setTimeout(() => {
           const card = document.getElementById(`modal-card-m-${payload.memberIndex}`);
           if (card) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.scrollIntoView({ behavior: 'auto', block: 'center' });
             card.style.borderColor = 'var(--primary)';
             setTimeout(() => { card.style.borderColor = ''; }, 3000);
           }
@@ -3921,6 +3961,7 @@
 
         if (result?.success) {
           isCheckingIn = false;
+          clearSearchCache();
           void playScanFeedback('checkedin');
           if (alertBanner) alertBanner.style.display = 'none';
 
@@ -3964,29 +4005,16 @@
       }
     }
 
-    // ─── Manual Search & Stamp ──────────────────────────────────────
-    function clearManualSearch() {
-      const input = document.getElementById('manual-search-input');
-      const clearBtn = document.getElementById('btn-clear-search');
-      const feedback = document.getElementById('search-feedback');
-      const tray = document.getElementById('search-results-tray');
-
-      if (input) {
-        input.value = '';
-        input.focus();
-      }
-      if (clearBtn) clearBtn.style.display = 'none';
-      if (feedback) feedback.textContent = '';
-      if (tray) {
-        tray.innerHTML = '';
-        tray.style.display = 'none';
-      }
-    }
 
     // ─── Directory Search (Read-only) ────────────────────────────────
     const sessionSearchCache = new Map();
+    const SEARCH_CACHE_TTL_MS = 5000;
     let searchDebounceTimer = null;
     let searchAbortController = null;
+
+    function clearSearchCache() {
+      sessionSearchCache.clear();
+    }
 
     function formatCheckpointTime(isoString) {
       if (!isoString) return '';
@@ -4073,14 +4101,18 @@
 
       const sessionToken = getStaffSessionToken();
       if (!sessionToken) {
-        alert('Staff session expired. Please re-authenticate.');
+        if (feedback) {
+          feedback.className = 'search-feedback error';
+          feedback.textContent = 'Staff session expired. Logging out...';
+        }
         logout();
         return;
       }
 
       const cacheKey = queryText.toLowerCase();
-      if (sessionSearchCache.has(cacheKey)) {
-        renderSearchResultsTray(sessionSearchCache.get(cacheKey), queryText);
+      const cached = sessionSearchCache.get(cacheKey);
+      if (cached && (Date.now() - cached.timestamp < SEARCH_CACHE_TTL_MS)) {
+        renderSearchResultsTray(cached.matches, queryText);
         return;
       }
 
@@ -4106,7 +4138,10 @@
         });
 
         if (res.status === 401) {
-          alert('Staff session expired. Please re-authenticate.');
+          if (feedback) {
+            feedback.className = 'search-feedback error';
+            feedback.textContent = 'Staff session expired. Logging out...';
+          }
           logout();
           return;
         }
@@ -4121,7 +4156,7 @@
         }
 
         const matches = (data.results || data.matches || []).slice(0, 10);
-        sessionSearchCache.set(cacheKey, matches);
+        sessionSearchCache.set(cacheKey, { timestamp: Date.now(), matches });
         renderSearchResultsTray(matches, queryText);
 
       } catch (err) {

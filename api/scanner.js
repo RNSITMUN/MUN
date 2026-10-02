@@ -531,6 +531,16 @@ async function handleScanStats(req, res) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Module-scoped Directory Cache for Warm Serverless Instances
+// ─────────────────────────────────────────────────────────────
+const DIRECTORY_CACHE_TTL_MS = 45000;
+const directoryCache = {
+  timestamp: 0,
+  registrations: [],
+  delegations: []
+};
+
+// ─────────────────────────────────────────────────────────────
 // 4. Hub Data & Search
 // ─────────────────────────────────────────────────────────────
 async function handleHubData(req, res) {
@@ -547,13 +557,6 @@ async function handleHubData(req, res) {
   const idParam = (req.query?.id || '').trim();
   const typeParam = (req.query?.type || '').trim();
   const queryParam = (req.query?.q || req.query?.query || '').trim();
-// Directory cache with 45s TTL for warm search performance
-let directoryCache = {
-  timestamp: 0,
-  registrations: [],
-  delegations: []
-};
-const DIRECTORY_CACHE_TTL_MS = 45000;
 
   if (queryParam) {
     if (!isStaff) {
@@ -573,12 +576,12 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
           const [regRes, delRes] = await Promise.all([
             supabase
               .from('registrations')
-              .select('id, name, full_name, institution, college, committee1, portfolio1_1, status, usn, delegate_type')
-              .limit(1000),
+              .select('id, name, institution, committee1, portfolio1_1, usn')
+              .limit(300),
             supabase
               .from('delegations')
-              .select('id, delegation_name, head_name, status, member_count, roster_data')
-              .limit(500)
+              .select('id, delegation_name, head_name, member_count, roster_data')
+              .limit(100)
           ]);
           if (!regRes.error && Array.isArray(regRes.data)) {
             directoryCache.registrations = regRes.data;
@@ -591,7 +594,7 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
 
         const regList = directoryCache.registrations || [];
         for (const r of regList) {
-          const rName = r.name || r.full_name || '';
+          const rName = r.name || '';
           const match =
             (rName && rName.toLowerCase().includes(cleanQ)) ||
             (r.usn && r.usn.toLowerCase().includes(cleanQ)) ||
@@ -603,7 +606,7 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
               id: r.id,
               memberIndex: 0,
               name: rName,
-              institution: r.institution || r.college || '',
+              institution: r.institution || '',
               committee: r.committee1 || 'General Assembly',
               portfolio: r.portfolio1_1 || 'Delegate'
             });
@@ -638,8 +641,8 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
               const mem = d.roster_data[memIdx];
               const mName = mem.name || mem.delegateName || mem['Delegate Name'] || '';
               const mUsn = mem.slNo || mem.usn || mem['USN / Roll No'] || '';
-              const mComm = mem.committee || mem.committee1 || mem['Committee Preference 1'] || '';
-              const mPort = mem.portfolio || mem.portfolio1_1 || mem['Portfolio Preference 1'] || '';
+              const mComm = mem.allocated_committee || mem.committee || mem.committee1 || mem['Committee Preference 1'] || '';
+              const mPort = mem.allocated_portfolio || mem.portfolio || mem.portfolio1_1 || mem['Portfolio Preference 1'] || '';
 
               const memberMatch =
                 (mName && mName.toLowerCase().includes(cleanQ)) ||
@@ -696,7 +699,7 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
         if (cpFilters.length > 0) {
           const { data: cpRows, error: cpErr } = await supabase
             .from('delegate_checkpoints')
-            .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by')
+            .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
             .or(cpFilters.join(','));
 
           if (!cpErr && Array.isArray(cpRows)) {
@@ -706,12 +709,18 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
                 String(r.id) === String(row.record_id) &&
                 (r.memberIndex || 0) === (row.member_index || 0)
               );
-              if (match && match.checkpoints && row.checkpoint_key) {
-                match.checkpoints[row.checkpoint_key] = {
-                  redeemed: !!row.redeemed,
-                  redeemed_at: row.redeemed_at || null,
-                  redeemed_by: row.redeemed_by || null
-                };
+              if (match) {
+                if (row.checkpoint_key === 'allocation' || row.allocated_committee || row.allocated_portfolio) {
+                  if (row.allocated_committee) match.committee = row.allocated_committee;
+                  if (row.allocated_portfolio) match.portfolio = row.allocated_portfolio;
+                }
+                if (match.checkpoints && row.checkpoint_key && CHECKPOINT_KEYS.includes(row.checkpoint_key)) {
+                  match.checkpoints[row.checkpoint_key] = {
+                    redeemed: !!row.redeemed,
+                    redeemed_at: row.redeemed_at || null,
+                    redeemed_by: row.redeemed_by || null
+                  };
+                }
               }
             });
           }
@@ -729,6 +738,16 @@ const DIRECTORY_CACHE_TTL_MS = 45000;
         const baseLk = `${r.type}_${r.id}`;
         const localEntry = localStore[lk] || ((r.memberIndex || 0) === 0 ? localStore[baseLk] : null);
         if (localEntry) {
+          if (localEntry.allocation?.allocated_committee) {
+            r.committee = localEntry.allocation.allocated_committee;
+          } else if (localEntry.allocatedCommittee) {
+            r.committee = localEntry.allocatedCommittee;
+          }
+          if (localEntry.allocation?.allocated_portfolio) {
+            r.portfolio = localEntry.allocation.allocated_portfolio;
+          } else if (localEntry.allocatedPortfolio) {
+            r.portfolio = localEntry.allocatedPortfolio;
+          }
           CHECKPOINT_KEYS.forEach(k => {
             if (localEntry[k] && typeof localEntry[k] === 'object' && localEntry[k].redeemed) {
               r.checkpoints[k] = {
