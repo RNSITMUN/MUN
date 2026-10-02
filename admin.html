@@ -3181,7 +3181,11 @@
         </table>
       </div>
       <div class="modal-footer" style="justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-        <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send Mail to All Members</button>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <label for="roster-bulk-template" class="text-sm" style="font-weight:700;">Mail to send:</label>
+          <select id="roster-bulk-template" class="filter-select" style="min-width:230px; padding:0.35rem 0.6rem; font-size:0.8rem;"></select>
+          <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send to All Members</button>
+        </div>
         <button class="btn btn-outline btn-sm" onclick="closeRosterModal()">Close</button>
       </div>
     </div>
@@ -3237,7 +3241,7 @@
         <!-- Template Selector -->
         <div class="form-group">
           <label class="form-label" for="send-mail-template-select">Choose Mail Template</label>
-          <select id="send-mail-template-select" class="filter-select" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalTemplateSelectChange()">
+          <select id="send-mail-template-select" class="filter-select" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalTemplateUserChange()">
             <!-- Populated dynamically -->
           </select>
         </div>
@@ -5124,6 +5128,19 @@
       const members = getDelegationMembers(delegation);
       const mailAllBtn = document.getElementById('btn-roster-mail-all');
       if (mailAllBtn) mailAllBtn.style.display = members.length ? '' : 'none';
+      if (mailTemplates.length === 0) loadTemplatesState();
+      const bulkSel = document.getElementById('roster-bulk-template');
+      if (bulkSel) {
+        const prev = bulkSel.value;
+        bulkSel.innerHTML = '';
+        mailTemplates.forEach(t => {
+          const o = document.createElement('option');
+          o.value = t.id;
+          o.textContent = `${t.name} (${t.isPreset ? 'Preset' : 'Custom'})`;
+          bulkSel.appendChild(o);
+        });
+        bulkSel.value = mailTemplates.some(t => t.id === prev) ? prev : getMemberTemplateId();
+      }
 
       if (members.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No individual roster members recorded for this delegation.</td></tr>`;
@@ -5165,7 +5182,7 @@
       openSendMailModal(id, 'delegation', memberIndex);
     }
 
-    // Send every member of the open delegation their own allocation mail (skips already-sent, no-email, unallocated).
+    // Send the chosen template to every member of the open delegation, each personalised with their own data.
     async function mailEntireDelegation() {
       const dlg = rawDelegations.find(d => String(d.id) === String(rosterModalDelegationId));
       if (!dlg) return;
@@ -5177,24 +5194,26 @@
         showToast('Google Apps Script URL is not set. Go to Mail Templates tab to configure.', 'error');
         return;
       }
-      const tpl = mailTemplates.find(t => t.id === getMemberTemplateId());
+      const tplId = document.getElementById('roster-bulk-template')?.value || '';
+      const tpl = mailTemplates.find(t => t.id === tplId);
       if (!tpl) {
-        showToast('Official Pass template not found in Mail Templates.', 'error');
+        showToast('Please choose which mail template to send.', 'error');
         return;
       }
+      const needsAlloc = templateNeedsAllocation(tpl);
 
       const members = getDelegationMembers(dlg);
       const noEmail = members.filter(m => !m.hasEmail);
-      const noAlloc = members.filter(m => m.hasEmail && !m.alloc.hasAllocation);
-      const already = members.filter(m => m.hasEmail && m.alloc.hasAllocation && isMemberMailSent(dlg, m.index));
-      const queue = members.filter(m => m.hasEmail && m.alloc.hasAllocation && !isMemberMailSent(dlg, m.index));
+      const noAlloc = needsAlloc ? members.filter(m => m.hasEmail && !m.alloc.hasAllocation) : [];
+      const already = members.filter(m => m.hasEmail && !noAlloc.includes(m) && isMemberMailSent(dlg, m.index, tpl.id));
+      const queue = members.filter(m => m.hasEmail && !noAlloc.includes(m) && !already.includes(m));
       if (queue.length === 0) {
-        showToast(`Nothing to send: ${already.length} already sent, ${noAlloc.length} without allocation, ${noEmail.length} without email.`, 'info');
+        showToast(`Nothing to send: ${already.length} already received "${tpl.name}", ${noAlloc.length} without allocation, ${noEmail.length} without email.`, 'info');
         return;
       }
-      const summary = `Send "${tpl.name}" to ${queue.length} delegate(s) of ${dlg.delegation_name}?\n\n` +
-        queue.map(m => `• ${m.name} → ${m.alloc.committee} / ${m.alloc.portfolio}`).join('\n') +
-        (already.length ? `\n\nSkipping ${already.length} already sent.` : '') +
+      const summary = `Send "${tpl.name}" to ${queue.length} member(s) of ${dlg.delegation_name}?\n\n` +
+        queue.map(m => `• ${m.name} <${m.email}>` + (needsAlloc ? ` → ${m.alloc.committee} / ${m.alloc.portfolio}` : '')).join('\n') +
+        (already.length ? `\n\nSkipping ${already.length} who already received this template.` : '') +
         (noAlloc.length ? `\nSkipping ${noAlloc.length} without allocation: ${noAlloc.map(m => m.name).join(', ')}` : '') +
         (noEmail.length ? `\nSkipping ${noEmail.length} without valid email: ${noEmail.map(m => m.name).join(', ')}` : '');
       if (!confirm(summary)) return;
@@ -5203,61 +5222,70 @@
       if (btn) btn.disabled = true;
       const senderName = document.getElementById('send-mail-sender-name')?.value.trim() || 'RNS MUN Secretariat';
       const replyTo = document.getElementById('send-mail-reply-to')?.value.trim() || 'mun@rnsit.ac.in';
-      const ok = [], failed = [], skipped = [];
+      const ok = [], failed = [], serverSkipped = [];
+
+      async function sendOne(m, force) {
+        const tokenData = buildMemberTokenData(dlg, m.index);
+        const subject = interpolateTokens(tpl.subject || '', tokenData);
+        const htmlBody = interpolateTokens(tpl.body || '', tokenData);
+        const res = await fetch('/api/send-mail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scriptUrl, recipient: m.email, subject, htmlBody,
+            attachments: Array.isArray(tpl.attachments) ? tpl.attachments : [],
+            senderName, replyTo,
+            recipientName: m.name,
+            recordType: 'delegation',
+            recordId: dlg.id,
+            memberIndex: m.index,
+            allocationId: memberAllocationId(dlg, m.index),
+            isResend: force === true,
+            delegation: dlg.delegation_name || '',
+            templateId: tpl.id,
+            templateName: tpl.name,
+            allocated_committee: m.alloc.committee,
+            allocated_portfolio: m.alloc.portfolio,
+            institution: dlg.delegation_name || dlg.institution || '',
+            type: 'Delegation Member',
+            bg_guide_url: dlg.bg_guide_url || dlg.gdrive_link
+          })
+        });
+        const data = await res.json();
+        if (data.success && data.skipped) return 'skipped';
+        if (!data.success) throw new Error(data.error || 'unknown error');
+        markRecordMailSent(dlg.id, 'delegation', {
+          templateId: tpl.id, templateName: tpl.name, subject,
+          recipient: m.email, recipientName: m.name, memberIndex: m.index
+        });
+        return 'ok';
+      }
 
       for (let i = 0; i < queue.length; i++) {
         const m = queue[i];
         if (btn) btn.textContent = `Sending ${i + 1}/${queue.length}…`;
         try {
-          const tokenData = buildMemberTokenData(dlg, m.index);
-          const subject = interpolateTokens(tpl.subject || '', tokenData);
-          const htmlBody = interpolateTokens(tpl.body || '', tokenData);
-          const res = await fetch('/api/send-mail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              scriptUrl,
-              recipient: m.email,
-              subject,
-              htmlBody,
-              attachments: Array.isArray(tpl.attachments) ? tpl.attachments : [],
-              senderName,
-              replyTo,
-              recipientName: m.name,
-              recordType: 'delegation',
-              recordId: dlg.id,
-              memberIndex: m.index,
-              allocationId: memberAllocationId(dlg, m.index),
-              delegation: dlg.delegation_name || '',
-              templateId: tpl.id,
-              templateName: tpl.name,
-              allocated_committee: m.alloc.committee,
-              allocated_portfolio: m.alloc.portfolio,
-              institution: dlg.delegation_name || dlg.institution || '',
-              type: 'Delegation Member',
-              bg_guide_url: dlg.bg_guide_url || dlg.gdrive_link
-            })
-          });
-          const data = await res.json();
-          if (data.success && data.skipped) {
-            skipped.push(m.name);
-          } else if (data.success) {
-            ok.push(m.name);
-            markRecordMailSent(dlg.id, 'delegation', {
-              templateId: tpl.id, templateName: tpl.name, subject,
-              recipient: m.email, recipientName: m.name, memberIndex: m.index
-            });
-          } else {
-            failed.push(`${m.name}: ${data.error || 'unknown error'}`);
-          }
+          const r = await sendOne(m, false);
+          if (r === 'ok') ok.push(m.name); else serverSkipped.push(m);
         } catch (err) {
           failed.push(`${m.name}: ${err.message}`);
         }
         await new Promise(r => setTimeout(r, 400)); // be gentle with Apps Script quotas
       }
 
-      if (btn) { btn.disabled = false; btn.textContent = '✉️ Send Mail to All Members'; }
-      showToast(`Sent ${ok.length}/${queue.length}` + (skipped.length ? `, ${skipped.length} already sent` : '') + (failed.length ? `, ${failed.length} failed` : '') + '.', failed.length ? 'warning' : 'success');
+      // The server logs one mail per person; if it says they already got *a* mail, let the admin decide.
+      if (serverSkipped.length && confirm(`${serverSkipped.length} member(s) already received a mail according to the server log:\n\n${serverSkipped.map(m => '• ' + m.name).join('\n')}\n\nSend "${tpl.name}" to them anyway?`)) {
+        for (let i = 0; i < serverSkipped.length; i++) {
+          const m = serverSkipped[i];
+          if (btn) btn.textContent = `Resending ${i + 1}/${serverSkipped.length}…`;
+          try { await sendOne(m, true); ok.push(m.name); } catch (err) { failed.push(`${m.name}: ${err.message}`); }
+          await new Promise(r => setTimeout(r, 400));
+        }
+        serverSkipped.length = 0;
+      }
+
+      if (btn) { btn.disabled = false; btn.textContent = '✉️ Send to All Members'; }
+      showToast(`Sent ${ok.length}/${queue.length}` + (serverSkipped.length ? `, ${serverSkipped.length} skipped (already mailed)` : '') + (failed.length ? `, ${failed.length} failed` : '') + '.', failed.length ? 'warning' : 'success');
       if (failed.length) alert('Some mails failed:\n\n' + failed.join('\n'));
       openRosterModal(dlg.id);
       applyFilters();
@@ -6846,6 +6874,8 @@
     let modalTargetType = 'individual';
     // Delegation mail: index into the roster of the chosen recipient (null = Head of Delegation)
     let modalRecipientIndex = null;
+    // True once the admin picks a template by hand; recipient changes must then never override it.
+    let modalTemplateUserChosen = false;
     let modalAttachments = [];
     let tplAttachments = [];
     let googleScriptUrl = localStorage.getItem('rns_mun_google_script_url') || '';
@@ -7880,10 +7910,10 @@
     }
 
     // True when an allocation mail was already dispatched to this roster member (local send history).
-    function isMemberMailSent(dlg, idx) {
+    function isMemberMailSent(dlg, idx, templateId) {
       const entry = getSentMailStore()[`delegation_${String(dlg.id)}`];
       const arr = Array.isArray(entry) ? entry : (entry ? [entry] : []);
-      return arr.some(e => e && e.memberIndex === idx);
+      return arr.some(e => e && e.memberIndex === idx && (!templateId || e.templateId === templateId));
     }
 
     // Every roster member (with original roster index) so the admin can mail each person individually.
@@ -7928,6 +7958,12 @@
       };
     }
 
+    // Allocation is only mandatory when the chosen template actually prints committee/portfolio/venue/WhatsApp details.
+    function templateNeedsAllocation(tpl) {
+      if (!tpl) return true;
+      return /\{\{\s*(allocated_committee|allocated_portfolio|committee|portfolio|committee1|portfolio1_1|whatsapp_link|committee_whatsapp|whatsapp_url|venue|chamber_venue)\s*\}\}/i.test(`${tpl.subject || ''} ${tpl.body || ''}`);
+    }
+
     function getMemberTemplateId() {
       return (mailTemplates.find(t => t.id === 'tpl-qr-and-whatsapp') ||
               mailTemplates.find(t => t.id === 'tpl-allocation-no-qr') ||
@@ -7951,7 +7987,7 @@
       box.style.display = 'block';
       box.innerHTML = a.hasAllocation
         ? `🏛️ <strong>${escapeHtml(a.committee)}</strong> — ${escapeHtml(a.portfolio)} <span style="color:#555;">• ${escapeHtml(a.chamber)}</span>`
-        : `⚠️ No committee/portfolio allocation found for this delegate yet. Allocate them first — sending is blocked until then.`;
+        : `⚠️ No committee/portfolio allocation found for this delegate yet. Templates that show committee details can't be sent until they are allocated.`;
       box.style.background = a.hasAllocation ? '#ECFDF5' : '#FEF2F2';
       box.style.color = a.hasAllocation ? '#065F46' : '#991B1B';
     }
@@ -8004,6 +8040,11 @@
       wrap.style.display = 'block';
     }
 
+    function onModalTemplateUserChange() {
+      modalTemplateUserChosen = true;
+      onModalTemplateSelectChange();
+    }
+
     function onModalRecipientChange() {
       const select = document.getElementById('mail-modal-recipient-select');
       modalRecipientIndex = (!select || select.value === 'head') ? null : parseInt(select.value, 10);
@@ -8012,7 +8053,8 @@
       // A delegate gets the same personal allocation mail as an individual delegate; the head option keeps the delegation summary mail.
       const tplSelect = document.getElementById('send-mail-template-select');
       const wantedTpl = modalRecipientIndex === null ? getDelegationSummaryTemplateId() : getMemberTemplateId();
-      if (tplSelect && wantedTpl) {
+      // Only pre-select a default; never override a template the admin chose themselves.
+      if (!modalTemplateUserChosen && tplSelect && wantedTpl) {
         tplSelect.value = wantedTpl;
         syncOrRebuildCustomSelect(tplSelect);
       }
@@ -8036,6 +8078,7 @@
 
       const modal = document.getElementById('send-mail-modal');
 
+      modalTemplateUserChosen = false;
       modalRecipientIndex = (recordType === 'delegation' && memberIndex !== null && memberIndex !== undefined) ? Number(memberIndex) : null;
       populateModalRecipientOptions();
       renderModalRecipientHeader();
@@ -8702,7 +8745,8 @@
 
       const isMemberMail = modalTargetType === 'delegation' && chosenRecipient.memberIndex !== null;
       const memberAlloc = isMemberMail ? getMemberAllocation(modalTargetRecord, chosenRecipient.memberIndex) : null;
-      if (isMemberMail && !memberAlloc.hasAllocation) {
+      const chosenTpl = mailTemplates.find(t => t.id === (document.getElementById('send-mail-template-select')?.value || ''));
+      if (isMemberMail && !memberAlloc.hasAllocation && templateNeedsAllocation(chosenTpl)) {
         showToast(`${chosenRecipient.name} has no committee/portfolio allocation yet — allocate before sending.`, 'error');
         return;
       }
@@ -8910,7 +8954,7 @@
         institution: dlg.delegation_name || dlg.institution || base.institution,
         delegation_name: dlg.delegation_name || base.delegation_name,
         registration_id: memberAllocationId(dlg, idx),
-        roster_table: '',
+        roster_table: base.roster_table,
         roster_count: String(base.roster_count || '')
       };
     }
