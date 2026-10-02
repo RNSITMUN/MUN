@@ -120,14 +120,20 @@ export default async function handler(req, res) {
     }
 
     // ── Idempotency Check ───────────────────────────────────────────
-    const { isResend, recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type, batchId, whatsapp_link } = req.body || {};
-    if (!isResend && recordId && recipient) {
-      const alreadySent = await checkAlreadySent(recipient, recordId);
+    const { isResend, recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type, batchId, whatsapp_link, allocationId } = req.body || {};
+    // Delegation members are logged/deduplicated per person (e.g. DEL-47-04), not per delegation,
+    // so mailing the head never blocks mailing the rest of the delegation (and vice versa).
+    const memberLogId = (String(recordType || '').toLowerCase() === 'delegation' && /^DEL-\d+-\d{2,}$/.test(String(allocationId || '')))
+      ? String(allocationId)
+      : null;
+    const logRegistrationId = memberLogId || (recordId ? String(recordId) : null);
+    if (!isResend && logRegistrationId && recipient) {
+      const alreadySent = await checkAlreadySent(recipient, logRegistrationId);
       if (alreadySent) {
         return res.status(200).json({
           success: true,
           skipped: true,
-          message: `Notice already sent to ${recipient} for ID #${recordId}. Use Resend to override.`
+          message: `Notice already sent to ${recipient} for ID #${logRegistrationId}. Use Resend to override.`
         });
       }
     }
@@ -231,7 +237,7 @@ export default async function handler(req, res) {
     try {
       mailLogRecord = await createMailLogEntry({
         batchId: batchId || null,
-        registrationId: recordId ? String(recordId) : null,
+        registrationId: logRegistrationId,
         delegateName: recipientName || null,
         recipientEmail: recipient.trim(),
         delegation: req.body.delegation || institution || null,
@@ -318,7 +324,7 @@ export default async function handler(req, res) {
           recipient: safeRecipient,
           recipient_name: safeName,
           record_type: (recordType || 'system').trim(),
-          record_id: recordId ? String(recordId) : null,
+          record_id: logRegistrationId,
           template_id: (templateId || 'custom').trim(),
           template_name: (templateName || 'Custom Email').trim(),
           subject: (subject || "Notice from RNS MUN '26").trim(),

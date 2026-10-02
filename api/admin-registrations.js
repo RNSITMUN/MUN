@@ -220,19 +220,32 @@ export default async function handler(req, res) {
 
     // Helper map of database allocations
     let allocationsMap = {};
+    let memberAllocationsMap = {};
     try {
       const { data: cpData } = await privilegedClient
         .from('delegate_checkpoints')
-        .select('record_id, record_type, allocated_committee, allocated_portfolio')
+        .select('record_id, record_type, member_index, allocated_committee, allocated_portfolio')
         .eq('checkpoint_key', 'allocation');
 
       if (Array.isArray(cpData)) {
         cpData.forEach(cp => {
-          const k = `${cp.record_type}_${cp.record_id}`;
-          allocationsMap[k] = {
+          const mIdx = parseInt(cp.member_index ?? 0, 10) || 0;
+          // Per-member allocations (delegation rosters have one row per member)
+          const mk = `${cp.record_type}_${cp.record_id}`;
+          if (!memberAllocationsMap[mk]) memberAllocationsMap[mk] = [];
+          memberAllocationsMap[mk].push({
+            member_index: mIdx,
             committee: cp.allocated_committee,
             portfolio: cp.allocated_portfolio
-          };
+          });
+          // Record-level allocation = member 0 (individual delegate / head of delegation).
+          // Previously the last member row overwrote this, giving the head another member's allocation.
+          if (mIdx === 0) {
+            allocationsMap[mk] = {
+              committee: cp.allocated_committee,
+              portfolio: cp.allocated_portfolio
+            };
+          }
         });
       }
     } catch (e) {
@@ -292,6 +305,7 @@ export default async function handler(req, res) {
             ...d,
             allocated_committee: alloc?.committee || d.allocated_committee || 'Institutional Delegation',
             allocated_portfolio: alloc?.portfolio || d.allocated_portfolio || `${d.member_count || 1} Delegates Delegation`,
+            member_allocations: memberAllocationsMap[`delegation_${d.id}`] || [],
             public_token: getPublicToken('delegation', d.id)
           };
         });
