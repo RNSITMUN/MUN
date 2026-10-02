@@ -24,6 +24,10 @@ Allow: /llms-full.txt
 Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /admin.html
+Disallow: /scan
+Disallow: /scan.html
+Disallow: /hub
+Disallow: /hub.html
 Disallow: /api/
 Disallow: /private/
 
@@ -47,6 +51,10 @@ Allow: /llms-full.txt
 Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /admin.html
+Disallow: /scan
+Disallow: /scan.html
+Disallow: /hub
+Disallow: /hub.html
 Disallow: /api/
 Disallow: /private/
 Disallow: /*.json$
