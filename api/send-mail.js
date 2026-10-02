@@ -7,6 +7,7 @@ import {
   updateMailLogEntry,
   checkAlreadySent
 } from '../lib/mail-logger.js';
+import adminMailLogHandler from '../lib/admin-mail-log.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -84,13 +85,25 @@ export default async function handler(req, res) {
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', origin || allowedOrigins[0]);
-  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
   );
 
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ── Dispatch to Admin Mail Log handler if applicable ──────────────
+  const url = req.url || '';
+  if (
+    url.includes('admin-mail-log') ||
+    req.method === 'GET' ||
+    req.body?.action === 'resend' ||
+    req.body?.action === 'retry_all_failed'
+  ) {
+    return adminMailLogHandler(req, res);
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed. Only POST supported.' });
   }
