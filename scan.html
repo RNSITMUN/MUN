@@ -2249,15 +2249,15 @@
               <thead>
                 <tr>
                   <th>Committee</th>
-                  <th>Roster</th>
-                  <th>Entry</th>
+                  <th>Total</th>
+                  <th>Scanned</th>
+                  <th>Remaining</th>
                   <th>Lunch</th>
                 </tr>
               </thead>
               <tbody id="committee-table-body">
                 <tr>
-                  <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading
-                    committee tallies...</td>
+                  <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading committee tallies...</td>
                 </tr>
               </tbody>
             </table>
@@ -4562,6 +4562,10 @@
         }
       } catch (e) {
         console.warn('Could not refresh checkpoint stats:', e.message);
+        const tbody = document.getElementById('committee-table-body');
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 0.85rem; font-size: 0.82rem;">⚠️ Failed to load committee stats: ${escapeHtml(e.message)}. Please check your network and retry.</td></tr>`;
+        }
       } finally {
         if (refreshBtn) {
           setTimeout(() => refreshBtn.classList.remove('spinning'), 400);
@@ -4648,24 +4652,43 @@
       }
 
       const tbody = document.getElementById('committee-table-body');
-      if (tbody && cachedScanStats.byCommittee) {
-        const commStateKey = `${currentStatsDay}:${JSON.stringify(cachedScanStats.byCommittee)}`;
-        if (commStateKey !== lastRenderedCommitteeState) {
-          lastRenderedCommitteeState = commStateKey;
+      if (tbody) {
+        if (!cachedScanStats.byCommittee || Object.keys(cachedScanStats.byCommittee).length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">No committee breakdown available.</td></tr>';
+        } else {
           const comms = cachedScanStats.byCommittee;
-          let rowsHtml = '';
-          Object.keys(comms).sort().forEach(cName => {
-            const c = comms[cName];
-            rowsHtml += `
-              <tr>
-                <td><strong>${escapeHtml(cName)}</strong></td>
-                <td>${c.total || 0}</td>
-                <td>${c[`${prefix}entry`] || 0}</td>
-                <td>${c[`${prefix}lunch`] || 0}</td>
-              </tr>
-            `;
-          });
-          tbody.innerHTML = rowsHtml || '<tr><td colspan="4" style="text-align:center;">No committee data available</td></tr>';
+          const commStateKey = `${currentStatsDay}:${JSON.stringify(comms)}`;
+          if (commStateKey !== lastRenderedCommitteeState) {
+            lastRenderedCommitteeState = commStateKey;
+            let rowsHtml = '';
+            const priorityOrder = ['UNSC', 'Lok Sabha', 'UNHRC', 'UNODC', 'DISEC', 'IP'];
+            const sortedKeys = Object.keys(comms).sort((a, b) => {
+              const ia = priorityOrder.indexOf(a);
+              const ib = priorityOrder.indexOf(b);
+              if (ia !== -1 && ib !== -1) return ia - ib;
+              if (ia !== -1) return -1;
+              if (ib !== -1) return 1;
+              return a.localeCompare(b);
+            });
+
+            sortedKeys.forEach(cName => {
+              const c = comms[cName] || {};
+              const tot = c.total || 0;
+              const scanned = c[`${prefix}entry`] || 0;
+              const remaining = Math.max(0, tot - scanned);
+              const lunch = c[`${prefix}lunch`] || 0;
+              rowsHtml += `
+                <tr>
+                  <td><strong>${escapeHtml(cName)}</strong></td>
+                  <td>${tot}</td>
+                  <td style="${scanned > 0 ? 'color: var(--success, #10b981); font-weight: 700;' : ''}">${scanned}</td>
+                  <td style="${remaining > 0 ? 'color: var(--warning, #f59e0b);' : 'color: var(--text-muted);'}">${remaining}</td>
+                  <td>${lunch}</td>
+                </tr>
+              `;
+            });
+            tbody.innerHTML = rowsHtml || '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 0.75rem;">No committee data available</td></tr>';
+          }
         }
       }
     }

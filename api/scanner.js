@@ -4,6 +4,7 @@ import path from 'path';
 import os from 'os';
 import { supabase } from '../lib/supabase.js';
 import { resolvePublicToken, decodePublicTokenPayload, getPublicToken, createStaffSession, verifyStaffSession, getStaffSessionName } from '../lib/token.js';
+import { normalizeCommitteeName } from '../lib/committees.js';
 
 // Local storage fallback for checkpoints
 const LOCAL_STORE_PATH = process.env.VERCEL
@@ -218,36 +219,72 @@ async function handleUpdateCheckpoint(req, res) {
     });
   }
 
+  let delegateName = '';
+  let allocComm = allocated_committee || '';
+  let allocPort = allocated_portfolio || '';
+  let existingRedeemed = false;
+  let existingRedeemedAt = null;
+  let existingRedeemedBy = null;
+
   if (supabase) {
     try {
-      const table = recordType === 'delegation' ? 'delegations' : 'registrations';
-      const { data: rec, error: recError } = await supabase
-        .from(table)
-        .select('id')
-        .eq('id', recordId)
-        .single();
+      const [regRes, cpRes] = await Promise.all([
+        recordType === 'delegation'
+          ? supabase.from('delegations').select('id, delegation_name, head_name, roster_data').eq('id', recordId).maybeSingle()
+          : supabase.from('registrations').select('id, name, institution, committee1, portfolio1_1').eq('id', recordId).maybeSingle(),
+        supabase.from('delegate_checkpoints')
+          .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
+          .eq('record_type', recordType)
+          .eq('record_id', String(recordId))
+          .eq('member_index', memberIdx)
+          .eq('checkpoint_key', cleanKey)
+          .maybeSingle()
+      ]);
 
-      if (recError) {
-        if (recError.code === 'PGRST116' || recError.message?.includes('0 rows')) {
-          return res.status(404).json({
-            success: false,
-            code: 'RECORD_NOT_FOUND',
-            error: 'No registration found for this pass.'
-          });
-        }
-        console.error('Supabase error verifying record in updateCheckpoint:', recError);
+      if (regRes.error) {
+        console.error('Supabase error verifying record in updateCheckpoint:', regRes.error);
         return res.status(502).json({
           success: false,
           code: 'DB_ERROR',
-          error: 'Database error verifying delegate record: ' + recError.message
+          error: 'Database error verifying delegate record: ' + regRes.error.message
         });
       }
+
+      const rec = regRes.data;
       if (!rec) {
         return res.status(404).json({
           success: false,
           code: 'RECORD_NOT_FOUND',
           error: 'No registration found for this pass.'
         });
+      }
+
+      if (recordType === 'individual') {
+        delegateName = rec.name || '';
+        if (!allocComm) allocComm = rec.committee1 || '';
+        if (!allocPort) allocPort = rec.portfolio1_1 || '';
+      } else {
+        const roster = Array.isArray(rec.roster_data) ? rec.roster_data : [];
+        if (roster[memberIdx]) {
+          delegateName = roster[memberIdx].name || roster[memberIdx]['Delegate Name'] || '';
+          if (!allocComm) allocComm = roster[memberIdx].allocated_committee || roster[memberIdx].committee || '';
+          if (!allocPort) allocPort = roster[memberIdx].allocated_portfolio || roster[memberIdx].portfolio || '';
+        }
+        if (!delegateName) delegateName = rec.head_name || rec.delegation_name || '';
+      }
+
+      if (cpRes.data) {
+        if (cpRes.data.redeemed) {
+          existingRedeemed = true;
+          existingRedeemedAt = cpRes.data.redeemed_at;
+          existingRedeemedBy = cpRes.data.redeemed_by;
+        }
+        if (cpRes.data.allocated_committee && !allocated_committee) {
+          allocComm = cpRes.data.allocated_committee;
+        }
+        if (cpRes.data.allocated_portfolio && !allocated_portfolio) {
+          allocPort = cpRes.data.allocated_portfolio;
+        }
       }
     } catch (e) {
       console.error('Unexpected error checking record in updateCheckpoint:', e);
@@ -264,63 +301,10 @@ async function handleUpdateCheckpoint(req, res) {
   const localStore = readLocalCheckpoints();
   const existingLocal = localStore[localKey]?.[cleanKey] || (memberIdx === 0 ? localStore[baseLocalKey]?.[cleanKey] : undefined);
 
-  let existingRedeemed = existingLocal?.redeemed;
-  let existingRedeemedAt = existingLocal?.redeemed_at;
-  let existingRedeemedBy = existingLocal?.redeemed_by;
-
-  let delegateName = '';
-  let allocComm = allocated_committee || '';
-  let allocPort = allocated_portfolio || '';
-
-  // Check Supabase if available
-  if (supabase) {
-    try {
-      const { data: existingDb } = await supabase
-        .from('delegate_checkpoints')
-        .select('*')
-        .eq('record_type', recordType)
-        .eq('record_id', String(recordId))
-        .eq('member_index', memberIdx)
-        .eq('checkpoint_key', cleanKey)
-        .maybeSingle();
-
-      if (existingDb && existingDb.redeemed) {
-        existingRedeemed = true;
-        existingRedeemedAt = existingDb.redeemed_at;
-        existingRedeemedBy = existingDb.redeemed_by;
-      }
-    } catch (e) {}
-
-    // Resolve delegate name & committee for rich responses
-    try {
-      if (recordType === 'individual') {
-        const { data: indRecord } = await supabase
-          .from('registrations')
-          .select('name, institution, committee1, portfolio1_1')
-          .eq('id', recordId)
-          .maybeSingle();
-        if (indRecord) {
-          delegateName = indRecord.name || '';
-          if (!allocComm) allocComm = indRecord.committee1 || '';
-          if (!allocPort) allocPort = indRecord.portfolio1_1 || '';
-        }
-      } else {
-        const { data: delRecord } = await supabase
-          .from('delegations')
-          .select('delegation_name, head_name, roster_data')
-          .eq('id', recordId)
-          .maybeSingle();
-        if (delRecord) {
-          const roster = Array.isArray(delRecord.roster_data) ? delRecord.roster_data : [];
-          if (roster[memberIdx]) {
-            delegateName = roster[memberIdx].name || roster[memberIdx]['Delegate Name'] || '';
-            if (!allocComm) allocComm = roster[memberIdx].allocated_committee || roster[memberIdx].committee || '';
-            if (!allocPort) allocPort = roster[memberIdx].allocated_portfolio || roster[memberIdx].portfolio || '';
-          }
-          if (!delegateName) delegateName = delRecord.head_name || delRecord.delegation_name || '';
-        }
-      }
-    } catch (e) {}
+  if (!existingRedeemed && existingLocal?.redeemed) {
+    existingRedeemed = true;
+    existingRedeemedAt = existingLocal.redeemed_at;
+    existingRedeemedBy = existingLocal.redeemed_by;
   }
 
   if (!delegateName) {
@@ -367,15 +351,11 @@ async function handleUpdateCheckpoint(req, res) {
 
   if (supabase) {
     try {
-      const matchCriteria = {
+      const payload = {
         record_type: recordType,
         record_id: String(recordId),
         member_index: memberIdx,
-        checkpoint_key: cleanKey
-      };
-
-      const payload = {
-        ...matchCriteria,
+        checkpoint_key: cleanKey,
         redeemed: isRedeemed,
         redeemed_at: isRedeemed ? nowIso : null,
         redeemed_by: isRedeemed ? staffName : null,
@@ -445,6 +425,31 @@ async function handleUpdateCheckpoint(req, res) {
 // ─────────────────────────────────────────────────────────────
 // 3. Scan Statistics
 // ─────────────────────────────────────────────────────────────
+let cachedMasterAllocations = null;
+let cachedMasterAllocationsTime = 0;
+
+function getMasterAllocations() {
+  const now = Date.now();
+  if (cachedMasterAllocations && now - cachedMasterAllocationsTime < 30000) {
+    return cachedMasterAllocations;
+  }
+  const possiblePaths = [
+    path.resolve(process.cwd(), 'data', 'allocations.json'),
+    path.resolve(process.cwd(), 'public', 'allocations.json')
+  ];
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      try {
+        const raw = fs.readFileSync(p, 'utf8');
+        cachedMasterAllocations = JSON.parse(raw);
+        cachedMasterAllocationsTime = now;
+        return cachedMasterAllocations;
+      } catch (e) {}
+    }
+  }
+  return [];
+}
+
 async function handleScanStats(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ success: false, error: 'Only GET supported.' });
@@ -461,8 +466,48 @@ async function handleScanStats(req, res) {
     });
   }
 
+  // Load master delegate roster for canonical allocation totals
+  const roster = getMasterAllocations();
+  const delegateCommitteeMap = new Map(); // key -> normalized committee name
+  const byCommittee = {};
+
+  const canonicalCommittees = ['UNSC', 'Lok Sabha', 'UNHRC', 'UNODC', 'DISEC', 'IP'];
+  canonicalCommittees.forEach(c => {
+    byCommittee[c] = {
+      total: 0,
+      day1_entry: 0,
+      day1_lunch: 0,
+      day2_entry: 0,
+      day2_lunch: 0,
+      day1_remaining: 0,
+      day2_remaining: 0
+    };
+  });
+
+  roster.forEach(d => {
+    const rawComm = d.allocated_committee || d.committee || '';
+    const normComm = normalizeCommitteeName(rawComm) || rawComm || 'Unassigned';
+    if (!byCommittee[normComm]) {
+      byCommittee[normComm] = {
+        total: 0,
+        day1_entry: 0,
+        day1_lunch: 0,
+        day2_entry: 0,
+        day2_lunch: 0,
+        day1_remaining: 0,
+        day2_remaining: 0
+      };
+    }
+    byCommittee[normComm].total++;
+
+    const recType = String(d.registration_type || '').toLowerCase().includes('delegation') ? 'delegation' : 'individual';
+    const recId = String(d.record_id);
+    const mIdx = d.member_index !== undefined ? d.member_index : 0;
+    delegateCommitteeMap.set(`${recType}_${recId}_${mIdx}`, normComm);
+  });
+
   const stats = {
-    total_delegates: 0,
+    total_delegates: roster.length > 0 ? roster.length : 0,
     checkpoints: {
       day1_entry: 0,
       day1_lunch: 0,
@@ -484,13 +529,15 @@ async function handleScanStats(req, res) {
       }
     }
   }
-  stats.total_delegates = seenDelegates.size;
+  if (!stats.total_delegates) {
+    stats.total_delegates = seenDelegates.size;
+  }
 
   if (supabase) {
     try {
       const { data: dbCheckpoints, error } = await supabase
         .from('delegate_checkpoints')
-        .select('record_type, record_id, member_index, checkpoint_key, redeemed')
+        .select('record_type, record_id, member_index, checkpoint_key, redeemed, allocated_committee')
         .eq('redeemed', true);
 
       if (!error && Array.isArray(dbCheckpoints)) {
@@ -505,30 +552,86 @@ async function handleScanStats(req, res) {
         const dbUnique = new Set();
 
         dbCheckpoints.forEach(row => {
-          dbUnique.add(`${row.record_type}_${row.record_id}_${row.member_index}`);
+          const delegateKey = `${row.record_type}_${row.record_id}_${row.member_index}`;
+          dbUnique.add(delegateKey);
+
           if (dbStats[row.checkpoint_key] !== undefined) {
             dbStats[row.checkpoint_key]++;
           }
+
+          // Committee checkpoint tally
+          const comm = delegateCommitteeMap.get(delegateKey) || normalizeCommitteeName(row.allocated_committee) || 'Unassigned';
+          if (!byCommittee[comm]) {
+            byCommittee[comm] = {
+              total: 0,
+              day1_entry: 0,
+              day1_lunch: 0,
+              day2_entry: 0,
+              day2_lunch: 0,
+              day1_remaining: 0,
+              day2_remaining: 0
+            };
+          }
+          if (byCommittee[comm][row.checkpoint_key] !== undefined) {
+            byCommittee[comm][row.checkpoint_key]++;
+          }
+        });
+
+        // Compute remaining counts
+        Object.keys(byCommittee).forEach(cName => {
+          const c = byCommittee[cName];
+          c.day1_remaining = Math.max(0, c.total - (c.day1_entry || 0));
+          c.day2_remaining = Math.max(0, c.total - (c.day2_entry || 0));
         });
 
         return res.status(200).json({
           success: true,
           source: 'database',
           stats: {
-            total_delegates: Math.max(dbUnique.size, stats.total_delegates),
+            total_delegates: Math.max(roster.length, dbUnique.size, stats.total_delegates),
             checkpoints: dbStats
-          }
+          },
+          byCommittee
         });
       }
     } catch (e) {}
   }
 
+  // Local fallback: tally from localStore
+  for (const [key, checkpoints] of Object.entries(localStore)) {
+    const comm = delegateCommitteeMap.get(key) || 'Unassigned';
+    if (!byCommittee[comm]) {
+      byCommittee[comm] = {
+        total: 0,
+        day1_entry: 0,
+        day1_lunch: 0,
+        day2_entry: 0,
+        day2_lunch: 0,
+        day1_remaining: 0,
+        day2_remaining: 0
+      };
+    }
+    for (const [cpKey, cpVal] of Object.entries(checkpoints)) {
+      if (cpVal && cpVal.redeemed && byCommittee[comm][cpKey] !== undefined) {
+        byCommittee[comm][cpKey]++;
+      }
+    }
+  }
+
+  Object.keys(byCommittee).forEach(cName => {
+    const c = byCommittee[cName];
+    c.day1_remaining = Math.max(0, c.total - (c.day1_entry || 0));
+    c.day2_remaining = Math.max(0, c.total - (c.day2_entry || 0));
+  });
+
   return res.status(200).json({
     success: true,
     source: 'local_store',
-    stats
+    stats,
+    byCommittee
   });
 }
+
 
 // ─────────────────────────────────────────────────────────────
 // Module-scoped Directory Cache for Warm Serverless Instances
