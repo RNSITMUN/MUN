@@ -731,6 +731,30 @@
       color: var(--text-muted);
     }
 
+    /* Floating Scanner Toast Notification */
+    .scanner-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(17, 24, 39, 0.92);
+      color: #FFF;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .scanner-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* Camera Viewport */
     .camera-viewport-wrap {
       position: relative;
@@ -3201,33 +3225,72 @@
       }
     }
 
+    let toastTimer = null;
+    function showScannerToast(msg) {
+      let toast = document.getElementById('scanner-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'scanner-toast';
+        toast.className = 'scanner-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 2500);
+    }
+
     async function switchCamera() {
       try {
         if (!cameraList || cameraList.length === 0) {
-          cameraList = await Html5Qrcode.getCameras();
+          try {
+            cameraList = await Html5Qrcode.getCameras();
+          } catch (e) {
+            console.warn('Could not enumerate cameras:', e);
+          }
         }
-        if (!cameraList || cameraList.length < 2) {
+
+        // If multiple cameras enumerated:
+        if (cameraList && cameraList.length >= 2) {
+          const currentId = typeof workingCameraConfig === 'string'
+            ? workingCameraConfig
+            : (workingCameraConfig?.deviceId?.exact || workingCameraConfig?.deviceId || currentCameraId);
+          let currentIdx = cameraList.findIndex(c => c.id === currentId);
+          if (currentIdx === -1) currentIdx = 0;
+          const nextIdx = (currentIdx + 1) % cameraList.length;
+          currentCameraId = cameraList[nextIdx].id;
+          workingCameraConfig = currentCameraId;
+
+          if (isScannerRunning && html5QrCode) {
+            await html5QrCode.stop().catch(() => {});
+            isScannerRunning = false;
+            await startScannerWithConfig(currentCameraId);
+          }
+          showScannerToast(`Camera: ${cameraList[nextIdx].label || ('Camera ' + (nextIdx + 1))}`);
           return;
         }
-        const currentId = typeof workingCameraConfig === 'string'
-          ? workingCameraConfig
-          : (typeof workingCameraConfig?.deviceId === 'string'
-            ? workingCameraConfig.deviceId
-            : (workingCameraConfig?.deviceId?.exact || currentCameraId));
-        let currentIdx = cameraList.findIndex(c => c.id === currentId);
-        if (currentIdx === -1) currentIdx = 0;
-        const nextIdx = (currentIdx + 1) % cameraList.length;
-        currentCameraId = cameraList[nextIdx].id;
+
+        // Mobile fallback: toggle facingMode between 'environment' and 'user'
+        const currentFacing = (typeof workingCameraConfig === 'object' && workingCameraConfig?.facingMode?.ideal)
+          ? workingCameraConfig.facingMode.ideal
+          : (typeof workingCameraConfig === 'object' && workingCameraConfig?.facingMode)
+            ? workingCameraConfig.facingMode
+            : 'environment';
+
+        const nextFacing = currentFacing === 'user' ? 'environment' : 'user';
+        workingCameraConfig = { facingMode: { ideal: nextFacing } };
 
         if (isScannerRunning && html5QrCode) {
-          await html5QrCode.stop();
+          await html5QrCode.stop().catch(() => {});
           isScannerRunning = false;
-          await startScannerWithConfig(currentCameraId);
-        } else {
-          workingCameraConfig = currentCameraId;
+          await startScannerWithConfig(workingCameraConfig);
         }
+        showScannerToast(`Switched to ${nextFacing === 'user' ? 'Front' : 'Back'} camera`);
       } catch (e) {
         console.warn('Switch camera error:', e);
+        showScannerToast('Unable to switch camera');
       }
     }
 
@@ -3288,7 +3351,7 @@
 
       if (html5QrCode && isScannerRunning) {
         try {
-          html5QrCode.pause(true);
+          html5QrCode.pause(false);
         } catch (e) { }
       }
 
@@ -3307,9 +3370,7 @@
         const modalOpen = document.getElementById('delegation-member-modal')?.classList.contains('open');
         const sheetOpen = document.getElementById('checkin-sheet-backdrop')?.style.display === 'flex';
         if (!modalOpen && !sheetOpen && !isResultCardActive && html5QrCode && isScannerRunning) {
-          try {
-            html5QrCode.resume();
-          } catch (e) { }
+          void resumeScanner();
         }
         isProcessing = false;
       }
@@ -3364,6 +3425,45 @@
       status.innerHTML = `<span class="status-chip ${className}"><svg class="icon sm"><use href="#icon-${icon}"></use></svg><span>${escapeHtml(label)}</span></span>`;
     }
 
+    async function resumeScanner() {
+      isProcessing = false;
+      lastScannedCode = null;
+      lastScannedTime = 0;
+      isResultCardActive = false;
+
+      if (!html5QrCode || !isScannerRunning) {
+        try {
+          await initCameraScanner();
+        } catch (e) {
+          console.warn('Failed to re-init scanner:', e);
+        }
+        return;
+      }
+
+      try {
+        const state = typeof html5QrCode.getState === 'function' ? html5QrCode.getState() : null;
+        if (state === 3) {
+          html5QrCode.resume();
+        } else if (state === 1) {
+          await startScannerWithConfig(workingCameraConfig || { facingMode: { ideal: 'environment' } });
+        }
+      } catch (err) {
+        console.warn('Camera resume failed, attempting restart:', err);
+        try {
+          await html5QrCode.stop().catch(() => {});
+          isScannerRunning = false;
+          await startScannerWithConfig(workingCameraConfig || { facingMode: { ideal: 'environment' } });
+        } catch (e) {}
+      }
+
+      try {
+        const video = document.querySelector('#reader video');
+        if (video && video.paused) {
+          await video.play().catch(() => {});
+        }
+      } catch (e) {}
+    }
+
     function closeCheckinSheet({ resume = true, clearResult = true } = {}) {
       clearTimeout(confirmationTimer);
       const backdrop = document.getElementById('checkin-sheet-backdrop');
@@ -3373,15 +3473,8 @@
       if (clearResult) isResultCardActive = false;
       if (sheetPreviousFocus?.isConnected) sheetPreviousFocus.focus();
       sheetPreviousFocus = null;
-      if (resume && isScannerRunning && html5QrCode) {
-        try {
-          const state = typeof html5QrCode.getState === 'function' ? html5QrCode.getState() : null;
-          if (state === 3 || state === null) {
-            html5QrCode.resume();
-          }
-        } catch (error) {
-          console.warn('Camera resume failed:', error);
-        }
+      if (resume) {
+        void resumeScanner();
       }
     }
 
@@ -3393,7 +3486,7 @@
       const actions = document.getElementById('checkin-sheet-actions');
       if (!backdrop || !title || !description || !actions) return;
       if (html5QrCode && isScannerRunning) {
-        try { html5QrCode.pause(true); } catch (error) { console.warn('Camera pause failed:', error); }
+        try { html5QrCode.pause(false); } catch (error) { console.warn('Camera pause failed:', error); }
       }
       title.textContent = details.title || (mode === 'confirm' ? 'Confirm check-in' : mode === 'success' ? 'Check-in complete' : mode === 'duplicate' ? 'Already checked in' : mode === 'inspect' ? 'Pass details' : 'Unable to verify pass');
       setCheckinSheetStatus(details.status || (mode === 'confirm' ? 'Ready to check in' : mode === 'success' ? 'Checked in' : mode === 'duplicate' ? 'Already checked in' : mode === 'inspect' ? 'Inspection mode' : 'Error'), mode === 'success' ? 'success' : mode === 'duplicate' ? 'warning' : mode === 'error' ? 'error' : 'neutral');
@@ -3573,11 +3666,9 @@
 
     function cancelConfirmCheckin() {
       if (isCheckingIn) return;
-      lastScannedCode = null;
-      lastScannedTime = 0;
-      isProcessing = false;
-      closeCheckinSheet({ resume: true, clearResult: true });
-      isResultCardActive = false;
+      closeCheckinSheet({ resume: false, clearResult: true });
+      dismissResultCard();
+      void resumeScanner();
     }
 
     function scanNextFromSheet() {
@@ -3585,11 +3676,9 @@
       if (confirmation?.mode === 'success') {
         showSuccessResult(confirmation.candidate, confirmation.stationKey, confirmation.payload, confirmation.checkpoint);
       }
-      lastScannedCode = null;
-      lastScannedTime = 0;
-      isProcessing = false;
-      closeCheckinSheet({ resume: true, clearResult: true });
-      isResultCardActive = false;
+      closeCheckinSheet({ resume: false, clearResult: true });
+      dismissResultCard();
+      void resumeScanner();
     }
 
     function handleCheckinBackdrop(event) {
@@ -3604,12 +3693,9 @@
         void submitConfirmCheckin();
       } else {
         // Dismiss invalid pass error sheet, reset cooldowns, and resume scanner for the next pass
-        lastScannedCode = null;
-        lastScannedTime = 0;
-        isProcessing = false;
-        closeCheckinSheet({ resume: true, clearResult: true });
-        isResultCardActive = false;
+        closeCheckinSheet({ resume: false, clearResult: true });
         dismissResultCard();
+        void resumeScanner();
       }
     }
 
@@ -3713,15 +3799,8 @@
         document.getElementById('result-details').innerHTML = '<div class="result-placeholder">Position QR pass in camera view or search below.</div>';
         document.getElementById('result-actions').innerHTML = '';
       }
-
-      if (html5QrCode && isScannerRunning) {
-        try {
-          const state = typeof html5QrCode.getState === 'function' ? html5QrCode.getState() : null;
-          if (state === 3 || state === null) {
-            html5QrCode.resume();
-          }
-        } catch (e) { }
-      }
+ 
+      void resumeScanner();
     }
 
     function showSuccessResult(candidate, stationKey, payload, result) {
@@ -3974,7 +4053,7 @@
 
       const modal = document.getElementById('delegation-member-modal');
       if (html5QrCode && isScannerRunning) {
-        try { html5QrCode.pause(true); } catch (error) { console.warn('Camera pause failed:', error); }
+        try { html5QrCode.pause(false); } catch (error) { console.warn('Camera pause failed:', error); }
       }
       const instNameEl = document.getElementById('modal-institution-name');
       const delNameEl = document.getElementById('modal-delegation-name');
