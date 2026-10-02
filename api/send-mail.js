@@ -8,6 +8,7 @@ import {
   checkAlreadySent
 } from '../lib/mail-logger.js';
 import adminMailLogHandler from '../lib/admin-mail-log.js';
+import { privilegedSupabase } from '../lib/mail-logger.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -59,19 +60,55 @@ function resolveCommitteeWhatsApp(committee) {
   return 'https://chat.whatsapp.com/G5y1o155s6y9017';
 }
 
-// Persist one attempt to the shared cloud log table (mail_logs) so every device sees it.
-// NOTE: Supabase query builders are thenables without .catch(); the old `.insert(...).catch()` threw a
-// TypeError BEFORE the request was sent, so nothing was ever written. Always await and read { error }.
-async function saveSharedLog(row) {
-  if (!supabase) return 'Supabase client is not configured';
+// ── Shared cloud mail log (Supabase `mail_logs`) ─────────────────────────────
+// Single source of truth read by every device. One row per attempt: inserted as 'queued',
+// then updated in place to 'sent' / 'failed' so status changes propagate (realtime + polling).
+// NOTE: Supabase query builders are thenables without .catch(); always await and read { error }.
+const logDb = () => privilegedSupabase || supabase;
+const OPTIONAL_LOG_COLS = ['error', 'updated_at', 'attempts'];
+const isMissingCol = (err) => err && (err.code === '42703' || err.code === 'PGRST204' || /column/i.test(err.message || ''));
+
+async function sharedLogCreate(row) {
+  const db = logDb();
+  if (!db) return { id: null, error: 'Supabase client is not configured' };
   try {
-    const { error } = await supabase.from('mail_logs').insert([row]);
+    let { data, error } = await db.from('mail_logs').insert([row]).select('id').single();
+    if (error && isMissingCol(error)) {
+      const slim = { ...row }; OPTIONAL_LOG_COLS.forEach(c => delete slim[c]);
+      ({ data, error } = await db.from('mail_logs').insert([slim]).select('id').single());
+    }
+    return { id: data?.id ?? null, error: error ? error.message : null };
+  } catch (e) {
+    return { id: null, error: e.message || 'Unknown logging error' };
+  }
+}
+
+async function sharedLogUpdate(id, patch) {
+  const db = logDb();
+  if (!db || id === null || id === undefined) return 'no log row to update';
+  try {
+    let { error } = await db.from('mail_logs').update(patch).eq('id', id);
+    if (error && isMissingCol(error)) {
+      const slim = { ...patch }; OPTIONAL_LOG_COLS.forEach(c => delete slim[c]);
+      ({ error } = await db.from('mail_logs').update(slim).eq('id', id));
+    }
     return error ? error.message : null;
   } catch (e) {
     return e.message || 'Unknown logging error';
   }
 }
 
+// Cluster-wide duplicate guard (reads the shared table, not a per-instance /tmp file).
+async function sharedAlreadySent(email, registrationId) {
+  const db = logDb();
+  if (!db || !email) return false;
+  try {
+    let q = db.from('mail_logs').select('id').ilike('recipient', String(email).trim()).eq('status', 'sent');
+    if (registrationId) q = q.eq('record_id', String(registrationId));
+    const { data, error } = await q.limit(1);
+    return !error && Array.isArray(data) && data.length > 0;
+  } catch (e) { return false; }
+}
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
@@ -142,24 +179,37 @@ export default async function handler(req, res) {
       : null;
     const logRegistrationId = memberLogId || (recordId ? String(recordId) : null);
     const { templateId: bodyTemplateId, templateName: bodyTemplateName } = req.body || {};
-    let sharedLogged = false;
+    let sharedLogId = null;
+    // One shared-log row per attempt: first call inserts it, later calls update its status in place.
     const logAttempt = async (status, errMsg, subj) => {
-      if (sharedLogged && status === 'sent') return null;
-      const warn = await saveSharedLog({
-        recipient: recipient.trim(),
-        recipient_name: (recipientName || 'Test / Unregistered').trim(),
-        record_type: String(recordType || 'system').trim(),
-        record_id: logRegistrationId,
-        template_id: String(bodyTemplateId || 'custom').trim(),
-        template_name: String(bodyTemplateName || 'Custom Email').trim(),
-        subject: String(subj || subject || "Notice from RNS MUN '26").trim() + (status === 'failed' && errMsg ? ` [FAILED: ${String(errMsg).slice(0, 120)}]` : ''),
-        status
+      const finalSubject = String(subj || subject || "Notice from RNS MUN '26").trim();
+      const now = new Date().toISOString();
+      if (sharedLogId === null) {
+        const { id, error } = await sharedLogCreate({
+          recipient: recipient.trim(),
+          recipient_name: (recipientName || 'Test / Unregistered').trim(),
+          record_type: String(recordType || 'system').trim(),
+          record_id: logRegistrationId,
+          template_id: String(bodyTemplateId || 'custom').trim(),
+          template_name: String(bodyTemplateName || 'Custom Email').trim(),
+          subject: finalSubject,
+          status,
+          error: errMsg ? String(errMsg).slice(0, 500) : null,
+          attempts: 1,
+          updated_at: now
+        });
+        if (id !== null) sharedLogId = id;
+        return error;
+      }
+      return sharedLogUpdate(sharedLogId, {
+        status,
+        subject: finalSubject,
+        error: errMsg ? String(errMsg).slice(0, 500) : null,
+        updated_at: now
       });
-      if (!warn) sharedLogged = true;
-      return warn;
     };
     if (!isResend && logRegistrationId && recipient) {
-      const alreadySent = await checkAlreadySent(recipient, logRegistrationId);
+      const alreadySent = (await sharedAlreadySent(recipient, logRegistrationId)) || (await checkAlreadySent(recipient, logRegistrationId));
       if (alreadySent) {
         await logAttempt('skipped', 'Duplicate guard: already sent');
         return res.status(200).json({
@@ -284,6 +334,9 @@ export default async function handler(req, res) {
       console.warn('[send-mail] Could not create queued log row:', e.message);
     }
 
+    // 'queued' only when we can update the row afterwards (service role); otherwise a single final row is written.
+    if (privilegedSupabase) await logAttempt('queued', null, preparedSubject);
+
     const payload = {
       recipient: recipient.trim(),
       subject: preparedSubject,
@@ -375,6 +428,7 @@ export default async function handler(req, res) {
       message: responseData.message || 'Email successfully sent via Google Apps Script.',
       details: responseData,
       mailLogId: mailLogRecord?.id,
+      sharedLogId,
       logWarning: logWarning || undefined
     };
 
@@ -385,15 +439,18 @@ export default async function handler(req, res) {
     try {
       const b = req.body || {};
       if (b.recipient && String(b.recipient).includes('@')) {
-        await saveSharedLog({
+        await sharedLogCreate({
           recipient: String(b.recipient).trim(),
           recipient_name: String(b.recipientName || 'Test / Unregistered').trim(),
           record_type: String(b.recordType || 'system').trim(),
           record_id: b.allocationId || (b.recordId ? String(b.recordId) : null),
           template_id: String(b.templateId || 'custom').trim(),
           template_name: String(b.templateName || 'Custom Email').trim(),
-          subject: String(b.subject || "Notice from RNS MUN '26").trim() + ` [FAILED: ${String(error.message).slice(0, 120)}]`,
-          status: 'failed'
+          subject: String(b.subject || "Notice from RNS MUN '26").trim(),
+          status: 'failed',
+          error: String(error.message).slice(0, 500),
+          attempts: 1,
+          updated_at: new Date().toISOString()
         });
       }
     } catch (_) {}

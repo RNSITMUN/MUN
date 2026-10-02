@@ -2810,12 +2810,12 @@
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem;">
           <div>
             <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#6C0D2C;">📋 Mail Dispatch Log</h3>
-            <p style="margin:4px 0 0 0; font-size:0.8rem; color:#666;">Every email sent from this admin panel, in reverse chronological order.</p>
+            <p style="margin:4px 0 0 0; font-size:0.8rem; color:#666;">Every email sent from this admin panel, newest first. <span id="maillog-live-indicator" style="font-weight:700; color:#999;">● connecting…</span></p>
           </div>
           <div style="display:flex; gap:0.6rem; align-items:center;">
             <input type="text" id="maillog-search" placeholder="Search name, email, template..." oninput="renderMailLog()" style="padding:0.4rem 0.75rem; font-size:0.8rem; border:1.5px solid #000; border-radius:6px; background:#FFF7EB; font-family:inherit; width:220px;">
             <button onclick="exportOldMailLogCSV()" style="background:#E5A93C; color:#000; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.8rem; font-size:0.78rem; font-weight:800; cursor:pointer; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;" title="Export logs to CSV">📥 Export CSV</button>
-            <button onclick="clearMailLog()" style="background:#FFF7EB; color:#6C0D2C; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.8rem; font-size:0.78rem; font-weight:800; cursor:pointer; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;">🗑 Clear Log</button>
+            <button onclick="refreshMailLogNow()" style="background:#FFF7EB; color:#6C0D2C; border:1.5px solid #000; border-radius:6px; padding:0.38rem 0.8rem; font-size:0.78rem; font-weight:800; cursor:pointer; box-shadow:1.5px 1.5px 0 #000; white-space:nowrap;">🔄 Refresh</button>
           </div>
         </div>
         <div id="maillog-table-wrap" style="overflow-x:auto; border:2px solid #000; border-radius:10px; box-shadow:3px 3px 0 #000;">
@@ -2827,11 +2827,12 @@
                 <th style="padding:10px 14px; text-align:left; font-weight:800; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Type</th>
                 <th style="padding:10px 14px; text-align:left; font-weight:800; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Template</th>
                 <th style="padding:10px 14px; text-align:left; font-weight:800; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;">Subject</th>
+                <th style="padding:10px 14px; text-align:left; font-weight:800; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Status</th>
                 <th style="padding:10px 14px; text-align:left; font-weight:800; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Sent At</th>
               </tr>
             </thead>
             <tbody id="maillog-tbody">
-              <tr><td colspan="6" style="text-align:center; padding:40px; color:#999; font-size:0.85rem;">No emails sent yet.</td></tr>
+              <tr><td colspan="7" style="text-align:center; padding:40px; color:#999; font-size:0.85rem;">Loading shared mail log…</td></tr>
             </tbody>
           </table>
         </div>
@@ -3592,6 +3593,7 @@
       if (supabaseClient) {
         await supabaseClient.auth.signOut();
       }
+      stopMailLogSync();
       currentSession = null;
       rawRegistrations = [];
       rawDelegations = [];
@@ -3655,10 +3657,10 @@
         rawRegistrations = data.registrations || [];
         rawDelegations = data.delegations || [];
 
-        if (Array.isArray(data.mailLogs)) {
-          window.rawMailLogs = data.mailLogs;
-          syncCloudMailLogs(data.mailLogs);
+        if (Array.isArray(data.mailLogs) && !sharedMailLogsLoaded) {
+          applySharedMailLogs(data.mailLogs); // quick first paint; the shared endpoint + realtime take over below
         }
+        startMailLogSync();
 
         // Expected total counts from server stats
         const statsObj = data.stats || {};
@@ -4094,9 +4096,13 @@
     }
 
     function updateMailLogBadge() {
-      const store = getSentMailStore();
       let total = 0;
-      Object.values(store).forEach(v => { total += Array.isArray(v) ? v.length : (v ? 1 : 0); });
+      if (typeof sharedMailLogsLoaded !== 'undefined' && sharedMailLogsLoaded) {
+        total = sharedMailLogs.length;
+      } else {
+        const store = getSentMailStore();
+        Object.values(store).forEach(v => { total += Array.isArray(v) ? v.length : (v ? 1 : 0); });
+      }
       const badge = document.getElementById('badge-count-maillog');
       if (badge) badge.textContent = total;
     }
@@ -4710,73 +4716,181 @@
       }
     }
 
+    // ─── Shared Mail Log (single source of truth: Supabase `mail_logs`) ───────────
+    // Every device reads the same table through /api/admin-mail-log?source=shared, kept fresh by
+    // Supabase Realtime (instant) plus polling / focus / reconnect refreshes (fallback). localStorage is
+    // NOT used to render the log any more - it only caches per-person "sent" ticks.
+    let sharedMailLogs = [];
+    let sharedMailLogsLoaded = false;
+    let _mlInFlight = null, _mlQueued = false, _mlPollTimer = null, _mlChannel = null, _mlDebounce = null;
+    let _mlRealtimeLive = false, _mlLastError = '';
+    const ML_POLL_MS = 8000;
+
+    function setMailLogLive(state, msg) {
+      const el = document.getElementById('maillog-live-indicator');
+      if (!el) return;
+      if (state === 'error') { el.textContent = '● offline' + (msg ? ' (' + msg + ')' : ''); el.style.color = '#B91C1C'; }
+      else if (_mlRealtimeLive) { el.textContent = '● live'; el.style.color = '#059669'; }
+      else { el.textContent = `● syncing every ${ML_POLL_MS / 1000}s`; el.style.color = '#B45309'; }
+    }
+
+    async function getMailLogToken() {
+      try {
+        if (supabaseClient) {
+          const { data } = await supabaseClient.auth.getSession();
+          if (data && data.session) { currentSession = data.session; return data.session.access_token; }
+        }
+      } catch (e) {}
+      return currentSession?.access_token || '';
+    }
+
+    function applySharedMailLogs(rows) {
+      const seen = new Set();
+      const list = [];
+      (Array.isArray(rows) ? rows : []).forEach(r => {
+        if (!r || r.id === undefined || r.id === null || seen.has(String(r.id))) return;
+        seen.add(String(r.id));
+        list.push(r);
+      });
+      list.sort((a, b) => (new Date(b.created_at || 0) - new Date(a.created_at || 0)) || (Number(b.id) - Number(a.id)));
+      sharedMailLogs = list;
+      sharedMailLogsLoaded = true;
+      window.rawMailLogs = list;
+      try { syncCloudMailLogs(list); } catch (e) { console.warn('[maillog] sent-state sync failed:', e); }
+      updateMailLogBadge();
+      renderMailLog();
+    }
+
+    // Fetch the shared log now. Overlapping calls coalesce into one trailing refresh.
+    async function refreshSharedMailLog() {
+      if (_mlInFlight) { _mlQueued = true; return _mlInFlight; }
+      _mlInFlight = (async () => {
+        try {
+          const token = await getMailLogToken();
+          if (!token) return false;
+          const res = await fetch('/api/admin-mail-log?source=shared&_=' + Date.now(), {
+            cache: 'no-store',
+            headers: { 'Authorization': `Bearer ${token}`, 'Cache-Control': 'no-cache' }
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+          _mlLastError = '';
+          applySharedMailLogs(data.logs);
+          setMailLogLive('ok');
+          return true;
+        } catch (e) {
+          _mlLastError = e.message || 'fetch failed';
+          console.warn('[maillog] shared log refresh failed:', _mlLastError);
+          setMailLogLive('error', _mlLastError);
+          const tb = document.getElementById('maillog-tbody');
+          if (tb && !sharedMailLogsLoaded) tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:#B91C1C;font-size:0.85rem;">Could not load the shared mail log: ${escapeHtml(_mlLastError)}. Retrying automatically…</td></tr>`;
+          return false;
+        } finally {
+          _mlInFlight = null;
+          if (_mlQueued) { _mlQueued = false; refreshSharedMailLog(); }
+        }
+      })();
+      return _mlInFlight;
+    }
+
+    function scheduleMailLogRefresh() {
+      clearTimeout(_mlDebounce);
+      _mlDebounce = setTimeout(refreshSharedMailLog, 250);
+    }
+
+    function startMailLogSync() {
+      if (_mlPollTimer) return; // already running
+      refreshSharedMailLog();
+      _mlPollTimer = setInterval(() => {
+        if (document.visibilityState === 'visible' && currentSession) refreshSharedMailLog();
+      }, ML_POLL_MS);
+      if (!window._mlListenersBound) {
+        window._mlListenersBound = true;
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && currentSession) refreshSharedMailLog(); });
+        window.addEventListener('focus', () => { if (currentSession) refreshSharedMailLog(); });
+        window.addEventListener('online', () => { if (currentSession) refreshSharedMailLog(); });
+      }
+      // Realtime: instant push for inserts/updates; polling above covers any gap.
+      try {
+        if (supabaseClient && typeof supabaseClient.channel === 'function') {
+          getMailLogToken().then(tok => {
+            try { if (tok && supabaseClient.realtime && supabaseClient.realtime.setAuth) supabaseClient.realtime.setAuth(tok); } catch (e) {}
+            _mlChannel = supabaseClient
+              .channel('mail-logs-sync')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'mail_logs' }, () => scheduleMailLogRefresh())
+              .subscribe(status => {
+                _mlRealtimeLive = (status === 'SUBSCRIBED');
+                setMailLogLive(_mlLastError ? 'error' : 'ok', _mlLastError);
+                if (status === 'SUBSCRIBED') refreshSharedMailLog(); // catch anything missed while connecting
+              });
+          });
+        }
+      } catch (e) { console.warn('[maillog] realtime unavailable, polling only:', e.message); }
+    }
+
+    function stopMailLogSync() {
+      clearInterval(_mlPollTimer); _mlPollTimer = null;
+      clearTimeout(_mlDebounce);
+      try { if (_mlChannel && supabaseClient) supabaseClient.removeChannel(_mlChannel); } catch (e) {}
+      _mlChannel = null; _mlRealtimeLive = false;
+      sharedMailLogs = []; sharedMailLogsLoaded = false; window.rawMailLogs = null;
+    }
+
+    function mailLogStatusBadge(status, err) {
+      const st = String(status || 'sent').toLowerCase();
+      const map = { sent: ['#059669', '#fff'], failed: ['#B91C1C', '#fff'], queued: ['#E5A93C', '#000'], skipped: ['#6B7280', '#fff'] };
+      const [bg, fg] = map[st] || map.sent;
+      return `<span title="${escapeHtml(err || '')}" style="background:${bg};color:${fg};font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:4px;border:1px solid #000;text-transform:uppercase;">${escapeHtml(st)}</span>`;
+    }
+
     function renderMailLog() {
       const tbody  = document.getElementById('maillog-tbody');
+      if (!tbody) return;
       const search = (document.getElementById('maillog-search')?.value || '').toLowerCase().trim();
-      if (!tbody) { fetchMailLogs(); return; }
 
-      const store = getSentMailStore();
-      let entries = [];
-      Object.entries(store).forEach(([key, val]) => {
-        const arr = Array.isArray(val) ? val : (val ? [val] : []);
-        arr.forEach(entry => entries.push({ ...entry, _key: key }));
-      });
-
-      // If localStorage is empty but we have in-memory rawMailLogs, re-sync and try again
-      if (entries.length === 0 && window.rawMailLogs && window.rawMailLogs.length > 0) {
-        syncCloudMailLogs(window.rawMailLogs);
-        const refreshedStore = getSentMailStore();
-        Object.entries(refreshedStore).forEach(([key, val]) => {
-          const arr = Array.isArray(val) ? val : (val ? [val] : []);
-          arr.forEach(entry => entries.push({ ...entry, _key: key }));
-        });
+      if (!sharedMailLogsLoaded) {
+        if (!_mlLastError) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;font-size:0.85rem;">Loading shared mail log…</td></tr>';
+        refreshSharedMailLog();
+        return;
       }
 
-      // Sort newest first
-      entries.sort((a, b) => {
-        const tA = a.timestamp || (a.sentAt ? new Date(a.sentAt).getTime() : 0);
-        const tB = b.timestamp || (b.sentAt ? new Date(b.sentAt).getTime() : 0);
-        return tB - tA;
-      });
-
-      updateMailLogBadge();
-
-      // Search filter
+      let entries = sharedMailLogs;
       if (search) {
         entries = entries.filter(e =>
-          (e.recipient     || '').toLowerCase().includes(search) ||
-          (e.recipientName || '').toLowerCase().includes(search) ||
-          (e.templateName  || '').toLowerCase().includes(search) ||
-          (e.subject       || '').toLowerCase().includes(search) ||
-          (e.recordType    || '').toLowerCase().includes(search)
+          (e.recipient      || '').toLowerCase().includes(search) ||
+          (e.recipient_name || '').toLowerCase().includes(search) ||
+          (e.template_name  || '').toLowerCase().includes(search) ||
+          (e.subject        || '').toLowerCase().includes(search) ||
+          (e.status         || '').toLowerCase().includes(search) ||
+          (e.record_type    || '').toLowerCase().includes(search) ||
+          (e.record_id      || '').toLowerCase().includes(search)
         );
       }
 
       if (entries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:#999;font-size:0.85rem;">${
-          search ? 'No results match your search.' : 'No emails sent yet.'
-        }</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:#999;font-size:0.85rem;">${search ? 'No results match your search.' : 'No emails sent yet.'}</td></tr>`;
         return;
       }
 
       const rowBg = ['#FFFDF9', '#FFF7EB'];
       tbody.innerHTML = entries.map((e, i) => {
-        const dt = e.sentAt ? new Date(e.sentAt) : null;
+        const dt = e.created_at ? new Date(e.created_at) : null;
         const isValid = dt && !isNaN(dt.getTime());
         const dateStr = isValid ? dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : '—';
         const timeStr = isValid ? dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true }) : '';
-        const typeBadge = e.recordType === 'delegation'
+        const typeBadge = e.record_type === 'delegation'
           ? `<span style="background:#E5A93C;color:#000;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:4px;border:1px solid #000;">DELEGATION</span>`
           : `<span style="background:#6C0D2C;color:#fff;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:4px;border:1px solid #000;">INDIVIDUAL</span>`;
         return `<tr style="background:${rowBg[i % 2]};border-bottom:1px solid rgba(0,0,0,0.07);">
           <td style="padding:10px 14px;color:#888;font-size:0.75rem;font-weight:700;">${entries.length - i}</td>
           <td style="padding:10px 14px;">
-            <div style="font-weight:700;font-size:0.83rem;color:#111;">${escapeHtml(e.recipientName || '—')}</div>
+            <div style="font-weight:700;font-size:0.83rem;color:#111;">${escapeHtml(e.recipient_name || '—')}</div>
             <div style="font-size:0.75rem;color:#666;">${escapeHtml(e.recipient || '')}</div>
           </td>
           <td style="padding:10px 14px;">${typeBadge}</td>
-          <td style="padding:10px 14px;font-size:0.8rem;font-weight:600;color:#6C0D2C;white-space:nowrap;">${escapeHtml(e.templateName || 'Unknown')}</td>
+          <td style="padding:10px 14px;font-size:0.8rem;font-weight:600;color:#6C0D2C;white-space:nowrap;">${escapeHtml(e.template_name || 'Unknown')}</td>
           <td style="padding:10px 14px;font-size:0.79rem;color:#333;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(e.subject || '')}">${escapeHtml(e.subject || '—')}</td>
+          <td style="padding:10px 14px;white-space:nowrap;">${mailLogStatusBadge(e.status, e.error)}${e.error ? `<div style="font-size:0.68rem;color:#B91C1C;max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(e.error)}">${escapeHtml(e.error)}</div>` : ''}</td>
           <td style="padding:10px 14px;white-space:nowrap;">
             <div style="font-size:0.8rem;font-weight:700;color:#111;">${dateStr}</div>
             <div style="font-size:0.72rem;color:#666;">${timeStr}</div>
@@ -4785,41 +4899,24 @@
       }).join('');
     }
 
-    function clearMailLog() {
-      if (!confirm('Clear the entire local mail log? This cannot be undone.')) return;
-      try { localStorage.removeItem('rns_mun_sent_mail_history'); } catch(e) {}
-      window.rawMailLogs = null;
-      updateMailLogBadge();
-      renderMailLog();
-      applyFilters();
-      showToast('Mail log cleared.', 'info');
+    // "Refresh" button: re-read the shared log right now (the log itself is shared, so it is never cleared per device).
+    async function refreshMailLogNow() {
+      showToast('Refreshing shared mail log…', 'info');
+      const ok = await refreshSharedMailLog();
+      if (ok) showToast('Mail log is up to date.', 'success');
     }
 
     function exportOldMailLogCSV() {
-      const store = getSentMailStore();
-      let entries = [];
-      Object.entries(store).forEach(([key, val]) => {
-        const arr = Array.isArray(val) ? val : (val ? [val] : []);
-        arr.forEach(entry => entries.push(entry));
-      });
-      entries.sort((a, b) => {
-        const tA = a.timestamp || (a.sentAt ? new Date(a.sentAt).getTime() : 0);
-        const tB = b.timestamp || (b.sentAt ? new Date(b.sentAt).getTime() : 0);
-        return tB - tA;
-      });
+      const entries = sharedMailLogs.slice();
       if (entries.length === 0) {
         showToast('No mail log records to export.', 'info');
         return;
       }
-      const headers = ['#', 'Recipient Name', 'Recipient Email', 'Type', 'Template', 'Subject', 'Sent At'];
+      const q = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+      const headers = ['#', 'Recipient Name', 'Recipient Email', 'Type', 'Template', 'Subject', 'Status', 'Error', 'Sent At'];
       const rows = entries.map((e, idx) => [
-        entries.length - idx,
-        `"${(e.recipientName || '').replace(/"/g, '""')}"`,
-        `"${(e.recipient || '').replace(/"/g, '""')}"`,
-        `"${(e.recordType || 'individual').replace(/"/g, '""')}"`,
-        `"${(e.templateName || '').replace(/"/g, '""')}"`,
-        `"${(e.subject || '').replace(/"/g, '""')}"`,
-        `"${(e.sentAt || '').replace(/"/g, '""')}"`
+        entries.length - idx, q(e.recipient_name), q(e.recipient), q(e.record_type || 'individual'),
+        q(e.template_name), q(e.subject), q(e.status), q(e.error), q(e.created_at)
       ]);
       const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -4831,7 +4928,6 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast(`Exported ${entries.length} mail log records to CSV!`, 'success');
     }
 
     // ─── Render Individual Table ──────────────────────────────────
@@ -5294,6 +5390,7 @@
       }
 
       if (btn) { btn.disabled = false; btn.textContent = '✉️ Send Mail to All Members'; }
+      refreshSharedMailLog();
       showToast(`Sent ${ok.length}/${queue.length}` + (skipped.length ? `, ${skipped.length} already sent` : '') + (failed.length ? `, ${failed.length} failed` : '') + '.', failed.length ? 'warning' : 'success');
       if (failed.length) alert('Some mails failed:\n\n' + failed.join('\n'));
       openRosterModal(dlg.id);
@@ -8865,6 +8962,7 @@
         console.error('Send mail error:', err);
         showToast(`Send error: ${err.message}`, 'error');
       } finally {
+        refreshSharedMailLog();
         btn.disabled = false;
         btnText.textContent = '🚀 Send Email via Google Apps Script';
         spinner.style.display = 'none';
