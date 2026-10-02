@@ -220,10 +220,12 @@ export default async function handler(req, res) {
 
     // Helper map of database allocations
     let allocationsMap = {};
+    // Per-member allocations for delegations: `delegation_<id>` -> { <member_index>: { committee, portfolio } }
+    let memberAllocationsMap = {};
     try {
       const { data: cpData } = await privilegedClient
         .from('delegate_checkpoints')
-        .select('record_id, record_type, allocated_committee, allocated_portfolio')
+        .select('record_id, record_type, member_index, allocated_committee, allocated_portfolio')
         .eq('checkpoint_key', 'allocation');
 
       if (Array.isArray(cpData)) {
@@ -233,6 +235,13 @@ export default async function handler(req, res) {
             committee: cp.allocated_committee,
             portfolio: cp.allocated_portfolio
           };
+          if (cp.record_type === 'delegation' && (cp.allocated_committee || cp.allocated_portfolio)) {
+            if (!memberAllocationsMap[k]) memberAllocationsMap[k] = {};
+            memberAllocationsMap[k][parseInt(cp.member_index, 10) || 0] = {
+              committee: cp.allocated_committee || '',
+              portfolio: cp.allocated_portfolio || ''
+            };
+          }
         });
       }
     } catch (e) {
@@ -288,8 +297,22 @@ export default async function handler(req, res) {
             portfolio: localCheckpoints[`delegation_${d.id}`].allocatedPortfolio
           } : null);
 
+          // Per-member allocations: database rows first, then the local checkpoint cache for any gaps
+          const memberAllocations = { ...(memberAllocationsMap[`delegation_${d.id}`] || {}) };
+          const localPrefix = `delegation_${d.id}_`;
+          Object.keys(localCheckpoints).forEach(lk => {
+            if (!lk.startsWith(localPrefix)) return;
+            const idx = parseInt(lk.substring(localPrefix.length), 10);
+            if (Number.isNaN(idx) || memberAllocations[idx]) return;
+            const lc = localCheckpoints[lk] || {};
+            const c = lc.allocatedCommittee || lc.allocation?.allocated_committee || '';
+            const pf = lc.allocatedPortfolio || lc.allocation?.allocated_portfolio || '';
+            if (c || pf) memberAllocations[idx] = { committee: c, portfolio: pf };
+          });
+
           return {
             ...d,
+            member_allocations: memberAllocations,
             allocated_committee: alloc?.committee || d.allocated_committee || 'Institutional Delegation',
             allocated_portfolio: alloc?.portfolio || d.allocated_portfolio || `${d.member_count || 1} Delegates Delegation`,
             public_token: getPublicToken('delegation', d.id)

@@ -115,6 +115,8 @@ export default async function handler(req, res) {
 
     const adminUser = authData.user;
     const body = req.body || {};
+    // Delegation rosters: 0 = head of delegation, 1..N = other members (matches the roster_data index)
+    const checkpointMemberIdx = Math.max(0, parseInt(body.member_index ?? body.memberIndex ?? 0, 10) || 0);
     const { id, type, status, allocated_committee, allocated_portfolio } = body;
 
     if (!id) {
@@ -135,7 +137,7 @@ export default async function handler(req, res) {
         const cpPayload = {
           record_type: targetType,
           record_id: String(id),
-          member_index: 0,
+          member_index: checkpointMemberIdx,
           checkpoint_key: 'allocation',
           redeemed: true,
           redeemed_at: new Date().toISOString(),
@@ -164,7 +166,7 @@ export default async function handler(req, res) {
         if (fs.existsSync(lp)) {
           try { localData = JSON.parse(fs.readFileSync(lp, 'utf8')) || {}; } catch(e) {}
         }
-        const memberIdx = parseInt(body.member_index ?? body.memberIndex ?? 0, 10) || 0;
+        const memberIdx = checkpointMemberIdx;
         const kWithMember = `${targetType}_${id}_${memberIdx}`;
         const kBase = `${targetType}_${id}`;
 
@@ -177,7 +179,8 @@ export default async function handler(req, res) {
           allocated_portfolio: allocPort
         };
 
-        [kWithMember, kBase].forEach(k => {
+        // The un-suffixed key holds the record-level (individual / head) allocation; never overwrite it for other members
+        (memberIdx === 0 ? [kWithMember, kBase] : [kWithMember]).forEach(k => {
           if (!localData[k]) localData[k] = {};
           localData[k].allocation = {
             ...(localData[k].allocation || {}),

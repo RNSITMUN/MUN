@@ -1805,8 +1805,17 @@
     /* Roster Inspector Modal */
     .roster-modal {
       width: 100%;
-      max-width: 760px;
-      max-height: 85vh;
+      max-width: 1080px;
+      max-height: 88vh;
+    }
+
+    .roster-summary {
+      padding: 0.6rem 1.25rem;
+      background: #FFF7EB;
+      border-bottom: 2px solid #000000;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #333;
     }
 
     .roster-body {
@@ -3162,6 +3171,7 @@
         <div class="modal-title" id="roster-title">Delegation Roster</div>
         <button class="modal-close" onclick="closeRosterModal()">&times;</button>
       </div>
+      <div class="roster-summary" id="roster-summary">—</div>
       <div class="roster-body">
         <table class="data-table" style="font-size: 0.8rem;">
           <thead>
@@ -3172,6 +3182,7 @@
               <th>Phone</th>
               <th>Committee / Portfolio</th>
               <th>Hub Pass</th>
+              <th>Mail</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
@@ -3179,8 +3190,12 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer" style="justify-content: flex-end;">
-        <button class="btn btn-outline btn-sm" onclick="closeRosterModal()">Close</button>
+      <div class="modal-footer" style="justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+        <div id="roster-bulk-status" style="font-size: 0.78rem; font-weight: 700; color: #333; flex: 1; min-width: 200px;"></div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn btn-maroon btn-sm" id="roster-bulk-btn" onclick="sendMailToAllMembers()" title="Send each delegate their own pass &amp; allocation email">✉️ Send to All Members</button>
+          <button class="btn btn-outline btn-sm" onclick="closeRosterModal()">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -3987,7 +4002,8 @@
         recipient:    meta.recipient    || '',
         recipientName:meta.recipientName|| '',
         recordType:   type || 'individual',
-        recordId:     String(id)
+        recordId:     String(id),
+        ...(Number.isInteger(meta.memberIndex) ? { memberIndex: meta.memberIndex } : {})
       });
       store[key] = arr;
       try {
@@ -4925,7 +4941,8 @@
 
       items.forEach(item => {
         const tr = document.createElement('tr');
-        const isSent = isRecordMailSent(item.id, 'delegation');
+        const isSent = isDelegationHeadMailSent(item);
+        const memberMailProgress = getDelegationMailProgress(item);
 
         const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
         const phoneHtml = item.phone ? `
@@ -4965,12 +4982,15 @@
           </td>
           <td>
             <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
-              <button class="btn btn-outline btn-sm" onclick="openRosterModal('${item.id}')" title="View parsed roster members">
-                📋 View (${rosterCount})
+              <button class="btn btn-outline btn-sm" onclick="openRosterModal('${item.id}')" title="View every delegate in this delegation, their allocation, and send each one their own mail">
+                👥 Members &amp; Mail (${rosterCount})
               </button>
               <button class="btn btn-outline btn-sm" id="btn-resync-${item.id}" onclick="resyncDelegationRoster('${item.id}')" title="Re-sync roster from live Google Sheet">
                 🔄 Re-sync
               </button>
+            </div>
+            <div style="font-size: 0.7rem; font-weight: 700; margin-top: 4px; color: ${memberMailProgress.mailed >= memberMailProgress.total && memberMailProgress.total > 0 ? '#047857' : '#6C0D2C'};">
+              ✉️ ${memberMailProgress.mailed}/${memberMailProgress.total} delegates mailed
             </div>
           </td>
           <td class="cell-amount nowrap">
@@ -4989,7 +5009,7 @@
           </td>
           <td style="text-align: center; white-space: nowrap;">
             <div style="display: flex; gap: 0.35rem; justify-content: center; align-items: center;">
-              <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to delegation. Click to send another email.' : 'Send Mail'}">
+              <button type="button" class="btn-action-mail ${isSent ? 'is-sent' : ''}" onclick="openSendMailModal('${item.id}', 'delegation')" title="${isSent ? 'Mail sent to the head of delegation. Click to send another email.' : 'Send mail to the head of delegation (use Members &amp; Mail to email each delegate)'}">
                 ${isSent ? '<span class="mail-sent-dot"></span> Sent Mail' : '&#9993; Send Mail'}
               </button>
               <a href="/hub?t=${encodeURIComponent(item.public_token || item.id)}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.35rem 0.55rem; text-decoration: none;" title="Open Delegation QR Pass">
@@ -5095,53 +5115,425 @@
       closeLightbox();
     }
 
-    // ─── Roster Modal ──────────────────────────────────────────────
+    // ─── Roster Modal (every delegate of a delegation + per-delegate mail) ─────
+    let rosterModalDelegationId = null;
+    let staticAllocationsCache = null;   // contents of /allocations.json (served from the repo's data/ folder)
+    let staticAllocationsPromise = null;
+    let memberBulkSending = false;
+    let memberBulkCancel = false;
+
+    const NON_ALLOCATION_VALUES = ['', 'unassigned', 'institutional delegation', 'assigned delegate', 'none', 'n/a'];
+    function isRealAllocationValue(v) {
+      return !NON_ALLOCATION_VALUES.includes(String(v == null ? '' : v).trim().toLowerCase());
+    }
+
+    function isValidEmail(v) {
+      return typeof v === 'string' && /^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(v.trim());
+    }
+
+    function loadStaticAllocations() {
+      if (staticAllocationsCache) return Promise.resolve(staticAllocationsCache);
+      if (!staticAllocationsPromise) {
+        staticAllocationsPromise = fetch('/allocations.json', { cache: 'no-cache' })
+          .then(r => (r.ok ? r.json() : []))
+          .then(list => { staticAllocationsCache = Array.isArray(list) ? list : []; return staticAllocationsCache; })
+          .catch(() => { staticAllocationsCache = []; return staticAllocationsCache; });
+      }
+      return staticAllocationsPromise;
+    }
+
+    // The delegation roster exactly as stored (index === member_index used by passes, checkpoints and allocations).
+    // Falls back to the head of delegation (index 0) if no roster was recorded.
+    function getDelegationRoster(d) {
+      if (!d) return [];
+      let roster = d.roster_data;
+      if (typeof roster === 'string') {
+        try { roster = JSON.parse(roster); } catch (e) { roster = null; }
+      }
+      if (Array.isArray(roster) && roster.length > 0) {
+        return roster.map(m => (m && typeof m === 'object') ? m : {});
+      }
+      return [{ name: d.head_name || d.delegation_name || 'Head of Delegation', email: d.email || '', phone: d.phone || '' }];
+    }
+
+    function readRosterMember(m, idx) {
+      const pick = (...keys) => {
+        for (const k of keys) {
+          const v = m ? m[k] : undefined;
+          if (v !== undefined && v !== null && String(v).trim()) return String(v).trim();
+        }
+        return '';
+      };
+      const rawName = pick('name', 'delegateName', 'Delegate Name', 'fullName', 'Name');
+      return {
+        index: idx,
+        isHead: idx === 0,
+        name: rawName.replace(/\s*\(\s*head of delegation\s*\)\s*$/i, '').trim() || `Delegate ${idx + 1}`,
+        email: pick('email', 'emailAddress', 'Email Address', 'Email'),
+        phone: pick('phone', 'mobileNumber', 'WhatsApp / Mobile Number', 'Phone'),
+        institution: pick('institution', 'college', 'College'),
+        committee1: pick('committee1', 'committee', 'Committee Preference 1'),
+        portfolio1_1: pick('portfolio1_1', 'portfolio', 'Portfolio Preference 1'),
+        portfolio1_2: pick('portfolio1_2', 'Portfolio Preference 2'),
+        committee2: pick('committee2', 'Committee Preference 2'),
+        portfolio2_1: pick('portfolio2_1'),
+        portfolio2_2: pick('portfolio2_2'),
+        allocated_committee: pick('allocated_committee', 'allocatedCommittee'),
+        allocated_portfolio: pick('allocated_portfolio', 'allocatedPortfolio')
+      };
+    }
+
+    // Allocation precedence: live database (delegate_checkpoints) → data/allocations.json → allocation stored on the roster row.
+    function resolveMemberAllocation(d, idx, member) {
+      const db = d.member_allocations ? d.member_allocations[idx] : null;
+      if (db && isRealAllocationValue(db.committee) && isRealAllocationValue(db.portfolio)) {
+        return { committee: db.committee, portfolio: db.portfolio, source: 'live allocation' };
+      }
+      const list = staticAllocationsCache || [];
+      const did = String(d.id);
+      const isDelegationRow = a => a && a.registration_type !== 'Individual' && String(a.record_id) === did;
+      let hit = list.find(a => isDelegationRow(a) && Number(a.member_index) === idx);
+      if (!hit && member.email) {
+        const em = member.email.toLowerCase();
+        hit = list.find(a => isDelegationRow(a) && String(a.email || '').trim().toLowerCase() === em);
+      }
+      if (hit && isRealAllocationValue(hit.allocated_committee) && isRealAllocationValue(hit.allocated_portfolio)) {
+        return { committee: hit.allocated_committee, portfolio: hit.allocated_portfolio, source: 'allocations.json' };
+      }
+      if (isRealAllocationValue(member.allocated_committee) && isRealAllocationValue(member.allocated_portfolio)) {
+        return { committee: member.allocated_committee, portfolio: member.allocated_portfolio, source: 'roster' };
+      }
+      return { committee: '', portfolio: '', source: '' };
+    }
+
+    // Build an individual-style record for one delegation member so the standard pass email works for them.
+    function buildMemberMailRecord(d, idx) {
+      const roster = getDelegationRoster(d);
+      if (!d || !roster[idx]) return null;
+      const m = readRosterMember(roster[idx], idx);
+      const alloc = resolveMemberAllocation(d, idx, m);
+      const qrUrls = Array.isArray(d.qr_pass_urls) ? d.qr_pass_urls : [];
+      const delegationName = d.delegation_name || d.institution || 'Delegation';
+      return {
+        id: d.id,
+        name: m.name,
+        email: m.email,
+        phone: m.phone,
+        institution: m.institution || d.college_name || d.institution || delegationName,
+        delegation_name: delegationName,
+        delegate_type: d.delegation_type || 'Delegation',
+        type: d.delegation_type || 'Delegation',
+        public_token: d.public_token,
+        qr_pass_url: (typeof qrUrls[idx] === 'string' && qrUrls[idx]) ? qrUrls[idx] : '',
+        committee1: m.committee1,
+        portfolio1_1: m.portfolio1_1,
+        portfolio1_2: m.portfolio1_2,
+        committee2: m.committee2,
+        portfolio2_1: m.portfolio2_1,
+        portfolio2_2: m.portfolio2_2,
+        allocated_committee: alloc.committee,
+        allocated_portfolio: alloc.portfolio,
+        status: d.status,
+        bg_guide_url: d.bg_guide_url,
+        __delegationId: d.id,
+        __memberIndex: idx,
+        __isHead: m.isHead,
+        __hasAllocation: !!alloc.source,
+        __allocSource: alloc.source
+      };
+    }
+
+    // Has this delegate (roster index) already been mailed from the admin portal?
+    function isMemberMailSent(delegationId, idx, email) {
+      const entry = getSentMailStore()[`delegation_${String(delegationId)}`];
+      const arr = Array.isArray(entry) ? entry : (entry ? [entry] : []);
+      const em = String(email || '').trim().toLowerCase();
+      return arr.some(e => {
+        if (!e || typeof e !== 'object') return false;
+        if (Number.isInteger(e.memberIndex)) return e.memberIndex === idx;
+        // Older / cloud-synced entries carry no member index: only trust an email match for non-head delegates
+        return idx > 0 && !!em && String(e.recipient || '').trim().toLowerCase() === em;
+      });
+    }
+
+    // The delegation-level mail (to the head of delegation) — excludes per-delegate pass mails.
+    function isDelegationHeadMailSent(item) {
+      const entry = getSentMailStore()[`delegation_${String(item.id)}`];
+      const arr = Array.isArray(entry) ? entry : (entry ? [entry] : []);
+      if (arr.length === 0) return false;
+      const head = String(item.email || '').trim().toLowerCase();
+      return arr.some(e => {
+        if (!e || typeof e !== 'object') return true; // legacy boolean format
+        if (Number.isInteger(e.memberIndex)) return false;
+        const r = String(e.recipient || '').trim().toLowerCase();
+        return !r || r === head;
+      });
+    }
+
+    function getDelegationMailProgress(d) {
+      const roster = getDelegationRoster(d);
+      let mailed = 0;
+      roster.forEach((raw, idx) => {
+        const m = readRosterMember(raw, idx);
+        if (isMemberMailSent(d.id, idx, m.email)) mailed++;
+      });
+      return { mailed, total: roster.length };
+    }
+
+    function renderRosterModal() {
+      const delegation = rawDelegations.find(d => String(d.id) === String(rosterModalDelegationId));
+      if (!delegation) return;
+
+      document.getElementById('roster-title').textContent = `Roster: ${delegation.delegation_name || 'Delegation'}`;
+      const tbody = document.getElementById('roster-table-body');
+      tbody.innerHTML = '';
+
+      const roster = getDelegationRoster(delegation);
+      const token = delegation.public_token || delegation.id;
+      let withEmail = 0, mailed = 0, allocated = 0;
+
+      roster.forEach((raw, idx) => {
+        const m = readRosterMember(raw, idx);
+        const alloc = resolveMemberAllocation(delegation, idx, m);
+        const hasEmail = isValidEmail(m.email);
+        const sent = isMemberMailSent(delegation.id, idx, m.email);
+        if (hasEmail) withEmail++;
+        if (sent) mailed++;
+        if (alloc.source) allocated++;
+
+        const passUrl = `/hub?t=${encodeURIComponent(token)}&m=${idx}`;
+        const allocHtml = alloc.source
+          ? `<div style="font-weight:800; color:#047857;">${escapeHtml(alloc.committee)}</div><div style="font-size:0.74rem; color:#333;">${escapeHtml(alloc.portfolio)}</div>`
+          : `<div style="font-weight:800; color:#B45309;">Not allocated yet</div><div style="font-size:0.72rem; color:#666;">Pref: ${escapeHtml(m.committee1 || '—')}${m.portfolio1_1 ? ' / ' + escapeHtml(m.portfolio1_1) : ''}</div>`;
+
+        let mailBtn;
+        if (!hasEmail) {
+          mailBtn = `<button type="button" class="btn btn-outline btn-sm" disabled style="font-size:0.72rem; padding:0.3rem 0.55rem; opacity:0.6;" title="This delegate has no valid email address on the roster">No email</button>`;
+        } else {
+          mailBtn = `<button type="button" class="btn-action-mail ${sent ? 'is-sent' : ''}" onclick="openMemberMailModal('${escapeHtml(String(delegation.id))}', ${idx})" title="${sent ? 'Pass email already sent. Click to send again.' : 'Send this delegate their allocation & QR pass email'}">${sent ? '<span class="mail-sent-dot"></span> Sent Mail' : '✉️ Send Mail'}</button>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td class="font-semibold cell-title">${escapeHtml(m.name)}${m.isHead ? ' <span class="badge badge-external" style="font-size:0.62rem;">Head</span>' : ''}</td>
+          <td>${escapeHtml(m.email || '—')}</td>
+          <td>${escapeHtml(m.phone || '—')}</td>
+          <td>${allocHtml}</td>
+          <td style="white-space: nowrap;">
+            <a href="${passUrl}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; text-decoration: none;">🎫 Open</a>
+            <button type="button" class="btn btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; margin-left: 4px;" onclick="navigator.clipboard.writeText(window.location.origin + '${passUrl}'); showToast('Hub pass link copied!', 'success');">📋</button>
+          </td>
+          <td style="white-space: nowrap;">${mailBtn}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('roster-summary').textContent =
+        `${roster.length} ${roster.length === 1 ? 'delegate' : 'delegates'} • ${withEmail} with email • ${allocated} allocated • ${mailed} mailed`;
+    }
+
     function openRosterModal(delegationId) {
       const delegation = rawDelegations.find(d => String(d.id) === String(delegationId));
       if (!delegation) return;
+      rosterModalDelegationId = String(delegationId);
+      document.getElementById('roster-bulk-status').textContent = '';
+      renderRosterModal();
+      document.getElementById('roster-modal').classList.add('active');
 
-      const title = document.getElementById('roster-title');
-      const tbody = document.getElementById('roster-table-body');
-      title.textContent = `Roster: ${delegation.delegation_name || 'Delegation'}`;
-      tbody.innerHTML = '';
-
-      let roster = delegation.roster_data;
-      if (typeof roster === 'string') {
-        try { roster = JSON.parse(roster); } catch (e) { roster = []; }
-      }
-      if (!Array.isArray(roster)) roster = [];
-
-      if (roster.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No individual roster members recorded for this delegation.</td></tr>`;
-      } else {
-        roster.forEach((member, idx) => {
-          const tr = document.createElement('tr');
-          const mName = member.name || member.delegateName || member['Delegate Name'] || '—';
-          const mEmail = member.email || member.emailAddress || member['Email Address'] || '—';
-          const mPhone = member.phone || member.mobileNumber || member['WhatsApp / Mobile Number'] || '—';
-          const mComm = member.committee || member.portfolio || member['Committee Preference 1'] || member.committee1 || '—';
-          const token = delegation.public_token || delegation.id;
-          const passUrl = `/hub?t=${encodeURIComponent(token)}&m=${idx}`;
-          tr.innerHTML = `
-            <td>${idx + 1}</td>
-            <td class="font-semibold cell-title">${escapeHtml(mName)}</td>
-            <td>${escapeHtml(mEmail)}</td>
-            <td>${escapeHtml(mPhone)}</td>
-            <td>${escapeHtml(mComm)}</td>
-            <td style="white-space: nowrap;">
-              <a href="${passUrl}" target="_blank" class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; text-decoration: none;">🎫 Open Pass</a>
-              <button type="button" class="btn btn-sm" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; margin-left: 4px;" onclick="navigator.clipboard.writeText(window.location.origin + '${passUrl}'); showToast('Hub pass link copied!', 'success');">📋 Copy</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
+      if (!staticAllocationsCache) {
+        loadStaticAllocations().then(() => {
+          if (rosterModalDelegationId === String(delegationId)) renderRosterModal();
         });
       }
-
-      document.getElementById('roster-modal').classList.add('active');
     }
 
     function closeRosterModal() {
+      if (memberBulkSending) {
+        showToast('A bulk send is still running. Use "Stop" first.', 'warning');
+        return;
+      }
       document.getElementById('roster-modal').classList.remove('active');
+      rosterModalDelegationId = null;
+    }
+
+    async function openMemberMailModal(delegationId, idx) {
+      await loadStaticAllocations();
+      openSendMailModal(delegationId, 'member', idx);
+    }
+
+    // Send every delegate (that has an email and an allocation, and wasn't mailed yet) their own pass email.
+    async function sendMailToAllMembers() {
+      if (memberBulkSending) {
+        memberBulkCancel = true;
+        const stopBtn = document.getElementById('roster-bulk-btn');
+        if (stopBtn) { stopBtn.disabled = true; stopBtn.textContent = 'Stopping after current…'; }
+        return;
+      }
+
+      const d = rawDelegations.find(x => String(x.id) === String(rosterModalDelegationId));
+      if (!d) return;
+
+      await loadStaticAllocations();
+      if (mailTemplates.length === 0) loadTemplatesState();
+      const tpl = mailTemplates.find(t => t.id === 'tpl-qr-and-whatsapp')
+        || mailTemplates.find(t => t.id === 'tpl-allocation-no-qr')
+        || mailTemplates.find(t => t.id === 'tpl-welcome-confirmed');
+      if (!tpl) {
+        showToast('No pass email template found. Open Mail Templates and restore the presets.', 'error');
+        return;
+      }
+
+      const scriptUrl = (googleScriptUrl || localStorage.getItem('rns_mun_google_script_url') || '').trim();
+      if (!scriptUrl) {
+        showToast('Google Apps Script URL is not set. Go to Mail Templates tab to configure.', 'error');
+        return;
+      }
+
+      const roster = getDelegationRoster(d);
+      const plan = { send: [], noEmail: [], noAlloc: [], alreadySent: [] };
+      roster.forEach((raw, idx) => {
+        const rec = buildMemberMailRecord(d, idx);
+        if (!rec) return;
+        if (!isValidEmail(rec.email)) plan.noEmail.push(rec);
+        else if (!rec.__hasAllocation) plan.noAlloc.push(rec);
+        else if (isMemberMailSent(d.id, idx, rec.email)) plan.alreadySent.push(rec);
+        else plan.send.push(rec);
+      });
+
+      const statusEl = document.getElementById('roster-bulk-status');
+      if (plan.send.length === 0) {
+        const why = [];
+        if (plan.alreadySent.length) why.push(`${plan.alreadySent.length} already mailed`);
+        if (plan.noAlloc.length) why.push(`${plan.noAlloc.length} have no allocation yet`);
+        if (plan.noEmail.length) why.push(`${plan.noEmail.length} have no email`);
+        statusEl.textContent = `Nothing to send${why.length ? ' — ' + why.join(', ') : ''}.`;
+        showToast('No delegates are ready to be mailed.', 'warning');
+        return;
+      }
+
+      const skipLines = [];
+      if (plan.alreadySent.length) skipLines.push(`• ${plan.alreadySent.length} already mailed (skipped)`);
+      if (plan.noAlloc.length) skipLines.push(`• ${plan.noAlloc.length} without an allocation (skipped): ${plan.noAlloc.map(r => r.name).join(', ')}`);
+      if (plan.noEmail.length) skipLines.push(`• ${plan.noEmail.length} without an email (skipped): ${plan.noEmail.map(r => r.name).join(', ')}`);
+      const ok = confirm(
+        `Send "${tpl.name}" to ${plan.send.length} delegate${plan.send.length === 1 ? '' : 's'} of ${d.delegation_name || 'this delegation'}?\n\n` +
+        `Each delegate gets their own email with their own committee, portfolio, QR pass and WhatsApp link.\n\n` +
+        (skipLines.length ? skipLines.join('\n') + '\n\n' : '') +
+        `This cannot be undone.`
+      );
+      if (!ok) return;
+
+      const bulkBtn = document.getElementById('roster-bulk-btn');
+      memberBulkSending = true;
+      memberBulkCancel = false;
+      if (bulkBtn) bulkBtn.textContent = '⏹ Stop';
+
+      const senderName = (document.getElementById('send-mail-sender-name')?.value || 'RNS MUN Secretariat').trim();
+      const replyTo = (document.getElementById('send-mail-reply-to')?.value || 'mun@rnsit.ac.in').trim();
+      const result = { sent: 0, skipped: 0, failed: [] };
+
+      try {
+        for (let i = 0; i < plan.send.length; i++) {
+          if (memberBulkCancel) break;
+          const rec = plan.send[i];
+          statusEl.textContent = `Sending ${i + 1}/${plan.send.length}: ${rec.name}…`;
+
+          try {
+            const tokenData = buildTokenDataFromRecord(rec, 'member');
+            const res = await fetch('/api/send-mail', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                scriptUrl,
+                recipient: rec.email.trim(),
+                subject: interpolateTokens(tpl.subject || '', tokenData),
+                htmlBody: interpolateTokens(tpl.body || '', tokenData),
+                attachments: Array.isArray(tpl.attachments) ? JSON.parse(JSON.stringify(tpl.attachments)) : [],
+                senderName,
+                replyTo,
+                recipientName: rec.name,
+                recordType: 'delegation',
+                recordId: rec.id,
+                memberIndex: rec.__memberIndex,
+                templateId: tpl.id,
+                templateName: tpl.name,
+                allocated_committee: rec.allocated_committee,
+                allocated_portfolio: rec.allocated_portfolio,
+                institution: rec.institution || '',
+                delegation: rec.delegation_name || '',
+                type: rec.delegate_type || '',
+                bg_guide_url: rec.bg_guide_url
+              })
+            });
+            const data = await res.json().catch(() => ({}));
+
+            if (data.success && data.skipped) {
+              result.skipped++;
+            } else if (data.success) {
+              result.sent++;
+              markRecordMailSent(rec.id, 'delegation', {
+                templateId: tpl.id,
+                templateName: tpl.name,
+                subject: interpolateTokens(tpl.subject || '', tokenData),
+                recipient: rec.email.trim(),
+                recipientName: rec.name,
+                memberIndex: rec.__memberIndex
+              });
+              await persistMemberAllocation(d, rec);
+            } else {
+              result.failed.push(`${rec.name}: ${data.error || 'send failed'}`);
+            }
+          } catch (err) {
+            result.failed.push(`${rec.name}: ${err.message}`);
+          }
+
+          renderRosterModal();
+          if (i < plan.send.length - 1 && !memberBulkCancel) {
+            await new Promise(r => setTimeout(r, 700));
+          }
+        }
+      } finally {
+        memberBulkSending = false;
+        if (bulkBtn) { bulkBtn.disabled = false; bulkBtn.textContent = '✉️ Send to All Members'; }
+        renderRosterModal();
+        applyFilters();
+      }
+
+      const parts = [`${result.sent} sent`];
+      if (result.skipped) parts.push(`${result.skipped} already sent earlier (skipped by server)`);
+      if (result.failed.length) parts.push(`${result.failed.length} failed`);
+      const remaining = plan.send.length - result.sent - result.skipped - result.failed.length;
+      if (remaining > 0) parts.push(`${remaining} not attempted (stopped)`);
+      statusEl.textContent = parts.join(' • ') + (result.failed.length ? ` — ${result.failed.join(' | ')}` : '');
+      showToast(`Bulk send finished: ${parts.join(', ')}.`, result.failed.length ? 'warning' : 'success');
+    }
+
+    // Save the delegate's allocation so their live hub pass shows the same committee/portfolio as the email.
+    async function persistMemberAllocation(d, rec) {
+      if (!currentSession?.access_token) return;
+      try {
+        const res = await fetch('/api/admin-update-status', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${currentSession.access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: d.id,
+            type: 'delegation',
+            member_index: rec.__memberIndex,
+            allocated_committee: rec.allocated_committee,
+            allocated_portfolio: rec.allocated_portfolio
+          })
+        });
+        if (res.ok) {
+          if (!d.member_allocations) d.member_allocations = {};
+          d.member_allocations[rec.__memberIndex] = { committee: rec.allocated_committee, portfolio: rec.allocated_portfolio };
+        }
+      } catch (e) {
+        console.warn('[send-mail] Member allocation save warning:', e.message);
+      }
     }
 
     // ─── 3-Tier Google Sheet Parser & Fetcher for Delegation Rosters ───
@@ -7610,7 +8002,7 @@
         return;
       }
 
-      const delegateName = modalTargetType === 'individual' ? (modalTargetRecord?.name || 'Delegate') : (modalTargetRecord?.head_name || 'Delegation Head');
+      const delegateName = modalTargetType === 'delegation' ? (modalTargetRecord?.head_name || 'Delegation Head') : (modalTargetRecord?.name || 'Delegate');
       const subject = `[TEST COPY - ${delegateName}] ` + (document.getElementById('send-mail-subject')?.value || 'RNS MUN Update');
       const htmlBody = document.getElementById('modal-code-textarea')?.value || '<p>Test copy</p>';
       const senderName = document.getElementById('send-mail-sender-name')?.value || 'RNS MUN Secretariat';
@@ -7643,7 +8035,9 @@
             senderName,
             replyTo,
             recordId: modalTargetRecord?.id,
-            recordType: modalTargetType,
+            recordType: getModalApiRecordType(),
+            ...(modalTargetType === 'member' ? { memberIndex: modalTargetRecord?.__memberIndex } : {}),
+            isResend: true, // a test copy must always be delivered, never skipped as a duplicate
             recipientName: delegateName,
             allocated_committee: testActiveComm,
             allocated_portfolio: testActivePort,
@@ -7692,13 +8086,18 @@
 
     // ─── SEND MAIL MODAL WORKFLOW ─────────────────────────────────
 
-    function openSendMailModal(recordId, recordType) {
+    function openSendMailModal(recordId, recordType, memberIdx) {
       if (mailTemplates.length === 0) loadTemplatesState();
 
       modalTargetType = recordType;
-      modalTargetRecord = recordType === 'individual'
-        ? rawRegistrations.find(r => String(r.id) === String(recordId))
-        : rawDelegations.find(d => String(d.id) === String(recordId));
+      if (recordType === 'member') {
+        const parentDelegation = rawDelegations.find(d => String(d.id) === String(recordId));
+        modalTargetRecord = parentDelegation ? buildMemberMailRecord(parentDelegation, parseInt(memberIdx, 10) || 0) : null;
+      } else {
+        modalTargetRecord = recordType === 'individual'
+          ? rawRegistrations.find(r => String(r.id) === String(recordId))
+          : rawDelegations.find(d => String(d.id) === String(recordId));
+      }
 
       if (!modalTargetRecord) {
         showToast('Could not find record details.', 'error');
@@ -7710,12 +8109,16 @@
       const emailEl = document.getElementById('mail-modal-email');
       const typeLabel = document.getElementById('mail-modal-type-label');
 
-      const name = modalTargetType === 'individual' ? (modalTargetRecord.name || 'Delegate') : (modalTargetRecord.head_name || modalTargetRecord.delegation_name || 'Delegation Head');
+      const name = modalTargetType === 'delegation' ? (modalTargetRecord.head_name || modalTargetRecord.delegation_name || 'Delegation Head') : (modalTargetRecord.name || 'Delegate');
       const email = modalTargetRecord.email || '';
 
       nameEl.textContent = name;
       emailEl.textContent = email;
-      typeLabel.textContent = modalTargetType === 'individual' ? 'Individual Delegate' : 'Delegation Lead';
+      typeLabel.textContent = modalTargetType === 'individual'
+        ? 'Individual Delegate'
+        : (modalTargetType === 'member'
+          ? `Delegate ${modalTargetRecord.__memberIndex + 1} — ${modalTargetRecord.delegation_name}${modalTargetRecord.__isHead ? ' (Head of Delegation)' : ''}`
+          : 'Delegation Lead');
 
       // Pre-fill test email input and reset test status
       const testEmailInput = document.getElementById('modal-test-email');
@@ -7730,8 +8133,8 @@
 
       populateModalTemplateOptions();
 
-      // Configure Allotment Box and default template
-      if (modalTargetType === 'individual') {
+      // Configure Allotment Box and default template (delegation members use the same pass email as individuals)
+      if (modalTargetType !== 'delegation') {
         const allocTpl = mailTemplates.find(t => t.id === 'tpl-qr-and-whatsapp') || mailTemplates.find(t => t.id === 'tpl-allocation-no-qr') || mailTemplates.find(t => t.id === 'tpl-welcome-confirmed');
         const select = document.getElementById('send-mail-template-select');
         if (allocTpl && select) {
@@ -7748,7 +8151,9 @@
           const initialComm = modalTargetRecord.allocated_committee || modalTargetRecord.committee1 || 'UNSC — United Nations Security Council';
           const initialPort = modalTargetRecord.allocated_portfolio || modalTargetRecord.portfolio1_1 || '';
           initAllocComboboxes(initialComm, initialPort);
-          if (prefDisplay) prefDisplay.textContent = `${c1} / ${p1}`;
+          if (prefDisplay) {
+            prefDisplay.textContent = `${c1} / ${p1}` + (modalTargetType === 'member' && !modalTargetRecord.__hasAllocation ? '  ⚠ No saved allocation found — confirm committee & portfolio before sending' : '');
+          }
         }
       } else {
         const allocCard = document.getElementById('modal-allotment-config-card');
@@ -7779,17 +8184,19 @@
     }
 
     function onModalAllocationChanged() {
-      if (!modalTargetRecord || modalTargetType !== 'individual') return;
+      if (!modalTargetRecord || modalTargetType === 'delegation') return;
       const c = (document.getElementById('modal-alloc-committee')?.value || '').trim();
       const p = (document.getElementById('modal-alloc-portfolio')?.value || '').trim();
       modalTargetRecord.allocated_committee = c;
       modalTargetRecord.allocated_portfolio = p;
 
-      // Sync into rawRegistrations so it reflects everywhere
-      const orig = rawRegistrations.find(r => String(r.id) === String(modalTargetRecord.id));
-      if (orig) {
-        orig.allocated_committee = c;
-        orig.allocated_portfolio = p;
+      // Sync into rawRegistrations so it reflects everywhere (delegation members are saved on send instead)
+      if (modalTargetType === 'individual') {
+        const orig = rawRegistrations.find(r => String(r.id) === String(modalTargetRecord.id));
+        if (orig) {
+          orig.allocated_committee = c;
+          orig.allocated_portfolio = p;
+        }
       }
 
       onModalTemplateSelectChange();
@@ -8185,7 +8592,7 @@
         portInput.value = initialPort;
       }
 
-      if (modalTargetRecord && modalTargetType === 'individual') {
+      if (modalTargetRecord && modalTargetType !== 'delegation') {
         modalTargetRecord.allocated_committee = commInput ? commInput.value : (initialComm || 'UNSC — United Nations Security Council');
         modalTargetRecord.allocated_portfolio = portInput ? portInput.value : (initialPort || '');
       }
@@ -8364,13 +8771,31 @@
       renderModalAttachments();
     }
 
+    // /api/send-mail only knows 'individual' and 'delegation'; a delegation member is a 'delegation' record + member index.
+    function getModalApiRecordType() {
+      return (modalTargetType === 'delegation' || modalTargetType === 'member') ? 'delegation' : 'individual';
+    }
+
     async function dispatchSendMail() {
       if (!modalTargetRecord) return;
 
       const recipient = (modalTargetRecord.email || '').trim();
-      if (!recipient || !recipient.includes('@')) {
+      if (!recipient || !isValidEmail(recipient)) {
         showToast('Recipient has no valid email address.', 'error');
         return;
+      }
+
+      if (modalTargetType === 'member') {
+        const allocComm = (document.getElementById('modal-alloc-committee')?.value || modalTargetRecord.allocated_committee || '').trim();
+        const allocPort = (document.getElementById('modal-alloc-portfolio')?.value || modalTargetRecord.allocated_portfolio || '').trim();
+        if (!allocComm || !allocPort) {
+          showToast('Set the delegate\'s committee and portfolio before sending.', 'error');
+          return;
+        }
+        if (!modalTargetRecord.__hasAllocation) {
+          const okSend = confirm(`No saved allocation was found for ${modalTargetRecord.name}.\n\nThe email will say:\n${allocComm} — ${allocPort}\n\nSend anyway?`);
+          if (!okSend) return;
+        }
       }
 
       const scriptUrl = (googleScriptUrl || localStorage.getItem('rns_mun_google_script_url') || '').trim();
@@ -8401,9 +8826,11 @@
       try {
         const tplId   = select ? select.value : '';
         const tplObj  = mailTemplates.find(t => t.id === tplId);
-        const recipientName = modalTargetType === 'individual'
-          ? (modalTargetRecord.name || '')
-          : (modalTargetRecord.head_name || modalTargetRecord.delegation_name || '');
+        const recipientName = modalTargetType === 'delegation'
+          ? (modalTargetRecord.head_name || modalTargetRecord.delegation_name || '')
+          : (modalTargetRecord.name || '');
+        const apiRecordType = getModalApiRecordType();
+        const memberIdxForApi = modalTargetType === 'member' ? modalTargetRecord.__memberIndex : undefined;
         const templateName = tplObj ? tplObj.name : (tplId || 'Custom Email');
 
         const activeComm = modalTargetRecord.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord.committee1 || modalTargetRecord.committee || '';
@@ -8411,33 +8838,51 @@
         modalTargetRecord.allocated_committee = activeComm;
         modalTargetRecord.allocated_portfolio = activePort;
 
-        const res = await fetch('/api/send-mail', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            scriptUrl,
-            recipient,
-            subject,
-            htmlBody,
-            attachments: modalAttachments,
-            senderName,
-            replyTo,
-            recipientName,
-            recordType: modalTargetType,
-            recordId: modalTargetRecord.id,
-            templateId: tplId,
-            templateName,
-            allocated_committee: activeComm,
-            allocated_portfolio: activePort,
-            institution: modalTargetRecord.institution || '',
-            type: modalTargetRecord.delegate_type || modalTargetRecord.type || '',
-            bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
-          })
-        });
+        const postMail = async (isResend) => {
+          const res = await fetch('/api/send-mail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              scriptUrl,
+              recipient,
+              subject,
+              htmlBody,
+              attachments: modalAttachments,
+              senderName,
+              replyTo,
+              recipientName,
+              recordType: apiRecordType,
+              recordId: modalTargetRecord.id,
+              ...(memberIdxForApi !== undefined ? { memberIndex: memberIdxForApi, delegation: modalTargetRecord.delegation_name || '' } : {}),
+              ...(isResend ? { isResend: true } : {}),
+              templateId: tplId,
+              templateName,
+              allocated_committee: activeComm,
+              allocated_portfolio: activePort,
+              institution: modalTargetRecord.institution || '',
+              type: modalTargetRecord.delegate_type || modalTargetRecord.type || '',
+              bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
+            })
+          });
+          return res.json();
+        };
 
-        const data = await res.json();
+        let data = await postMail(false);
+        if (data.success && data.skipped) {
+          // The server refuses duplicates unless told otherwise — never report a skipped mail as sent
+          const again = confirm(`An email was already sent to ${recipient} for this record.\n\nSend it again?`);
+          if (!again) {
+            showToast(`Not sent — ${recipient} was already emailed earlier.`, 'info');
+            return;
+          }
+          data = await postMail(true);
+        }
         if (data.success) {
           // Persist allocation to PostgreSQL and local cache
+          if (modalTargetType === 'member' && modalTargetRecord) {
+            const parentDlg = rawDelegations.find(x => String(x.id) === String(modalTargetRecord.__delegationId));
+            if (parentDlg) await persistMemberAllocation(parentDlg, modalTargetRecord);
+          }
           if (modalTargetType === 'individual' && modalTargetRecord && currentSession?.access_token) {
             fetch('/api/admin-update-status', {
               method: 'POST',
@@ -8460,15 +8905,17 @@
             showToast(`Email dispatched to ${recipient}!`, 'success');
           }
           // Capture template metadata for the log
-          markRecordMailSent(modalTargetRecord.id, modalTargetType, {
+          markRecordMailSent(modalTargetRecord.id, apiRecordType, {
             templateId:   tplId,
             templateName: templateName,
             subject:      subject,
             recipient:    recipient,
-            recipientName: recipientName
+            recipientName: recipientName,
+            memberIndex:  memberIdxForApi
           });
           closeSendMailModal();
           applyFilters();
+          if (rosterModalDelegationId) renderRosterModal();
         } else {
           showToast(`Failed to send email: ${data.error || 'Check Google Script logs'}`, 'error');
         }
@@ -8507,6 +8954,22 @@
     }
 
     function buildTokenDataFromRecord(item, type) {
+      if (type !== 'member') return buildTokenDataFromRecordBase(item, type);
+
+      // Delegation member: same data as an individual pass, but the hub link/QR point at this roster member (&m=<index>)
+      const data = buildTokenDataFromRecordBase(item, 'individual');
+      const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
+      const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}&m=${encodeURIComponent(item.__memberIndex)}`;
+      data.hub_url = hubUrl;
+      if (!item.qr_pass_url) {
+        data.qr_code_url = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;
+      }
+      data.delegation_name = item.delegation_name || data.delegation_name;
+      data.type = item.delegate_type || data.type;
+      return data;
+    }
+
+    function buildTokenDataFromRecordBase(item, type) {
       const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
       const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}`;
       let qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;

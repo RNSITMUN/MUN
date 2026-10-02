@@ -220,7 +220,7 @@ export default async function handler(req, res) {
           // 4. Replace any onerror fallback on QR images with the recipient's own QR code URL
           .replace(/onerror="this\.onerror=null;this\.src='https:\/\/api\.qrserver\.com\/v1\/create-qr-code\/\?[^']+'(?:\s*\+\s*encodeURIComponent\('[^']+'\))?;?"/g, `onerror="this.onerror=null;this.src='${secureQrUrl}';"`)
           // 5. Replace any existing hub URLs (dev, vercel, production, with ?t= or ?id=) with the recipient's own secureHubUrl
-          .replace(/https?:\/\/(?:mun\.rnsit\.ac\.in|localhost:\d+|127\.0\.0\.1:\d+|mun[a-zA-Z0-9-]*\.vercel\.app)\/hub\?(?:t=[a-zA-Z0-9_-]+|id=[^"'&<>\s]+(?:&amp;|&)type=[^"'&<>\s]+)/g, secureHubUrl);
+          .replace(/https?:\/\/(?:mun\.rnsit\.ac\.in|localhost:\d+|127\.0\.0\.1:\d+|mun[a-zA-Z0-9-]*\.vercel\.app)\/hub\?(?:t=[a-zA-Z0-9_-]+(?:(?:&amp;|&)m=\d+)?|id=[^"'&<>\s]+(?:&amp;|&)type=[^"'&<>\s]+)/g, secureHubUrl);
       } catch (e) {
         console.warn('[send-mail] Token injection error:', e.message);
       }
