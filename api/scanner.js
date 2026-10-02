@@ -547,143 +547,206 @@ async function handleHubData(req, res) {
   const idParam = (req.query?.id || '').trim();
   const typeParam = (req.query?.type || '').trim();
   const queryParam = (req.query?.q || req.query?.query || '').trim();
+// Directory cache with 45s TTL for warm search performance
+let directoryCache = {
+  timestamp: 0,
+  registrations: [],
+  delegations: []
+};
+const DIRECTORY_CACHE_TTL_MS = 45000;
+
   if (queryParam) {
+    if (!isStaff) {
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(401).json({ success: false, code: 'UNAUTHORIZED' });
+    }
+    res.setHeader('Cache-Control', 'no-store');
+
     const rawQ = String(queryParam).trim();
     const cleanQ = rawQ.toLowerCase();
     const results = [];
 
     if (supabase) {
       try {
-        const { data: regList, error: regErr } = await supabase
-          .from('registrations')
-          .select('id, name, email, phone, institution, committee1, portfolio1_1, status, usn, delegate_type')
-          .limit(500);
-
-        if (regErr) {
-          console.error('Supabase error searching registrations:', regErr);
-        } else if (Array.isArray(regList)) {
-          regList.forEach(r => {
-            const rName = r.name || r.full_name || '';
-            const match =
-              (rName && rName.toLowerCase().includes(cleanQ)) ||
-              (r.email && r.email.toLowerCase().includes(cleanQ)) ||
-              (r.phone && r.phone.includes(cleanQ)) ||
-              (r.usn && r.usn.toLowerCase().includes(cleanQ)) ||
-              String(r.id) === rawQ;
-
-            if (match) {
-              const pubToken = getPublicToken('individual', r.id);
-              results.push({
-                type: 'individual',
-                id: r.id,
-                token: pubToken,
-                name: rName,
-                email: r.email,
-                phone: r.phone,
-                institution: r.institution || r.college || '',
-                usn: r.usn || '',
-                delegateType: r.delegate_type || 'Individual Delegate',
-                status: r.status,
-                committee: r.committee1 || 'General Assembly',
-                portfolio: r.portfolio1_1 || 'Delegate',
-                allocated_committee: r.committee1 || '',
-                allocated_portfolio: r.portfolio1_1 || '',
-                passUrl: `/hub?t=${encodeURIComponent(pubToken)}`
-              });
-            }
-          });
+        const now = Date.now();
+        if (now - directoryCache.timestamp > DIRECTORY_CACHE_TTL_MS || !directoryCache.registrations.length) {
+          const [regRes, delRes] = await Promise.all([
+            supabase
+              .from('registrations')
+              .select('id, name, full_name, institution, college, committee1, portfolio1_1, status, usn, delegate_type')
+              .limit(1000),
+            supabase
+              .from('delegations')
+              .select('id, delegation_name, head_name, status, member_count, roster_data')
+              .limit(500)
+          ]);
+          if (!regRes.error && Array.isArray(regRes.data)) {
+            directoryCache.registrations = regRes.data;
+          }
+          if (!delRes.error && Array.isArray(delRes.data)) {
+            directoryCache.delegations = delRes.data;
+          }
+          directoryCache.timestamp = now;
         }
 
-        const { data: delList, error: delErr } = await supabase
-          .from('delegations')
-          .select('id, delegation_name, head_name, email, phone, status, member_count, roster_data')
-          .limit(100);
+        const regList = directoryCache.registrations || [];
+        for (const r of regList) {
+          const rName = r.name || r.full_name || '';
+          const match =
+            (rName && rName.toLowerCase().includes(cleanQ)) ||
+            (r.usn && r.usn.toLowerCase().includes(cleanQ)) ||
+            String(r.id) === rawQ;
 
-        if (delErr) {
-          console.error('Supabase error searching delegations:', delErr);
-        } else if (Array.isArray(delList)) {
-          delList.forEach(d => {
-            const dName = d.delegation_name || d.head_name || '';
-            const pubToken = getPublicToken('delegation', d.id);
-            const delMatch =
-              (d.delegation_name && d.delegation_name.toLowerCase().includes(cleanQ)) ||
-              (d.head_name && d.head_name.toLowerCase().includes(cleanQ)) ||
-              (d.email && d.email.toLowerCase().includes(cleanQ)) ||
-              (d.phone && d.phone.includes(cleanQ)) ||
-              String(d.id) === rawQ;
+          if (match) {
+            results.push({
+              type: 'individual',
+              id: r.id,
+              memberIndex: 0,
+              name: rName,
+              institution: r.institution || r.college || '',
+              committee: r.committee1 || 'General Assembly',
+              portfolio: r.portfolio1_1 || 'Delegate'
+            });
+            if (results.length >= 25) break;
+          }
+        }
 
-            if (delMatch) {
-              results.push({
-                type: 'delegation',
-                id: d.id,
-                memberIndex: 0,
-                token: pubToken,
-                name: dName,
-                headName: d.head_name || '',
-                email: d.email,
-                phone: d.phone,
-                institution: d.delegation_name,
-                status: d.status,
-                committee: 'Institutional Delegation',
-                portfolio: `${d.member_count || 1} Member Delegation`,
-                allocated_committee: 'Institutional Delegation',
-                allocated_portfolio: `${d.member_count || 1} Member Delegation`,
-                passUrl: `/hub?t=${encodeURIComponent(pubToken)}&m=0`
-              });
-            }
+        const delList = directoryCache.delegations || [];
+        for (const d of delList) {
+          if (results.length >= 30) break;
+          const dName = d.delegation_name || d.head_name || '';
+          const delMatch =
+            (d.delegation_name && d.delegation_name.toLowerCase().includes(cleanQ)) ||
+            (d.head_name && d.head_name.toLowerCase().includes(cleanQ)) ||
+            String(d.id) === rawQ;
 
-            // Also search individual delegation roster members
-            if (Array.isArray(d.roster_data)) {
-              d.roster_data.forEach((mem, memIdx) => {
-                const mName = mem.name || mem.delegateName || mem['Delegate Name'] || '';
-                const mEmail = mem.email || mem.emailAddress || mem['Email Address'] || '';
-                const mPhone = mem.phone || mem.mobileNumber || mem['WhatsApp / Mobile Number'] || '';
-                const mUsn = mem.slNo || mem.usn || mem['USN / Roll No'] || '';
-                const mComm = mem.committee || mem.committee1 || mem['Committee Preference 1'] || '';
-                const mPort = mem.portfolio || mem.portfolio1_1 || mem['Portfolio Preference 1'] || '';
+          if (delMatch) {
+            results.push({
+              type: 'delegation',
+              id: d.id,
+              memberIndex: 0,
+              name: dName,
+              institution: d.delegation_name || '',
+              committee: 'Institutional Delegation',
+              portfolio: `${d.member_count || 1} Member Delegation`
+            });
+          }
 
-                const memberMatch =
-                  (mName && mName.toLowerCase().includes(cleanQ)) ||
-                  (mEmail && mEmail.toLowerCase().includes(cleanQ)) ||
-                  (mPhone && mPhone.includes(cleanQ)) ||
-                  (mUsn && mUsn.toLowerCase().includes(cleanQ));
+          if (Array.isArray(d.roster_data)) {
+            for (let memIdx = 0; memIdx < d.roster_data.length; memIdx++) {
+              if (results.length >= 30) break;
+              const mem = d.roster_data[memIdx];
+              const mName = mem.name || mem.delegateName || mem['Delegate Name'] || '';
+              const mUsn = mem.slNo || mem.usn || mem['USN / Roll No'] || '';
+              const mComm = mem.committee || mem.committee1 || mem['Committee Preference 1'] || '';
+              const mPort = mem.portfolio || mem.portfolio1_1 || mem['Portfolio Preference 1'] || '';
 
-                if (memberMatch) {
-                  const alreadyPresent = results.some(x => x.type === 'delegation' && x.id === d.id && x.memberIndex === memIdx);
-                  if (!alreadyPresent) {
-                    results.push({
-                      type: 'delegation',
-                      id: d.id,
-                      memberIndex: memIdx,
-                      token: pubToken,
-                      name: mName,
-                      headName: d.head_name || '',
-                      email: mEmail,
-                      phone: mPhone,
-                      institution: d.delegation_name,
-                      status: d.status,
-                      committee: mComm || 'Institutional Delegation',
-                      portfolio: mPort || `Member #${memIdx + 1}`,
-                      allocated_committee: mComm || 'Institutional Delegation',
-                      allocated_portfolio: mPort || `Member #${memIdx + 1}`,
-                      passUrl: `/hub?t=${encodeURIComponent(pubToken)}&m=${memIdx}`
-                    });
-                  }
+              const memberMatch =
+                (mName && mName.toLowerCase().includes(cleanQ)) ||
+                (mUsn && mUsn.toLowerCase().includes(cleanQ));
+
+              if (memberMatch) {
+                const alreadyPresent = results.some(x => x.type === 'delegation' && x.id === d.id && x.memberIndex === memIdx);
+                if (!alreadyPresent) {
+                  results.push({
+                    type: 'delegation',
+                    id: d.id,
+                    memberIndex: memIdx,
+                    name: mName,
+                    institution: d.delegation_name || '',
+                    committee: mComm || 'Institutional Delegation',
+                    portfolio: mPort || `Member #${memIdx + 1}`
+                  });
                 }
-              });
+              }
             }
-          });
+          }
         }
       } catch (e) {
         console.error('Unexpected error searching directory:', e);
       }
     }
 
+    const topResults = results.slice(0, 10);
+    const CHECKPOINT_KEYS = [
+      'day1_entry',
+      'day1_lunch',
+      'day1_refreshment',
+      'day2_entry',
+      'day2_lunch',
+      'day2_refreshment'
+    ];
+
+    topResults.forEach(r => {
+      r.checkpoints = {};
+      CHECKPOINT_KEYS.forEach(k => {
+        r.checkpoints[k] = { redeemed: false, redeemed_at: null, redeemed_by: null };
+      });
+    });
+
+    if (topResults.length > 0 && supabase) {
+      try {
+        const indIds = [...new Set(topResults.filter(r => r.type === 'individual').map(r => String(r.id)))];
+        const delIds = [...new Set(topResults.filter(r => r.type === 'delegation').map(r => String(r.id)))];
+
+        let cpFilters = [];
+        if (indIds.length > 0) cpFilters.push(`and(record_type.eq.individual,record_id.in.(${indIds.join(',')}))`);
+        if (delIds.length > 0) cpFilters.push(`and(record_type.eq.delegation,record_id.in.(${delIds.join(',')}))`);
+
+        if (cpFilters.length > 0) {
+          const { data: cpRows, error: cpErr } = await supabase
+            .from('delegate_checkpoints')
+            .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by')
+            .or(cpFilters.join(','));
+
+          if (!cpErr && Array.isArray(cpRows)) {
+            cpRows.forEach(row => {
+              const match = topResults.find(r =>
+                r.type === row.record_type &&
+                String(r.id) === String(row.record_id) &&
+                (r.memberIndex || 0) === (row.member_index || 0)
+              );
+              if (match && match.checkpoints && row.checkpoint_key) {
+                match.checkpoints[row.checkpoint_key] = {
+                  redeemed: !!row.redeemed,
+                  redeemed_at: row.redeemed_at || null,
+                  redeemed_by: row.redeemed_by || null
+                };
+              }
+            });
+          }
+        }
+      } catch (cpException) {
+        console.error('Error fetching checkpoints for search results:', cpException);
+      }
+    }
+
+    // Merge local checkpoints fallback if any
+    try {
+      const localStore = readLocalCheckpoints();
+      topResults.forEach(r => {
+        const lk = `${r.type}_${r.id}_${r.memberIndex || 0}`;
+        const baseLk = `${r.type}_${r.id}`;
+        const localEntry = localStore[lk] || ((r.memberIndex || 0) === 0 ? localStore[baseLk] : null);
+        if (localEntry) {
+          CHECKPOINT_KEYS.forEach(k => {
+            if (localEntry[k] && typeof localEntry[k] === 'object' && localEntry[k].redeemed) {
+              r.checkpoints[k] = {
+                redeemed: true,
+                redeemed_at: localEntry[k].redeemed_at || null,
+                redeemed_by: localEntry[k].redeemed_by || null
+              };
+            }
+          });
+        }
+      });
+    } catch (e) {}
+
     return res.status(200).json({
       success: true,
       query: rawQ,
-      matches: results.slice(0, 15),
-      results: results.slice(0, 15)
+      matches: topResults,
+      results: topResults
     });
   }
 
