@@ -25,8 +25,7 @@ export default async function handler(req, res) {
   const safeName = escapeIcs(name);
   const safeComm = escapeIcs(comm);
   const safePort = escapeIcs(port);
-  const safeVenue = escapeIcs(venue);
-  const fullLocation = escapeIcs(`RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098 (${venue})`);
+  const fullLocation = escapeIcs('RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098');
 
   const icsLines = [
     'BEGIN:VCALENDAR',
@@ -54,7 +53,7 @@ export default async function handler(req, res) {
     'DTEND:20261006T120000Z',
     'SUMMARY:RNSMUN 2026 — Day 1: Registration & Committee Session',
     `LOCATION:${fullLocation}`,
-    `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nSession Chamber: ${safeVenue}\\nReporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
+    `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nReporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
     'STATUS:CONFIRMED',
     'BEGIN:VALARM',
     'TRIGGER:-PT12H',

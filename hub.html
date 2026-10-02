@@ -2438,11 +2438,6 @@
                 <span class="print-allot-label">REPRESENTED PORTFOLIO</span>
                 <div id="print-badge-portfolio" class="print-allot-val highlight">Republic of India</div>
               </div>
-              <div class="print-allot-divider"></div>
-              <div class="print-allot-group">
-                <span class="print-allot-label">SESSION CHAMBER / HALL</span>
-                <div id="print-badge-venue" class="print-allot-val" style="font-size: 0.88rem;">Council Chamber &bull; MBA Seminar Hall</div>
-              </div>
             </div>
           </div>
 
@@ -3030,19 +3025,10 @@
                   <div class="portfolio-hero-title">${escapeHtml(portfolioName || 'General Delegate')}</div>
                 </div>
 
-                <!-- Committee & Chamber Dual Grid -->
-                <div class="allotment-dual-grid">
-                  <div class="allotment-item-block">
-                    <span class="allotment-item-kicker">Assigned Committee</span>
-                    <span class="allotment-item-val">${escapeHtml(committeeName || 'General Assembly')}</span>
-                  </div>
-                  <div class="allotment-item-block">
-                    <span class="allotment-item-kicker">
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                      Session Chamber
-                    </span>
-                    <span class="allotment-item-val venue">${escapeHtml(chamberVenue)}</span>
-                  </div>
+                <!-- Assigned Committee Block -->
+                <div class="allotment-item-block" style="padding-top: 2px;">
+                  <span class="allotment-item-kicker">Assigned Committee</span>
+                  <span class="allotment-item-val">${escapeHtml(committeeName || 'General Assembly')}</span>
                 </div>
               </div>
 
@@ -3390,18 +3376,17 @@
 
       const data = getCalendarEventData();
       const venueEl = document.getElementById('cal-modal-venue-text');
-      if (venueEl) venueEl.textContent = `${data.venue} • RNSIT Campus, Bengaluru`;
+      if (venueEl) venueEl.textContent = 'RNSIT Campus, Bengaluru';
 
       // 1. Google Calendar Web & App Intent (Instantly opens Google Calendar App on Android)
       const gcalBtn = document.getElementById('btn-gcal-link');
       if (gcalBtn) {
         const title = encodeURIComponent('RNS Model United Nations 2026 (RNSMUN)');
-        const loc = encodeURIComponent(`RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098 (${data.venue})`);
+        const loc = encodeURIComponent('RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098');
         const details = encodeURIComponent(
           `Official Delegate Pass: ${data.name}\n` +
           `Committee: ${data.comm}\n` +
           `Portfolio: ${data.port}\n` +
-          `Session Chamber: ${data.venue}\n` +
           `Reporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary) (Tuesday, 06 October & Wednesday, 07 October 2026)\n\n` +
           `Gate Entry Pass: ${window.location.href}`
         );
@@ -3463,8 +3448,7 @@
       const safeName = escapeIcs(data.name);
       const safeComm = escapeIcs(data.comm);
       const safePort = escapeIcs(data.port);
-      const safeVenue = escapeIcs(data.venue);
-      const fullLoc = escapeIcs(`RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098 (${data.venue})`);
+      const fullLoc = escapeIcs('RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru 560098');
       const passUrl = window.location.href;
 
       const icsLines = [
@@ -3493,7 +3477,7 @@
         'DTEND:20261006T120000Z',
         'SUMMARY:RNSMUN 2026 - Day 1: Registration & Committee Session',
         `LOCATION:${fullLoc}`,
-        `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nSession Chamber: ${safeVenue}\\nReporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
+        `DESCRIPTION:Official Delegate Pass for ${safeName}\\nCommittee: ${safeComm}\\nPortfolio: ${safePort}\\nReporting Time: 08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)\\nDigital Pass & QR: ${passUrl}`,
         'STATUS:CONFIRMED',
         'BEGIN:VALARM',
         'TRIGGER:-PT12H',
