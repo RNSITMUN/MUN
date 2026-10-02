@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Staff Accreditation and Check-in | RNS MUN 2026</title>
-  <meta name="description" content="Secretariat accreditation and logistics check-in scanner for RNS Model United Nations 2026.">
+  <meta name="description"
+    content="Secretariat accreditation and logistics check-in scanner for RNS Model United Nations 2026.">
   <link rel="icon" type="image/webp" href="/assets/Logos/MUN_logo.webp">
 
   <!-- HTML5-QRCode Scanner Library (self-hosted) -->
@@ -44,7 +46,10 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -76,10 +81,12 @@
       fill: none;
       flex-shrink: 0;
     }
+
     .icon.sm {
       width: 0.95rem;
       height: 0.95rem;
     }
+
     .icon.lg {
       width: 1.5rem;
       height: 1.5rem;
@@ -504,6 +511,7 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
+
     .quick-station-chips::-webkit-scrollbar {
       display: none;
     }
@@ -821,9 +829,29 @@
       contain: content;
     }
 
-    .scan-start-card h2 { color: var(--primary); font-size: 1.2rem; font-weight: 800; }
-    .scan-start-card p { margin: 0.55rem 0 1rem; color: var(--text-muted); font-size: 0.85rem; }
-    .scan-start-btn { width: 100%; min-height: 52px; border: 0; border-radius: var(--radius-box); background: var(--primary); color: #fff; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+    .scan-start-card h2 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .scan-start-card p {
+      margin: 0.55rem 0 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .scan-start-btn {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: var(--radius-box);
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
     .checkin-sheet-backdrop {
       display: none;
@@ -845,22 +873,117 @@
       contain: content;
     }
 
-    .checkin-sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; }
-    .checkin-sheet-title { margin: 0; color: var(--text-dark); font-size: 1.1rem; font-weight: 800; }
-    .checkin-sheet-details { display: grid; gap: 0.55rem; margin: 0.75rem 0 1rem; }
-    .checkin-sheet-detail { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.5rem; font-size: 0.85rem; }
-    .checkin-sheet-detail dt { color: var(--text-muted); }
-    .checkin-sheet-detail dd { min-width: 0; margin: 0; color: var(--text-dark); font-weight: 600; overflow-wrap: anywhere; }
-    .checkin-sheet-actions { display: grid; gap: 0.55rem; margin-top: 1rem; }
-    .checkin-sheet-primary, .checkin-sheet-secondary { width: 100%; min-height: 52px; border-radius: var(--radius-box); font-size: 0.9rem; font-weight: 700; cursor: pointer; }
-    .checkin-sheet-primary { border: 0; background: var(--primary); color: #fff; }
-    .checkin-sheet-primary:disabled { opacity: 0.7; cursor: wait; }
-    .checkin-sheet-secondary { border: 1px solid var(--border-subtle); background: #fff; color: var(--text-dark); }
-    .checkin-sheet-alert { display: none; margin-top: 0.65rem; padding: 0.65rem; border-radius: var(--radius-box); font-size: 0.82rem; }
-    .checkin-sheet-alert.error { display: block; color: var(--error-red); background: var(--error-bg); }
-    .checkin-sheet-alert.warning { display: block; color: var(--warning-amber); background: var(--warning-bg); }
-    .scan-sound-banner { display: none; position: fixed; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 4000; padding: 0.55rem 0.8rem; border-radius: var(--radius-box); background: #1F2937; color: #fff; font-size: 0.78rem; box-shadow: var(--shadow-card); }
-    .scan-sound-banner.visible { display: block; }
+    .checkin-sheet-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .checkin-sheet-title {
+      margin: 0;
+      color: var(--text-dark);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .checkin-sheet-details {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0.75rem 0 1rem;
+    }
+
+    .checkin-sheet-detail {
+      display: grid;
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .checkin-sheet-detail dt {
+      color: var(--text-muted);
+    }
+
+    .checkin-sheet-detail dd {
+      min-width: 0;
+      margin: 0;
+      color: var(--text-dark);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .checkin-sheet-actions {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .checkin-sheet-primary,
+    .checkin-sheet-secondary {
+      width: 100%;
+      min-height: 52px;
+      border-radius: var(--radius-box);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .checkin-sheet-primary {
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .checkin-sheet-primary:disabled {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    .checkin-sheet-secondary {
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      color: var(--text-dark);
+    }
+
+    .checkin-sheet-alert {
+      display: none;
+      margin-top: 0.65rem;
+      padding: 0.65rem;
+      border-radius: var(--radius-box);
+      font-size: 0.82rem;
+    }
+
+    .checkin-sheet-alert.error {
+      display: block;
+      color: var(--error-red);
+      background: var(--error-bg);
+    }
+
+    .checkin-sheet-alert.warning {
+      display: block;
+      color: var(--warning-amber);
+      background: var(--warning-bg);
+    }
+
+    .scan-sound-banner {
+      display: none;
+      position: fixed;
+      left: 50%;
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 4000;
+      padding: 0.55rem 0.8rem;
+      border-radius: var(--radius-box);
+      background: #1F2937;
+      color: #fff;
+      font-size: 0.78rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .scan-sound-banner.visible {
+      display: block;
+    }
 
     .btn-retry-camera {
       background: var(--primary);
@@ -1094,6 +1217,7 @@
       color: #FFFFFF;
       border: 1px solid var(--primary);
     }
+
     .btn-action.primary:hover {
       background: var(--primary-hover);
     }
@@ -1103,6 +1227,7 @@
       color: var(--text-dark);
       border: 1px solid var(--border-subtle);
     }
+
     .btn-action.secondary:hover {
       background: var(--bg-subtle);
     }
@@ -1216,10 +1341,22 @@
       font-size: 0.78rem;
       line-height: 1.35;
     }
-    .search-feedback.loading { color: var(--primary); }
-    .search-feedback.success { color: var(--success-green); }
-    .search-feedback.error { color: var(--error-red); }
-    .search-feedback.info { color: var(--text-muted); }
+
+    .search-feedback.loading {
+      color: var(--primary);
+    }
+
+    .search-feedback.success {
+      color: var(--success-green);
+    }
+
+    .search-feedback.error {
+      color: var(--error-red);
+    }
+
+    .search-feedback.info {
+      color: var(--text-muted);
+    }
 
     .search-results-tray {
       display: flex;
@@ -1407,11 +1544,13 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .modal-alert-banner.warning {
       background: var(--warning-bg);
       color: #92400E;
       border-bottom: 1px solid rgba(217, 119, 6, 0.25);
     }
+
     .modal-alert-banner.error {
       background: var(--error-bg);
       color: var(--error-red);
@@ -1534,10 +1673,12 @@
       padding: 0.3rem 0.65rem;
       border-radius: var(--radius-pill);
     }
+
     .roster-status-chip.checked-in {
       background: var(--success-bg);
       color: var(--success-green);
     }
+
     .roster-status-chip.neutral {
       background: var(--bg-subtle);
       color: var(--text-muted);
@@ -1649,7 +1790,10 @@
 
     /* Motion accessibility */
     @media (prefers-reduced-motion: reduce) {
-      *, ::before, ::after {
+
+      *,
+      ::before,
+      ::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -1657,90 +1801,91 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Inline SVG Sprite: Consistent 24px, 1.75 stroke, line style -->
   <svg style="display: none;" aria-hidden="true">
     <symbol id="icon-gate" viewBox="0 0 24 24">
-      <path d="M3 21h18"/>
-      <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
-      <path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/>
+      <path d="M3 21h18" />
+      <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+      <path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4" />
     </symbol>
     <symbol id="icon-utensils" viewBox="0 0 24 24">
-      <path d="M18 2v20"/>
-      <path d="M18 7a4 4 0 0 0 4-4V2"/>
-      <path d="M2 2v8a4 4 0 0 0 4 4h2v8"/>
-      <path d="M6 2v6"/>
-      <path d="M2 2h6"/>
+      <path d="M18 2v20" />
+      <path d="M18 7a4 4 0 0 0 4-4V2" />
+      <path d="M2 2v8a4 4 0 0 0 4 4h2v8" />
+      <path d="M6 2v6" />
+      <path d="M2 2h6" />
     </symbol>
     <symbol id="icon-coffee" viewBox="0 0 24 24">
-      <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
-      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
-      <line x1="6" y1="2" x2="6" y2="4"/>
-      <line x1="10" y1="2" x2="10" y2="4"/>
-      <line x1="14" y1="2" x2="14" y2="4"/>
+      <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+      <line x1="6" y1="2" x2="6" y2="4" />
+      <line x1="10" y1="2" x2="10" y2="4" />
+      <line x1="14" y1="2" x2="14" y2="4" />
     </symbol>
     <symbol id="icon-building" viewBox="0 0 24 24">
-      <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
-      <path d="M9 22v-4h6v4"/>
-      <path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/>
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01" />
     </symbol>
     <symbol id="icon-tag" viewBox="0 0 24 24">
-      <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/>
-      <path d="M7 7h.01"/>
+      <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+      <path d="M7 7h.01" />
     </symbol>
     <symbol id="icon-search" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8"/>
-      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
     </symbol>
     <symbol id="icon-users" viewBox="0 0 24 24">
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-      <circle cx="9" cy="7" r="4"/>
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </symbol>
     <symbol id="icon-shield" viewBox="0 0 24 24">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     </symbol>
     <symbol id="icon-check" viewBox="0 0 24 24">
-      <polyline points="20 6 9 17 4 12"/>
+      <polyline points="20 6 9 17 4 12" />
     </symbol>
     <symbol id="icon-x" viewBox="0 0 24 24">
-      <line x1="18" y1="6" x2="6" y2="18"/>
-      <line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
     </symbol>
     <symbol id="icon-alert-triangle" viewBox="0 0 24 24">
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-      <line x1="12" y1="9" x2="12" y2="13"/>
-      <line x1="12" y1="17" x2="12.01" y2="17"/>
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
     </symbol>
     <symbol id="icon-refresh" viewBox="0 0 24 24">
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-      <path d="M21 3v5h-5"/>
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-      <path d="M8 16H3v5"/>
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+      <path d="M8 16H3v5" />
     </symbol>
     <symbol id="icon-lock" viewBox="0 0 24 24">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </symbol>
     <symbol id="icon-calendar" viewBox="0 0 24 24">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-      <line x1="16" y1="2" x2="16" y2="6"/>
-      <line x1="8" y1="2" x2="8" y2="6"/>
-      <line x1="3" y1="10" x2="21" y2="10"/>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
     </symbol>
     <symbol id="icon-chevron-down" viewBox="0 0 24 24">
-      <polyline points="6 9 12 15 18 9"/>
+      <polyline points="6 9 12 15 18 9" />
     </symbol>
     <symbol id="icon-arrow-right" viewBox="0 0 24 24">
-      <line x1="5" y1="12" x2="19" y2="12"/>
-      <polyline points="12 5 19 12 12 19"/>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
     </symbol>
     <symbol id="icon-external-link" viewBox="0 0 24 24">
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-      <polyline points="15 3 21 3 21 9"/>
-      <line x1="10" y1="14" x2="21" y2="3"/>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
     </symbol>
   </svg>
 
@@ -1751,23 +1896,29 @@
         <h2 class="auth-title">Organizer check-in access</h2>
         <p class="auth-subtitle">Enter your staff name and PIN to unlock scanner operations.</p>
       </div>
-      <input type="text" id="staff-name-input" class="auth-input" placeholder="Staff name" maxlength="80" autocomplete="name" style="letter-spacing:normal; text-align:left;">
-      <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+      <input type="text" id="staff-name-input" class="auth-input" placeholder="Staff name" maxlength="80"
+        autocomplete="name" style="letter-spacing:normal; text-align:left;">
+      <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="6" inputmode="numeric"
+        autocomplete="one-time-code">
       <div id="auth-error" class="auth-error-msg">Invalid organizer PIN.</div>
       <button type="button" id="btn-auth-submit" class="auth-btn" onclick="loginWithPin()">Authenticate</button>
     </div>
   </div>
 
-  <div id="scan-start-overlay" class="scan-start-overlay" role="dialog" aria-modal="true" aria-labelledby="scan-start-title">
+  <div id="scan-start-overlay" class="scan-start-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="scan-start-title">
     <div class="scan-start-card">
       <h2 id="scan-start-title">Ready to scan</h2>
       <p>Tap to enable scan audio and start the camera.</p>
-      <button type="button" id="btn-start-scanning" class="scan-start-btn" onclick="startScanningFromGesture()">Tap to start scanning</button>
+      <button type="button" id="btn-start-scanning" class="scan-start-btn" onclick="startScanningFromGesture()">Tap to
+        start scanning</button>
     </div>
   </div>
 
-  <div id="checkin-sheet-backdrop" class="checkin-sheet-backdrop" onclick="handleCheckinBackdrop(event)" aria-hidden="true">
-    <section id="checkin-sheet" class="checkin-sheet" role="dialog" aria-modal="true" aria-labelledby="checkin-sheet-title" aria-describedby="checkin-sheet-details" tabindex="-1">
+  <div id="checkin-sheet-backdrop" class="checkin-sheet-backdrop" onclick="handleCheckinBackdrop(event)"
+    aria-hidden="true">
+    <section id="checkin-sheet" class="checkin-sheet" role="dialog" aria-modal="true"
+      aria-labelledby="checkin-sheet-title" aria-describedby="checkin-sheet-details" tabindex="-1">
       <div class="checkin-sheet-head">
         <h2 id="checkin-sheet-title" class="checkin-sheet-title">Confirm check-in</h2>
         <div id="checkin-sheet-status"></div>
@@ -1777,8 +1928,10 @@
       <div id="checkin-sheet-actions" class="checkin-sheet-actions"></div>
     </section>
   </div>
-  <div id="scan-sound-banner" class="scan-sound-banner" role="status" aria-live="polite">Sound is off. Tap anywhere to enable.</div>
-  <audio id="scan-silent-audio" loop preload="auto" playsinline aria-hidden="true" style="display:none" src="data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"></audio>
+  <div id="scan-sound-banner" class="scan-sound-banner" role="status" aria-live="polite">Sound is off. Tap anywhere to
+    enable.</div>
+  <audio id="scan-silent-audio" loop preload="auto" playsinline aria-hidden="true" style="display:none"
+    src="data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"></audio>
 
   <!-- Top Bar -->
   <header class="scanner-header">
@@ -1790,7 +1943,9 @@
       </div>
     </a>
     <button type="button" class="logout-btn" onclick="logout()">
-      <svg class="icon sm"><use href="#icon-lock"></use></svg>
+      <svg class="icon sm">
+        <use href="#icon-lock"></use>
+      </svg>
       <span>Sign out</span>
     </button>
   </header>
@@ -1816,28 +1971,38 @@
         </div>
 
         <div class="custom-dropdown-wrap">
-          <button type="button" class="dropdown-trigger-btn" id="custom-station-trigger" onclick="toggleStationMenu()" aria-expanded="false" aria-haspopup="listbox">
+          <button type="button" class="dropdown-trigger-btn" id="custom-station-trigger" onclick="toggleStationMenu()"
+            aria-expanded="false" aria-haspopup="listbox">
             <div class="trigger-content-left">
               <div class="trigger-icon-circle" id="trigger-icon">
-                <svg class="icon"><use href="#icon-gate"></use></svg>
+                <svg class="icon">
+                  <use href="#icon-gate"></use>
+                </svg>
               </div>
               <div class="trigger-text-col">
                 <span class="trigger-title" id="trigger-title">Day 1: Gate Entry</span>
-                <span class="trigger-subtitle" id="trigger-subtitle">Accreditation and morning check-in (Day 1 of 2)</span>
+                <span class="trigger-subtitle" id="trigger-subtitle">Accreditation and morning check-in (Day 1 of
+                  2)</span>
               </div>
             </div>
             <div class="trigger-content-right">
               <span class="trigger-tag-pill" id="trigger-tag">GATE</span>
-              <svg class="icon trigger-chevron"><use href="#icon-chevron-down"></use></svg>
+              <svg class="icon trigger-chevron">
+                <use href="#icon-chevron-down"></use>
+              </svg>
             </div>
           </button>
 
           <div class="custom-dropdown-menu" id="custom-station-menu" role="listbox">
             <div class="menu-section-header">Day 1 checkpoints</div>
 
-            <div class="station-option active" data-val="day1_entry" data-icon="gate" data-title="Day 1: Gate Entry" data-sub="Accreditation and morning check-in (Day 1 of 2)" data-tag="GATE" data-badge="Gate Entry" onclick="selectStation('day1_entry')" role="option">
+            <div class="station-option active" data-val="day1_entry" data-icon="gate" data-title="Day 1: Gate Entry"
+              data-sub="Accreditation and morning check-in (Day 1 of 2)" data-tag="GATE" data-badge="Gate Entry"
+              onclick="selectStation('day1_entry')" role="option">
               <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-gate"></use></svg></div>
+                <div class="opt-icon-box"><svg class="icon">
+                    <use href="#icon-gate"></use>
+                  </svg></div>
                 <div class="opt-text">
                   <div class="opt-title">Day 1: Gate Entry</div>
                   <div class="opt-sub">Accreditation and morning check-in</div>
@@ -1845,13 +2010,19 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">GATE</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
+                <span class="opt-check"><svg class="icon sm">
+                    <use href="#icon-check"></use>
+                  </svg></span>
               </div>
             </div>
 
-            <div class="station-option" data-val="day1_lunch" data-icon="utensils" data-title="Day 1: Midday Repast" data-sub="Official lunch pass (Day 1 of 2)" data-tag="MEAL" data-badge="Midday Repast" onclick="selectStation('day1_lunch')" role="option">
+            <div class="station-option" data-val="day1_lunch" data-icon="utensils" data-title="Day 1: Midday Repast"
+              data-sub="Official lunch pass (Day 1 of 2)" data-tag="MEAL" data-badge="Midday Repast"
+              onclick="selectStation('day1_lunch')" role="option">
               <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-utensils"></use></svg></div>
+                <div class="opt-icon-box"><svg class="icon">
+                    <use href="#icon-utensils"></use>
+                  </svg></div>
                 <div class="opt-text">
                   <div class="opt-title">Day 1: Midday Repast</div>
                   <div class="opt-sub">Official lunch pass</div>
@@ -1859,15 +2030,21 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">MEAL</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
+                <span class="opt-check"><svg class="icon sm">
+                    <use href="#icon-check"></use>
+                  </svg></span>
               </div>
             </div>
 
             <div class="menu-section-header">Day 2 checkpoints</div>
 
-            <div class="station-option" data-val="day2_entry" data-icon="gate" data-title="Day 2: Gate Entry" data-sub="Morning campus access (Day 2 of 2)" data-tag="GATE" data-badge="Gate Entry" onclick="selectStation('day2_entry')" role="option">
+            <div class="station-option" data-val="day2_entry" data-icon="gate" data-title="Day 2: Gate Entry"
+              data-sub="Morning campus access (Day 2 of 2)" data-tag="GATE" data-badge="Gate Entry"
+              onclick="selectStation('day2_entry')" role="option">
               <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-gate"></use></svg></div>
+                <div class="opt-icon-box"><svg class="icon">
+                    <use href="#icon-gate"></use>
+                  </svg></div>
                 <div class="opt-text">
                   <div class="opt-title">Day 2: Gate Entry</div>
                   <div class="opt-sub">Morning campus access</div>
@@ -1875,13 +2052,19 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">GATE</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
+                <span class="opt-check"><svg class="icon sm">
+                    <use href="#icon-check"></use>
+                  </svg></span>
               </div>
             </div>
 
-            <div class="station-option" data-val="day2_lunch" data-icon="utensils" data-title="Day 2: Midday Repast" data-sub="Official lunch pass (Day 2 of 2)" data-tag="MEAL" data-badge="Midday Repast" onclick="selectStation('day2_lunch')" role="option">
+            <div class="station-option" data-val="day2_lunch" data-icon="utensils" data-title="Day 2: Midday Repast"
+              data-sub="Official lunch pass (Day 2 of 2)" data-tag="MEAL" data-badge="Midday Repast"
+              onclick="selectStation('day2_lunch')" role="option">
               <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-utensils"></use></svg></div>
+                <div class="opt-icon-box"><svg class="icon">
+                    <use href="#icon-utensils"></use>
+                  </svg></div>
                 <div class="opt-text">
                   <div class="opt-title">Day 2: Midday Repast</div>
                   <div class="opt-sub">Official lunch pass</div>
@@ -1889,15 +2072,21 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">MEAL</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
+                <span class="opt-check"><svg class="icon sm">
+                    <use href="#icon-check"></use>
+                  </svg></span>
               </div>
             </div>
 
             <div class="menu-section-header">Audit and review</div>
 
-            <div class="station-option" data-val="inspect" data-icon="shield" data-title="Inspection Mode" data-sub="View pass details without stamping" data-tag="INSPECT" data-badge="Inspect Mode" onclick="selectStation('inspect')" role="option">
+            <div class="station-option" data-val="inspect" data-icon="shield" data-title="Inspection Mode"
+              data-sub="View pass details without stamping" data-tag="INSPECT" data-badge="Inspect Mode"
+              onclick="selectStation('inspect')" role="option">
               <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-shield"></use></svg></div>
+                <div class="opt-icon-box"><svg class="icon">
+                    <use href="#icon-shield"></use>
+                  </svg></div>
                 <div class="opt-text">
                   <div class="opt-title">Inspection Mode</div>
                   <div class="opt-sub">View pass details without stamping</div>
@@ -1905,7 +2094,9 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">AUDIT</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
+                <span class="opt-check"><svg class="icon sm">
+                    <use href="#icon-check"></use>
+                  </svg></span>
               </div>
             </div>
           </div>
@@ -1916,24 +2107,35 @@
           <span class="quick-chips-label">Quick switch</span>
           <div class="quick-station-chips">
             <button type="button" class="quick-chip active" data-val="day1_entry" onclick="selectStation('day1_entry')">
-              <svg class="icon sm"><use href="#icon-gate"></use></svg> Gate 1
+              <svg class="icon sm">
+                <use href="#icon-gate"></use>
+              </svg> Gate 1
             </button>
             <button type="button" class="quick-chip" data-val="day1_lunch" onclick="selectStation('day1_lunch')">
-              <svg class="icon sm"><use href="#icon-utensils"></use></svg> Lunch 1
+              <svg class="icon sm">
+                <use href="#icon-utensils"></use>
+              </svg> Lunch 1
             </button>
             <button type="button" class="quick-chip" data-val="day2_entry" onclick="selectStation('day2_entry')">
-              <svg class="icon sm"><use href="#icon-gate"></use></svg> Gate 2
+              <svg class="icon sm">
+                <use href="#icon-gate"></use>
+              </svg> Gate 2
             </button>
             <button type="button" class="quick-chip" data-val="day2_lunch" onclick="selectStation('day2_lunch')">
-              <svg class="icon sm"><use href="#icon-utensils"></use></svg> Lunch 2
+              <svg class="icon sm">
+                <use href="#icon-utensils"></use>
+              </svg> Lunch 2
             </button>
             <button type="button" class="quick-chip" data-val="inspect" onclick="selectStation('inspect')">
-              <svg class="icon sm"><use href="#icon-shield"></use></svg> Inspect
+              <svg class="icon sm">
+                <use href="#icon-shield"></use>
+              </svg> Inspect
             </button>
           </div>
         </div>
 
-        <select id="station-dropdown" class="station-select-native" style="display: none;" onchange="onStationChanged(this.value)">
+        <select id="station-dropdown" class="station-select-native" style="display: none;"
+          onchange="onStationChanged(this.value)">
           <option value="day1_entry" selected>Day 1: Gate Entry</option>
           <option value="day1_lunch">Day 1: Midday Repast</option>
           <option value="day2_entry">Day 2: Gate Entry</option>
@@ -1946,12 +2148,17 @@
       <section class="operational-stats-card" id="operational-stats-container">
         <div class="ops-header">
           <span class="ops-title">
-            <svg class="icon"><use href="#icon-calendar"></use></svg>
+            <svg class="icon">
+              <use href="#icon-calendar"></use>
+            </svg>
             <span>Checkpoint tallies</span>
           </span>
           <div class="ops-header-right">
-            <button type="button" class="btn-ops-refresh" id="btn-refresh-stats" onclick="loadScanStats(true)" title="Refresh checkpoint counts">
-              <svg class="icon sm"><use href="#icon-refresh"></use></svg>
+            <button type="button" class="btn-ops-refresh" id="btn-refresh-stats" onclick="loadScanStats(true)"
+              title="Refresh checkpoint counts">
+              <svg class="icon sm">
+                <use href="#icon-refresh"></use>
+              </svg>
               <span>Sync</span>
             </button>
           </div>
@@ -1999,13 +2206,19 @@
         </div>
 
         <div class="ops-breakdown-section">
-          <button type="button" class="ops-breakdown-toggle-btn" id="btn-toggle-committee-breakdown" onclick="toggleCommitteeBreakdown()" aria-expanded="false">
+          <button type="button" class="ops-breakdown-toggle-btn" id="btn-toggle-committee-breakdown"
+            onclick="toggleCommitteeBreakdown()" aria-expanded="false">
             <span>
-              <svg class="icon sm"><use href="#icon-building"></use></svg>
+              <svg class="icon sm">
+                <use href="#icon-building"></use>
+              </svg>
               <span>Committee breakdown</span>
-              <span id="comm-breakdown-sub" style="font-weight: 400; color: var(--text-muted); font-size: 0.72rem;">(Tap to view by council)</span>
+              <span id="comm-breakdown-sub" style="font-weight: 400; color: var(--text-muted); font-size: 0.72rem;">(Tap
+                to view by council)</span>
             </span>
-            <svg class="icon sm" id="comm-breakdown-chevron"><use href="#icon-chevron-down"></use></svg>
+            <svg class="icon sm" id="comm-breakdown-chevron">
+              <use href="#icon-chevron-down"></use>
+            </svg>
           </button>
           <div class="ops-breakdown-panel" id="committee-breakdown-panel">
             <table class="committee-table">
@@ -2019,7 +2232,8 @@
               </thead>
               <tbody id="committee-table-body">
                 <tr>
-                  <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading committee tallies...</td>
+                  <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading
+                    committee tallies...</td>
                 </tr>
               </tbody>
             </table>
@@ -2035,16 +2249,22 @@
 
           <!-- In-Flight Verifying Overlay -->
           <div id="scanner-verifying-overlay" class="scanner-verifying-overlay" style="display: none;">
-            <svg class="icon lg spin"><use href="#icon-refresh"></use></svg>
+            <svg class="icon lg spin">
+              <use href="#icon-refresh"></use>
+            </svg>
             <span>Verifying pass...</span>
           </div>
 
           <!-- Camera Error / Permission Overlay -->
           <div id="scanner-error-overlay" class="scanner-error-overlay" style="display: none;">
-            <svg class="icon lg"><use href="#icon-alert-triangle"></use></svg>
+            <svg class="icon lg">
+              <use href="#icon-alert-triangle"></use>
+            </svg>
             <span id="camera-error-message">Camera access required</span>
             <button type="button" class="btn-retry-camera" onclick="initCameraScanner()">
-              <svg class="icon sm"><use href="#icon-refresh"></use></svg>
+              <svg class="icon sm">
+                <use href="#icon-refresh"></use>
+              </svg>
               <span>Retry camera</span>
             </button>
           </div>
@@ -2052,7 +2272,9 @@
 
         <div class="camera-controls-bar" style="margin-top: 0.5rem;">
           <button type="button" class="btn-camera" onclick="switchCamera()">
-            <svg class="icon sm"><use href="#icon-refresh"></use></svg>
+            <svg class="icon sm">
+              <use href="#icon-refresh"></use>
+            </svg>
             <span>Switch camera</span>
           </button>
           <button type="button" class="btn-camera" id="btn-toggle-camera" onclick="toggleScannerStream()">
@@ -2081,32 +2303,36 @@
       <section class="manual-search-box" id="manual-search-section">
         <div class="manual-search-header">
           <span class="manual-title">
-            <svg class="icon sm"><use href="#icon-search"></use></svg>
+            <svg class="icon sm">
+              <use href="#icon-search"></use>
+            </svg>
             <span>Manual search</span>
           </span>
           <span class="manual-hint">Name or numeric ID</span>
         </div>
         <div class="search-input-wrap">
           <div class="search-input-container">
-            <svg class="icon search-icon-prefix"><use href="#icon-search"></use></svg>
-            <input
-              type="text"
-              id="manual-search-input"
-              class="search-input"
-              placeholder="Search name or ID..."
-              autocomplete="off"
-              spellcheck="false"
-            />
-            <button type="button" id="btn-clear-search" class="btn-clear-search" onclick="clearManualSearch()" title="Clear search" style="display: none;">
-              <svg class="icon sm"><use href="#icon-x"></use></svg>
+            <svg class="icon search-icon-prefix">
+              <use href="#icon-search"></use>
+            </svg>
+            <input type="text" id="manual-search-input" class="search-input" placeholder="Search name or ID..."
+              autocomplete="off" spellcheck="false" />
+            <button type="button" id="btn-clear-search" class="btn-clear-search" onclick="clearManualSearch()"
+              title="Clear search" style="display: none;">
+              <svg class="icon sm">
+                <use href="#icon-x"></use>
+              </svg>
             </button>
           </div>
           <button type="button" class="btn-search" id="btn-manual-search" onclick="searchDirectory()">
             <span>Search</span>
-            <svg class="icon sm"><use href="#icon-arrow-right"></use></svg>
+            <svg class="icon sm">
+              <use href="#icon-arrow-right"></use>
+            </svg>
           </button>
         </div>
-        <div class="search-view-only-note" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">Search is view-only. Check-ins are recorded by scanning the pass.</div>
+        <div class="search-view-only-note" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
+          Search is view-only. Check-ins are recorded by scanning the pass.</div>
         <div id="search-feedback" class="search-feedback"></div>
         <div id="search-results-tray" class="search-results-tray" style="display: none;"></div>
       </section>
@@ -2115,7 +2341,8 @@
   </main>
 
   <!-- Delegation Member Selection Modal -->
-  <div id="delegation-member-modal" class="delegation-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-delegation-name">
+  <div id="delegation-member-modal" class="delegation-modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="modal-delegation-name">
     <div class="delegation-modal-card">
       <div class="modal-ribbon">
         <div>
@@ -2123,7 +2350,9 @@
           <div class="modal-ribbon-sub">Select delegate to stamp for current station</div>
         </div>
         <button type="button" class="modal-close-btn" onclick="closeDelegationMemberModal()" aria-label="Close modal">
-          <svg class="icon"><use href="#icon-x"></use></svg>
+          <svg class="icon">
+            <use href="#icon-x"></use>
+          </svg>
         </button>
       </div>
 
@@ -2188,7 +2417,7 @@
               ['recognized', 'checkedin', 'duplicate', 'error'].forEach(k => {
                 getAudioCueBuffer(audioCtx, k);
               });
-            } catch (e) {}
+            } catch (e) { }
           };
           if (typeof window.requestIdleCallback === 'function') {
             window.requestIdleCallback(prewarm);
@@ -2213,7 +2442,7 @@
         if (navigator.audioSession && navigator.audioSession.type !== 'playback') {
           navigator.audioSession.type = 'playback';
         }
-      } catch (e) {}
+      } catch (e) { }
 
       const ctx = getAudioCtx();
       if (!ctx) return;
@@ -2230,7 +2459,7 @@
       if (!navigator.audioSession) {
         const silentAudio = document.getElementById('scan-silent-audio');
         if (silentAudio && silentAudio.paused) {
-          silentAudio.play().catch(() => {});
+          silentAudio.play().catch(() => { });
         }
       }
     }
@@ -2345,7 +2574,7 @@
         if (!ctx) return;
 
         if (ctx.state === 'suspended') {
-          ctx.resume().catch(() => {});
+          ctx.resume().catch(() => { });
         }
         if (ctx.state !== 'running') {
           showSoundOffBanner();
@@ -2378,7 +2607,7 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (html5QrCode && isScannerRunning) {
-          try { html5QrCode.pause(true); } catch(e){}
+          try { html5QrCode.pause(true); } catch (e) { }
         }
       } else {
         unlockAudio();
@@ -2387,7 +2616,7 @@
         const modal = document.getElementById('delegation-member-modal');
         const modalOpen = modal && modal.classList.contains('open');
         if (html5QrCode && isScannerRunning && !sheetOpen && !modalOpen && !isResultCardActive) {
-          try { html5QrCode.resume(); } catch(e){}
+          try { html5QrCode.resume(); } catch (e) { }
         }
       }
     });
@@ -2433,7 +2662,7 @@
     function setStaffSessionToken(token) {
       try {
         localStorage.setItem(STAFF_SESSION_KEY, token);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     function clearStaffSessionToken() {
@@ -2441,7 +2670,7 @@
         localStorage.removeItem(STAFF_SESSION_KEY);
         localStorage.removeItem(STAFF_NAME_KEY);
         sessionStorage.removeItem(STAFF_SESSION_KEY);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // ─── Network Request Wrapper with AbortController ────────────────
@@ -2585,7 +2814,7 @@
 
         if (ok && data?.success && data?.sessionToken) {
           setStaffSessionToken(data.sessionToken);
-          try { localStorage.setItem(STAFF_NAME_KEY, data.staffName || staffName); } catch (error) {}
+          try { localStorage.setItem(STAFF_NAME_KEY, data.staffName || staffName); } catch (error) { }
           const overlay = document.getElementById('auth-overlay');
           if (overlay) overlay.style.display = 'none';
           showScanStartGate();
@@ -2614,7 +2843,7 @@
       const startGate = document.getElementById('scan-start-overlay');
       if (startGate) { startGate.style.display = 'none'; startGate.setAttribute('aria-hidden', 'true'); }
       if (html5QrCode && isScannerRunning) {
-        html5QrCode.stop().catch(() => {});
+        html5QrCode.stop().catch(() => { });
       }
       const overlay = document.getElementById('auth-overlay');
       if (overlay) overlay.style.display = 'flex';
@@ -2825,12 +3054,12 @@
       if (savedCam) {
         workingCameraConfig = savedCam.startsWith('{') ? JSON.parse(savedCam) : savedCam;
       }
-    } catch (e) {}
+    } catch (e) { }
 
     function getScannerFps() {
       const isLowEnd = (typeof navigator !== 'undefined') &&
         ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-         (navigator.deviceMemory && navigator.deviceMemory <= 2));
+          (navigator.deviceMemory && navigator.deviceMemory <= 2));
       return isLowEnd ? 8 : 10;
     }
 
@@ -2896,13 +3125,13 @@
         cameraConfig,
         scanConfig,
         (decodedText) => onQrCodeDetected(decodedText),
-        () => {}
+        () => { }
       ).then(() => {
         isScannerRunning = true;
         workingCameraConfig = cameraConfig;
         try {
           localStorage.setItem('rns_cached_scanner_camera', typeof cameraConfig === 'string' ? cameraConfig : JSON.stringify(cameraConfig));
-        } catch (e) {}
+        } catch (e) { }
         const btn = document.getElementById('btn-toggle-camera');
         if (btn) btn.textContent = 'Pause scanner';
       });
@@ -2983,8 +3212,8 @@
         const currentId = typeof workingCameraConfig === 'string'
           ? workingCameraConfig
           : (typeof workingCameraConfig?.deviceId === 'string'
-              ? workingCameraConfig.deviceId
-              : (workingCameraConfig?.deviceId?.exact || currentCameraId));
+            ? workingCameraConfig.deviceId
+            : (workingCameraConfig?.deviceId?.exact || currentCameraId));
         let currentIdx = cameraList.findIndex(c => c.id === currentId);
         if (currentIdx === -1) currentIdx = 0;
         const nextIdx = (currentIdx + 1) % cameraList.length;
@@ -3018,7 +3247,7 @@
           const type = url.searchParams.get('type') || 'individual';
           if (id) return { id, type, memberIndex };
         }
-      } catch (e) {}
+      } catch (e) { }
 
       const delMatch = text.match(/^(?:del|delegation)[-_:\s]*(\d+)$/i);
       if (delMatch) return { id: delMatch[1], type: 'delegation' };
@@ -3060,7 +3289,7 @@
       if (html5QrCode && isScannerRunning) {
         try {
           html5QrCode.pause(true);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       try {
@@ -3080,7 +3309,7 @@
         if (!modalOpen && !sheetOpen && !isResultCardActive && html5QrCode && isScannerRunning) {
           try {
             html5QrCode.resume();
-          } catch (e) {}
+          } catch (e) { }
         }
         isProcessing = false;
       }
@@ -3145,7 +3374,14 @@
       if (sheetPreviousFocus?.isConnected) sheetPreviousFocus.focus();
       sheetPreviousFocus = null;
       if (resume && isScannerRunning && html5QrCode) {
-        try { html5QrCode.resume(); } catch (error) { console.warn('Camera resume failed:', error); }
+        try {
+          const state = typeof html5QrCode.getState === 'function' ? html5QrCode.getState() : null;
+          if (state === 3 || state === null) {
+            html5QrCode.resume();
+          }
+        } catch (error) {
+          console.warn('Camera resume failed:', error);
+        }
       }
     }
 
@@ -3337,7 +3573,11 @@
 
     function cancelConfirmCheckin() {
       if (isCheckingIn) return;
-      closeCheckinSheet({ resume: true });
+      lastScannedCode = null;
+      lastScannedTime = 0;
+      isProcessing = false;
+      closeCheckinSheet({ resume: true, clearResult: true });
+      isResultCardActive = false;
     }
 
     function scanNextFromSheet() {
@@ -3345,7 +3585,10 @@
       if (confirmation?.mode === 'success') {
         showSuccessResult(confirmation.candidate, confirmation.stationKey, confirmation.payload, confirmation.checkpoint);
       }
-      closeCheckinSheet({ resume: true, clearResult: false });
+      lastScannedCode = null;
+      lastScannedTime = 0;
+      isProcessing = false;
+      closeCheckinSheet({ resume: true, clearResult: true });
       isResultCardActive = false;
     }
 
@@ -3359,16 +3602,14 @@
         current.retryStamp = false;
         renderCheckinSheet('confirm', { fields: sheetDetailsForConfirmation(current) });
         void submitConfirmCheckin();
-      } else if (current?.payload) {
-        closeCheckinSheet({ resume: false });
-        void processCheckIn(current.payload);
-      } else if (current?.rawScan) {
+      } else {
+        // Dismiss invalid pass error sheet, reset cooldowns, and resume scanner for the next pass
         lastScannedCode = null;
         lastScannedTime = 0;
-        closeCheckinSheet({ resume: false });
-        void onQrCodeDetected(current.rawScan);
-      } else {
-        scanNextFromSheet();
+        isProcessing = false;
+        closeCheckinSheet({ resume: true, clearResult: true });
+        isResultCardActive = false;
+        dismissResultCard();
       }
     }
 
@@ -3460,6 +3701,9 @@
     // ─── Result Card Presentations ──────────────────────────────────
     function dismissResultCard() {
       isResultCardActive = false;
+      lastScannedCode = null;
+      lastScannedTime = 0;
+      isProcessing = false;
 
       const card = document.getElementById('result-box');
       if (card) {
@@ -3472,8 +3716,11 @@
 
       if (html5QrCode && isScannerRunning) {
         try {
-          html5QrCode.resume();
-        } catch (e) {}
+          const state = typeof html5QrCode.getState === 'function' ? html5QrCode.getState() : null;
+          if (state === 3 || state === null) {
+            html5QrCode.resume();
+          }
+        } catch (e) { }
       }
     }
 
@@ -3577,7 +3824,7 @@
 
     function showErrorResult(title, message, payload = null) {
       playScanFeedback('error');
-          if (!confirmation?.candidate && !confirmation?.rawScan) confirmation = { payload, mode: 'error' };
+      if (!confirmation?.candidate && !confirmation?.rawScan) confirmation = { payload, mode: 'error' };
       renderCheckinSheet('error', { title, status: 'Unable to verify', message });
     }
 
@@ -3778,7 +4025,7 @@
       if (!isResultCardActive && html5QrCode && isScannerRunning) {
         try {
           html5QrCode.resume();
-        } catch (e) {}
+        } catch (e) { }
       }
     }
 
@@ -4345,4 +4592,5 @@
     }
   </script>
 </body>
+
 </html>
