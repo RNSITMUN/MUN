@@ -305,7 +305,7 @@ export default async function handler(req, res) {
         .from('mail_logs')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(100);
+        .limit(2000);
 
       if (!logsError && logsData) {
         mailLogs = logsData;
