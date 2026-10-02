@@ -2183,25 +2183,31 @@
 
     .view-toggle-wrap {
       display: inline-flex;
-      border: 1.5px solid #000000;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 1.5px 1.5px 0px #000000;
+      background: rgba(108,13,44,0.07);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
     }
     .view-toggle-btn {
-      padding: 0.35rem 0.85rem;
-      font-size: 0.78rem;
-      font-weight: 800;
+      padding: 0.28rem 0.9rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
       font-family: var(--font-sans);
-      background: #FFFDF9;
-      color: #000000;
+      background: transparent;
+      color: #6C0D2C;
       border: none;
+      border-radius: 999px;
       cursor: pointer;
-      transition: all 0.12s ease;
+      transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+    }
+    .view-toggle-btn:hover:not(.active) {
+      background: rgba(108,13,44,0.08);
     }
     .view-toggle-btn.active {
-      background: var(--accent-color);
+      background: #6C0D2C;
       color: #FFF7EB;
+      box-shadow: 0 1px 6px rgba(108,13,44,0.18);
     }
 
     .code-editor-textarea {
@@ -2892,14 +2898,14 @@
           <!-- Right: Main Template Editor & Previewer -->
           <div class="template-main-editor">
             
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 240px;">
-                <input type="text" id="tpl-name" class="form-input" placeholder="Template Name (e.g., Payment Confirmation)" style="font-weight: 800; font-size: 1rem; padding: 0.5rem 0.85rem;" oninput="onTemplateMetaChanged()">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 220px;">
+                <input type="text" id="tpl-name" class="form-input" placeholder="Template name…" style="font-weight: 700; font-size: 0.97rem; padding: 0.45rem 0.85rem; border-color: rgba(0,0,0,0.12); background: #FFFDF9; box-shadow: none;" oninput="onTemplateMetaChanged()">
               </div>
-              
-              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <button type="button" class="btn btn-outline btn-sm" style="color: #991B1B; border-color: #EF4444;" onclick="deleteCurrentTemplate()" title="Delete this template">
-                  🗑️ Delete
+              <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                <button type="button" onclick="deleteCurrentTemplate()" title="Delete this template" style="display:inline-flex; align-items:center; gap:0.3rem; padding:0.28rem 0.75rem; font-size:0.74rem; font-weight:600; font-family:var(--font-sans); background:transparent; color:#b91c1c; border:1px solid rgba(185,28,28,0.28); border-radius:999px; cursor:pointer; transition:all 0.15s ease;" onmouseover="this.style.background='rgba(185,28,28,0.07)'" onmouseout="this.style.background='transparent'">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+                  Delete
                 </button>
                 <div class="view-toggle-wrap">
                   <button type="button" class="view-toggle-btn active" id="btn-view-code" onclick="toggleEditorView('code')">HTML Code</button>
@@ -2909,29 +2915,30 @@
             </div>
 
             <!-- Mapping Instructions & Guidance Card -->
-            <div style="background: #FFFDF9; border: 2px solid #000000; border-radius: 8px; padding: 0.85rem 1rem; box-shadow: 2px 2px 0px #000000;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
-                <span style="font-weight: 800; font-size: 0.85rem; color: #6C0D2C; display: flex; align-items: center; gap: 0.4rem;">
-                  <span>💡 Delegate Details Mapping Instructions:</span>
+            <div style="background: #FFFDF9; border: 1px solid rgba(108,13,44,0.13); border-radius: 12px; padding: 0.9rem 1.05rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.55rem;">
+                <span style="font-weight: 700; font-size: 0.8rem; color: #6C0D2C; display: flex; align-items: center; gap: 0.4rem; letter-spacing: 0.02em; text-transform: uppercase;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.75"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  Token Mapping
                 </span>
-                <span class="badge badge-confirmed" style="font-size: 0.65rem;">Auto-Personalized</span>
+                <span style="font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #047857; background: rgba(4,120,87,0.08); border: 1px solid rgba(4,120,87,0.2); border-radius: 999px; padding: 0.15rem 0.6rem;">Auto-Personalized</span>
               </div>
-              <p style="font-size: 0.78rem; line-height: 1.45; color: #333333; margin: 0 0 0.45rem 0;">
-                You can insert any dynamic token into your <strong>Email Subject</strong> or <strong>HTML Body</strong>. When you click <strong>"✉️ Send Mail"</strong> on any delegate in the table, all tokens will <strong>automatically map to that individual's real registration data</strong>. Click any token pill below to insert it at your cursor!
+              <p style="font-size: 0.76rem; line-height: 1.5; color: #555; margin: 0 0 0.6rem 0;">
+                Tokens in your <strong style="color:#222">Subject</strong> or <strong style="color:#222">HTML Body</strong> are automatically replaced with each delegate's real data when you send. Click any pill in the toolbar below to insert at cursor.
               </p>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; font-size: 0.72rem; color: #444444; background: #FFF7EB; padding: 0.4rem 0.65rem; border-radius: 6px; border: 1px solid rgba(0,0,0,0.15);">
-                <span><b>{{name}}</b>: Full Name</span> &bull;
-                <span><b>{{email}}</b>: Registered Email</span> &bull;
-                <span><b>{{committee}}</b>: Allotted Committee</span> &bull;
-                <span><b>{{portfolio}}</b>: Country / Portfolio</span> &bull;
-                <span><b>{{institution}}</b>: College / Institute</span> &bull;
-                <span><b>{{amount}}</b>: Verified Fee</span> &bull;
-                <span><b>{{status}}</b>: Confirmed / Pending</span> &bull;
-                <span><b>{{registration_id}}</b>: Ref ID</span> &bull;
-                <span><b>{{phone}}</b>: Contact No.</span> &bull;
-                <span><b>{{sheet_link}}</b>: Google Roster Sheet URL</span> &bull;
-                <span><b>{{roster_table}}</b>: Formatted Delegation Roster Matrix</span> &bull;
-                <span><b>{{roster_count}}</b>: Delegation Strength</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{name}}</code> Full Name</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{email}}</code> Email</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{committee}}</code> Committee</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{portfolio}}</code> Portfolio</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{institution}}</code> College</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{amount}}</code> Fee</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{status}}</code> Status</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{registration_id}}</code> Ref ID</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{phone}}</code> Contact</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{sheet_link}}</code> Roster URL</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{roster_table}}</code> Roster Matrix</span>
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.69rem;color:#444;background:rgba(108,13,44,0.055);border:1px solid rgba(108,13,44,0.12);border-radius:6px;padding:0.18rem 0.5rem;"><code style="font-weight:700;color:#6C0D2C;">{{roster_count}}</code> Delegation Size</span>
               </div>
             </div>
 
@@ -5656,517 +5663,628 @@
         isPreset: true,
         subject: "Official Delegate Pass, QR Code & Committee WhatsApp Group — RNS MUN 2026 | {{name}}",
         body: `<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RNS MUN 2026 — Official Delegate Pass &amp; Committee Dossier</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #FFF7EB;
-      color: #111113;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #FAF6F0;
+      color: #221F1E;
       margin: 0;
-      padding: 24px 16px;
+      padding: 32px 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 620px;
+    .wrapper {
+      max-width: 600px;
       margin: 0 auto;
-      background: #ffffff;
-      border: 2.5px solid #000000;
-      border-radius: 14px;
-      box-shadow: 4px 4px 0px #000000;
+      background: #FFFFFF;
+      border: 1px solid #E8DDD0;
+      border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 4px 24px rgba(108, 13, 44, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
     }
-    .header {
+    .header-banner {
       background: #6C0D2C;
       color: #FFF7EB;
-      padding: 24px 20px 18px 20px;
+      padding: 32px 24px 26px 24px;
       text-align: center;
-      border-bottom: 2.5px solid #000000;
+      border-bottom: 3px solid #C89B3C;
     }
     .header-logo {
       display: block;
-      margin: 0 auto;
-      max-width: 290px;
+      margin: 0 auto 16px auto;
+      max-width: 260px;
       width: 100%;
       height: auto;
       border: 0;
     }
-    .header p {
-      margin: 8px 0 0 0;
-      font-size: 13px;
-      opacity: 0.95;
-      color: #E5A93C;
-      font-weight: 800;
+    .header-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      text-align: center;
+      color: #E8C882;
+      margin: 0 0 6px 0;
     }
-    .content {
-      padding: 28px 24px;
+    .header-headline {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      color: #FFFFFF;
+      margin: 0;
+      line-height: 1.3;
+    }
+    .content-area {
+      padding: 32px 28px;
+      color: #2D2725;
       font-size: 15px;
-      color: #222222;
     }
     .salutation {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 800;
       color: #6C0D2C;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      letter-spacing: -0.2px;
     }
-    .card-box {
-      background: #FFFDF9;
-      border: 2px solid #000000;
-      border-radius: 10px;
-      padding: 18px;
-      margin: 20px 0;
-      box-shadow: 3px 3px 0px #000000;
-    }
-    .card-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: #6C0D2C;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 12px;
-      border-bottom: 1.5px solid #000000;
-      padding-bottom: 6px;
-    }
-    .alloc-item {
-      margin-bottom: 10px;
+    .lead-text {
       font-size: 15px;
-      line-height: 1.4;
+      line-height: 1.65;
+      color: #4A423F;
+      margin: 0 0 24px 0;
     }
-    .alloc-item:last-child {
-      margin-bottom: 0;
-    }
-    .alloc-label {
-      color: #666666;
-      font-size: 11.5px;
-      text-transform: uppercase;
-      font-weight: 700;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .pass-card {
-      background: #FFFDF9;
-      border: 2.5px solid #000000;
-      border-radius: 12px;
+
+    /* Elegant Assignment Dossier Card */
+    .dossier-card {
+      background: #FCFAF7;
+      border: 1px solid #EADBCC;
+      border-radius: 14px;
+      padding: 22px 24px;
       margin: 24px 0;
-      box-shadow: 4px 4px 0px #000000;
+    }
+    .dossier-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #8D2046;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dossier-item {
+      margin-bottom: 14px;
+    }
+    .dossier-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #7D736E;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .dossier-value-primary {
+      font-size: 19px;
+      font-weight: 800;
+      color: #6C0D2C;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+    }
+    .dossier-value-secondary {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1F1B1A;
+      line-height: 1.35;
+    }
+    .dossier-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #DFD3C4;
+      font-size: 13px;
+    }
+    .dossier-meta-table td {
+      padding: 4px 0;
+    }
+
+    /* Official Digital QR Pass Card */
+    .pass-card {
+      background: #FFFFFF;
+      border: 1px solid #E4D8C9;
+      border-radius: 14px;
+      margin: 28px 0;
       overflow: hidden;
+      box-shadow: 0 4px 18px rgba(108, 13, 44, 0.04);
       text-align: center;
     }
     .pass-header {
       background: #6C0D2C;
-      color: #FFF7EB;
-      padding: 12px 16px;
-      border-bottom: 2px solid #000000;
+      color: #FFFFFF;
+      padding: 12px 18px;
       text-align: center;
     }
-    .pass-title {
-      font-size: 13px;
+    .pass-header-title {
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #E5A93C;
+      color: #E8C882;
+      margin: 0;
     }
-    .pass-subtitle {
-      font-size: 11.5px;
-      color: #FFF7EB;
-      opacity: 0.95;
+    .pass-header-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.85);
       margin-top: 2px;
     }
     .pass-body {
-      padding: 22px 18px 20px 18px;
-      text-align: center;
+      padding: 24px 20px 22px 20px;
     }
     .qr-frame {
       display: inline-block;
-      background: #ffffff;
-      border: 2px solid #000000;
-      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid #E6DCD0;
+      border-radius: 14px;
       padding: 14px;
-      box-shadow: 2px 2px 0px #000000;
-      margin: 4px auto 10px auto;
+      margin: 6px auto 14px auto;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     }
-    .qr-image {
-      width: 180px;
-      height: 180px;
+    .qr-frame img {
       display: block;
+      width: 170px;
+      height: 170px;
       border: 0;
     }
-    .pass-badge-pill {
+    .pass-pill {
       display: inline-block;
-      background: #FAF5EE;
-      border: 1.5px solid #000000;
-      border-radius: 20px;
+      background: rgba(108, 13, 44, 0.05);
+      border: 1px solid rgba(108, 13, 44, 0.16);
+      border-radius: 999px;
       padding: 4px 14px;
-      font-family: monospace;
-      font-size: 13px;
-      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      font-weight: 700;
       color: #6C0D2C;
-      margin-top: 6px;
+      margin-bottom: 12px;
     }
     .pass-instruction {
       font-size: 13px;
-      color: #444444;
-      line-height: 1.5;
-      margin: 12px auto 18px auto;
-      max-width: 480px;
+      color: #5C5450;
+      line-height: 1.55;
+      max-width: 440px;
+      margin: 0 auto 18px auto;
     }
-    .btn-pass {
+    .btn-pill-maroon {
       display: inline-block;
-      background-color: #6C0D2C;
+      background: #6C0D2C;
       color: #FFFFFF !important;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 13.5px;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      padding: 13px 28px;
-      border: 2px solid #000000;
-      border-radius: 8px;
-      box-shadow: 3px 3px 0px #000000;
+      letter-spacing: 0.3px;
+      padding: 12px 28px;
+      border-radius: 999px;
       text-decoration: none;
+      transition: opacity 0.2s ease;
     }
-    .pass-link-fallback {
+    .pass-url-note {
       font-size: 11.5px;
-      color: #666666;
+      color: #8C827A;
       margin-top: 14px;
       word-break: break-all;
     }
-    .whatsapp-card {
-      background: #F0FDF4;
-      border: 2px solid #000000;
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin: 24px 0;
-      box-shadow: 3px 3px 0px #000000;
+    .pass-url-note a {
+      color: #6C0D2C;
+      font-weight: 600;
+      text-decoration: underline;
     }
-    .whatsapp-head-table {
-      width: 100%;
-      border-collapse: collapse;
+
+    /* Official WhatsApp Caucus Card */
+    .caucus-card {
+      background: #F4F8F5;
+      border: 1px solid #CFE3D8;
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin: 28px 0;
+    }
+    .caucus-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 12px;
-      border-bottom: 1.5px solid #000000;
-      padding-bottom: 6px;
     }
-    .whatsapp-title {
-      font-size: 13px;
+    .caucus-title {
+      font-size: 11.5px;
       font-weight: 800;
-      color: #047857;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding-bottom: 6px;
+      color: #124D36;
     }
-    .whatsapp-status-badge {
+    .caucus-badge {
       display: inline-block;
-      background: #25D366;
-      color: #064E3B;
-      font-size: 10.5px;
+      background: rgba(18, 77, 54, 0.08);
+      color: #124D36;
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       padding: 3px 8px;
-      border-radius: 4px;
-      border: 1px solid #000000;
+      border-radius: 999px;
+      border: 1px solid rgba(18, 77, 54, 0.2);
     }
-    .whatsapp-chamber-box {
-      background: #ffffff;
-      border: 1.5px solid #000000;
-      border-radius: 8px;
+    .caucus-chamber {
+      background: #FFFFFF;
+      border: 1px solid #D6E8DE;
+      border-radius: 10px;
       padding: 12px 16px;
       margin-bottom: 12px;
     }
-    .whatsapp-chamber-lbl {
-      font-size: 11px;
-      color: #555555;
-      text-transform: uppercase;
+    .caucus-chamber-label {
+      font-size: 10.5px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #5C776A;
+      display: block;
     }
-    .whatsapp-chamber-name {
+    .caucus-chamber-name {
       font-size: 16px;
       font-weight: 800;
-      color: #065F46;
+      color: #0E4331;
       margin-top: 3px;
     }
-    .whatsapp-text {
+    .caucus-copy {
       font-size: 13.5px;
-      color: #1F2937;
-      line-height: 1.5;
+      color: #2D4338;
+      line-height: 1.55;
       margin: 0 0 16px 0;
     }
-    .btn-whatsapp {
+    .btn-pill-green {
       display: inline-block;
-      background-color: #25D366;
-      color: #052e16 !important;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      padding: 13px 28px;
-      border: 2px solid #000000;
-      border-radius: 8px;
-      box-shadow: 3px 3px 0px #000000;
-      text-decoration: none;
-    }
-    .whatsapp-link-fallback {
-      text-align: center;
-      font-size: 11.5px;
-      color: #047857;
-      margin-top: 10px;
-      word-break: break-all;
-    }
-    .btn-guide {
-      display: inline-block;
-      background-color: #E5A93C;
-      color: #111111 !important;
-      font-weight: 800;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 11px 24px;
-      border: 2px solid #000000;
-      border-radius: 6px;
-      box-shadow: 2px 2px 0px #000000;
-      text-decoration: none;
-    }
-    .contacts-box {
-      background: #FAF5EE;
-      border: 1.5px solid #000000;
-      border-radius: 8px;
-      padding: 14px 18px;
-      margin: 18px 0;
-      font-size: 14px;
-    }
-    .contact-item {
-      padding: 4px 0;
-      font-weight: 600;
-    }
-    .contact-item a {
-      color: #6C0D2C;
-      text-decoration: none;
+      background: #157347;
+      color: #FFFFFF !important;
       font-weight: 700;
+      font-size: 13.5px;
+      letter-spacing: 0.3px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    /* Study Dossier Card */
+    .guide-card {
+      background: #FAF7F2;
+      border: 1px solid #EADBCC;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin: 24px 0;
+    }
+    .guide-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #8D2046;
+      margin-bottom: 8px;
+    }
+    .guide-copy {
+      font-size: 13.5px;
+      color: #4A423F;
+      line-height: 1.55;
+      margin: 0 0 14px 0;
+    }
+    .btn-pill-gold {
+      display: inline-block;
+      background: #C89B3C;
+      color: #1C1917 !important;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      padding: 11px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    /* Schedule & Venue Card */
+    .venue-card {
+      background: #FFFFFF;
+      border: 1px solid #E8DDD0;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin: 24px 0;
+    }
+    .venue-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .venue-table td {
+      padding: 6px 0;
+      vertical-align: top;
+    }
+    .venue-label {
+      color: #7D736E;
+      font-weight: 600;
+      width: 125px;
+    }
+    .venue-value {
+      color: #1F1B1A;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    /* Contacts strip */
+    .contact-card {
+      background: #FCFAF7;
+      border: 1px solid #EDE4D8;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 22px 0;
+      font-size: 13.5px;
+    }
+    .contact-row {
+      padding: 4px 0;
+      color: #4A423F;
+    }
+    .contact-row a {
+      color: #6C0D2C;
+      font-weight: 700;
+      text-decoration: none;
     }
     .contact-divider {
       border: 0;
-      border-top: 1px dashed #D5C7B4;
+      border-top: 1px dashed #E2D7C8;
       margin: 6px 0;
     }
-    .signoff {
-      margin-top: 24px;
+
+    .signoff-block {
+      margin-top: 26px;
       font-size: 14.5px;
-      line-height: 1.5;
-      color: #333333;
+      color: #3C3532;
+      line-height: 1.6;
     }
-    .logo-wrap {
-      margin-top: 24px;
-      padding-top: 18px;
-      border-top: 1.5px solid #EEEEEE;
+    .society-logo-wrap {
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px solid #EFEAE4;
       text-align: center;
     }
-    .footer {
-      background: #FFFDF9;
-      border-top: 2px solid #000000;
-      padding: 18px;
+    .society-logo {
+      display: block;
+      margin: 0 auto;
+      max-width: 95px;
+      height: auto;
+      border: 0;
+    }
+
+    .footer-block {
+      background: #FAF6F0;
+      border-top: 1px solid #E8DDD0;
+      padding: 22px 20px;
       text-align: center;
       font-size: 12px;
-      color: #666666;
-      line-height: 1.5;
+      color: #7D736E;
+      line-height: 1.6;
     }
+    .footer-block a {
+      color: #6C0D2C;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
     @media only screen and (max-width: 600px) {
       body {
-        padding: 12px 8px;
+        padding: 14px 8px;
       }
-      .content {
-        padding: 20px 14px;
+      .content-area {
+        padding: 24px 18px;
       }
-      .btn-pass, .btn-whatsapp {
+      .dossier-card, .caucus-card, .venue-card, .guide-card {
+        padding: 18px 16px;
+      }
+      .btn-pill-maroon, .btn-pill-green, .btn-pill-gold {
         display: block;
-        padding: 13px 16px;
+        padding: 12px 18px;
         text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="290" style="display:block; margin:0 auto; max-width:290px; width:100%; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
-      <p>OFFICIAL DIGITAL DELEGATE PASS &amp; COMMITTEE DOSSIER</p>
+  <div class="wrapper">
+    <!-- Header with Official Logo -->
+    <div class="header-banner">
+      <img src="https://mun.rnsit.ac.in/assets/Logos/RNS_MUN_2026.png" alt="RNS MUN 2026" class="header-logo" width="260" onerror="this.onerror=null;this.src='/assets/Logos/RNS_MUN_2026.png';">
+      <div class="header-kicker">Core Secretariat &bull; Official Dossier</div>
+      <h1 class="header-headline">Digital Delegate Pass &amp; Committee Credential</h1>
     </div>
-    <div class="content">
-      <div class="salutation">Dear {{name}},</div>
-      <p style="font-size: 15px; color: #222222; line-height: 1.6; margin: 0 0 14px 0;">Greetings from the Core Secretariat of RNS Model United Nations 2026!</p>
-      <p style="font-size: 15px; color: #222222; line-height: 1.6; margin: 0 0 20px 0;">We are delighted to formally convey your diplomatic appointment, verified Digital QR Pass, and exclusive invitation to your committee's official caucus WhatsApp channel. Please inspect your credentials and conference schedule below:</p>
 
-      <!-- Diplomatic Allotment Summary Box -->
-      <div class="card-box">
-        <div class="card-title">OFFICIAL DIPLOMATIC ASSIGNMENT</div>
-        <div class="alloc-item">
-          <span class="alloc-label">Delegate Name:</span>
-          <strong style="color: #000000; font-size: 16px; font-weight: 800;">{{name}}</strong>
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <div class="salutation">Dear {{name}},</div>
+      <p class="lead-text">
+        Greetings from the Core Secretariat of <strong>RNS Model United Nations 2026</strong>.
+      </p>
+      <p class="lead-text">
+        We are pleased to formally convey your diplomatic assignment, verified Digital QR Pass, and exclusive access to your committee's official caucus channel. Please review your credentials and conference details below:
+      </p>
+
+      <!-- Assignment Dossier Card -->
+      <div class="dossier-card">
+        <div class="dossier-tag">✦ Diplomatic Appointment Dossier</div>
+        <div class="dossier-item">
+          <span class="dossier-label">Allocated Committee</span>
+          <div class="dossier-value-primary">{{allocated_committee}}</div>
         </div>
-        <div class="alloc-item" style="margin-top: 10px;">
-          <span class="alloc-label">Allocated Committee:</span>
-          <strong style="color: #6C0D2C; font-size: 18px; font-weight: 800; display: block;">{{allocated_committee}}</strong>
+        <div class="dossier-item" style="margin-bottom: 0;">
+          <span class="dossier-label">Allocated Portfolio / Representation</span>
+          <div class="dossier-value-secondary">{{allocated_portfolio}}</div>
         </div>
-        <div class="alloc-item" style="margin-top: 10px;">
-          <span class="alloc-label">Allocated Portfolio / Country:</span>
-          <strong style="color: #000000; font-size: 18px; font-weight: 800; display: block;">{{allocated_portfolio}}</strong>
-        </div>
-        <div style="margin-top: 10px; border-top: 1px dashed #D5C7B4; padding-top: 8px;">
-          <table style="width: 100%; font-size: 13px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Delegate ID:</td>
-              <td style="text-align: right; font-family: monospace; font-weight: 800; color: #6C0D2C; padding: 3px 0;">#RNSMUN-26-{{registration_id}}</td>
-            </tr>
-            <tr>
-              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Institution:</td>
-              <td style="text-align: right; font-weight: 700; color: #222222; padding: 3px 0;">{{institution}}</td>
-            </tr>
-            <tr>
-              <td style="color: #666666; font-weight: 600; padding: 3px 0;">Delegation Category:</td>
-              <td style="text-align: right; font-weight: 700; color: #222222; padding: 3px 0;">{{type}}</td>
-            </tr>
-          </table>
-        </div>
+
+        <table class="dossier-meta-table">
+          <tr>
+            <td style="color: #7D736E; font-weight: 600;">Delegate Reference:</td>
+            <td style="text-align: right; font-family: ui-monospace, SFMono-Regular, monospace; font-weight: 700; color: #6C0D2C;">#RNSMUN-26-{{registration_id}}</td>
+          </tr>
+          <tr>
+            <td style="color: #7D736E; font-weight: 600;">Institution / College:</td>
+            <td style="text-align: right; font-weight: 600; color: #2D2725;">{{institution}}</td>
+          </tr>
+          <tr>
+            <td style="color: #7D736E; font-weight: 600;">Delegation Type:</td>
+            <td style="text-align: right; font-weight: 600; color: #2D2725;">{{type}}</td>
+          </tr>
+        </table>
       </div>
 
-      <!-- Official Digital Delegate Pass -->
+      <!-- Official Digital Pass & QR Code -->
       <div class="pass-card">
         <div class="pass-header">
-          <div class="pass-title">★ OFFICIAL DIGITAL DELEGATE PASS ★</div>
-          <div class="pass-subtitle">Conference Credential &amp; Chamber Entry Token</div>
+          <div class="pass-header-title">Official Digital Delegate Pass</div>
+          <div class="pass-header-sub">Conference Credential &amp; Chamber Entry Token</div>
         </div>
         <div class="pass-body">
           <div class="qr-frame">
-            <img src="{{qr_code_url}}" alt="Delegate QR Pass" class="qr-image" width="180" height="180" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&amp;data=' + encodeURIComponent('{{hub_url}}');">
+            <img src="{{qr_code_url}}" alt="Delegate QR Pass" width="170" height="170" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&amp;data=' + encodeURIComponent('{{hub_url}}');">
           </div>
-          <div style="margin-top: 6px;">
-            <span class="pass-badge-pill">#RNSMUN-26-{{registration_id}}</span>
+          <div>
+            <span class="pass-pill">#RNSMUN-26-{{registration_id}}</span>
           </div>
           <p class="pass-instruction">
-            Present this QR code on your mobile phone or printed at the registration desk on Day 1 for rapid badge issuance and committee room check-in.
+            Present this QR code on your mobile device or as a printout at the registration desk on Day 1 for instant badge issuance and chamber clearance.
           </p>
-          <div style="margin: 8px 0 12px 0;">
-            <a href="{{hub_url}}" target="_blank" class="btn-pass">
-              Open Live Delegate Hub &amp; Pass &rarr;
+          <div style="margin: 6px 0 10px 0;">
+            <a href="{{hub_url}}" target="_blank" class="btn-pill-maroon">
+              Open Live Delegate Pass &rarr;
             </a>
           </div>
-          <div class="pass-link-fallback">
-            Direct Portal Link: <br><a href="{{hub_url}}" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">{{hub_url}}</a>
+          <div class="pass-url-note">
+            Direct access portal:<br>
+            <a href="{{hub_url}}" target="_blank">{{hub_url}}</a>
           </div>
         </div>
       </div>
 
-      <!-- Official Committee WhatsApp Caucus Group -->
-      <div class="whatsapp-card">
-        <table class="whatsapp-head-table">
-          <tr>
-            <td class="whatsapp-title">OFFICIAL COMMITTEE WHATSAPP GROUP</td>
-            <td style="text-align: right; padding-bottom: 6px;">
-              <span class="whatsapp-status-badge">OFFICIAL CAUCUS</span>
-            </td>
-          </tr>
-        </table>
-        <div class="whatsapp-chamber-box">
-          <div class="whatsapp-chamber-lbl">Your Assigned Chamber</div>
-          <div class="whatsapp-chamber-name">{{allocated_committee}}</div>
+      <!-- Official WhatsApp Caucus Card -->
+      <div class="caucus-card">
+        <div class="caucus-header">
+          <span class="caucus-title">Committee WhatsApp Caucus</span>
+          <span class="caucus-badge">Official Group</span>
         </div>
-        <p class="whatsapp-text">
-          Join your fellow diplomats and the Executive Board in the official committee channel. Real-time announcements, unmoderated caucus coordination, and session updates will be communicated here.
+        <div class="caucus-chamber">
+          <span class="caucus-chamber-label">Assigned Caucus Channel</span>
+          <div class="caucus-chamber-name">{{allocated_committee}}</div>
+        </div>
+        <p class="caucus-copy">
+          Connect directly with your Executive Board and fellow diplomats. Real-time announcements, unmoderated caucus collaboration, and session notices are communicated exclusively through this group.
         </p>
-        <div style="text-align: center; margin: 12px 0 8px 0;">
-          <a href="{{whatsapp_link}}" target="_blank" class="btn-whatsapp">
-            💬 Join Official WhatsApp Group &rarr;
+        <div style="text-align: center; margin: 12px 0 6px 0;">
+          <a href="{{whatsapp_link}}" target="_blank" class="btn-pill-green">
+            Join Official WhatsApp Channel &rarr;
           </a>
         </div>
-        <div class="whatsapp-link-fallback">
-          Invite link: <a href="{{whatsapp_link}}" target="_blank" style="color: #065F46; font-weight: 700; text-decoration: underline;">{{whatsapp_link}}</a>
+        <div style="text-align: center; font-size: 11.5px; color: #1B6C4B; margin-top: 10px; word-break: break-all;">
+          Invite link: <a href="{{whatsapp_link}}" target="_blank" style="color: #0E4331; font-weight: 700; text-decoration: underline;">{{whatsapp_link}}</a>
         </div>
       </div>
 
-      <!-- Study Dossier & Resources -->
-      <div class="card-box">
-        <div class="card-title">BACKGROUND GUIDE &amp; STUDY DOSSIER</div>
-        <p style="font-size: 13.5px; color: #333333; line-height: 1.5; margin: 0 0 14px 0;">
-          Official background guides, committee rules of procedure (RoP), and position paper guidelines have been compiled by the Executive Board to guide your research and debate.
+      <!-- Study Dossier & Background Guide -->
+      <div class="guide-card">
+        <div class="guide-title">Background Guide &amp; Study Dossier</div>
+        <p class="guide-copy">
+          Comprehensive background guides, committee Rules of Procedure (RoP), and position paper guidelines have been curated by your Executive Board to direct your substantive research.
         </p>
         <div style="text-align: center; margin: 8px 0 4px 0;">
-          <a href="{{bg_guide_url}}" target="_blank" class="btn-guide">
-            📂 Open Background Guide &amp; Resources &rarr;
+          <a href="{{bg_guide_url}}" target="_blank" class="btn-pill-gold">
+            Access Background Guides &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Summit Dates & Venue Details -->
-      <div class="card-box">
-        <div class="card-title">CONFERENCE DATES &amp; VENUE</div>
-        <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;" cellpadding="0" cellspacing="0">
+      <!-- Conference Dates & Venue -->
+      <div class="venue-card">
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #6C0D2C; margin-bottom: 12px;">
+          Conference Schedule &amp; Venue
+        </div>
+        <table class="venue-table">
           <tr>
-            <td style="padding: 5px 0; color: #666666; font-weight: 600; width: 125px; vertical-align: top;">Conference Dates:</td>
-            <td style="padding: 5px 0; font-weight: 800; color: #000000; line-height: 1.4;">
-              Tuesday, 06 October 2026 &bull; Day 1<br>
-              Wednesday, 07 October 2026 &bull; Day 2
+            <td class="venue-label">Dates:</td>
+            <td class="venue-value">
+              Tuesday, 06 October 2026 (Day 1)<br>
+              Wednesday, 07 October 2026 (Day 2)
             </td>
           </tr>
           <tr>
-            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Schedule &amp; Reporting:</td>
-            <td style="padding: 5px 0; font-weight: 700; color: #111111; line-height: 1.45;">
-              08:00 AM Registration Desk Opens &bull; 08:30 AM Opening Ceremony
+            <td class="venue-label">Reporting:</td>
+            <td class="venue-value">
+              08:00 AM Registration Desk Opens<br>
+              08:30 AM Opening Plenary
             </td>
           </tr>
           <tr>
-            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Summit Venue:</td>
-            <td style="padding: 5px 0; font-weight: 700; color: #111111; line-height: 1.45;">
+            <td class="venue-label">Venue:</td>
+            <td class="venue-value">
               <strong>RNS Institute of Technology (RNSIT) Campus</strong><br>
               Dr. Vishnuvardhan Road, Channasandra, RR Nagar, Bengaluru &ndash; 560098
             </td>
           </tr>
           <tr>
-            <td style="padding: 5px 0; color: #666666; font-weight: 600; vertical-align: top;">Navigation:</td>
-            <td style="padding: 5px 0;">
-              <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Bengaluru" target="_blank" style="color: #6C0D2C; font-weight: 800; text-decoration: underline;">Open Campus Location in Google Maps &rarr;</a>
+            <td class="venue-label">Navigation:</td>
+            <td>
+              <a href="https://maps.google.com/?q=RNS+Institute+of+Technology,+Bengaluru" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline; font-size: 13px;">
+                Open in Google Maps &rarr;
+              </a>
             </td>
           </tr>
         </table>
       </div>
 
-      <p style="font-size: 14.5px; color: #333333; line-height: 1.5;">Should you have any questions regarding your committee agenda, position papers, or logistical arrangements, please do not hesitate to contact our Secretariat:</p>
-      
-      <!-- Contact Details -->
-      <div class="contacts-box">
-        <div class="contact-item">Zeyan (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
-        <div class="contact-divider"></div>
-        <div class="contact-item">Adith (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
-        <div class="contact-divider"></div>
-        <div class="contact-item">Official Secretariat Email: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
-      </div>
-
-      <p style="font-size: 14.5px; color: #333333; line-height: 1.5;">We look forward to witnessing your diplomatic eloquence and leadership at RNS MUN 2026!</p>
-
-      <div class="signoff">
-        Warm regards,<br>
-        <strong>Core Secretariat of RNS MUN 2026</strong><br>
-        RNSIT MUN Society, Bengaluru
-      </div>
-
-      <p style="margin-top: 22px; font-size: 14px; color: #333333; line-height: 1.5; text-align: center;">
-        Follow our official Instagram for live alerts, committee updates &amp; announcements &rarr;<br>
-        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">https://www.instagram.com/rnsit.mun/</a>
+      <p style="font-size: 14.5px; color: #4A423F; line-height: 1.55; margin-top: 20px;">
+        For any inquiries regarding your committee agenda, position papers, or logistical details, please reach out to our Delegate Affairs desk:
       </p>
 
-      <div class="logo-wrap">
-        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display:inline-block; text-decoration:none;">
-          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" width="110" height="110" style="display:block; margin: 0 auto; max-width:110px; height:auto; border:0;" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
+      <!-- Contact Card -->
+      <div class="contact-card">
+        <div class="contact-row"><strong>Zeyan</strong> (Delegate Affairs): <a href="tel:+919155973955">+91 91559 73955</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-row"><strong>Adith</strong> (Delegate Affairs): <a href="tel:+918970262490">+91 89702 62490</a></div>
+        <div class="contact-divider"></div>
+        <div class="contact-row"><strong>Official Secretariat Email:</strong> <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a></div>
+      </div>
+
+      <p style="font-size: 14.5px; color: #4A423F; line-height: 1.55;">
+        We look forward to welcoming you for two days of spirited debate and diplomacy at RNS MUN 2026.
+      </p>
+
+      <!-- Signoff -->
+      <div class="signoff-block">
+        Warm regards,<br>
+        <strong style="color: #6C0D2C;">Core Secretariat &bull; RNS MUN 2026</strong><br>
+        RNSIT Model United Nations Society, Bengaluru
+      </div>
+
+      <!-- Society Logo -->
+      <div class="society-logo-wrap">
+        <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="display: inline-block; text-decoration: none;">
+          <img src="https://mun.rnsit.ac.in/assets/Logos/MUN_logo.png" alt="RNSIT MUN Society Logo" class="society-logo" width="95" onerror="this.onerror=null;this.src='/assets/Logos/MUN_logo.png';">
         </a>
+        <div style="margin-top: 10px; font-size: 12.5px; color: #7D736E;">
+          Follow <a href="https://www.instagram.com/rnsit.mun/" target="_blank" style="color: #6C0D2C; font-weight: 700; text-decoration: underline;">@rnsit.mun</a> for live updates &amp; announcements
+        </div>
       </div>
     </div>
-    <div class="footer">
-      <p style="margin: 0;"><strong>RNS Model United Nations 2026</strong><br>RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, Bengaluru - 560098<br>Official Portal: <a href="https://mun.rnsit.ac.in" target="_blank" style="color:#6C0D2C; font-weight:700;">mun.rnsit.ac.in</a> &bull; Email: <a href="mailto:mun@rnsit.ac.in" style="color:#6C0D2C;">mun@rnsit.ac.in</a></p>
+
+    <!-- Institutional Footer -->
+    <div class="footer-block">
+      <p style="margin: 0;">
+        <strong>RNS Model United Nations 2026</strong><br>
+        RNS Institute of Technology, Dr. Vishnuvardhan Road, Channasandra, Bengaluru &ndash; 560098<br>
+        Official Portal: <a href="https://mun.rnsit.ac.in" target="_blank">mun.rnsit.ac.in</a> &bull; Inquiries: <a href="mailto:mun@rnsit.ac.in">mun@rnsit.ac.in</a>
+      </p>
     </div>
   </div>
 </body>
@@ -6608,7 +6726,7 @@
       }
     }
 
-    const TEMPLATES_VERSION = 'v42_aesthetic_qr_whatsapp';
+    const TEMPLATES_VERSION = 'v43_aesthetic_qr_whatsapp_minimal';
     function loadTemplatesState() {
       const stored = localStorage.getItem('rns_mun_mail_templates');
       const storedVersion = localStorage.getItem('rns_mun_mail_templates_version');
@@ -7466,7 +7584,10 @@
       showToast(`Sending test copy for ${delegateName} to ${testEmail}...`, 'info');
 
       try {
-        const res = await fetch('/api/send-mail', {
+          const testActiveComm = modalTargetRecord?.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord?.committee1 || modalTargetRecord?.committee || '';
+          const testActivePort = modalTargetRecord?.allocated_portfolio || document.getElementById('modal-alloc-portfolio')?.value.trim() || modalTargetRecord?.portfolio1_1 || modalTargetRecord?.portfolio || '';
+
+          const res = await fetch('/api/send-mail', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -7480,8 +7601,10 @@
             recordId: modalTargetRecord?.id,
             recordType: modalTargetType,
             recipientName: delegateName,
-            allocated_committee: modalTargetRecord?.allocated_committee,
-            allocated_portfolio: modalTargetRecord?.allocated_portfolio,
+            allocated_committee: testActiveComm,
+            allocated_portfolio: testActivePort,
+            institution: modalTargetRecord?.institution || '',
+            type: modalTargetRecord?.delegate_type || modalTargetRecord?.type || '',
             bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
           })
         });
@@ -8239,6 +8362,11 @@
           : (modalTargetRecord.head_name || modalTargetRecord.delegation_name || '');
         const templateName = tplObj ? tplObj.name : (tplId || 'Custom Email');
 
+        const activeComm = modalTargetRecord.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord.committee1 || modalTargetRecord.committee || '';
+        const activePort = modalTargetRecord.allocated_portfolio || document.getElementById('modal-alloc-portfolio')?.value.trim() || modalTargetRecord.portfolio1_1 || modalTargetRecord.portfolio || '';
+        modalTargetRecord.allocated_committee = activeComm;
+        modalTargetRecord.allocated_portfolio = activePort;
+
         const res = await fetch('/api/send-mail', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -8255,8 +8383,10 @@
             recordId: modalTargetRecord.id,
             templateId: tplId,
             templateName,
-            allocated_committee: modalTargetRecord.allocated_committee,
-            allocated_portfolio: modalTargetRecord.allocated_portfolio,
+            allocated_committee: activeComm,
+            allocated_portfolio: activePort,
+            institution: modalTargetRecord.institution || '',
+            type: modalTargetRecord.delegate_type || modalTargetRecord.type || '',
             bg_guide_url: modalTargetRecord?.bg_guide_url || modalTargetRecord?.gdrive_link
           })
         });

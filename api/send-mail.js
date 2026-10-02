@@ -118,29 +118,52 @@ export default async function handler(req, res) {
     // If sending to a specific registered delegate/delegation, enforce secure public token URLs
     const { recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type } = req.body || {};
     const driveUrl = bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY';
+    
+    let preparedSubject = (subject || "Notice from RNS MUN '26").trim();
+
     preparedHtml = preparedHtml
       .replace(/\{\{bg_guide_url\}\}/g, driveUrl)
       .replace(/\{\{background_guide_url\}\}/g, driveUrl)
       .replace(/\{\{gdrive_link\}\}/g, driveUrl);
+
     if (allocated_committee) {
-      preparedHtml = preparedHtml.replace(/\{\{allocated_committee\}\}/g, allocated_committee);
+      preparedHtml = preparedHtml
+        .replace(/\{\{allocated_committee\}\}/g, allocated_committee)
+        .replace(/\{\{committee\}\}/g, allocated_committee);
+      preparedSubject = preparedSubject
+        .replace(/\{\{allocated_committee\}\}/g, allocated_committee)
+        .replace(/\{\{committee\}\}/g, allocated_committee);
+
       const waLink = resolveCommitteeWhatsApp(allocated_committee);
       preparedHtml = preparedHtml
         .replace(/\{\{whatsapp_link\}\}/g, waLink)
         .replace(/\{\{committee_whatsapp\}\}/g, waLink)
-        .replace(/\{\{whatsapp_url\}\}/g, waLink);
+        .replace(/\{\{whatsapp_url\}\}/g, waLink)
+        // Enforce that any committee caucus link in the mail points strictly to this delegate's assigned committee group
+        .replace(/https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+/g, waLink);
     }
+
     if (allocated_portfolio) {
-      preparedHtml = preparedHtml.replace(/\{\{allocated_portfolio\}\}/g, allocated_portfolio);
+      preparedHtml = preparedHtml
+        .replace(/\{\{allocated_portfolio\}\}/g, allocated_portfolio)
+        .replace(/\{\{portfolio\}\}/g, allocated_portfolio);
+      preparedSubject = preparedSubject
+        .replace(/\{\{allocated_portfolio\}\}/g, allocated_portfolio)
+        .replace(/\{\{portfolio\}\}/g, allocated_portfolio);
     }
+
     if (recipientName) {
       preparedHtml = preparedHtml.replace(/\{\{name\}\}/g, recipientName);
+      preparedSubject = preparedSubject.replace(/\{\{name\}\}/g, recipientName);
     }
+
     if (institution) {
       preparedHtml = preparedHtml.replace(/\{\{institution\}\}/g, institution);
     }
+
     const safeType = type || delegateType || (String(recordType || '').toLowerCase() === 'delegation' ? 'Delegation' : 'Individual');
     preparedHtml = preparedHtml.replace(/\{\{type\}\}/g, safeType);
+
     if (recordId) {
       try {
         const cleanRecType = String(recordType || 'individual').toLowerCase() === 'delegation' ? 'delegation' : 'individual';
@@ -149,15 +172,20 @@ export default async function handler(req, res) {
         const mSuffix = (cleanRecType === 'delegation' && mIdx !== null && mIdx !== undefined && mIdx !== '') ? `&m=${encodeURIComponent(mIdx)}` : '';
         const secureHubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}${mSuffix}`;
         const secureQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(secureHubUrl)}`;
-        
+        const paddedId = String(recordId).padStart(4, '0');
+
+        preparedSubject = preparedSubject
+          .replace(/\{\{registration_id\}\}/g, paddedId)
+          .replace(/#RNSMUN-26-(?:\{\{registration_id\}\}|REG-[a-zA-Z0-9_-]+|\d+)/g, `#RNSMUN-26-${paddedId}`);
+
         preparedHtml = preparedHtml
           // 1. Literal token replacements
           .replace(/\{\{public_token\}\}/g, pubToken)
           .replace(/\{\{hub_url\}\}/g, secureHubUrl)
           .replace(/\{\{qr_code_url\}\}/g, secureQrUrl)
-          .replace(/\{\{registration_id\}\}/g, String(recordId).padStart(4, '0'))
+          .replace(/\{\{registration_id\}\}/g, paddedId)
           // 2. Standardize credential pass ID header
-          .replace(/#RNSMUN-26-(?:\{\{registration_id\}\}|REG-[a-zA-Z0-9_-]+|\d+)/g, `#RNSMUN-26-${String(recordId).padStart(4, '0')}`)
+          .replace(/#RNSMUN-26-(?:\{\{registration_id\}\}|REG-[a-zA-Z0-9_-]+|\d+)/g, `#RNSMUN-26-${paddedId}`)
           // 3. Replace any QR code image URLs pointing to any hub URL with the recipient's own QR code URL
           .replace(/https:\/\/api\.qrserver\.com\/v1\/create-qr-code\/\?size=\d+x\d+&(?:amp;)?data=(?:https%3A%2F%2F|http%3A%2F%2F)[^"'\s<>]+/g, secureQrUrl)
           // 4. Replace any onerror fallback on QR images with the recipient's own QR code URL
@@ -171,7 +199,7 @@ export default async function handler(req, res) {
 
     const payload = {
       recipient: recipient.trim(),
-      subject: (subject || "Notice from RNS MUN '26").trim(),
+      subject: preparedSubject,
       htmlBody: preparedHtml,
       from: 'mun@rnsit.ac.in',
       senderName: senderName || 'RNS MUN Secretariat',
