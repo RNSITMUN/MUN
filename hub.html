@@ -270,26 +270,33 @@
       box-shadow: 8px 8px 0px #000000;
     }
 
-    /* Watermark Crest behind Credential */
-    .credential-watermark-crest {
+    /* Watermark Crest inside Candidate Identity Block */
+    .identity-watermark-crest {
       position: absolute;
-      top: 18%;
       right: 0;
-      width: 220px;
-      height: 220px;
-      max-width: 50%;
-      max-height: 50%;
-      opacity: 0.05;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(115px, 22vw, 145px);
+      height: clamp(115px, 22vw, 145px);
+      opacity: 0.13;
       pointer-events: none;
       z-index: 0;
       user-select: none;
     }
 
-    .credential-watermark-crest img {
+    .identity-watermark-crest img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       filter: grayscale(100%);
+    }
+
+    .candidate-kicker,
+    .candidate-name-display,
+    .candidate-institution-line,
+    .candidate-chips-deck {
+      position: relative;
+      z-index: 1;
     }
 
     /* Minimal Lanyard Punch Slot */
@@ -461,6 +468,14 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .allotment-panel-header,
+    .allotment-hero-portfolio,
+    .allotment-dual-grid {
       position: relative;
       z-index: 1;
     }
@@ -2961,11 +2976,6 @@
             <!-- Card 1: Official Delegate Credential Badge -->
             <div class="credential-card">
 
-              <!-- Subtle Watermark Crest -->
-              <div class="credential-watermark-crest" aria-hidden="true">
-                <img src="./assets/Logos/MUN_logo.webp" alt="" />
-              </div>
-
               <!-- Minimal Lanyard Slot -->
               <div class="badge-lanyard-slot" aria-hidden="true"></div>
 
@@ -2982,6 +2992,12 @@
 
               <!-- 2. Candidate Identity Block: Editorial Elegance -->
               <div class="candidate-identity-block">
+
+                <!-- Official MUN Seal Watermark Crest in Identity Block -->
+                <div class="identity-watermark-crest" aria-hidden="true">
+                  <img src="./assets/Logos/MUN_logo.webp" alt="" />
+                </div>
+
                 <span class="candidate-kicker">Honorable Delegate</span>
                 <h2 class="candidate-name-display">${escapeHtml(delegateName)}</h2>
                 <div class="candidate-institution-line">
@@ -3084,25 +3100,7 @@
               </div>
 
               <div class="kit-actions-list">
-                <!-- 1. Add to Calendar -->
-                <button type="button" class="kit-action-row" onclick="openCalendarModal()" title="Add RNSMUN 2026 to Google or Apple Calendar">
-                  <div class="kit-action-icon calendar-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path>
-                    </svg>
-                  </div>
-                  <div class="kit-action-info">
-                    <span class="kit-action-label">Add to Phone Calendar</span>
-                    <span class="kit-action-sub">06–07 Oct &bull; 08:30 AM IST (Google &amp; Apple)</span>
-                  </div>
-                  <svg class="kit-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-
-                <!-- 2. Committee WhatsApp Group -->
+                <!-- 1. Committee WhatsApp Group -->
                 <a class="kit-action-row" id="kit-whatsapp-link" href="${escapeHtml(committeeWhatsAppUrl)}" target="_blank" rel="noopener noreferrer" title="Join Delegate WhatsApp Channel">
                   <div class="kit-action-icon whatsapp-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -3116,7 +3114,7 @@
                   <svg class="kit-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </a>
 
-                <!-- 3. Rules of Procedure -->
+                <!-- 2. Rules of Procedure -->
                 <a class="kit-action-row" href="/code-of-conduct" target="_blank" rel="noopener noreferrer" title="View Official Rules of Procedure (RoP) & Equity Policy">
                   <div class="kit-action-icon rop-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -3207,8 +3205,8 @@
                   <span>06 Oct</span>
                 </div>
                 <div>
-                  ${renderCheckpointRow('day1_entry', 'Campus Check-in', 'Gate verification & delegate kit')}
-                  ${renderCheckpointRow('day1_lunch', 'Lunch & Networking', 'Campus Cafeteria / Food Court')}
+                  ${renderCheckpointRow('day1_entry', 'Registration & Accreditation', 'Gate verification & delegate kit')}
+                  ${renderCheckpointRow('day1_lunch', 'Luncheon & Networking', 'Campus Cafeteria / Food Court')}
                 </div>
               </div>
 
@@ -3219,8 +3217,8 @@
                   <span>07 Oct</span>
                 </div>
                 <div>
-                  ${renderCheckpointRow('day2_entry', 'Day 2 Check-in', 'Campus entry & committee roll call')}
-                  ${renderCheckpointRow('day2_lunch', 'Lunch & Networking', 'Campus Cafeteria / Food Court')}
+                  ${renderCheckpointRow('day2_entry', 'Delegate Re-entry', 'Campus entry & committee roll call')}
+                  ${renderCheckpointRow('day2_lunch', 'Luncheon & Networking', 'Campus Cafeteria / Food Court')}
                 </div>
               </div>
 
@@ -3252,9 +3250,9 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 <span><strong>Email:</strong> mun@rnsit.ac.in</span>
               </a>
-              <a href="/stay-connected" title="Secretariat Help Desk" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
+              <a href="/stay-connected" title="Delegate Relations" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;color:#000;text-decoration:none;transition:background 0.15s;" onmouseenter="this.style.background='#F9F5EE'" onmouseleave="this.style.background=''">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <span><strong>Secretariat Desk</strong></span>
+                <span><strong>Delegate Relations</strong></span>
               </a>
             </div>
 

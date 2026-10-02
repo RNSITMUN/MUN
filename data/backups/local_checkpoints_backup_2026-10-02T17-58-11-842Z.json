@@ -1,0 +1,1658 @@
+{
+  "individual_90": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "",
+    "allocatedPortfolio": ""
+  },
+  "individual_50": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "UNSC",
+    "allocatedPortfolio": "Rwanda",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Rwanda"
+    }
+  },
+  "delegation_66": {
+    "checkpoints": {},
+    "memberCheckpoints": {
+      "1": {}
+    },
+    "allocatedCommittee": "",
+    "allocatedPortfolio": ""
+  },
+  "delegation_47": {
+    "checkpoints": {},
+    "memberCheckpoints": {
+      "1": {},
+      "2": {}
+    },
+    "allocatedCommittee": "",
+    "allocatedPortfolio": "",
+    "members": {
+      "0": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Iceland"
+        }
+      },
+      "1": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Narendra Modi"
+        }
+      },
+      "2": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Kanimozhi Karunanidhi"
+        }
+      },
+      "3": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Nitin Gadkari"
+        }
+      },
+      "4": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Rajnath Singh"
+        }
+      },
+      "5": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Priyanka Gandhi"
+        }
+      },
+      "6": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "DRC"
+        }
+      },
+      "7": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "France"
+        }
+      },
+      "8": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Canada"
+        }
+      },
+      "9": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Swiss Confederation"
+        }
+      },
+      "10": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Malaysia"
+        }
+      },
+      "11": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Singapore"
+        }
+      },
+      "12": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Cambodia"
+        }
+      },
+      "13": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "France"
+        }
+      },
+      "14": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Japan"
+        }
+      },
+      "15": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "IP",
+          "allocated_portfolio": "BBC"
+        }
+      },
+      "16": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Netherlands"
+        }
+      },
+      "17": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Albania"
+        }
+      },
+      "18": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Indonesia"
+        }
+      },
+      "19": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Czech Republic"
+        }
+      },
+      "20": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Qatar"
+        }
+      },
+      "21": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Republic of South Africa"
+        }
+      },
+      "22": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Swiss Confederation"
+        }
+      },
+      "23": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Arab Republic of Egypt"
+        }
+      },
+      "24": {
+        "name": "Vihaan Passary",
+        "email": "vihaan090307@gmail.com",
+        "phone": "8018024348",
+        "late_addition": true,
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Spain"
+        }
+      }
+    }
+  },
+  "individual_47": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Chirag Paswan",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Chirag Paswan"
+    },
+    "day1_entry": {
+      "checkpoint_key": "day1_entry",
+      "redeemed": true,
+      "redeemed_at": "2026-10-02T17:58:06.562Z",
+      "redeemed_by": "QA Validator",
+      "notes": "Test scan test",
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Chirag Paswan"
+    }
+  },
+  "delegation_67_0": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "IP",
+      "allocated_portfolio": "Reuters"
+    }
+  },
+  "delegation_67_1": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "G Kishan Reddy"
+    }
+  },
+  "delegation_67_2": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Brijmohan Agarwal"
+    }
+  },
+  "delegation_67_3": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "India"
+    }
+  },
+  "delegation_67_4": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Mahua Moitra"
+    }
+  },
+  "delegation_67_5": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Bhutan"
+    }
+  },
+  "delegation_67_6": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Ethiopia"
+    }
+  },
+  "delegation_67_7": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Japan"
+    }
+  },
+  "delegation_67_8": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Myanmar"
+    }
+  },
+  "delegation_67_9": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Manish Tewari"
+    }
+  },
+  "delegation_67_10": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Surendra Prasad Yadav"
+    }
+  },
+  "delegation_67_11": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Arvind Sawant"
+    }
+  },
+  "delegation_67_12": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Ghana"
+    }
+  },
+  "delegation_67_13": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Mexico"
+    }
+  },
+  "delegation_67_14": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Denmark"
+    }
+  },
+  "delegation_67_15": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Iraq"
+    }
+  },
+  "delegation_67_16": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Kuwait"
+    }
+  },
+  "delegation_67_17": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Finland"
+    }
+  },
+  "delegation_67_18": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Ukraine"
+    }
+  },
+  "delegation_67_19": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Yemen"
+    }
+  },
+  "delegation_47_0": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Iceland"
+    }
+  },
+  "delegation_47_1": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Narendra Modi"
+    }
+  },
+  "delegation_47_2": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Kanimozhi Karunanidhi"
+    }
+  },
+  "delegation_47_3": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Nitin Gadkari"
+    }
+  },
+  "delegation_47_4": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Rajnath Singh"
+    }
+  },
+  "delegation_47_5": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Priyanka Gandhi"
+    }
+  },
+  "delegation_47_6": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "DRC"
+    }
+  },
+  "delegation_47_7": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "France"
+    }
+  },
+  "delegation_47_8": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Canada"
+    }
+  },
+  "delegation_47_9": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Swiss Confederation"
+    }
+  },
+  "delegation_47_10": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Malaysia"
+    }
+  },
+  "delegation_47_11": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Singapore"
+    }
+  },
+  "delegation_47_12": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Cambodia"
+    }
+  },
+  "delegation_47_13": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "France"
+    }
+  },
+  "delegation_47_14": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Japan"
+    }
+  },
+  "delegation_47_15": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "IPC",
+      "allocated_portfolio": "BBC"
+    }
+  },
+  "delegation_47_16": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Netherlands"
+    }
+  },
+  "delegation_47_17": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Albania"
+    }
+  },
+  "delegation_47_18": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Indonesia"
+    }
+  },
+  "delegation_47_19": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Czech Republic"
+    }
+  },
+  "delegation_47_20": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Qatar"
+    }
+  },
+  "delegation_47_21": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Republic of South Africa"
+    }
+  },
+  "delegation_47_22": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Swiss Confederation"
+    }
+  },
+  "delegation_47_23": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Arab Republic of Egypt"
+    }
+  },
+  "individual_49": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Poland",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Poland"
+    }
+  },
+  "individual_51": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Malaysia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Malaysia"
+    }
+  },
+  "individual_56": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Bandi Sanjay Kumar",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Bandi Sanjay Kumar"
+    }
+  },
+  "individual_57": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Dayanidhi Maran",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Dayanidhi Maran"
+    }
+  },
+  "individual_59": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Iraq",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Iraq"
+    }
+  },
+  "individual_60": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Republic of Estonia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Republic of Estonia"
+    }
+  },
+  "individual_82": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Slovenia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Slovenia"
+    }
+  },
+  "individual_84": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Argentina",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Argentina"
+    }
+  },
+  "individual_85": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Saugata Roy",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Saugata Roy"
+    }
+  },
+  "individual_86": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Sarbananda Sonowal",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Sarbananda Sonowal"
+    }
+  },
+  "individual_87": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "T R Baalu",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "T R Baalu"
+    }
+  },
+  "individual_88": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Kingdom of Spain",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Kingdom of Spain"
+    }
+  },
+  "individual_89": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Republic of the Philippines",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Republic of the Philippines"
+    }
+  },
+  "individual_93": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Dharmendra Pradhan",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Dharmendra Pradhan"
+    }
+  },
+  "individual_95": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Mongolia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Mongolia"
+    }
+  },
+  "individual_97": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Austria",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Austria"
+    }
+  },
+  "individual_98": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Italy",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Italy"
+    }
+  },
+  "individual_99": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Rajiv Ranjan Singh",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Rajiv Ranjan Singh"
+    }
+  },
+  "individual_110": {
+    "allocatedCommittee": "IP",
+    "allocatedPortfolio": "The Hindu",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "IP",
+      "allocated_portfolio": "The Hindu"
+    }
+  },
+  "individual_113": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "UAE",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "UAE"
+    }
+  },
+  "individual_115": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Mexico",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Mexico"
+    }
+  },
+  "individual_116": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Republic of Korea",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Republic of Korea"
+    }
+  },
+  "individual_117": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Federal Republic of Germany",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Federal Republic of Germany"
+    }
+  },
+  "individual_118": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "UK",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "UK"
+    }
+  },
+  "individual_119": {
+    "allocatedCommittee": "UNSC",
+    "allocatedPortfolio": "Libya",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Libya"
+    }
+  },
+  "individual_124": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Bolivia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Bolivia"
+    }
+  },
+  "individual_125": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Kingdom of Belgium",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Kingdom of Belgium"
+    }
+  },
+  "individual_127": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Netherlands",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Netherlands"
+    }
+  },
+  "individual_129": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Ireland",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Ireland"
+    }
+  },
+  "individual_131": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Brazil",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Brazil"
+    }
+  },
+  "individual_132": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Kenya",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Kenya"
+    }
+  },
+  "individual_134": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Finland",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Finland"
+    }
+  },
+  "individual_135": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Socialist Republic of Viet Nam",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Socialist Republic of Viet Nam"
+    }
+  },
+  "individual_136": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Kodikunnil Suresh",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Kodikunnil Suresh"
+    }
+  },
+  "individual_137": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Grand Duchy of Luxembourg",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Grand Duchy of Luxembourg"
+    }
+  },
+  "individual_138": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Chile",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Chile"
+    }
+  },
+  "individual_139": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "USA",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "USA"
+    }
+  },
+  "individual_140": {
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Russia",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Russia"
+    }
+  },
+  "individual_141": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "DRC",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "DRC"
+    }
+  },
+  "individual_142": {
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Laos",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Laos"
+    }
+  },
+  "individual_149": {
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Basavaraj Bommai",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Basavaraj Bommai"
+    }
+  },
+  "individual_150": {
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Republic of India",
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Republic of India"
+    }
+  },
+  "individual_148": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "",
+    "allocatedPortfolio": ""
+  },
+  "individual_147": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "",
+    "allocatedPortfolio": ""
+  },
+  "individual_158": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "",
+    "allocatedPortfolio": ""
+  },
+  "individual_189": {
+    "checkpoints": {},
+    "memberCheckpoints": {},
+    "allocatedCommittee": "UNSC — United Nations Security Council",
+    "allocatedPortfolio": "Russian Federation"
+  },
+  "individual_178_0": {},
+  "individual_133": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Kenya"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Kenya"
+  },
+  "individual_151": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Hashemite Kingdom of Jordan"
+    },
+    "allocatedCommittee": "UNSC",
+    "allocatedPortfolio": "Hashemite Kingdom of Jordan"
+  },
+  "individual_157": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Harsimrat Kaur Badal"
+    },
+    "allocatedCommittee": "Lok Sabha",
+    "allocatedPortfolio": "Harsimrat Kaur Badal"
+  },
+  "individual_153": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "New Zealand"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "New Zealand"
+  },
+  "individual_162": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Japan"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Japan"
+  },
+  "individual_165": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "China"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "China"
+  },
+  "individual_166": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Italian Republic"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Italian Republic"
+  },
+  "individual_167": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Republic of Korea"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Republic of Korea"
+  },
+  "individual_168": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Dominican Republic"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Dominican Republic"
+  },
+  "individual_170": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "French Republic"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "French Republic"
+  },
+  "individual_172": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Saudi Arabia"
+    },
+    "allocatedCommittee": "UNSC",
+    "allocatedPortfolio": "Saudi Arabia"
+  },
+  "individual_175": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Australia"
+    },
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Australia"
+  },
+  "individual_176": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Italian Republic"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Italian Republic"
+  },
+  "individual_177": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Spain"
+    },
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Spain"
+  },
+  "individual_185": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "IP",
+      "allocated_portfolio": "Press Trust of India"
+    },
+    "allocatedCommittee": "IP",
+    "allocatedPortfolio": "Press Trust of India"
+  },
+  "individual_174": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Portugal"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Portugal"
+  },
+  "individual_181": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Brazil"
+    },
+    "allocatedCommittee": "UNHRC",
+    "allocatedPortfolio": "Brazil"
+  },
+  "individual_180": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Malta"
+    },
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Malta"
+  },
+  "individual_183": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "USA"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "USA"
+  },
+  "individual_182": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "UK"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "UK"
+  },
+  "individual_184": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Saudi Arabia"
+    },
+    "allocatedCommittee": "DISEC",
+    "allocatedPortfolio": "Saudi Arabia"
+  },
+  "individual_186": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "UAE"
+    },
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "UAE"
+  },
+  "individual_190": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Türkiye"
+    },
+    "allocatedCommittee": "UNSC",
+    "allocatedPortfolio": "Türkiye"
+  },
+  "individual_191": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Thailand"
+    },
+    "allocatedCommittee": "UNODC",
+    "allocatedPortfolio": "Thailand"
+  },
+  "delegation_67": {
+    "members": {
+      "0": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "IP",
+          "allocated_portfolio": "Reuters"
+        }
+      },
+      "1": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "G Kishan Reddy"
+        }
+      },
+      "2": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Brijmohan Agarwal"
+        }
+      },
+      "3": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "India"
+        }
+      },
+      "4": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Mahua Moitra"
+        }
+      },
+      "5": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Bhutan"
+        }
+      },
+      "6": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Ethiopia"
+        }
+      },
+      "7": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Japan"
+        }
+      },
+      "8": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Myanmar"
+        }
+      },
+      "9": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Manish Tewari"
+        }
+      },
+      "10": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Surendra Prasad Yadav"
+        }
+      },
+      "11": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Arvind Sawant"
+        }
+      },
+      "12": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Ghana"
+        }
+      },
+      "13": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Mexico"
+        }
+      },
+      "14": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Denmark"
+        }
+      },
+      "15": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Iraq"
+        }
+      },
+      "16": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Kuwait"
+        }
+      },
+      "17": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Finland"
+        }
+      },
+      "18": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Ukraine"
+        },
+        "name": "Sai Lochan",
+        "email": "sailochan8@gmail.com",
+        "phone": "7353473569",
+        "late_addition": true
+      },
+      "19": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Yemen"
+        },
+        "name": "Moogambika",
+        "email": "moogambika.official@gmail.com",
+        "phone": "8056640488",
+        "late_addition": true
+      },
+      "20": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Kodikunnil Suresh"
+        },
+        "name": "Vinayak Rao",
+        "email": "vinayak6rao@gmail.com",
+        "phone": "8467093736",
+        "late_addition": true
+      },
+      "21": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Chile"
+        },
+        "name": "Srishti Krishna",
+        "email": "srishtisparkles@gmail.com",
+        "phone": "7760145153",
+        "late_addition": true
+      }
+    }
+  },
+  "delegation_92": {
+    "members": {
+      "0": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "IP",
+          "allocated_portfolio": "Xinhua News Agency"
+        }
+      },
+      "1": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Somalia"
+        }
+      },
+      "2": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "India"
+        }
+      },
+      "3": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "USA"
+        }
+      },
+      "4": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "IP",
+          "allocated_portfolio": "Deutsche Welle (DW)"
+        }
+      },
+      "5": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Cyprus"
+        }
+      },
+      "6": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Republic of Türkiye"
+        }
+      },
+      "7": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Canada"
+        }
+      },
+      "8": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Indonesia"
+        }
+      },
+      "9": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "China"
+        }
+      },
+      "11": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Swiss Confederation"
+        }
+      },
+      "12": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Republic of the Sudan"
+        }
+      },
+      "13": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Pralhad Joshi"
+        }
+      }
+    }
+  },
+  "delegation_95_0": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Asaduddin Owaisi"
+    }
+  },
+  "delegation_95": {
+    "members": {
+      "0": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Asaduddin Owaisi"
+        }
+      },
+      "1": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Israel"
+        }
+      },
+      "2": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Türkiye"
+        }
+      },
+      "3": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Nigeria"
+        }
+      },
+      "4": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Netherlands"
+        }
+      },
+      "5": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Korea"
+        }
+      },
+      "6": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Gambia"
+        }
+      },
+      "7": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNHRC",
+          "allocated_portfolio": "Colombia"
+        }
+      },
+      "8": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNSC",
+          "allocated_portfolio": "Hellenic Republic"
+        }
+      },
+      "9": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "UNODC",
+          "allocated_portfolio": "Poland"
+        }
+      },
+      "10": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Akhilesh Yadav"
+        }
+      },
+      "11": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Sweden"
+        }
+      },
+      "12": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "DISEC",
+          "allocated_portfolio": "Belgium"
+        }
+      },
+      "13": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "IP",
+          "allocated_portfolio": "Times Of India"
+        }
+      },
+      "14": {
+        "allocation": {
+          "redeemed": true,
+          "allocated_committee": "Lok Sabha",
+          "allocated_portfolio": "Karti Chidambaram"
+        }
+      }
+    }
+  },
+  "delegation_95_1": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Israel"
+    }
+  },
+  "delegation_95_2": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Türkiye"
+    }
+  },
+  "delegation_95_3": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Nigeria"
+    }
+  },
+  "delegation_95_4": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Netherlands"
+    }
+  },
+  "delegation_95_5": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Korea"
+    }
+  },
+  "delegation_95_6": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Gambia"
+    }
+  },
+  "delegation_95_7": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNHRC",
+      "allocated_portfolio": "Colombia"
+    }
+  },
+  "delegation_95_8": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNSC",
+      "allocated_portfolio": "Hellenic Republic"
+    }
+  },
+  "delegation_95_9": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "UNODC",
+      "allocated_portfolio": "Poland"
+    }
+  },
+  "delegation_95_10": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Akhilesh Yadav"
+    }
+  },
+  "delegation_95_11": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Sweden"
+    }
+  },
+  "delegation_95_12": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "DISEC",
+      "allocated_portfolio": "Belgium"
+    }
+  },
+  "delegation_95_13": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "IP",
+      "allocated_portfolio": "Times Of India"
+    }
+  },
+  "delegation_95_14": {
+    "allocation": {
+      "redeemed": true,
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Karti Chidambaram"
+    }
+  },
+  "individual_47_0": {
+    "day1_entry": {
+      "checkpoint_key": "day1_entry",
+      "redeemed": true,
+      "redeemed_at": "2026-10-02T17:58:06.562Z",
+      "redeemed_by": "QA Validator",
+      "notes": "Test scan test",
+      "allocated_committee": "Lok Sabha",
+      "allocated_portfolio": "Chirag Paswan"
+    }
+  }
+}

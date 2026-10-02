@@ -2020,15 +2020,15 @@
           <div class="custom-dropdown-menu" id="custom-station-menu" role="listbox">
             <div class="menu-section-header">Day 1 checkpoints</div>
 
-            <div class="station-option active" data-val="day1_entry" data-icon="gate" data-title="Day 1: Gate Entry"
-              data-sub="Accreditation and morning check-in (Day 1 of 2)" data-tag="GATE" data-badge="Gate Entry"
+            <div class="station-option active" data-val="day1_entry" data-icon="gate" data-title="Day 1: Registration & Accreditation"
+              data-sub="Accreditation and morning check-in (Day 1 of 2)" data-tag="GATE" data-badge="Registration & Accreditation"
               onclick="selectStation('day1_entry')" role="option">
               <div class="opt-left">
                 <div class="opt-icon-box"><svg class="icon">
                     <use href="#icon-gate"></use>
                   </svg></div>
                 <div class="opt-text">
-                  <div class="opt-title">Day 1: Gate Entry</div>
+                  <div class="opt-title">Day 1: Registration & Accreditation</div>
                   <div class="opt-sub">Accreditation and morning check-in</div>
                 </div>
               </div>
@@ -2040,15 +2040,15 @@
               </div>
             </div>
 
-            <div class="station-option" data-val="day1_lunch" data-icon="utensils" data-title="Day 1: Midday Repast"
-              data-sub="Official lunch pass (Day 1 of 2)" data-tag="MEAL" data-badge="Midday Repast"
+            <div class="station-option" data-val="day1_lunch" data-icon="utensils" data-title="Day 1: Luncheon & Networking"
+              data-sub="Official lunch pass (Day 1 of 2)" data-tag="MEAL" data-badge="Luncheon & Networking"
               onclick="selectStation('day1_lunch')" role="option">
               <div class="opt-left">
                 <div class="opt-icon-box"><svg class="icon">
                     <use href="#icon-utensils"></use>
                   </svg></div>
                 <div class="opt-text">
-                  <div class="opt-title">Day 1: Midday Repast</div>
+                  <div class="opt-title">Day 1: Luncheon & Networking</div>
                   <div class="opt-sub">Official lunch pass</div>
                 </div>
               </div>
@@ -2062,15 +2062,15 @@
 
             <div class="menu-section-header">Day 2 checkpoints</div>
 
-            <div class="station-option" data-val="day2_entry" data-icon="gate" data-title="Day 2: Gate Entry"
-              data-sub="Morning campus access (Day 2 of 2)" data-tag="GATE" data-badge="Gate Entry"
+            <div class="station-option" data-val="day2_entry" data-icon="gate" data-title="Day 2: Delegate Re-entry"
+              data-sub="Morning campus access (Day 2 of 2)" data-tag="GATE" data-badge="Delegate Re-entry"
               onclick="selectStation('day2_entry')" role="option">
               <div class="opt-left">
                 <div class="opt-icon-box"><svg class="icon">
                     <use href="#icon-gate"></use>
                   </svg></div>
                 <div class="opt-text">
-                  <div class="opt-title">Day 2: Gate Entry</div>
+                  <div class="opt-title">Day 2: Delegate Re-entry</div>
                   <div class="opt-sub">Morning campus access</div>
                 </div>
               </div>
@@ -2082,15 +2082,15 @@
               </div>
             </div>
 
-            <div class="station-option" data-val="day2_lunch" data-icon="utensils" data-title="Day 2: Midday Repast"
-              data-sub="Official lunch pass (Day 2 of 2)" data-tag="MEAL" data-badge="Midday Repast"
+            <div class="station-option" data-val="day2_lunch" data-icon="utensils" data-title="Day 2: Luncheon & Networking"
+              data-sub="Official lunch pass (Day 2 of 2)" data-tag="MEAL" data-badge="Luncheon & Networking"
               onclick="selectStation('day2_lunch')" role="option">
               <div class="opt-left">
                 <div class="opt-icon-box"><svg class="icon">
                     <use href="#icon-utensils"></use>
                   </svg></div>
                 <div class="opt-text">
-                  <div class="opt-title">Day 2: Midday Repast</div>
+                  <div class="opt-title">Day 2: Luncheon & Networking</div>
                   <div class="opt-sub">Official lunch pass</div>
                 </div>
               </div>
@@ -2160,10 +2160,10 @@
 
         <select id="station-dropdown" class="station-select-native" style="display: none;"
           onchange="onStationChanged(this.value)">
-          <option value="day1_entry" selected>Day 1: Gate Entry</option>
-          <option value="day1_lunch">Day 1: Midday Repast</option>
-          <option value="day2_entry">Day 2: Gate Entry</option>
-          <option value="day2_lunch">Day 2: Midday Repast</option>
+          <option value="day1_entry" selected>Day 1: Registration & Accreditation</option>
+          <option value="day1_lunch">Day 1: Luncheon & Networking</option>
+          <option value="day2_entry">Day 2: Delegate Re-entry</option>
+          <option value="day2_lunch">Day 2: Luncheon & Networking</option>
           <option value="inspect">Inspection Mode</option>
         </select>
       </section>
@@ -2914,17 +2914,17 @@
     const STATION_META = {
       day1_entry: {
         iconName: 'gate',
-        title: 'Day 1: Gate Entry',
+        title: 'Day 1: Registration & Accreditation',
         subtitle: 'Accreditation and morning check-in (Day 1 of 2)',
         tag: 'GATE',
-        badge: 'Gate Entry'
+        badge: 'Registration & Accreditation'
       },
       day1_lunch: {
         iconName: 'utensils',
-        title: 'Day 1: Midday Repast',
+        title: 'Day 1: Luncheon & Networking',
         subtitle: 'Official lunch pass (Day 1 of 2)',
         tag: 'MEAL',
-        badge: 'Midday Repast'
+        badge: 'Luncheon & Networking'
       },
       day1_refreshment: {
         iconName: 'coffee',
@@ -2935,17 +2935,17 @@
       },
       day2_entry: {
         iconName: 'gate',
-        title: 'Day 2: Gate Entry',
+        title: 'Day 2: Delegate Re-entry',
         subtitle: 'Morning campus access (Day 2 of 2)',
         tag: 'GATE',
-        badge: 'Gate Entry'
+        badge: 'Delegate Re-entry'
       },
       day2_lunch: {
         iconName: 'utensils',
-        title: 'Day 2: Midday Repast',
+        title: 'Day 2: Luncheon & Networking',
         subtitle: 'Official lunch pass (Day 2 of 2)',
         tag: 'MEAL',
-        badge: 'Midday Repast'
+        badge: 'Luncheon & Networking'
       },
       day2_refreshment: {
         iconName: 'coffee',
@@ -4473,10 +4473,10 @@
       }
 
       const CHECKPOINTS_DEF = [
-        { key: 'day1_entry', label: 'Day 1 Entry' },
-        { key: 'day1_lunch', label: 'Day 1 Lunch' },
-        { key: 'day2_entry', label: 'Day 2 Entry' },
-        { key: 'day2_lunch', label: 'Day 2 Lunch' }
+        { key: 'day1_entry', label: 'Registration' },
+        { key: 'day1_lunch', label: 'Luncheon 1' },
+        { key: 'day2_entry', label: 'Re-entry' },
+        { key: 'day2_lunch', label: 'Luncheon 2' }
       ];
 
       let html = '';
