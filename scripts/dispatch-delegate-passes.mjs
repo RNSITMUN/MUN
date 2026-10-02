@@ -14,8 +14,15 @@
 
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 import { normalizeCommitteeName, getCommitteeConfig, resolveCommitteeWhatsApp, resolveCommitteeBgGuide } from '../lib/committees.js';
+import {
+  createMailLogEntry,
+  updateMailLogEntry,
+  checkAlreadySent,
+  logSkippedDelegate
+} from '../lib/mail-logger.js';
 
 // ── Environment Variables ───────────────────────────────────────────
 function getEnv(key) {
@@ -778,7 +785,62 @@ if (supabaseUrl && supabaseKey) {
 
 // ── Dispatch Loop ───────────────────────────────────────────────────
 async function runDispatch() {
-  console.log(`Processing queue of ${targetQueue.length} delegate(s)...\n`);
+  const batchId = crypto.randomUUID();
+
+  // Log skipped delegates (e.g. missing WhatsApp link or invalid email)
+  if (skipped.length > 0) {
+    for (const s of skipped) {
+      await logSkippedDelegate({
+        batchId,
+        registrationId: s.allocId,
+        delegateName: s.name,
+        recipientEmail: s.email || 'missing_email@unassigned',
+        reason: s.reason
+      }).catch(() => {});
+    }
+  }
+
+  if (isDryRun) {
+    console.log('\n========================================================================================');
+    console.log('               DRY RUN VERIFICATION TABLE: DELEGATE ALLOCATIONS & CAUCUS LINKS         ');
+    console.log('========================================================================================');
+    console.log('| Delegation | Delegate Name | Recipient Email | Committee | WhatsApp Link |');
+    console.log('|---|---|---|---|---|');
+
+    // Print all delegates in the queue
+    targetQueue.forEach(d => {
+      console.log(`| ${d.delegationName || 'Individual'} | ${d.name} | ${d.email} | ${d.allocated_committee} | ${d.whatsapp_link} |`);
+    });
+
+    // Explicit verification for CMS delegation showing different committee links
+    const cmsDelegates = delegates.filter(d => (d.delegationName || '').toUpperCase().includes('CMS') || (d.institution || '').toUpperCase().includes('CMS'));
+    if (cmsDelegates.length > 0) {
+      console.log('\n----------------------------------------------------------------------------------------');
+      console.log(' PROOF: CMS Delegation Delegates in Different Committees with Distinct Recipient Emails & WhatsApp Links');
+      console.log('----------------------------------------------------------------------------------------');
+      console.log('| Delegate Name | Recipient Email | Committee | Portfolio | WhatsApp Link |');
+      console.log('|---|---|---|---|---|');
+      cmsDelegates.forEach(d => {
+        console.log(`| ${d.name} | ${d.email} | **${d.allocated_committee}** | ${d.allocated_portfolio} | ${d.whatsapp_link} |`);
+      });
+    }
+
+    console.log('\n===============================================================');
+    console.log('                      DRY RUN SUMMARY                          ');
+    console.log('===============================================================');
+    console.log(`Total Delegates in Queue:   ${targetQueue.length}`);
+    console.log(`Skipped (Missing Link/Mail): ${skipped.length}`);
+    console.log('Zero emails were dispatched (DRY RUN). Run with --live to dispatch.');
+    return;
+  }
+
+  // ── Live Dispatch ──────────────────────────────────────────────────
+  if (!scriptUrl) {
+    console.error('Error: GOOGLE_SCRIPT_MAILER_URL is not configured in .env / .env.local');
+    process.exit(1);
+  }
+
+  console.log(`Starting LIVE dispatch for ${targetQueue.length} delegate(s) [Batch: ${batchId}]...\n`);
 
   let sentCount = 0;
   let skippedAlreadySent = 0;
@@ -788,8 +850,10 @@ async function runDispatch() {
     const d = targetQueue[i];
     const logKey = `${d.allocId}_${d.email}`;
 
-    // Double-send prevention check
-    if (sentLog[logKey] && !onlyEmail) {
+    // Idempotency check: block duplicates
+    const alreadySent = await checkAlreadySent(d.email, d.allocId);
+    if ((alreadySent || sentLog[logKey]) && !onlyEmail) {
+      console.log(`⏭️  [${i + 1}/${targetQueue.length}] Skipped already sent: ${d.email} (${d.allocId})`);
       skippedAlreadySent++;
       continue;
     }
@@ -817,22 +881,23 @@ async function runDispatch() {
 
     const subject = `Official Delegate Pass, QR Code & Committee WhatsApp Group — RNS MUN 2026 | ${d.name}`;
 
-    if (isDryRun) {
-      console.log(`[DRY RUN #${i + 1}]`);
-      console.log(`  Recipient:  ${d.email} (${d.name})`);
-      console.log(`  Pass ID:    ${d.allocId} | Institution: ${d.institution}`);
-      console.log(`  Committee:  ${d.allocated_committee} | Portfolio: ${d.allocated_portfolio}`);
-      console.log(`  WhatsApp:   ${d.whatsapp_link}`);
-      console.log(`  Hub Pass:   ${d.hub_url}`);
-      console.log(`  Status:     Ready to send (Validation Passed)\n`);
-      sentCount++;
-      continue;
-    }
-
-    // ── Live Dispatch ───────────────────────────────────────────────
-    if (!scriptUrl) {
-      console.error('Error: GOOGLE_SCRIPT_MAILER_URL is not configured in .env / .env.local');
-      process.exit(1);
+    // 1. Write 'queued' record to mail_log table
+    let mailLogRecord = null;
+    try {
+      mailLogRecord = await createMailLogEntry({
+        batchId,
+        registrationId: d.allocId,
+        delegateName: d.name,
+        recipientEmail: d.email,
+        delegation: d.delegationName,
+        committee: d.allocated_committee,
+        whatsappLink: d.whatsapp_link,
+        subject,
+        status: 'queued',
+        attempts: 1
+      });
+    } catch (e) {
+      console.warn('  (Warning: Could not create queued row in mail_log:', e.message, ')');
     }
 
     try {
@@ -859,6 +924,16 @@ async function runDispatch() {
         console.log(`✅ [${i + 1}/${targetQueue.length}] Sent to ${d.email} (${d.name}) — Committee: ${d.allocated_committee}`);
         sentCount++;
 
+        // Update mail_log to 'sent'
+        if (mailLogRecord) {
+          await updateMailLogEntry(mailLogRecord.id, {
+            status: 'sent',
+            sent_at: new Date().toISOString(),
+            error: null,
+            provider_message_id: resJson.messageId || null
+          });
+        }
+
         // Update local sent-log
         sentLog[logKey] = {
           sent_at: new Date().toISOString(),
@@ -870,26 +945,17 @@ async function runDispatch() {
         };
         writeSentLog(sentLog);
 
-        // Record to Supabase mail_logs if available
-        if (supabase) {
-          try {
-            await supabase.from('mail_logs').insert([{
-              recipient: d.email,
-              recipient_name: d.name,
-              record_type: d.regType.toLowerCase().includes('delegation') ? 'delegation' : 'individual',
-              record_id: d.recordId,
-              template_id: 'official-pass-caucus',
-              template_name: 'Official Pass (QR & WhatsApp Caucus)',
-              subject,
-              status: 'sent'
-            }]);
-          } catch (dbErr) {
-            console.warn('  (Logged locally, Supabase mail_logs insert skipped)');
-          }
-        }
       } else {
-        console.error(`❌ [${i + 1}/${targetQueue.length}] Failed for ${d.email}:`, resJson.error || resText);
+        const errorDetail = resJson.error || resText.slice(0, 150);
+        console.error(`❌ [${i + 1}/${targetQueue.length}] Failed for ${d.email}:`, errorDetail);
         failCount++;
+
+        if (mailLogRecord) {
+          await updateMailLogEntry(mailLogRecord.id, {
+            status: 'failed',
+            error: errorDetail
+          });
+        }
       }
 
       // Small throttling delay to protect provider quota
@@ -898,6 +964,13 @@ async function runDispatch() {
     } catch (sendErr) {
       console.error(`❌ Network error dispatching to ${d.email}:`, sendErr.message);
       failCount++;
+
+      if (mailLogRecord) {
+        await updateMailLogEntry(mailLogRecord.id, {
+          status: 'failed',
+          error: sendErr.message
+        });
+      }
     }
   }
 
@@ -908,10 +981,6 @@ async function runDispatch() {
   console.log(`Successful:           ${sentCount}`);
   console.log(`Skipped (Sent Prior): ${skippedAlreadySent}`);
   console.log(`Failed / Errors:      ${failCount}`);
-  if (isDryRun) {
-    console.log('\n* Note: This was a DRY RUN. Zero emails were sent.');
-    console.log('* To perform real dispatch, verify and run with --live.');
-  }
 }
 
 runDispatch().catch(err => {

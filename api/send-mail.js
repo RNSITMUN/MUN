@@ -2,6 +2,11 @@ import { supabase } from '../lib/supabase.js';
 import fs from 'fs';
 import path from 'path';
 import { getPublicToken } from '../lib/token.js';
+import {
+  createMailLogEntry,
+  updateMailLogEntry,
+  checkAlreadySent
+} from '../lib/mail-logger.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -101,6 +106,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'Email content (htmlBody) is required.' });
     }
 
+    // ── Idempotency Check ───────────────────────────────────────────
+    const { isResend, recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type, batchId, whatsapp_link } = req.body || {};
+    if (!isResend && recordId && recipient) {
+      const alreadySent = await checkAlreadySent(recipient, recordId);
+      if (alreadySent) {
+        return res.status(200).json({
+          success: true,
+          skipped: true,
+          message: `Notice already sent to ${recipient} for ID #${recordId}. Use Resend to override.`
+        });
+      }
+    }
+
     const targetUrl = (scriptUrl || getEnv('GOOGLE_SCRIPT_MAILER_URL') || '').trim();
 
     if (!targetUrl || !targetUrl.startsWith('https://script.google.com/')) {
@@ -115,8 +133,6 @@ export default async function handler(req, res) {
       .replace(/src=["'](?:https?:\/\/[^\/]+)?\/?assets\//gi, `src="${publicAssetBase}`)
       .replace(/src=["']https:\/\/raw\.githubusercontent\.com\/RNSITMUN\/MUN\/main\/assets\//gi, `src="${publicAssetBase}`);
 
-    // If sending to a specific registered delegate/delegation, enforce secure public token URLs
-    const { recordId, recordType = 'individual', memberIndex, member_index, allocated_committee, allocated_portfolio, recipientName, bg_guide_url, institution, delegateType, type } = req.body || {};
     const driveUrl = bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY';
     
     let preparedSubject = (subject || "Notice from RNS MUN '26").trim();
@@ -197,6 +213,25 @@ export default async function handler(req, res) {
       }
     }
 
+    // ── Log 'queued' status before dispatch ──────────────────────────
+    let mailLogRecord = null;
+    try {
+      mailLogRecord = await createMailLogEntry({
+        batchId: batchId || null,
+        registrationId: recordId ? String(recordId) : null,
+        delegateName: recipientName || null,
+        recipientEmail: recipient.trim(),
+        delegation: req.body.delegation || institution || null,
+        committee: allocated_committee || null,
+        whatsappLink: whatsapp_link || (allocated_committee ? resolveCommitteeWhatsApp(allocated_committee) : null),
+        subject: preparedSubject,
+        status: 'queued',
+        attempts: 1
+      });
+    } catch (e) {
+      console.warn('[send-mail] Could not create queued log row:', e.message);
+    }
+
     const payload = {
       recipient: recipient.trim(),
       subject: preparedSubject,
@@ -233,6 +268,13 @@ export default async function handler(req, res) {
         errorMsg = 'Google Apps Script 404 Not Found: Check that your Web App URL ends with /exec and that the deployment is active in Google Apps Script.';
       }
 
+      if (mailLogRecord) {
+        await updateMailLogEntry(mailLogRecord.id, {
+          status: 'failed',
+          error: errorMsg
+        });
+      }
+
       return res.status(response.status).json({
         success: false,
         error: errorMsg,
@@ -241,15 +283,25 @@ export default async function handler(req, res) {
       });
     }
 
-    // ─── Record to Supabase Shared Mail Logs Table ───────────────
+    // ── Update mail_log record to 'sent' ───────────────────────────
+    if (mailLogRecord) {
+      await updateMailLogEntry(mailLogRecord.id, {
+        status: 'sent',
+        sent_at: new Date().toISOString(),
+        error: null,
+        provider_message_id: responseData.messageId || responseData.id || null
+      });
+    }
+
+    // ─── Record to Legacy Supabase Shared Mail Logs Table ────────────
     let logWarning = null;
     try {
       if (supabase && responseData.success !== false) {
-        const { recipientName, recordType, recordId, templateId, templateName } = req.body || {};
+        const { templateId, templateName } = req.body || {};
         const safeRecipient = recipient ? recipient.trim() : 'Unknown Recipient';
         const safeName = (recipientName || 'Test / Unregistered').trim();
         
-        const { error: insertError } = await supabase.from('mail_logs').insert([{
+        await supabase.from('mail_logs').insert([{
           recipient: safeRecipient,
           recipient_name: safeName,
           record_type: (recordType || 'system').trim(),
@@ -258,26 +310,18 @@ export default async function handler(req, res) {
           template_name: (templateName || 'Custom Email').trim(),
           subject: (subject || "Notice from RNS MUN '26").trim(),
           status: 'sent'
-        }]);
-
-        if (insertError) {
-          console.warn('⚠️ [send-mail] Supabase insert error:', insertError.message);
-          logWarning = 'Email sent but failed to log to history';
-        }
+        }]).catch(() => {});
       }
     } catch (dbErr) {
-      console.warn('⚠️ [send-mail] Non-blocking error writing to mail_logs:', dbErr.message);
-      logWarning = 'Email sent but failed to log to history';
+      // non-blocking
     }
 
     const responsePayload = {
       success: responseData.success !== false,
       message: responseData.message || 'Email successfully sent via Google Apps Script.',
-      details: responseData
+      details: responseData,
+      mailLogId: mailLogRecord?.id
     };
-    if (logWarning) {
-      responsePayload.logWarning = logWarning;
-    }
 
     return res.status(200).json(responsePayload);
 

@@ -3088,6 +3088,149 @@
 
       </div>
 
+      <!-- Mail Log Container -->
+      <div id="container-maillog" style="display:none; flex-direction:column; gap:1.25rem; width:100%; padding:0.5rem 0;">
+
+        <!-- Summary KPI Cards -->
+        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+          <div class="stat-card" style="border-left: 4px solid #6C0D2C;">
+            <div class="stat-card-header"><span class="stat-title">Total Logs</span></div>
+            <div class="stat-value" id="ml-stat-total" style="font-size: 1.6rem;">0</div>
+            <div class="stat-sub-wrap"><span class="stat-sub-pill" id="ml-sub-total">All attempts</span></div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid #10B981;">
+            <div class="stat-card-header"><span class="stat-title">Delivered (Sent)</span></div>
+            <div class="stat-value" id="ml-stat-sent" style="font-size: 1.6rem; color: #047857;">0</div>
+            <div class="stat-sub-wrap"><span class="stat-sub-pill pill-emerald" id="ml-sub-sent">Confirmed sent</span></div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid #EF4444;">
+            <div class="stat-card-header"><span class="stat-title">Failed</span></div>
+            <div class="stat-value" id="ml-stat-failed" style="font-size: 1.6rem; color: #DC2626;">0</div>
+            <div class="stat-sub-wrap"><span class="stat-sub-pill" id="ml-sub-failed" style="background:#FEE2E2; color:#991B1B;">Delivery error</span></div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid #F59E0B;">
+            <div class="stat-card-header"><span class="stat-title">Skipped</span></div>
+            <div class="stat-value" id="ml-stat-skipped" style="font-size: 1.6rem; color: #D97706;">0</div>
+            <div class="stat-sub-wrap"><span class="stat-sub-pill" id="ml-sub-skipped" style="background:#FEF3C7; color:#92400E;">Missing email/link</span></div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid #6366F1;">
+            <div class="stat-card-header"><span class="stat-title">Queued</span></div>
+            <div class="stat-value" id="ml-stat-queued" style="font-size: 1.6rem; color: #4F46E5;">0</div>
+            <div class="stat-sub-wrap"><span class="stat-sub-pill" id="ml-sub-queued" style="background:#EEF2FF; color:#3730A3;">Pending dispatch</span></div>
+          </div>
+        </div>
+
+        <!-- Filters & Action Bar -->
+        <div class="controls-panel" style="display: flex; flex-direction: column; gap: 0.85rem; padding: 1rem 1.15rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #6C0D2C;">📨 Mail Dispatch Audit Log</h3>
+              <span id="ml-db-indicator" class="badge" style="background: #E0E7FF; color: #3730A3; font-size: 0.7rem;">Database</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-outline btn-sm" id="ml-btn-refresh" onclick="fetchMailLogs()" title="Refresh Mail Logs">
+                🔄 Refresh
+              </button>
+              <button class="btn btn-sm" id="ml-btn-retry-failed" onclick="retryAllFailedMailLogs()" style="background: #FEE2E2; color: #991B1B; border: 1.5px solid #000; box-shadow: 1.5px 1.5px 0 #000; font-weight: 800;">
+                ⚠️ Retry All Failed
+              </button>
+              <button class="btn btn-export btn-sm" id="ml-btn-export" onclick="exportMailLogsToCSV()" title="Export filtered logs to CSV">
+                📥 Export CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Inputs Row -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
+            <div class="search-box" style="flex: 1; min-width: 200px;">
+              <input type="text" id="ml-filter-search" placeholder="Search delegate name, email, or pass ID..." oninput="handleMailLogSearch()">
+            </div>
+
+            <select class="filter-select" id="ml-filter-status" onchange="applyMailLogFilters()" style="min-width: 130px;">
+              <option value="all">All Statuses</option>
+              <option value="sent">✅ Sent</option>
+              <option value="failed">❌ Failed</option>
+              <option value="skipped">⚠️ Skipped</option>
+              <option value="queued">⏳ Queued</option>
+            </select>
+
+            <select class="filter-select" id="ml-filter-committee" onchange="applyMailLogFilters()" style="min-width: 140px;">
+              <option value="all">All Committees</option>
+            </select>
+
+            <select class="filter-select" id="ml-filter-delegation" onchange="applyMailLogFilters()" style="min-width: 140px;">
+              <option value="all">All Delegations</option>
+            </select>
+
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <label style="font-size: 0.72rem; font-weight: 700; color: #555;">From:</label>
+              <input type="date" id="ml-filter-from" class="form-input" style="padding: 0.35rem 0.5rem; font-size: 0.78rem; width: 125px;" onchange="applyMailLogFilters()">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <label style="font-size: 0.72rem; font-weight: 700; color: #555;">To:</label>
+              <input type="date" id="ml-filter-to" class="form-input" style="padding: 0.35rem 0.5rem; font-size: 0.78rem; width: 125px;" onchange="applyMailLogFilters()">
+            </div>
+
+            <button class="btn btn-outline btn-sm" onclick="resetMailLogFilters()" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;">
+              Clear Filters
+            </button>
+          </div>
+        </div>
+
+        <!-- Error State Banner -->
+        <div id="ml-error-banner" style="display: none; background: #FEE2E2; border: 2px solid #DC2626; border-radius: 8px; padding: 0.85rem 1.15rem; color: #991B1B; font-size: 0.85rem; font-weight: 600; box-shadow: 2px 2px 0 #DC2626;"></div>
+
+        <!-- Mail Log Table Container (Mobile friendly: scrolls horizontally) -->
+        <div class="table-container" style="overflow-x: auto; background: #FFFFFF; border: 2px solid #000000; border-radius: 10px; box-shadow: 3px 3px 0 #000000;">
+          <table class="data-table" id="ml-table" style="width: 100%; min-width: 920px; font-size: 0.82rem; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th style="width: 140px;">Time</th>
+                <th>Delegate</th>
+                <th>Email</th>
+                <th>Delegation</th>
+                <th>Committee</th>
+                <th style="width: 105px; text-align: center;">Status</th>
+                <th>Error / Details</th>
+                <th style="width: 90px; text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ml-tbody">
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 35px; color: var(--text-muted);">
+                  Loading audit logs...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="ml-empty-state" style="display: none; text-align: center; padding: 3rem 1rem; color: #777; background: #FFFDF9; border: 2px dashed #000; border-radius: 10px;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📭</div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: #222;">No mail log records found</div>
+          <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">Try changing your filter settings or dispatching a pass.</div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="ml-pagination-row" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 0.5rem 0;">
+          <div style="font-size: 0.8rem; color: #555;" id="ml-page-info">
+            Showing 0 - 0 of 0 entries
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button class="btn btn-outline btn-sm" id="ml-btn-prev" onclick="changeMailLogPage(-1)" disabled>
+              &larr; Previous
+            </button>
+            <span style="font-size: 0.8rem; font-weight: 700;" id="ml-page-current">Page 1 of 1</span>
+            <button class="btn btn-outline btn-sm" id="ml-btn-next" onclick="changeMailLogPage(1)" disabled>
+              Next &rarr;
+            </button>
+          </div>
+        </div>
+
+      </div>
+
       <!-- QR Passes Container -->
       <div id="container-qrpasses" style="display:none; flex-direction:column; gap:1.25rem; width:100%; padding:0.5rem 0;">
 
@@ -4264,74 +4407,417 @@
       showToast(`Downloading ${visible.length} QR passes...`, 'success');
     }
 
-    // ─── Mail Log Render & Clear ───────────────────────────────────
-    function renderMailLog() {
-      const tbody  = document.getElementById('maillog-tbody');
-      const search = (document.getElementById('maillog-search')?.value || '').toLowerCase().trim();
-      if (!tbody) return;
+    // ─── Server-Backed Mail Log Controller ──────────────────────────
+    let mailLogPage = 1;
+    let mailLogLimit = 50;
+    let mailLogTotalPages = 1;
+    let mailLogSearchTimer = null;
+    let cachedDistinctCommittees = [];
+    let cachedDistinctDelegations = [];
 
-      const store = getSentMailStore();
-      // Flatten all entries into one array with key info
-      let entries = [];
-      Object.entries(store).forEach(([key, val]) => {
-        const arr = Array.isArray(val) ? val : (val ? [val] : []);
-        arr.forEach(entry => entries.push({ ...entry, key }));
-      });
+    async function fetchMailLogs() {
+      const tbody = document.getElementById('ml-tbody');
+      const errorBanner = document.getElementById('ml-error-banner');
+      const emptyState = document.getElementById('ml-empty-state');
+      const tableWrap = document.getElementById('ml-table')?.parentElement;
+      const paginationRow = document.getElementById('ml-pagination-row');
 
-      // Sort newest first
-      entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      if (errorBanner) errorBanner.style.display = 'none';
 
-      // Search filter
-      if (search) {
-        entries = entries.filter(e =>
-          (e.recipient     || '').toLowerCase().includes(search) ||
-          (e.recipientName || '').toLowerCase().includes(search) ||
-          (e.templateName  || '').toLowerCase().includes(search) ||
-          (e.subject       || '').toLowerCase().includes(search) ||
-          (e.recordType    || '').toLowerCase().includes(search)
-        );
-      }
-
-      if (entries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:#999;font-size:0.85rem;">${
-          search ? 'No results match your search.' : 'No emails sent yet.'
-        }</td></tr>`;
+      if (!currentSession?.access_token) {
+        if (errorBanner) {
+          errorBanner.style.display = 'block';
+          errorBanner.textContent = '⚠️ Authentication required: Please sign in with an executive admin account to view the mail audit logs.';
+        }
+        if (tbody) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:35px;color:#991B1B;">⚠️ 401 Unauthorized — Admin session required.</td></tr>';
+        }
         return;
       }
 
-      const rowBg  = ['#FFFDF9', '#FFF7EB'];
-      tbody.innerHTML = entries.map((e, i) => {
-        const dt = e.sentAt ? new Date(e.sentAt) : null;
-        const dateStr = dt ? dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : '—';
-        const timeStr = dt ? dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true }) : '';
-        const typeBadge = e.recordType === 'delegation'
-          ? `<span style="background:#E5A93C;color:#000;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:4px;border:1px solid #000;">DELEGATION</span>`
-          : `<span style="background:#6C0D2C;color:#fff;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:4px;border:1px solid #000;">INDIVIDUAL</span>`;
-        return `<tr style="background:${rowBg[i % 2]}; border-bottom:1px solid rgba(0,0,0,0.07);">
-          <td style="padding:10px 14px;color:#888;font-size:0.75rem;font-weight:700;">${entries.length - i}</td>
-          <td style="padding:10px 14px;">
-            <div style="font-weight:700;font-size:0.83rem;color:#111;">${escapeHtml(e.recipientName || '—')}</div>
-            <div style="font-size:0.75rem;color:#666;">${escapeHtml(e.recipient || '')}</div>
-          </td>
-          <td style="padding:10px 14px;">${typeBadge}</td>
-          <td style="padding:10px 14px;font-size:0.8rem;font-weight:600;color:#6C0D2C;white-space:nowrap;">${escapeHtml(e.templateName || 'Unknown')}</td>
-          <td style="padding:10px 14px;font-size:0.79rem;color:#333;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(e.subject || '')}">${escapeHtml(e.subject || '—')}</td>
-          <td style="padding:10px 14px;white-space:nowrap;">
-            <div style="font-size:0.8rem;font-weight:700;color:#111;">${dateStr}</div>
-            <div style="font-size:0.72rem;color:#666;">${timeStr}</div>
-          </td>
-        </tr>`;
-      }).join('');
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:35px;color:var(--text-muted);"><span class="spinner" style="display:inline-block;margin-right:8px;"></span> Loading live mail logs...</td></tr>';
+      }
+
+      const status = document.getElementById('ml-filter-status')?.value || 'all';
+      const committee = document.getElementById('ml-filter-committee')?.value || 'all';
+      const delegation = document.getElementById('ml-filter-delegation')?.value || 'all';
+      const search = (document.getElementById('ml-filter-search')?.value || '').trim();
+      const from = document.getElementById('ml-filter-from')?.value || '';
+      const to = document.getElementById('ml-filter-to')?.value || '';
+
+      const queryParams = new URLSearchParams({
+        page: String(mailLogPage),
+        limit: String(mailLogLimit),
+        status,
+        committee,
+        delegation,
+        search,
+        from,
+        to
+      });
+
+      try {
+        const res = await fetch(`/api/admin-mail-log?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${currentSession.access_token}`
+          }
+        });
+
+        if (res.status === 401) {
+          if (errorBanner) {
+            errorBanner.style.display = 'block';
+            errorBanner.textContent = '⚠️ 401 Unauthorized: Your session has expired or is invalid. Please sign out and sign in again.';
+          }
+          if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:35px;color:#991B1B;">⚠️ 401 Unauthorized — Please re-authenticate.</td></tr>';
+          }
+          return;
+        }
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP ${res.status}: Failed to fetch mail logs`);
+        }
+
+        const data = await res.json();
+        const summary = data.summary || { total: 0, sent: 0, failed: 0, skipped: 0, queued: 0 };
+        const items = Array.isArray(data.items) ? data.items : [];
+
+        // Update KPI counters
+        document.getElementById('ml-stat-total').textContent = summary.total || 0;
+        document.getElementById('ml-stat-sent').textContent = summary.sent || 0;
+        document.getElementById('ml-stat-failed').textContent = summary.failed || 0;
+        document.getElementById('ml-stat-skipped').textContent = summary.skipped || 0;
+        document.getElementById('ml-stat-queued').textContent = summary.queued || 0;
+
+        // Update Nav Badge
+        const navBadge = document.getElementById('badge-count-maillog');
+        if (navBadge) navBadge.textContent = summary.total || 0;
+
+        // Update Source Indicator
+        const dbBadge = document.getElementById('ml-db-indicator');
+        if (dbBadge) {
+          if (data.source === 'database') {
+            dbBadge.textContent = 'Supabase DB';
+            dbBadge.style.background = '#D1FAE5';
+            dbBadge.style.color = '#047857';
+          } else {
+            dbBadge.textContent = 'Local Sync';
+            dbBadge.style.background = '#FEF3C7';
+            dbBadge.style.color = '#92400E';
+          }
+        }
+
+        // Populate Committee Filter
+        if (Array.isArray(data.distinctCommittees) && data.distinctCommittees.length > 0) {
+          const commSelect = document.getElementById('ml-filter-committee');
+          if (commSelect && commSelect.children.length <= 1) {
+            data.distinctCommittees.forEach(c => {
+              const opt = document.createElement('option');
+              opt.value = c;
+              opt.textContent = c;
+              commSelect.appendChild(opt);
+            });
+          }
+        }
+
+        // Populate Delegation Filter
+        if (Array.isArray(data.distinctDelegations) && data.distinctDelegations.length > 0) {
+          const dlgSelect = document.getElementById('ml-filter-delegation');
+          if (dlgSelect && dlgSelect.children.length <= 1) {
+            data.distinctDelegations.forEach(d => {
+              const opt = document.createElement('option');
+              opt.value = d;
+              opt.textContent = d;
+              dlgSelect.appendChild(opt);
+            });
+          }
+        }
+
+        // Update Pagination Info
+        mailLogTotalPages = data.totalPages || 1;
+        const totalCount = data.totalCount || 0;
+        const startIdx = totalCount > 0 ? (mailLogPage - 1) * mailLogLimit + 1 : 0;
+        const endIdx = Math.min(startIdx + items.length - 1, totalCount);
+
+        const pageInfo = document.getElementById('ml-page-info');
+        if (pageInfo) pageInfo.textContent = `Showing ${startIdx} - ${endIdx} of ${totalCount} entries`;
+
+        const pageCurrent = document.getElementById('ml-page-current');
+        if (pageCurrent) pageCurrent.textContent = `Page ${mailLogPage} of ${mailLogTotalPages}`;
+
+        const btnPrev = document.getElementById('ml-btn-prev');
+        const btnNext = document.getElementById('ml-btn-next');
+        if (btnPrev) btnPrev.disabled = mailLogPage <= 1;
+        if (btnNext) btnNext.disabled = mailLogPage >= mailLogTotalPages;
+
+        if (items.length === 0) {
+          if (tbody) tbody.innerHTML = '';
+          if (emptyState) emptyState.style.display = 'block';
+          if (tableWrap) tableWrap.style.display = 'none';
+          if (paginationRow) paginationRow.style.display = 'none';
+          return;
+        }
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (tableWrap) tableWrap.style.display = 'block';
+        if (paginationRow) paginationRow.style.display = 'flex';
+
+        // Render Rows
+        const rowBg = ['#FFFFFF', '#FFFDF9'];
+        tbody.innerHTML = items.map((item, idx) => {
+          const dt = item.created_at ? new Date(item.created_at) : null;
+          const timeFormatted = dt ? dt.toLocaleString('en-IN', {
+            day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true
+          }) : '—';
+
+          let statusBadge = '<span class="badge" style="background:#E0E7FF;color:#3730A3;border:1.5px solid #6366F1;font-weight:800;font-size:0.7rem;">QUEUED</span>';
+          const s = String(item.status || '').toLowerCase();
+          if (s === 'sent') {
+            statusBadge = '<span class="badge" style="background:#D1FAE5;color:#047857;border:1.5px solid #10B981;font-weight:800;font-size:0.7rem;">SENT</span>';
+          } else if (s === 'failed') {
+            statusBadge = '<span class="badge" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #EF4444;font-weight:800;font-size:0.7rem;">FAILED</span>';
+          } else if (s === 'skipped') {
+            statusBadge = '<span class="badge" style="background:#FEF3C7;color:#92400E;border:1.5px solid #F59E0B;font-weight:800;font-size:0.7rem;">SKIPPED</span>';
+          }
+
+          let errorText = item.error ? escapeHtml(item.error) : '—';
+          if (item.error && item.error.length > 55) {
+            const shortErr = escapeHtml(item.error.slice(0, 50)) + '…';
+            errorText = `<span title="${escapeHtml(item.error)}" style="cursor:pointer;color:#991B1B;text-decoration:underline dotted;" onclick="alert('Full Log Error Details:\\n\\n' + ${JSON.stringify(item.error)})">${shortErr}</span>`;
+          }
+
+          return `
+            <tr style="background:${rowBg[idx % 2]}; border-bottom:1px solid rgba(0,0,0,0.06);">
+              <td style="padding:10px 12px; font-size:0.75rem; color:#444; white-space:nowrap;">
+                ${timeFormatted}
+              </td>
+              <td style="padding:10px 12px;">
+                <div style="font-weight:700; color:#111; font-size:0.83rem;">${escapeHtml(item.delegate_name || '—')}</div>
+                ${item.registration_id ? `<span style="font-family:monospace; font-size:0.7rem; font-weight:700; color:#6C0D2C;">#${escapeHtml(item.registration_id)}</span>` : ''}
+              </td>
+              <td style="padding:10px 12px; font-size:0.78rem; font-family:monospace; color:#333;">
+                ${escapeHtml(item.recipient_email || '—')}
+              </td>
+              <td style="padding:10px 12px; font-size:0.78rem;">
+                ${escapeHtml(item.delegation || 'Individual')}
+              </td>
+              <td style="padding:10px 12px;">
+                <span style="font-weight:700; font-size:0.8rem; color:#6C0D2C;">${escapeHtml(item.committee || '—')}</span>
+              </td>
+              <td style="padding:10px 12px; text-align:center;">
+                ${statusBadge}
+              </td>
+              <td style="padding:10px 12px; font-size:0.75rem; color:#555; max-width:200px; word-break:break-word;">
+                ${errorText}
+              </td>
+              <td style="padding:10px 12px; text-align:center; white-space:nowrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="resendMailLogEntry('${escapeHtml(item.id)}', '${escapeHtml(item.delegate_name || item.recipient_email)}')" style="font-size:0.72rem; padding:0.25rem 0.55rem; font-weight:700;" title="Resend pass to this delegate">
+                  🔁 Resend
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('Error fetching mail logs:', err);
+        if (errorBanner) {
+          errorBanner.style.display = 'block';
+          errorBanner.textContent = `⚠️ Error loading mail logs: ${err.message}`;
+        }
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#991B1B;">⚠️ Failed to load audit logs: ${escapeHtml(err.message)}</td></tr>`;
+        }
+      }
     }
 
-    function clearMailLog() {
-      if (!confirm('Clear the local mail log from this browser? (Shared Supabase cloud logs will refresh on next reload).')) return;
-      try { localStorage.removeItem('rns_mun_sent_mail_history'); } catch(e) {}
-      updateMailLogBadge();
-      renderMailLog();
-      // Re-render tables so green buttons reset
-      applyFilters();
-      showToast('Local mail log cleared.', 'info');
+    function applyMailLogFilters() {
+      mailLogPage = 1;
+      fetchMailLogs();
+    }
+
+    function handleMailLogSearch() {
+      clearTimeout(mailLogSearchTimer);
+      mailLogSearchTimer = setTimeout(() => {
+        mailLogPage = 1;
+        fetchMailLogs();
+      }, 250);
+    }
+
+    function resetMailLogFilters() {
+      const search = document.getElementById('ml-filter-search');
+      const status = document.getElementById('ml-filter-status');
+      const comm = document.getElementById('ml-filter-committee');
+      const dlg = document.getElementById('ml-filter-delegation');
+      const from = document.getElementById('ml-filter-from');
+      const to = document.getElementById('ml-filter-to');
+
+      if (search) search.value = '';
+      if (status) status.value = 'all';
+      if (comm) comm.value = 'all';
+      if (dlg) dlg.value = 'all';
+      if (from) from.value = '';
+      if (to) to.value = '';
+
+      mailLogPage = 1;
+      fetchMailLogs();
+      showToast('Mail log filters reset.', 'info');
+    }
+
+    function changeMailLogPage(delta) {
+      const newPage = mailLogPage + delta;
+      if (newPage >= 1 && newPage <= mailLogTotalPages) {
+        mailLogPage = newPage;
+        fetchMailLogs();
+      }
+    }
+
+    async function resendMailLogEntry(id, name) {
+      if (!confirm(`Resend official pass email to ${name || 'delegate'}?`)) return;
+
+      const scriptUrl = (googleScriptUrl || localStorage.getItem('rns_mun_google_script_url') || '').trim();
+      showToast(`Resending pass to ${name || 'delegate'}...`, 'info');
+
+      try {
+        const res = await fetch('/api/admin-mail-log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentSession?.access_token || ''}`
+          },
+          body: JSON.stringify({
+            action: 'resend',
+            id,
+            scriptUrl
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Pass successfully resent to ${name || 'delegate'}!`, 'success');
+          fetchMailLogs();
+        } else {
+          showToast(`Resend failed: ${data.error || 'Server error'}`, 'error');
+        }
+      } catch (err) {
+        showToast(`Resend error: ${err.message}`, 'error');
+      }
+    }
+
+    async function retryAllFailedMailLogs() {
+      if (!confirm('Retry sending pass emails to all failed log entries?')) return;
+
+      const scriptUrl = (googleScriptUrl || localStorage.getItem('rns_mun_google_script_url') || '').trim();
+      showToast('Initiating retry batch for failed logs...', 'info');
+
+      try {
+        const res = await fetch('/api/admin-mail-log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentSession?.access_token || ''}`
+          },
+          body: JSON.stringify({
+            action: 'retry_all_failed',
+            scriptUrl
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message || 'Retry batch processed.', 'success');
+          fetchMailLogs();
+        } else {
+          showToast(`Retry failed: ${data.error || 'Server error'}`, 'error');
+        }
+      } catch (err) {
+        showToast(`Retry error: ${err.message}`, 'error');
+      }
+    }
+
+    async function exportMailLogsToCSV() {
+      if (!currentSession?.access_token) {
+        showToast('Admin session required to export logs.', 'error');
+        return;
+      }
+
+      showToast('Preparing CSV export of filtered logs...', 'info');
+
+      const status = document.getElementById('ml-filter-status')?.value || 'all';
+      const committee = document.getElementById('ml-filter-committee')?.value || 'all';
+      const delegation = document.getElementById('ml-filter-delegation')?.value || 'all';
+      const search = (document.getElementById('ml-filter-search')?.value || '').trim();
+      const from = document.getElementById('ml-filter-from')?.value || '';
+      const to = document.getElementById('ml-filter-to')?.value || '';
+
+      const queryParams = new URLSearchParams({
+        export_all: 'true',
+        status,
+        committee,
+        delegation,
+        search,
+        from,
+        to
+      });
+
+      try {
+        const res = await fetch(`/api/admin-mail-log?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${currentSession.access_token}`
+          }
+        });
+
+        const data = await res.json();
+        const items = data.items || [];
+
+        if (items.length === 0) {
+          showToast('No mail log records match the current filter to export.', 'info');
+          return;
+        }
+
+        const headers = ['Log ID', 'Created At', 'Registration ID', 'Delegate Name', 'Recipient Email', 'Delegation', 'Committee', 'WhatsApp Link', 'Status', 'Attempts', 'Sent At', 'Error / Reason'];
+        const csvRows = [headers.join(',')];
+
+        items.forEach(r => {
+          const row = [
+            `"${(r.id || '').replace(/"/g, '""')}"`,
+            `"${(r.created_at || '').replace(/"/g, '""')}"`,
+            `"${(r.registration_id || '').replace(/"/g, '""')}"`,
+            `"${(r.delegate_name || '').replace(/"/g, '""')}"`,
+            `"${(r.recipient_email || '').replace(/"/g, '""')}"`,
+            `"${(r.delegation || '').replace(/"/g, '""')}"`,
+            `"${(r.committee || '').replace(/"/g, '""')}"`,
+            `"${(r.whatsapp_link || '').replace(/"/g, '""')}"`,
+            `"${(r.status || '').replace(/"/g, '""')}"`,
+            `"${r.attempts || 1}"`,
+            `"${(r.sent_at || '').replace(/"/g, '""')}"`,
+            `"${(r.error || '').replace(/"/g, '""')}"`
+          ];
+          csvRows.push(row.join(','));
+        });
+
+        const csvBlob = new Blob([csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+        const downloadUrl = URL.createObjectURL(csvBlob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `RNSMUN_2026_Mail_Logs_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(downloadUrl);
+
+        showToast(`Exported ${items.length} mail log records to CSV!`, 'success');
+      } catch (err) {
+        showToast(`CSV export failed: ${err.message}`, 'error');
+      }
+    }
+
+    function renderMailLog() {
+      fetchMailLogs();
     }
 
     // ─── Render Individual Table ──────────────────────────────────
