@@ -3181,7 +3181,11 @@
         </table>
       </div>
       <div class="modal-footer" style="justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-        <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send Mail to All Members</button>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <label for="roster-mail-all-template" class="form-label" style="margin:0; font-size:0.75rem;">Template:</label>
+          <select id="roster-mail-all-template" class="filter-select" style="min-width:220px; padding:0.35rem 0.6rem; font-size:0.8rem;"></select>
+          <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send Mail to All Members</button>
+        </div>
         <button class="btn btn-outline btn-sm" onclick="closeRosterModal()">Close</button>
       </div>
     </div>
@@ -3237,7 +3241,7 @@
         <!-- Template Selector -->
         <div class="form-group">
           <label class="form-label" for="send-mail-template-select">Choose Mail Template</label>
-          <select id="send-mail-template-select" class="filter-select" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalTemplateSelectChange()">
+          <select id="send-mail-template-select" class="filter-select" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalTemplateUserChange()">
             <!-- Populated dynamically -->
           </select>
         </div>
@@ -4017,16 +4021,30 @@
       cloudLogs.forEach(log => {
         let recType = log.record_type || 'individual';
         let recId = log.record_id;
+        let memberIndex = (log.member_index === undefined || log.member_index === null || log.member_index === '')
+          ? null
+          : Number(log.member_index);
+        let matchedInd = null;
+        let matchedDlg = null;
+
+        // Delegation members are logged per person as DEL-<delegationId>-<nn>; map that back to the
+        // delegation record + roster index so "sent" markers are correct on every device.
+        const memberMatch = /^DEL-(\d+)-(\d{2,})$/.exec(String(recId || ''));
+        if (memberMatch) {
+          recType = 'delegation';
+          recId = memberMatch[1];
+          if (memberIndex === null) memberIndex = parseInt(memberMatch[2], 10) - 1;
+        }
 
         // If recId is missing, attempt resolution by email against loaded records
         if (!recId && log.recipient) {
           const lowerEmail = log.recipient.toLowerCase().trim();
-          const matchedInd = rawRegistrations.find(r => (r.email || '').toLowerCase().trim() === lowerEmail);
+          matchedInd = rawRegistrations.find(r => (r.email || '').toLowerCase().trim() === lowerEmail) || null;
           if (matchedInd) {
             recType = 'individual';
             recId = matchedInd.id;
           } else {
-            const matchedDlg = rawDelegations.find(d => (d.email || '').toLowerCase().trim() === lowerEmail);
+            matchedDlg = rawDelegations.find(d => (d.email || '').toLowerCase().trim() === lowerEmail) || null;
             if (matchedDlg) {
               recType = 'delegation';
               recId = matchedDlg.id;
@@ -4039,14 +4057,20 @@
         const arr = Array.isArray(existing) ? existing : (existing ? [existing] : []);
 
         const logTimestamp = log.created_at ? new Date(log.created_at).getTime() : Date.now();
-        const alreadyExists = arr.some(entry => {
+        const recipientLc = (log.recipient || '').toLowerCase();
+        const dup = arr.find(entry => {
           if (entry.cloudId && log.id && String(entry.cloudId) === String(log.id)) return true;
           if (entry.sentAt === log.created_at) return true;
+          // Entry written locally at send time (no cloud id yet): same recipient within 2 minutes = same mail.
           const entryTs = entry.timestamp || (entry.sentAt ? new Date(entry.sentAt).getTime() : 0);
-          return Math.abs(entryTs - logTimestamp) < 5000 && (entry.recipient || '').toLowerCase() === (log.recipient || '').toLowerCase();
+          return !entry.cloudId && Math.abs(entryTs - logTimestamp) < 120000 && (entry.recipient || '').toLowerCase() === recipientLc;
         });
 
-        if (!alreadyExists) {
+        if (dup) {
+          // Adopt the cloud identity so it is never duplicated again, and fill in the member index if we lacked it.
+          if (!dup.cloudId && log.id) dup.cloudId = log.id;
+          if ((dup.memberIndex === undefined || dup.memberIndex === null) && memberIndex !== null) dup.memberIndex = memberIndex;
+        } else {
           arr.push({
             cloudId: log.id || null,
             sentAt: log.created_at || new Date().toISOString(),
@@ -4056,6 +4080,7 @@
             subject: log.subject || '',
             recipient: log.recipient || '',
             recipientName: log.recipient_name || (matchedInd ? matchedInd.name : (matchedDlg ? (matchedDlg.delegation_name || matchedDlg.head_name) : '')) || log.recipient || '—',
+            memberIndex: memberIndex,
             recordType: recType,
             recordId: recId ? String(recId) : ''
           });
@@ -5121,6 +5146,7 @@
       title.textContent = `Roster: ${delegation.delegation_name || 'Delegation'}`;
       tbody.innerHTML = '';
 
+      populateRosterTemplateOptions();
       const members = getDelegationMembers(delegation);
       const mailAllBtn = document.getElementById('btn-roster-mail-all');
       if (mailAllBtn) mailAllBtn.style.display = members.length ? '' : 'none';
@@ -5158,6 +5184,23 @@
       document.getElementById('roster-modal').classList.add('active');
     }
 
+    // Template picker for "Send Mail to All Members": defaults to the personal pass template but the admin can pick any.
+    function populateRosterTemplateOptions() {
+      const sel = document.getElementById('roster-mail-all-template');
+      if (!sel) return;
+      if (mailTemplates.length === 0) loadTemplatesState();
+      const previous = sel.value;
+      sel.innerHTML = '';
+      mailTemplates.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = `${t.name} (${t.isPreset ? 'Preset' : 'Custom'})`;
+        sel.appendChild(opt);
+      });
+      const keep = previous && mailTemplates.some(t => t.id === previous);
+      sel.value = keep ? previous : getMemberTemplateId();
+    }
+
     // Open the normal mail modal pre-set to one delegation member.
     function openMemberMail(memberIndex) {
       const id = rosterModalDelegationId;
@@ -5177,9 +5220,10 @@
         showToast('Google Apps Script URL is not set. Go to Mail Templates tab to configure.', 'error');
         return;
       }
-      const tpl = mailTemplates.find(t => t.id === getMemberTemplateId());
+      const chosenTplId = document.getElementById('roster-mail-all-template')?.value || getMemberTemplateId();
+      const tpl = mailTemplates.find(t => t.id === chosenTplId);
       if (!tpl) {
-        showToast('Official Pass template not found in Mail Templates.', 'error');
+        showToast('Selected mail template was not found in Mail Templates.', 'error');
         return;
       }
 
@@ -6846,6 +6890,8 @@
     let modalTargetType = 'individual';
     // Delegation mail: index into the roster of the chosen recipient (null = Head of Delegation)
     let modalRecipientIndex = null;
+    // True once the admin has picked a template by hand in the mail modal; auto-defaults must then never override it.
+    let modalTemplateTouched = false;
     let modalAttachments = [];
     let tplAttachments = [];
     let googleScriptUrl = localStorage.getItem('rns_mun_google_script_url') || '';
@@ -8012,7 +8058,7 @@
       // A delegate gets the same personal allocation mail as an individual delegate; the head option keeps the delegation summary mail.
       const tplSelect = document.getElementById('send-mail-template-select');
       const wantedTpl = modalRecipientIndex === null ? getDelegationSummaryTemplateId() : getMemberTemplateId();
-      if (tplSelect && wantedTpl) {
+      if (tplSelect && wantedTpl && !modalTemplateTouched) {
         tplSelect.value = wantedTpl;
         syncOrRebuildCustomSelect(tplSelect);
       }
@@ -8024,6 +8070,7 @@
       if (mailTemplates.length === 0) loadTemplatesState();
       if (recordType === 'delegation') await ensureMasterAllocations();
 
+      modalTemplateTouched = false;
       modalTargetType = recordType;
       modalTargetRecord = recordType === 'individual'
         ? rawRegistrations.find(r => String(r.id) === String(recordId))
@@ -8546,6 +8593,11 @@
       syncOrRebuildCustomSelect(select);
     }
 
+    function onModalTemplateUserChange() {
+      modalTemplateTouched = true;
+      onModalTemplateSelectChange();
+    }
+
     function onModalTemplateSelectChange() {
       const select = document.getElementById('send-mail-template-select');
       const tplId = select ? select.value : mailTemplates[0]?.id;
@@ -8738,12 +8790,28 @@
         const recipientName = chosenRecipient.name || '';
         const templateName = tplObj ? tplObj.name : (tplId || 'Custom Email');
 
-        const activeComm = isMemberMail ? memberAlloc.committee : (modalTargetRecord.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord.committee1 || modalTargetRecord.committee || '');
-        const activePort = isMemberMail ? memberAlloc.portfolio : (modalTargetRecord.allocated_portfolio || document.getElementById('modal-alloc-portfolio')?.value.trim() || modalTargetRecord.portfolio1_1 || modalTargetRecord.portfolio || '');
-        if (!isMemberMail) {
-          // Never write a member's allocation onto the delegation record itself.
+        // Delegation mails never read the individual allocation inputs (they can hold a stale value from an earlier
+        // individual mail). The head uses roster member 0's real allocation; otherwise the committees allocated so far.
+        const headAlloc = (modalTargetType === 'delegation' && !isMemberMail) ? getMemberAllocation(modalTargetRecord, 0) : null;
+        const activeComm = isMemberMail
+          ? memberAlloc.committee
+          : (modalTargetType === 'delegation'
+              ? (headAlloc.hasAllocation ? headAlloc.committee : getDelegationCommitteeList(modalTargetRecord).join(', '))
+              : (modalTargetRecord.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord.committee1 || modalTargetRecord.committee || ''));
+        const activePort = isMemberMail
+          ? memberAlloc.portfolio
+          : (modalTargetType === 'delegation'
+              ? (headAlloc.hasAllocation ? headAlloc.portfolio : '')
+              : (modalTargetRecord.allocated_portfolio || document.getElementById('modal-alloc-portfolio')?.value.trim() || modalTargetRecord.portfolio1_1 || modalTargetRecord.portfolio || ''));
+        if (modalTargetType === 'individual') {
           modalTargetRecord.allocated_committee = activeComm;
           modalTargetRecord.allocated_portfolio = activePort;
+        }
+
+        // Do not ship a mail whose WhatsApp button has no valid target.
+        if (/\{\{\s*(?:whatsapp_link|committee_whatsapp|whatsapp_url)\s*\}\}/.test(htmlBody)) {
+          showToast(`Cannot send: no WhatsApp group could be resolved for ${recipientName || 'this recipient'} (committee: ${activeComm || 'not allocated'}). Allocate a committee or pick a template without a WhatsApp button.`, 'error');
+          return;
         }
 
         const res = await fetch('/api/send-mail', {
@@ -8836,26 +8904,60 @@
 
     // ─── Dynamic Token Helpers ─────────────────────────────────────
 
+    // Committees mentioned in a free-text value. Mirrors lib/committees.js (kept in sync by tests/delegation-mailing.test.mjs).
+    function listMentionedCommittees(comm) {
+      const lower = String(comm || '').toLowerCase();
+      const found = [];
+      if (/\blok\b|sabha|parliament/.test(lower)) found.push('Lok Sabha');
+      if (/\bdisec\b|disarmament/.test(lower)) found.push('DISEC');
+      if (/\bunsc\b|security council/.test(lower)) found.push('UNSC');
+      if (/\bunhrc\b|human rights/.test(lower)) found.push('UNHRC');
+      if (/\bunodc\b|drugs and crime|drugs & crime/.test(lower)) found.push('UNODC');
+      if (/\bipc?\b|press/.test(lower)) found.push('IP');
+      return found;
+    }
+
+    const COMMITTEE_CHAMBERS = {
+      'UNSC': 'Council Chamber — MBA Seminar Hall (2nd Floor)',
+      'UNHRC': 'Committee Room 102 — Mech Seminar Hall',
+      'DISEC': 'Committee Room 204 — Civil Seminar Hall',
+      'UNODC': 'Committee Room 301 — ECE Seminar Hall',
+      'Lok Sabha': 'Central Plenary Hall — Chanakya Block',
+      'IP': 'Press Bureau & Media Lab — Academic Block 1'
+    };
+
+    const COMMITTEE_WHATSAPP_LINKS = {
+      'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+      'Lok Sabha': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
+      'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
+      'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
+      'IP': 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm',
+      'DISEC': 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2'
+    };
+
     function resolveChamberVenue(comm) {
-      const cUpper = String(comm || '').toUpperCase();
-      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY COUNCIL')) return 'Council Chamber — MBA Seminar Hall (2nd Floor)';
-      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'Committee Room 102 — Mech Seminar Hall';
-      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN RIGHTS')) return 'Committee Room 204 — Civil Seminar Hall';
-      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'Committee Room 301 — ECE Seminar Hall';
-      if (cUpper.includes('LOK SABHA')) return 'Central Plenary Hall — Chanakya Block';
-      if (cUpper.includes('PRESS') || cUpper.includes('IP')) return 'Press Bureau & Media Lab — Academic Block 1';
+      const found = listMentionedCommittees(comm);
+      if (found.length === 1) return COMMITTEE_CHAMBERS[found[0]];
       return 'Designated Committee Hall — Academic Block';
     }
 
+    // Returns the committee's WhatsApp group link, or '' when the committee is unknown / ambiguous.
+    // It never invents a fallback link (the old fake fallback produced a dead "Join WhatsApp Group" button).
     function resolveCommitteeWhatsApp(comm) {
-      const cUpper = String(comm || '').toUpperCase();
-      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY')) return 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh';
-      if (cUpper.includes('LOK') || cUpper.includes('SABHA') || cUpper.includes('PARLIAMENT')) return 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5';
-      if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm';
-      if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN')) return 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC';
-      if (cUpper.includes('IPC') || cUpper.includes('PRESS') || cUpper.includes('IP')) return 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm';
-      if (cUpper.includes('DISEC') || cUpper.includes('DISARMAMENT')) return 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2';
-      return 'https://chat.whatsapp.com/G5y1o155s6y9017';
+      const found = listMentionedCommittees(comm);
+      return found.length === 1 ? COMMITTEE_WHATSAPP_LINKS[found[0]] : '';
+    }
+
+    // Distinct committees actually allocated to the members of a delegation.
+    function getDelegationCommitteeList(dlg) {
+      const list = [];
+      getDelegationMembers(dlg).forEach(m => {
+        if (m.alloc.hasAllocation && !list.includes(m.alloc.committee)) list.push(m.alloc.committee);
+      });
+      if (list.length === 0 && dlg && dlg.committee_summary) {
+        String(dlg.committee_summary).split(',').map(x => x.trim()).filter(Boolean).forEach(c => { if (!list.includes(c)) list.push(c); });
+      }
+      return list;
     }
 
     function buildTokenDataFromRecord(item, type, recipientOverride) {
@@ -8969,10 +9071,18 @@
         const memberCount = item.member_count || roster.length || '1';
         const sheetUrl = extractDelegationSheetUrl(item) || 'https://docs.google.com/spreadsheets/d/1jel7NFjYw78sDX4P8Bsia0HpozcRcs1SzjpLgY2tw24/copy';
 
-        const allocComm = item.allocated_committee || item.allocatedCommittee || 'Institutional Delegation';
-        const allocPort = item.allocated_portfolio || item.allocatedPortfolio || `${memberCount} Delegates Roster`;
+        // A delegation has no single committee. The head (roster member 0) uses their own real allocation;
+        // otherwise show the committees actually allocated across the roster, never a made-up placeholder.
+        const headAlloc = getMemberAllocation(item, 0);
+        const committeeList = getDelegationCommitteeList(item);
+        const allocComm = headAlloc.hasAllocation
+          ? headAlloc.committee
+          : (committeeList.join(', ') || 'Allocation pending');
+        const allocPort = headAlloc.hasAllocation
+          ? headAlloc.portfolio
+          : `${memberCount} Delegates Roster`;
         const venue = resolveChamberVenue(allocComm);
-        const waLink = item.whatsapp_link || resolveCommitteeWhatsApp(allocComm);
+        const waLink = resolveCommitteeWhatsApp(allocComm);
 
         return {
           name: item.head_name || item.delegation_name || 'Delegation Head',
@@ -9030,9 +9140,9 @@
         '{{reporting_time}}': data.reporting_time || '08:00 AM (Registration Desk) • 08:30 AM (Opening Plenary)',
         '{{hub_url}}': data.hub_url || 'https://mun.rnsit.ac.in/hub',
         '{{qr_code_url}}': data.qr_code_url || ('https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(data.hub_url || 'https://mun.rnsit.ac.in/hub')),
-        '{{whatsapp_link}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
-        '{{committee_whatsapp}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
-        '{{whatsapp_url}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee),
+        '{{whatsapp_link}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee) || '{{whatsapp_link}}',
+        '{{committee_whatsapp}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee) || '{{committee_whatsapp}}',
+        '{{whatsapp_url}}': data.whatsapp_link || resolveCommitteeWhatsApp(data.allocated_committee || data.committee) || '{{whatsapp_url}}',
         '{{bg_guide_url}}': data.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         '{{background_guide_url}}': data.bg_guide_url || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         '{{gdrive_link}}': data.bg_guide_url || data.gdrive_link || 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',

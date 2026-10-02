@@ -303,8 +303,13 @@ export default async function handler(req, res) {
 
           return {
             ...d,
-            allocated_committee: alloc?.committee || d.allocated_committee || 'Institutional Delegation',
-            allocated_portfolio: alloc?.portfolio || d.allocated_portfolio || `${d.member_count || 1} Delegates Delegation`,
+            // No made-up placeholder ("Institutional Delegation"): an unallocated delegation stays blank so the
+            // UI/mailer can tell "not allocated yet" apart from a real committee.
+            allocated_committee: alloc?.committee || d.allocated_committee || '',
+            allocated_portfolio: alloc?.portfolio || d.allocated_portfolio || '',
+            // Distinct committees across all members (a delegation spans several committees).
+            committee_summary: [...new Set((memberAllocationsMap[`delegation_${d.id}`] || [])
+              .map(a => String(a.committee || '').trim()).filter(Boolean))].join(', '),
             member_allocations: memberAllocationsMap[`delegation_${d.id}`] || [],
             public_token: getPublicToken('delegation', d.id)
           };

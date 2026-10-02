@@ -8,6 +8,7 @@ import {
   checkAlreadySent
 } from '../lib/mail-logger.js';
 import adminMailLogHandler from '../lib/admin-mail-log.js';
+import { resolveCommitteeWhatsApp, isValidWhatsAppInvite } from '../lib/committees.js';
 
 function getEnv(key) {
   if (process.env[key]) return process.env[key];
@@ -38,26 +39,8 @@ function getEnv(key) {
   return process.env[key] || '';
 }
 
-const COMMITTEE_WHATSAPP_MAP = {
-  'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
-  'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
-  'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
-  'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
-  'IPC': 'https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm',
-  'DISEC': 'https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2'
-};
-
-function resolveCommitteeWhatsApp(committee) {
-  if (!committee) return 'https://chat.whatsapp.com/G5y1o155s6y9017';
-  const c = String(committee).toUpperCase();
-  if (c.includes('UNSC') || c.includes('SECURITY')) return COMMITTEE_WHATSAPP_MAP['UNSC'];
-  if (c.includes('LOK') || c.includes('SABHA') || c.includes('PARLIAMENT')) return COMMITTEE_WHATSAPP_MAP['LOK SABHA'];
-  if (c.includes('UNODC') || c.includes('DRUGS')) return COMMITTEE_WHATSAPP_MAP['UNODC'];
-  if (c.includes('UNHRC') || c.includes('HUMAN')) return COMMITTEE_WHATSAPP_MAP['UNHRC'];
-  if (c.includes('IPC') || c.includes('PRESS') || c.includes('IP')) return COMMITTEE_WHATSAPP_MAP['IPC'];
-  if (c.includes('DISEC') || c.includes('DISARMAMENT')) return COMMITTEE_WHATSAPP_MAP['DISEC'];
-  return 'https://chat.whatsapp.com/G5y1o155s6y9017';
-}
+// Committee -> WhatsApp group resolution lives in lib/committees.js (single source of truth).
+// It never invents a link: unknown / multi-committee values resolve to null.
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
@@ -169,13 +152,16 @@ export default async function handler(req, res) {
         .replace(/\{\{allocated_committee\}\}/g, allocated_committee)
         .replace(/\{\{committee\}\}/g, allocated_committee);
 
+      // Never fall back to a made-up link: only substitute when exactly one committee is resolved.
       const waLink = resolveCommitteeWhatsApp(allocated_committee);
-      preparedHtml = preparedHtml
-        .replace(/\{\{whatsapp_link\}\}/g, waLink)
-        .replace(/\{\{committee_whatsapp\}\}/g, waLink)
-        .replace(/\{\{whatsapp_url\}\}/g, waLink)
-        // Enforce that any committee caucus link in the mail points strictly to this delegate's assigned committee group
-        .replace(/https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+/g, waLink);
+      if (waLink) {
+        preparedHtml = preparedHtml
+          .replace(/\{\{whatsapp_link\}\}/g, waLink)
+          .replace(/\{\{committee_whatsapp\}\}/g, waLink)
+          .replace(/\{\{whatsapp_url\}\}/g, waLink)
+          // Enforce that any committee caucus link in the mail points strictly to this delegate's assigned committee group
+          .replace(/https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+/g, waLink);
+      }
     }
 
     if (allocated_portfolio) {
@@ -232,6 +218,23 @@ export default async function handler(req, res) {
       }
     }
 
+    // ── Refuse to send a mail with a broken WhatsApp button ─────────
+    // Unresolved {{whatsapp_*}} tokens or malformed invite codes would ship a dead "Join WhatsApp Group" link.
+    {
+      const unresolved = /\{\{\s*(?:whatsapp_link|committee_whatsapp|whatsapp_url)\s*\}\}/.test(preparedHtml);
+      const waLinks = preparedHtml.match(/https?:\/\/chat\.whatsapp\.com\/[^\s"'<>)]*/g) || [];
+      const badLink = waLinks.find(l => !isValidWhatsAppInvite(l));
+      if (unresolved || badLink) {
+        const why = unresolved
+          ? `no WhatsApp group is configured for committee "${allocated_committee || 'unassigned'}"`
+          : `the mail contains an invalid WhatsApp invite link (${badLink})`;
+        return res.status(400).json({
+          success: false,
+          error: `Not sent: ${why}. Allocate a committee first or fix the template link.`
+        });
+      }
+    }
+
     // ── Log 'queued' status before dispatch ──────────────────────────
     let mailLogRecord = null;
     try {
@@ -242,7 +245,7 @@ export default async function handler(req, res) {
         recipientEmail: recipient.trim(),
         delegation: req.body.delegation || institution || null,
         committee: allocated_committee || null,
-        whatsappLink: whatsapp_link || (allocated_committee ? resolveCommitteeWhatsApp(allocated_committee) : null),
+        whatsappLink: resolveCommitteeWhatsApp(allocated_committee) || null,
         subject: preparedSubject,
         status: 'queued',
         attempts: 1
@@ -312,34 +315,55 @@ export default async function handler(req, res) {
       });
     }
 
-    // ─── Record to Legacy Supabase Shared Mail Logs Table ────────────
+    // ─── Record to the shared Supabase mail_logs table (read by every admin device) ─────
+    // This is what makes the admin "sent" markers and Mail Log tab sync across devices.
     let logWarning = null;
     try {
       if (supabase && responseData.success !== false) {
         const { templateId, templateName } = req.body || {};
-        const safeRecipient = recipient ? recipient.trim() : 'Unknown Recipient';
-        const safeName = (recipientName || 'Test / Unregistered').trim();
-        
-        await supabase.from('mail_logs').insert([{
-          recipient: safeRecipient,
-          recipient_name: safeName,
+        const mIdx = memberIndex !== undefined ? memberIndex : (member_index !== undefined ? member_index : null);
+        const isMember = !!memberLogId;
+        const row = {
+          recipient: recipient.trim(),
+          recipient_name: (recipientName || 'Test / Unregistered').trim(),
           record_type: (recordType || 'system').trim(),
+          // Per-person id for delegation members (DEL-<delegationId>-<nn>), so the admin UI can map the row
+          // back to the exact roster member on any device even without the extended columns.
           record_id: logRegistrationId,
           template_id: (templateId || 'custom').trim(),
           template_name: (templateName || 'Custom Email').trim(),
-          subject: (subject || "Notice from RNS MUN '26").trim(),
+          subject: preparedSubject,
           status: 'sent'
-        }]).catch(() => {});
+        };
+        const extended = {
+          ...row,
+          member_index: isMember && mIdx !== null && mIdx !== '' ? Number(mIdx) : null,
+          committee: allocated_committee || null,
+          delegation: req.body.delegation || institution || null
+        };
+        let { error: logErr } = await supabase.from('mail_logs').insert([extended]);
+        if (logErr && /column|schema cache/i.test(logErr.message || '')) {
+          // Migration 003 not applied yet: fall back to the base columns so the log row is still saved.
+          ({ error: logErr } = await supabase.from('mail_logs').insert([row]));
+        }
+        if (logErr) {
+          logWarning = logErr.message;
+          console.warn('[send-mail] Shared mail_logs insert failed:', logErr.message);
+        }
+      } else if (!supabase) {
+        logWarning = 'Supabase is not configured on the server; log kept in this browser only.';
       }
     } catch (dbErr) {
-      // non-blocking
+      logWarning = dbErr.message;
+      console.warn('[send-mail] Shared mail_logs insert threw:', dbErr.message);
     }
 
     const responsePayload = {
       success: responseData.success !== false,
       message: responseData.message || 'Email successfully sent via Google Apps Script.',
       details: responseData,
-      mailLogId: mailLogRecord?.id
+      mailLogId: mailLogRecord?.id,
+      logWarning
     };
 
     return res.status(200).json(responsePayload);
