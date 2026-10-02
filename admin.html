@@ -3181,7 +3181,11 @@
         </table>
       </div>
       <div class="modal-footer" style="justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-        <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send Mail to All Members</button>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <label for="roster-bulk-template-select" style="font-size:0.78rem; font-weight:700; margin:0;">Template:</label>
+          <select id="roster-bulk-template-select" class="filter-select" style="min-width:220px; max-width:320px; padding:0.4rem 0.6rem; font-size:0.8rem;"></select>
+          <button type="button" class="btn btn-gold btn-sm" id="btn-roster-mail-all" onclick="mailEntireDelegation()" style="font-weight: 800;">✉️ Send Mail to All Members</button>
+        </div>
         <button class="btn btn-outline btn-sm" onclick="closeRosterModal()">Close</button>
       </div>
     </div>
@@ -4015,18 +4019,28 @@
       const store = getSentMailStore();
 
       cloudLogs.forEach(log => {
+        // Only successful sends count as "sent" history (failed/skipped attempts live in the cloud log table only)
+        if (log.status && String(log.status).toLowerCase() !== 'sent') return;
         let recType = log.record_type || 'individual';
         let recId = log.record_id;
+        let matchedInd = null, matchedDlg = null, cloudMemberIndex = null;
+        // Per-member rows are logged as DEL-<delegationId>-<nn>: map back to the delegation + 0-based member index
+        const memberMatch = String(recId || '').match(/^DEL-(\d+)-(\d{2,})$/);
+        if (memberMatch) {
+          recType = 'delegation';
+          recId = memberMatch[1];
+          cloudMemberIndex = parseInt(memberMatch[2], 10) - 1;
+        }
 
         // If recId is missing, attempt resolution by email against loaded records
         if (!recId && log.recipient) {
           const lowerEmail = log.recipient.toLowerCase().trim();
-          const matchedInd = rawRegistrations.find(r => (r.email || '').toLowerCase().trim() === lowerEmail);
+          matchedInd = rawRegistrations.find(r => (r.email || '').toLowerCase().trim() === lowerEmail);
           if (matchedInd) {
             recType = 'individual';
             recId = matchedInd.id;
           } else {
-            const matchedDlg = rawDelegations.find(d => (d.email || '').toLowerCase().trim() === lowerEmail);
+            matchedDlg = rawDelegations.find(d => (d.email || '').toLowerCase().trim() === lowerEmail);
             if (matchedDlg) {
               recType = 'delegation';
               recId = matchedDlg.id;
@@ -4056,9 +4070,13 @@
             subject: log.subject || '',
             recipient: log.recipient || '',
             recipientName: log.recipient_name || (matchedInd ? matchedInd.name : (matchedDlg ? (matchedDlg.delegation_name || matchedDlg.head_name) : '')) || log.recipient || '—',
+            memberIndex: cloudMemberIndex,
             recordType: recType,
             recordId: recId ? String(recId) : ''
           });
+        } else if (cloudMemberIndex !== null) {
+          // Entry already known locally: make sure it carries the member index so "sent" state is per person
+          arr.forEach(entry => { if (entry.memberIndex === undefined || entry.memberIndex === null) { if ((entry.recipient || '').toLowerCase() === (log.recipient || '').toLowerCase()) entry.memberIndex = cloudMemberIndex; } });
         }
         store[key] = arr;
       });
@@ -5124,6 +5142,7 @@
       const members = getDelegationMembers(delegation);
       const mailAllBtn = document.getElementById('btn-roster-mail-all');
       if (mailAllBtn) mailAllBtn.style.display = members.length ? '' : 'none';
+      populateRosterBulkTemplates();
 
       if (members.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No individual roster members recorded for this delegation.</td></tr>`;
@@ -5165,6 +5184,23 @@
       openSendMailModal(id, 'delegation', memberIndex);
     }
 
+    // Same template list as the single-delegate mail modal; defaults to the personal allocation mail.
+    function populateRosterBulkTemplates() {
+      const sel = document.getElementById('roster-bulk-template-select');
+      if (!sel) return;
+      if (mailTemplates.length === 0) loadTemplatesState();
+      const previous = sel.value;
+      sel.innerHTML = '';
+      mailTemplates.forEach(tpl => {
+        const opt = document.createElement('option');
+        opt.value = tpl.id;
+        opt.textContent = `${tpl.name} (${tpl.isPreset ? 'Preset' : 'Custom'})`;
+        sel.appendChild(opt);
+      });
+      const wanted = (previous && mailTemplates.some(t => t.id === previous)) ? previous : getMemberTemplateId();
+      if (wanted) sel.value = wanted;
+    }
+
     // Send every member of the open delegation their own allocation mail (skips already-sent, no-email, unallocated).
     async function mailEntireDelegation() {
       const dlg = rawDelegations.find(d => String(d.id) === String(rosterModalDelegationId));
@@ -5177,9 +5213,10 @@
         showToast('Google Apps Script URL is not set. Go to Mail Templates tab to configure.', 'error');
         return;
       }
-      const tpl = mailTemplates.find(t => t.id === getMemberTemplateId());
+      const bulkSel = document.getElementById('roster-bulk-template-select');
+      const tpl = mailTemplates.find(t => t.id === (bulkSel && bulkSel.value ? bulkSel.value : getMemberTemplateId()));
       if (!tpl) {
-        showToast('Official Pass template not found in Mail Templates.', 'error');
+        showToast('Please choose a mail template for the bulk send.', 'error');
         return;
       }
 
@@ -7238,7 +7275,7 @@
         allocated_portfolio: "People's Republic of China",
         hub_url: 'https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0',
         qr_code_url: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent('https://mun.rnsit.ac.in/hub?t=01SkYaqKk62PH0'),
-        whatsapp_link: 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+        whatsapp_link: 'https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx',
         bg_guide_url: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         gdrive_link: 'https://drive.google.com/drive/folders/1B7PFiz_J2mTs0U__33MRS_Y5BMcsVsWY',
         committee1: 'UNSC — United Nations Security Council',
@@ -8849,7 +8886,7 @@
 
     function resolveCommitteeWhatsApp(comm) {
       const cUpper = String(comm || '').toUpperCase();
-      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY')) return 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh';
+      if (cUpper.includes('UNSC') || cUpper.includes('SECURITY')) return 'https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx';
       if (cUpper.includes('LOK') || cUpper.includes('SABHA') || cUpper.includes('PARLIAMENT')) return 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5';
       if (cUpper.includes('UNODC') || cUpper.includes('DRUGS')) return 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm';
       if (cUpper.includes('UNHRC') || cUpper.includes('HUMAN')) return 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC';

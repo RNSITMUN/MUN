@@ -45,7 +45,7 @@ function resolveChamber(committee) {
 
 // ── WhatsApp Community Link Resolver ────────────────────────────────
 const COMMITTEE_WHATSAPP_MAP = {
-  'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+  'UNSC': 'https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx',
   'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
   'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
   'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',

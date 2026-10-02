@@ -39,7 +39,7 @@ function getEnv(key) {
 }
 
 const COMMITTEE_WHATSAPP_MAP = {
-  'UNSC': 'https://chat.whatsapp.com/JZij2Vt7Vg64qTSFcMNLRh',
+  'UNSC': 'https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx',
   'LOK SABHA': 'https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5',
   'UNODC': 'https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm',
   'UNHRC': 'https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC',
@@ -58,6 +58,20 @@ function resolveCommitteeWhatsApp(committee) {
   if (c.includes('DISEC') || c.includes('DISARMAMENT')) return COMMITTEE_WHATSAPP_MAP['DISEC'];
   return 'https://chat.whatsapp.com/G5y1o155s6y9017';
 }
+
+// Persist one attempt to the shared cloud log table (mail_logs) so every device sees it.
+// NOTE: Supabase query builders are thenables without .catch(); the old `.insert(...).catch()` threw a
+// TypeError BEFORE the request was sent, so nothing was ever written. Always await and read { error }.
+async function saveSharedLog(row) {
+  if (!supabase) return 'Supabase client is not configured';
+  try {
+    const { error } = await supabase.from('mail_logs').insert([row]);
+    return error ? error.message : null;
+  } catch (e) {
+    return e.message || 'Unknown logging error';
+  }
+}
+
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
@@ -127,9 +141,27 @@ export default async function handler(req, res) {
       ? String(allocationId)
       : null;
     const logRegistrationId = memberLogId || (recordId ? String(recordId) : null);
+    const { templateId: bodyTemplateId, templateName: bodyTemplateName } = req.body || {};
+    let sharedLogged = false;
+    const logAttempt = async (status, errMsg, subj) => {
+      if (sharedLogged && status === 'sent') return null;
+      const warn = await saveSharedLog({
+        recipient: recipient.trim(),
+        recipient_name: (recipientName || 'Test / Unregistered').trim(),
+        record_type: String(recordType || 'system').trim(),
+        record_id: logRegistrationId,
+        template_id: String(bodyTemplateId || 'custom').trim(),
+        template_name: String(bodyTemplateName || 'Custom Email').trim(),
+        subject: String(subj || subject || "Notice from RNS MUN '26").trim() + (status === 'failed' && errMsg ? ` [FAILED: ${String(errMsg).slice(0, 120)}]` : ''),
+        status
+      });
+      if (!warn) sharedLogged = true;
+      return warn;
+    };
     if (!isResend && logRegistrationId && recipient) {
       const alreadySent = await checkAlreadySent(recipient, logRegistrationId);
       if (alreadySent) {
+        await logAttempt('skipped', 'Duplicate guard: already sent');
         return res.status(200).json({
           success: true,
           skipped: true,
@@ -141,6 +173,7 @@ export default async function handler(req, res) {
     const targetUrl = (scriptUrl || getEnv('GOOGLE_SCRIPT_MAILER_URL') || '').trim();
 
     if (!targetUrl || !targetUrl.startsWith('https://script.google.com/')) {
+      await logAttempt('failed', 'Google Apps Script URL not configured');
       return res.status(400).json({
         success: false,
         error: 'Google Apps Script Web App URL is not configured. Please provide a valid script URL starting with https://script.google.com/ in Mail Templates settings.'
@@ -261,14 +294,23 @@ export default async function handler(req, res) {
       attachments: Array.isArray(attachments) ? attachments : []
     };
 
-    const response = await fetch(targetUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8' // Google Apps Script handles text/plain without triggering complex CORS preflights
-      },
-      body: JSON.stringify(payload),
-      redirect: 'follow'
-    });
+    let response;
+    try {
+      response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8' // Google Apps Script handles text/plain without triggering complex CORS preflights
+        },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+    } catch (netErr) {
+      if (mailLogRecord) {
+        await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: netErr.message });
+      }
+      await logAttempt('failed', netErr.message, preparedSubject);
+      return res.status(502).json({ success: false, error: `Could not reach mail service: ${netErr.message}` });
+    }
 
     const responseText = await response.text();
     let responseData;
@@ -294,12 +336,24 @@ export default async function handler(req, res) {
         });
       }
 
+      await logAttempt('failed', errorMsg, preparedSubject);
+
       return res.status(response.status).json({
         success: false,
         error: errorMsg,
         statusCode: response.status,
         details: responseData
       });
+    }
+
+    // Apps Script can answer HTTP 200 with { success:false } - that is a failed attempt, not a sent mail.
+    if (responseData.success === false) {
+      const scriptErr = responseData.error || responseData.message || 'Mail service reported failure';
+      if (mailLogRecord) {
+        await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: scriptErr });
+      }
+      await logAttempt('failed', scriptErr, preparedSubject);
+      return res.status(502).json({ success: false, error: scriptErr, details: responseData });
     }
 
     // ── Update mail_log record to 'sent' ───────────────────────────
@@ -312,40 +366,37 @@ export default async function handler(req, res) {
       });
     }
 
-    // ─── Record to Legacy Supabase Shared Mail Logs Table ────────────
-    let logWarning = null;
-    try {
-      if (supabase && responseData.success !== false) {
-        const { templateId, templateName } = req.body || {};
-        const safeRecipient = recipient ? recipient.trim() : 'Unknown Recipient';
-        const safeName = (recipientName || 'Test / Unregistered').trim();
-        
-        await supabase.from('mail_logs').insert([{
-          recipient: safeRecipient,
-          recipient_name: safeName,
-          record_type: (recordType || 'system').trim(),
-          record_id: logRegistrationId,
-          template_id: (templateId || 'custom').trim(),
-          template_name: (templateName || 'Custom Email').trim(),
-          subject: (subject || "Notice from RNS MUN '26").trim(),
-          status: 'sent'
-        }]).catch(() => {});
-      }
-    } catch (dbErr) {
-      // non-blocking
-    }
+    // ─── Record to shared cloud log (mail_logs) so it syncs across devices ───
+    const logWarning = await logAttempt('sent', null, preparedSubject);
+    if (logWarning) console.warn('[send-mail] Shared mail log write failed:', logWarning);
 
     const responsePayload = {
       success: responseData.success !== false,
       message: responseData.message || 'Email successfully sent via Google Apps Script.',
       details: responseData,
-      mailLogId: mailLogRecord?.id
+      mailLogId: mailLogRecord?.id,
+      logWarning: logWarning || undefined
     };
 
     return res.status(200).json(responsePayload);
 
   } catch (error) {
     console.error('Error forwarding to Google Apps Script:', error);
+    try {
+      const b = req.body || {};
+      if (b.recipient && String(b.recipient).includes('@')) {
+        await saveSharedLog({
+          recipient: String(b.recipient).trim(),
+          recipient_name: String(b.recipientName || 'Test / Unregistered').trim(),
+          record_type: String(b.recordType || 'system').trim(),
+          record_id: b.allocationId || (b.recordId ? String(b.recordId) : null),
+          template_id: String(b.templateId || 'custom').trim(),
+          template_name: String(b.templateName || 'Custom Email').trim(),
+          subject: String(b.subject || "Notice from RNS MUN '26").trim() + ` [FAILED: ${String(error.message).slice(0, 120)}]`,
+          status: 'failed'
+        });
+      }
+    } catch (_) {}
     return res.status(500).json({
       success: false,
       error: error.message || 'Internal error while communicating with email dispatch service.'
