@@ -3207,14 +3207,6 @@
           </div>
         </div>
 
-        <!-- Delegation: choose which member receives this email -->
-        <div class="form-group" id="mail-modal-recipient-picker" style="display: none; margin: 0;">
-          <label class="form-label" for="mail-modal-recipient-select">Send To (member of this delegation)</label>
-          <select id="mail-modal-recipient-select" class="form-input" style="width: 100%; padding: 0.5rem 0.85rem; font-size: 0.85rem;" onchange="onModalRecipientChange()">
-            <!-- Populated dynamically from the delegation roster -->
-          </select>
-        </div>
-
         <!-- Test Copy Dispatch Box -->
         <div style="background: #FFF7EB; border: 1.5px dashed #000000; border-radius: 8px; padding: 0.65rem 0.9rem; display: flex; flex-direction: column; gap: 0.4rem;">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem;">
@@ -6729,8 +6721,6 @@
     let currentActiveInputField = 'tpl-html-body';
     let modalTargetRecord = null;
     let modalTargetType = 'individual';
-    // Delegation mail: index into the roster of the chosen recipient (null = Head of Delegation)
-    let modalRecipientIndex = null;
     let modalAttachments = [];
     let tplAttachments = [];
     let googleScriptUrl = localStorage.getItem('rns_mun_google_script_url') || '';
@@ -7620,7 +7610,7 @@
         return;
       }
 
-      const delegateName = getModalRecipient().name || 'Delegate';
+      const delegateName = modalTargetType === 'individual' ? (modalTargetRecord?.name || 'Delegate') : (modalTargetRecord?.head_name || 'Delegation Head');
       const subject = `[TEST COPY - ${delegateName}] ` + (document.getElementById('send-mail-subject')?.value || 'RNS MUN Update');
       const htmlBody = document.getElementById('modal-code-textarea')?.value || '<p>Test copy</p>';
       const senderName = document.getElementById('send-mail-sender-name')?.value || 'RNS MUN Secretariat';
@@ -7702,100 +7692,6 @@
 
     // ─── SEND MAIL MODAL WORKFLOW ─────────────────────────────────
 
-    function isValidEmail(v) {
-      return typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-    }
-
-    // Returns the delegation's roster entries that have a usable email, keeping their original roster index.
-    function getDelegationRecipientOptions(dlg) {
-      const headEmail = String(dlg?.email || '').trim().toLowerCase();
-      const roster = extractParsedRoster(dlg);
-      const out = [];
-      const seen = new Set(headEmail ? [headEmail] : []);
-      roster.forEach((m, idx) => {
-        const email = String(m.email || '').trim();
-        const key = email.toLowerCase();
-        if (!isValidEmail(email) || seen.has(key)) return; // skip blanks and the head (already listed first)
-        seen.add(key);
-        out.push({
-          index: idx,
-          name: m.name || m.delegateName || m.delegate_name || `Member ${idx + 1}`,
-          email,
-          phone: m.phone || ''
-        });
-      });
-      return out;
-    }
-
-    // The person who will actually receive the email right now.
-    function getModalRecipient() {
-      if (!modalTargetRecord) return { name: '', email: '', phone: '', memberIndex: null };
-      if (modalTargetType === 'individual') {
-        return { name: modalTargetRecord.name || 'Delegate', email: modalTargetRecord.email || '', phone: modalTargetRecord.phone || '', memberIndex: null };
-      }
-      if (modalRecipientIndex !== null) {
-        const m = getDelegationRecipientOptions(modalTargetRecord).find(o => o.index === modalRecipientIndex);
-        if (m) return { name: m.name, email: m.email, phone: m.phone, memberIndex: m.index };
-      }
-      return {
-        name: modalTargetRecord.head_name || modalTargetRecord.delegation_name || 'Delegation Head',
-        email: modalTargetRecord.email || '',
-        phone: modalTargetRecord.phone || '',
-        memberIndex: null
-      };
-    }
-
-    function renderModalRecipientHeader() {
-      const r = getModalRecipient();
-      const nameEl = document.getElementById('mail-modal-name');
-      const emailEl = document.getElementById('mail-modal-email');
-      const typeLabel = document.getElementById('mail-modal-type-label');
-      if (nameEl) nameEl.textContent = r.name;
-      if (emailEl) emailEl.textContent = r.email;
-      if (typeLabel) {
-        typeLabel.textContent = modalTargetType === 'individual'
-          ? 'Individual Delegate'
-          : (r.memberIndex !== null ? 'Delegation Member' : 'Delegation Lead');
-      }
-    }
-
-    function populateModalRecipientOptions() {
-      const wrap = document.getElementById('mail-modal-recipient-picker');
-      const select = document.getElementById('mail-modal-recipient-select');
-      if (!wrap || !select) return;
-
-      if (modalTargetType !== 'delegation' || !modalTargetRecord) {
-        wrap.style.display = 'none';
-        select.innerHTML = '';
-        return;
-      }
-
-      select.innerHTML = '';
-      const headOpt = document.createElement('option');
-      headOpt.value = 'head';
-      const headName = modalTargetRecord.head_name || modalTargetRecord.delegation_name || 'Delegation Head';
-      headOpt.textContent = `Head of Delegation — ${headName}${modalTargetRecord.email ? ' (' + modalTargetRecord.email + ')' : ''}`;
-      select.appendChild(headOpt);
-
-      getDelegationRecipientOptions(modalTargetRecord).forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = String(m.index);
-        opt.textContent = `${m.name} (${m.email})`;
-        select.appendChild(opt);
-      });
-
-      select.value = 'head';
-      wrap.style.display = 'block';
-    }
-
-    function onModalRecipientChange() {
-      const select = document.getElementById('mail-modal-recipient-select');
-      modalRecipientIndex = (!select || select.value === 'head') ? null : parseInt(select.value, 10);
-      renderModalRecipientHeader();
-      // Re-personalise subject/body (e.g. greeting) for the newly chosen recipient
-      onModalTemplateSelectChange();
-    }
-
     function openSendMailModal(recordId, recordType) {
       if (mailTemplates.length === 0) loadTemplatesState();
 
@@ -7810,10 +7706,16 @@
       }
 
       const modal = document.getElementById('send-mail-modal');
+      const nameEl = document.getElementById('mail-modal-name');
+      const emailEl = document.getElementById('mail-modal-email');
+      const typeLabel = document.getElementById('mail-modal-type-label');
 
-      modalRecipientIndex = null;
-      populateModalRecipientOptions();
-      renderModalRecipientHeader();
+      const name = modalTargetType === 'individual' ? (modalTargetRecord.name || 'Delegate') : (modalTargetRecord.head_name || modalTargetRecord.delegation_name || 'Delegation Head');
+      const email = modalTargetRecord.email || '';
+
+      nameEl.textContent = name;
+      emailEl.textContent = email;
+      typeLabel.textContent = modalTargetType === 'individual' ? 'Individual Delegate' : 'Delegation Lead';
 
       // Pre-fill test email input and reset test status
       const testEmailInput = document.getElementById('modal-test-email');
@@ -7871,7 +7773,6 @@
       modal.classList.remove('active');
       modalAttachments = [];
       modalTargetRecord = null;
-      modalRecipientIndex = null;
       closeAllAllocComboboxMenus();
       const allocCard = document.getElementById('modal-allotment-config-card');
       if (allocCard) allocCard.style.display = 'none';
@@ -8335,7 +8236,7 @@
         return;
       }
 
-      const tokenData = buildTokenDataFromRecord(modalTargetRecord, modalTargetType, getModalRecipient());
+      const tokenData = buildTokenDataFromRecord(modalTargetRecord, modalTargetType);
       
       const subjectInput = document.getElementById('send-mail-subject');
       subjectInput.value = interpolateTokens(tpl.subject || '', tokenData);
@@ -8466,8 +8367,7 @@
     async function dispatchSendMail() {
       if (!modalTargetRecord) return;
 
-      const chosenRecipient = getModalRecipient();
-      const recipient = (chosenRecipient.email || '').trim();
+      const recipient = (modalTargetRecord.email || '').trim();
       if (!recipient || !recipient.includes('@')) {
         showToast('Recipient has no valid email address.', 'error');
         return;
@@ -8501,7 +8401,9 @@
       try {
         const tplId   = select ? select.value : '';
         const tplObj  = mailTemplates.find(t => t.id === tplId);
-        const recipientName = chosenRecipient.name || '';
+        const recipientName = modalTargetType === 'individual'
+          ? (modalTargetRecord.name || '')
+          : (modalTargetRecord.head_name || modalTargetRecord.delegation_name || '');
         const templateName = tplObj ? tplObj.name : (tplId || 'Custom Email');
 
         const activeComm = modalTargetRecord.allocated_committee || document.getElementById('modal-alloc-committee')?.value.trim() || modalTargetRecord.committee1 || modalTargetRecord.committee || '';
@@ -8523,7 +8425,6 @@
             recipientName,
             recordType: modalTargetType,
             recordId: modalTargetRecord.id,
-            memberIndex: chosenRecipient.memberIndex !== null ? chosenRecipient.memberIndex + 1 : 0,
             templateId: tplId,
             templateName,
             allocated_committee: activeComm,
@@ -8605,18 +8506,7 @@
       return 'https://chat.whatsapp.com/G5y1o155s6y9017';
     }
 
-    function buildTokenDataFromRecord(item, type, recipientOverride) {
-      const data = buildTokenDataFromRecordBase(item, type);
-      // Delegation emails addressed to a specific member should greet that member, not the head.
-      if (type === 'delegation' && recipientOverride && recipientOverride.memberIndex !== null && recipientOverride.memberIndex !== undefined) {
-        data.name = recipientOverride.name || data.name;
-        data.email = recipientOverride.email || data.email;
-        data.phone = recipientOverride.phone || data.phone;
-      }
-      return data;
-    }
-
-    function buildTokenDataFromRecordBase(item, type) {
+    function buildTokenDataFromRecord(item, type) {
       const pubToken = item.public_token || item.token || (item.id ? String(item.id) : '1');
       const hubUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(pubToken)}`;
       let qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hubUrl)}`;
