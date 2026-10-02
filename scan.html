@@ -619,7 +619,7 @@
 
     .ops-metrics-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 0.5rem;
     }
 
@@ -1863,20 +1863,6 @@
               </div>
             </div>
 
-            <div class="station-option" data-val="day1_refreshment" data-icon="coffee" data-title="Day 1: Refreshment Hour" data-sub="Evening high tea and snacks (Day 1 of 2)" data-tag="TEA" data-badge="Refreshment Hour" onclick="selectStation('day1_refreshment')" role="option">
-              <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-coffee"></use></svg></div>
-                <div class="opt-text">
-                  <div class="opt-title">Day 1: Refreshment Hour</div>
-                  <div class="opt-sub">Evening high tea and snacks</div>
-                </div>
-              </div>
-              <div class="opt-right">
-                <span class="opt-tag">TEA</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
-              </div>
-            </div>
-
             <div class="menu-section-header">Day 2 checkpoints</div>
 
             <div class="station-option" data-val="day2_entry" data-icon="gate" data-title="Day 2: Gate Entry" data-sub="Morning campus access (Day 2 of 2)" data-tag="GATE" data-badge="Gate Entry" onclick="selectStation('day2_entry')" role="option">
@@ -1903,20 +1889,6 @@
               </div>
               <div class="opt-right">
                 <span class="opt-tag">MEAL</span>
-                <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
-              </div>
-            </div>
-
-            <div class="station-option" data-val="day2_refreshment" data-icon="coffee" data-title="Day 2: Refreshment Hour" data-sub="Closing mixer and high tea (Day 2 of 2)" data-tag="TEA" data-badge="Refreshment Hour" onclick="selectStation('day2_refreshment')" role="option">
-              <div class="opt-left">
-                <div class="opt-icon-box"><svg class="icon"><use href="#icon-coffee"></use></svg></div>
-                <div class="opt-text">
-                  <div class="opt-title">Day 2: Refreshment Hour</div>
-                  <div class="opt-sub">Closing mixer and high tea</div>
-                </div>
-              </div>
-              <div class="opt-right">
-                <span class="opt-tag">TEA</span>
                 <span class="opt-check"><svg class="icon sm"><use href="#icon-check"></use></svg></span>
               </div>
             </div>
@@ -1949,17 +1921,11 @@
             <button type="button" class="quick-chip" data-val="day1_lunch" onclick="selectStation('day1_lunch')">
               <svg class="icon sm"><use href="#icon-utensils"></use></svg> Lunch 1
             </button>
-            <button type="button" class="quick-chip" data-val="day1_refreshment" onclick="selectStation('day1_refreshment')">
-              <svg class="icon sm"><use href="#icon-coffee"></use></svg> Tea 1
-            </button>
             <button type="button" class="quick-chip" data-val="day2_entry" onclick="selectStation('day2_entry')">
               <svg class="icon sm"><use href="#icon-gate"></use></svg> Gate 2
             </button>
             <button type="button" class="quick-chip" data-val="day2_lunch" onclick="selectStation('day2_lunch')">
               <svg class="icon sm"><use href="#icon-utensils"></use></svg> Lunch 2
-            </button>
-            <button type="button" class="quick-chip" data-val="day2_refreshment" onclick="selectStation('day2_refreshment')">
-              <svg class="icon sm"><use href="#icon-coffee"></use></svg> Tea 2
             </button>
             <button type="button" class="quick-chip" data-val="inspect" onclick="selectStation('inspect')">
               <svg class="icon sm"><use href="#icon-shield"></use></svg> Inspect
@@ -1970,10 +1936,8 @@
         <select id="station-dropdown" class="station-select-native" style="display: none;" onchange="onStationChanged(this.value)">
           <option value="day1_entry" selected>Day 1: Gate Entry</option>
           <option value="day1_lunch">Day 1: Midday Repast</option>
-          <option value="day1_refreshment">Day 1: Refreshment Hour</option>
           <option value="day2_entry">Day 2: Gate Entry</option>
           <option value="day2_lunch">Day 2: Midday Repast</option>
-          <option value="day2_refreshment">Day 2: Refreshment Hour</option>
           <option value="inspect">Inspection Mode</option>
         </select>
       </section>
@@ -2032,21 +1996,6 @@
               <div class="ops-progress-fill" id="stat-lunch-fill" style="width: 0%;"></div>
             </div>
           </div>
-
-          <div class="ops-stat-card">
-            <div class="ops-stat-top">
-              <span>Tea</span>
-              <span id="stat-refreshment-pct">0%</span>
-            </div>
-            <div class="ops-stat-number">
-              <span id="stat-refreshment-count">0</span>
-              <span class="stat-slash">/</span>
-              <span id="stat-refreshment-total" class="stat-max">240</span>
-            </div>
-            <div class="ops-progress-track">
-              <div class="ops-progress-fill" id="stat-refreshment-fill" style="width: 0%;"></div>
-            </div>
-          </div>
         </div>
 
         <div class="ops-breakdown-section">
@@ -2066,12 +2015,11 @@
                   <th>Roster</th>
                   <th>Entry</th>
                   <th>Lunch</th>
-                  <th>Tea</th>
                 </tr>
               </thead>
               <tbody id="committee-table-body">
                 <tr>
-                  <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading committee tallies...</td>
+                  <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 0.75rem;">Loading committee tallies...</td>
                 </tr>
               </tbody>
             </table>
@@ -4201,10 +4149,8 @@
       const CHECKPOINTS_DEF = [
         { key: 'day1_entry', label: 'Day 1 Entry' },
         { key: 'day1_lunch', label: 'Day 1 Lunch' },
-        { key: 'day1_refreshment', label: 'Day 1 Refreshment' },
         { key: 'day2_entry', label: 'Day 2 Entry' },
-        { key: 'day2_lunch', label: 'Day 2 Lunch' },
-        { key: 'day2_refreshment', label: 'Day 2 Refreshment' }
+        { key: 'day2_lunch', label: 'Day 2 Lunch' }
       ];
 
       let html = '';
@@ -4332,13 +4278,11 @@
 
       const entry = cp[`${prefix}entry`] || 0;
       const lunch = cp[`${prefix}lunch`] || 0;
-      const tea = cp[`${prefix}refreshment`] || 0;
 
       const entryPct = Math.round((entry / total) * 100) || 0;
       const lunchPct = Math.round((lunch / total) * 100) || 0;
-      const teaPct = Math.round((tea / total) * 100) || 0;
 
-      const statsStateKey = `${currentStatsDay}:${total}:${entry}:${lunch}:${tea}`;
+      const statsStateKey = `${currentStatsDay}:${total}:${entry}:${lunch}`;
       if (statsStateKey !== lastRenderedStatsState) {
         lastRenderedStatsState = statsStateKey;
         const grid = document.querySelector('.ops-metrics-grid');
@@ -4373,21 +4317,6 @@
                 <div class="ops-progress-fill" id="stat-lunch-fill" style="width: ${lunchPct}%;"></div>
               </div>
             </div>
-
-            <div class="ops-stat-card">
-              <div class="ops-stat-top">
-                <span>Tea</span>
-                <span id="stat-refreshment-pct">${teaPct}%</span>
-              </div>
-              <div class="ops-stat-number">
-                <span id="stat-refreshment-count">${tea}</span>
-                <span class="stat-slash">/</span>
-                <span id="stat-refreshment-total" class="stat-max">${total}</span>
-              </div>
-              <div class="ops-progress-track">
-                <div class="ops-progress-fill" id="stat-refreshment-fill" style="width: ${teaPct}%;"></div>
-              </div>
-            </div>
           `;
         }
       }
@@ -4407,11 +4336,10 @@
                 <td>${c.total || 0}</td>
                 <td>${c[`${prefix}entry`] || 0}</td>
                 <td>${c[`${prefix}lunch`] || 0}</td>
-                <td>${c[`${prefix}refreshment`] || 0}</td>
               </tr>
             `;
           });
-          tbody.innerHTML = rowsHtml || '<tr><td colspan="5" style="text-align:center;">No committee data available</td></tr>';
+          tbody.innerHTML = rowsHtml || '<tr><td colspan="4" style="text-align:center;">No committee data available</td></tr>';
         }
       }
     }
