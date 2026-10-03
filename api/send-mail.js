@@ -149,6 +149,7 @@ export default async function handler(req, res) {
   if (
     url.includes('admin-mail-log') ||
     req.method === 'GET' ||
+    req.body?.action === 'backfill_local' ||
     req.body?.action === 'resend' ||
     req.body?.action === 'retry_all_failed'
   ) {

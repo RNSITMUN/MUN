@@ -27,7 +27,10 @@ async function cleanLogs() {
 
   console.log(`Found ${toDelete.length} broken logs to delete.`);
 
-  if (toDelete.length > 0) {
+  if (toDelete.length > 0 && !process.argv.includes('--confirm')) {
+    console.log('DRY RUN: nothing deleted. mail_logs is an audit log; re-run with --confirm only if you really want to delete these rows:');
+    console.log(toDelete.map(l => l.id).join(', '));
+  } else if (toDelete.length > 0) {
     const idsToDelete = toDelete.map(l => l.id);
     const { error: deleteError } = await supabase
       .from('mail_logs')

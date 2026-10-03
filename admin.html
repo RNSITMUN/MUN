@@ -4098,7 +4098,7 @@
     function updateMailLogBadge() {
       let total = 0;
       if (typeof sharedMailLogsLoaded !== 'undefined' && sharedMailLogsLoaded) {
-        total = sharedMailLogs.length;
+        total = sharedMailLogs.length + getLocalOnlyMailEntries().length;
       } else {
         const store = getSentMailStore();
         Object.values(store).forEach(v => { total += Array.isArray(v) ? v.length : (v ? 1 : 0); });
@@ -4744,6 +4744,80 @@
       return currentSession?.access_token || '';
     }
 
+    // Entries stored only in THIS browser (sent before cloud logging worked / never uploaded). They are shown, and
+    // uploaded to the shared table automatically, so the visible record count can never silently shrink.
+    const ML_MATCH_WINDOW_MS = 120000;
+    function getLocalOnlyMailEntries() {
+      const idx = {};
+      sharedMailLogs.forEach(r => {
+        const k = String(r.recipient || '').trim().toLowerCase();
+        (idx[k] = idx[k] || []).push(new Date(r.created_at).getTime());
+      });
+      const out = [];
+      const store = getSentMailStore();
+      Object.values(store).forEach(val => {
+        (Array.isArray(val) ? val : (val ? [val] : [])).forEach(e => {
+          if (!e || typeof e !== 'object' || e.cloudId) return;
+          const email = String(e.recipient || '').trim().toLowerCase();
+          const ts = e.timestamp || new Date(e.sentAt).getTime();
+          if (!email || isNaN(ts)) return;
+          if ((idx[email] || []).some(t => Math.abs(t - ts) <= ML_MATCH_WINDOW_MS)) return; // already in shared log
+          out.push(e);
+        });
+      });
+      return out;
+    }
+
+    function getDisplayMailEntries() {
+      const local = getLocalOnlyMailEntries().map((e, i) => ({
+        id: 'local-' + i + '-' + (e.timestamp || ''),
+        created_at: e.sentAt || new Date(e.timestamp).toISOString(),
+        recipient: e.recipient, recipient_name: e.recipientName || '',
+        record_type: e.recordType || 'individual', record_id: e.recordId || '',
+        template_name: e.templateName || '', subject: e.subject || '',
+        status: 'sent', error: null, _local: true
+      }));
+      return sharedMailLogs.concat(local).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    }
+
+    let _mlBackfilling = false, _mlLastBackfill = 0;
+    async function backfillLocalMailLog() {
+      if (_mlBackfilling || Date.now() - _mlLastBackfill < 60000) return;
+      const local = getLocalOnlyMailEntries();
+      if (!local.length) return;
+      // Cross-tab lease (tabs share this browser's localStorage) so two tabs never upload the same entries concurrently.
+      try {
+        const lease = Number(localStorage.getItem('rns_mun_backfill_lease') || 0);
+        if (lease && Date.now() - lease < 30000) return;
+        localStorage.setItem('rns_mun_backfill_lease', String(Date.now()));
+      } catch (e) {}
+      _mlBackfilling = true; _mlLastBackfill = Date.now();
+      try {
+        // One-time untouched safety copy of this browser's history; nothing here is ever deleted.
+        try {
+          if (!localStorage.getItem('rns_mun_sent_mail_history_backup_v1')) {
+            localStorage.setItem('rns_mun_sent_mail_history_backup_v1', localStorage.getItem('rns_mun_sent_mail_history') || '{}');
+          }
+        } catch (e) {}
+        const token = await getMailLogToken();
+        if (!token) return;
+        const res = await fetch('/api/admin-mail-log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ action: 'backfill_local', entries: local })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+        if (data.inserted > 0) showToast(`Recovered ${data.inserted} mail log record(s) from this device into the shared log.`, 'success');
+        await refreshSharedMailLog();
+      } catch (e) {
+        console.warn('[maillog] backfill of local-only records failed (they stay visible here):', e.message);
+      } finally {
+        _mlBackfilling = false;
+        try { localStorage.removeItem('rns_mun_backfill_lease'); } catch (e) {}
+      }
+    }
+
     function applySharedMailLogs(rows) {
       const seen = new Set();
       const list = [];
@@ -4777,6 +4851,7 @@
           _mlLastError = '';
           applySharedMailLogs(data.logs);
           setMailLogLive('ok');
+          backfillLocalMailLog();
           return true;
         } catch (e) {
           _mlLastError = e.message || 'fetch failed';
@@ -4854,7 +4929,7 @@
         return;
       }
 
-      let entries = sharedMailLogs;
+      let entries = getDisplayMailEntries();
       if (search) {
         entries = entries.filter(e =>
           (e.recipient      || '').toLowerCase().includes(search) ||
@@ -4890,7 +4965,7 @@
           <td style="padding:10px 14px;">${typeBadge}</td>
           <td style="padding:10px 14px;font-size:0.8rem;font-weight:600;color:#6C0D2C;white-space:nowrap;">${escapeHtml(e.template_name || 'Unknown')}</td>
           <td style="padding:10px 14px;font-size:0.79rem;color:#333;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(e.subject || '')}">${escapeHtml(e.subject || '—')}</td>
-          <td style="padding:10px 14px;white-space:nowrap;">${mailLogStatusBadge(e.status, e.error)}${e.error ? `<div style="font-size:0.68rem;color:#B91C1C;max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(e.error)}">${escapeHtml(e.error)}</div>` : ''}</td>
+          <td style="padding:10px 14px;white-space:nowrap;">${mailLogStatusBadge(e.status, e.error)}${e._local ? '<div style="font-size:0.66rem;color:#B45309;font-weight:700;">this device only, syncing…</div>' : ''}${e.error ? `<div style="font-size:0.68rem;color:#B91C1C;max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(e.error)}">${escapeHtml(e.error)}</div>` : ''}</td>
           <td style="padding:10px 14px;white-space:nowrap;">
             <div style="font-size:0.8rem;font-weight:700;color:#111;">${dateStr}</div>
             <div style="font-size:0.72rem;color:#666;">${timeStr}</div>
@@ -4907,7 +4982,7 @@
     }
 
     function exportOldMailLogCSV() {
-      const entries = sharedMailLogs.slice();
+      const entries = getDisplayMailEntries();
       if (entries.length === 0) {
         showToast('No mail log records to export.', 'info');
         return;
