@@ -2112,132 +2112,234 @@
       letter-spacing: 0.02em;
     }
 
-    /* ===== HERO SOVEREIGN PARTNERS STRIP (SPONSORS) ===== */
+    /* ===== HERO SOVEREIGN PARTNERS — POSTAGE STAMPS + POSTMARK ===== */
     .hero-partners {
+      --pw: 96px;
+      /* stamp paper width  (keep multiple of 8 for clean perforation) */
+      --ph: 80px;
+      /* stamp paper height (keep multiple of 8) */
+      --pm: 78px;
+      /* postmark diameter */
+      --art-pad: 2px;
+      --logo-pad: 6px;
+      --ink: #6C0D2C;
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
       gap: 14px;
-      margin-top: 10px;
-      padding: 7px 16px 7px 14px;
-      background: #FFFDF9;
-      border: 2px solid #000;
-      border-radius: 14px;
-      box-shadow: 3px 3px 0 #000;
-      animation: heroPartnersIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+      margin-top: 12px;
     }
 
-    @keyframes heroPartnersIn {
+    /* Ink postmark (circular cancellation) */
+    .hp-postmark {
+      position: relative;
+      z-index: 3;
+      width: var(--pm);
+      height: var(--pm);
+      flex-shrink: 0;
+      color: var(--ink);
+      transform: rotate(-12deg);
+      opacity: 0;
+    }
+
+    .hp-postmark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .hp-postmark .hp-ring-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      fill: currentColor;
+    }
+
+    .hp-postmark .hp-core-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      fill: currentColor;
+    }
+
+    .hp-postmark .hp-core-text.is-black {
+      fill: #1a0a0f;
+    }
+
+    .hp-stamps {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hp-stamp {
+      --tilt: 0deg;
+      --i: 0;
+      margin: 0;
+      transform: rotate(var(--tilt));
+      opacity: 0;
+    }
+
+    .hp-stamp-lift {
+      filter: drop-shadow(0 0 0.5px rgba(60, 25, 15, 0.55)) drop-shadow(0 5px 7px rgba(70, 30, 20, 0.16));
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.28s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hp-stamp:hover .hp-stamp-lift {
+        transform: translateY(-5px) rotate(calc(-1 * var(--tilt))) scale(1.06);
+        filter: drop-shadow(0 0 0.5px rgba(60, 25, 15, 0.6)) drop-shadow(0 12px 14px rgba(70, 30, 20, 0.22));
+      }
+    }
+
+    /* Perforated paper: a grid of holes, unioned with a solid content-box,
+       leaves fine notches only around the edge. */
+    .hp-stamp-paper {
+      width: var(--pw);
+      height: var(--ph);
+      padding: 5px;
+      box-sizing: border-box;
+      background: #FFFEFB;
+      -webkit-mask:
+        radial-gradient(circle at center, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px repeat,
+        linear-gradient(#000 0 0) content-box;
+      mask:
+        radial-gradient(circle at center, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px repeat,
+        linear-gradient(#000 0 0) content-box;
+    }
+
+    .hp-stamp-art {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: var(--art-pad);
+      background: #FFFEFB;
+    }
+
+    .hp-stamp-art>span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: var(--logo-pad);
+      border: 1px solid rgba(26, 10, 15, 0.75);
+      background: var(--tint, #FFF7EB);
+      box-shadow: inset 0 0 0 2px #FFFEFB, inset 0 0 0 2.6px rgba(26, 10, 15, 0.18);
+    }
+
+    .hp-stamp-art img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Entrance: stamps drop in one by one once the preloader exits, then the postmark lands */
+    html.visited-site .hp-stamp {
+      animation: hpStampDrop 0.55s cubic-bezier(0.2, 1.3, 0.4, 1) calc(0.45s + var(--i) * 0.13s) both;
+    }
+
+    html.visited-site .hp-postmark {
+      animation: hpPostmarkThud 0.42s cubic-bezier(0.3, 1.4, 0.5, 1) 0.98s both;
+    }
+
+    @keyframes hpStampDrop {
       from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(-18px) rotate(calc(var(--tilt) - 10deg)) scale(1.3);
       }
 
       to {
         opacity: 1;
-        transform: none;
+        transform: rotate(var(--tilt));
       }
     }
 
-    .hp-label {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.66rem;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      line-height: 1.12;
-      text-transform: uppercase;
-      color: #000;
-      padding-right: 14px;
-      border-right: 1.5px dashed rgba(0, 0, 0, 0.25);
+    @keyframes hpPostmarkThud {
+      0% {
+        opacity: 0;
+        transform: rotate(-12deg) scale(1.7);
+      }
+
+      60% {
+        opacity: 0.95;
+        transform: rotate(-12deg) scale(0.93);
+      }
+
+      100% {
+        opacity: 0.92;
+        transform: rotate(-12deg) scale(1);
+      }
     }
 
-    .hp-label span:last-child {
-      color: #6C0D2C;
-    }
+    @media (prefers-reduced-motion: reduce) {
 
-    .hp-logos {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
+      .hp-stamp,
+      html.visited-site .hp-stamp {
+        animation: none;
+        opacity: 1;
+      }
 
-    .hp-logo {
-      display: block;
-      height: 44px;
-      width: auto;
-      object-fit: contain;
-      transition: transform 0.2s ease;
-    }
-
-    .hp-logo.is-wide {
-      height: 40px;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .hp-logo:hover {
-        transform: translateY(-2px) scale(1.06);
+      .hp-postmark,
+      html.visited-site .hp-postmark {
+        animation: none;
+        opacity: 0.92;
       }
     }
 
     @media (max-width: 580px) {
       .hero-partners {
-        gap: 10px;
+        --pw: 72px;
+        --ph: 64px;
+        --pm: 62px;
+        --art-pad: 2px;
+        --logo-pad: 4px;
+        gap: 9px;
         margin-top: 10px;
-        padding: 6px 12px 6px 10px;
-        border-radius: 12px;
-        box-shadow: 2.5px 2.5px 0 #000;
       }
 
-      .hp-label {
-        font-size: 0.56rem;
-        padding-right: 10px;
-      }
-
-      .hp-logos {
-        gap: 12px;
-      }
-
-      .hp-logo {
-        height: 36px;
-      }
-
-      .hp-logo.is-wide {
-        height: 32px;
+      .hp-stamps {
+        gap: 8px;
       }
     }
 
     /* Make room under the hero for the partners strip */
     @media (min-width: 900px) {
       html.home-page .carousel-container {
-        transform: translateY(210px);
+        transform: translateY(230px);
       }
     }
 
     @media (max-width: 899px) {
       html.home-page .carousel-container {
-        transform: translateY(202px);
+        transform: translateY(220px);
       }
     }
 
     @media (max-width: 899px) and (max-height: 720px) {
       html.home-page .carousel-container {
-        transform: translateY(170px);
+        transform: translateY(186px);
       }
 
       .hero-partners {
+        --pw: 64px;
+        --ph: 56px;
+        --pm: 54px;
+        --art-pad: 1px;
+        --logo-pad: 3px;
+        gap: 8px;
         margin-top: 6px;
-        padding: 4px 10px 4px 8px;
       }
 
-      .hp-logo {
-        height: 30px;
-      }
-
-      .hp-logo.is-wide {
-        height: 27px;
+      .hp-stamps {
+        gap: 7px;
       }
     }
 
@@ -2821,14 +2923,56 @@
           <span class="hpt-label">Prize Pool</span>
         </a>
         <div class="hero-partners" id="partners" role="region" aria-label="Sovereign Partners — Official Sponsors">
-          <span class="hp-label" aria-hidden="true"><span>Sovereign</span><span>Partners</span></span>
-          <div class="hp-logos">
-            <img class="hp-logo" src="/Sponsers/logos/kunafa-bytes.webp" alt="Kunafa Bytes" width="254" height="216"
-              decoding="async">
-            <img class="hp-logo" src="/Sponsers/logos/vastra-core.webp" alt="Vastra Core" width="251" height="221"
-              decoding="async">
-            <img class="hp-logo is-wide" src="/Sponsers/logos/malnads-arogya.webp" alt="Malnads Arogya" width="337"
-              height="198" decoding="async">
+          <div class="hp-postmark" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <path id="hpRingPath" d="M50,50 m-38.5,0 a38.5,38.5 0 1,1 77,0 a38.5,38.5 0 1,1 -77,0" />
+                <filter id="hpInk" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+                  <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n" />
+                  <feColorMatrix in="n" type="matrix"
+                    values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4.5 0 0 0 -1.25" result="m" />
+                  <feComposite in="SourceGraphic" in2="m" operator="in" />
+                </filter>
+              </defs>
+              <g filter="url(#hpInk)">
+                <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2.6" />
+                <circle cx="50" cy="50" r="33.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                <text class="hp-ring-text">
+                  <textPath href="#hpRingPath" textLength="236" lengthAdjust="spacing">OFFICIAL SPONSORS ★ RNSMUN 2026 ★</textPath>
+                </text>
+                <line x1="30" y1="35.5" x2="70" y2="35.5" stroke="currentColor" stroke-width="1.1" />
+                <line x1="30" y1="65" x2="70" y2="65" stroke="currentColor" stroke-width="1.1" />
+                <text class="hp-core-text is-black" x="50" y="48.5" text-anchor="middle">SOVEREIGN</text>
+                <text class="hp-core-text" x="50" y="60" text-anchor="middle">PARTNERS</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="hp-stamps">
+            <figure class="hp-stamp" style="--tilt:-3deg; --i:0; --tint:#FBEDE6;">
+              <div class="hp-stamp-lift">
+                <div class="hp-stamp-paper">
+                  <div class="hp-stamp-art"><span><img src="/Sponsers/logos/kunafa-bytes.webp" alt="Kunafa Bytes"
+                        width="254" height="216" decoding="async"></span></div>
+                </div>
+              </div>
+            </figure>
+            <figure class="hp-stamp" style="--tilt:2deg; --i:1; --tint:#ECEFF8;">
+              <div class="hp-stamp-lift">
+                <div class="hp-stamp-paper">
+                  <div class="hp-stamp-art"><span><img src="/Sponsers/logos/vastra-core.webp" alt="Vastra Core"
+                        width="251" height="221" decoding="async"></span></div>
+                </div>
+              </div>
+            </figure>
+            <figure class="hp-stamp" style="--tilt:-2deg; --i:2; --tint:#EEF3E6;">
+              <div class="hp-stamp-lift">
+                <div class="hp-stamp-paper">
+                  <div class="hp-stamp-art"><span><img src="/Sponsers/logos/malnads-arogya.webp" alt="Malnads Arogya"
+                        width="337" height="198" decoding="async"></span></div>
+                </div>
+              </div>
+            </figure>
           </div>
         </div>
       </div>
