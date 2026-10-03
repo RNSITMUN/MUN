@@ -2677,7 +2677,7 @@
               </svg>
               <span>QR Passes</span>
             </span>
-            <span class="tab-badge" id="badge-count-qrpasses" style="background:#6C0D2C; color:#FFF;">88</span>
+            <span class="tab-badge" id="badge-count-qrpasses" style="background:#6C0D2C; color:#FFF;">…</span>
           </button>
         </div>
 
@@ -3112,10 +3112,7 @@
         <!-- Group pills -->
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
           <span style="font-size:0.78rem; font-weight:700; color:#555;">Filter:</span>
-          <button class="qr-modal-pill active" id="qr-pill-all" onclick="filterQRGroup('all')">All (88)</button>
-          <button class="qr-modal-pill" id="qr-pill-alliance" onclick="filterQRGroup('alliance')">Alliance (20)</button>
-          <button class="qr-modal-pill" id="qr-pill-cms" onclick="filterQRGroup('cms')">CMS (24)</button>
-          <button class="qr-modal-pill" id="qr-pill-individual" onclick="filterQRGroup('individual')">Individual (44)</button>
+          <span id="qr-pills-dynamic" style="display:contents;"><button class="qr-modal-pill active" id="qr-pill-all" onclick="filterQRGroup('all')">All</button></span>
         </div>
 
         <!-- Cards Grid -->
@@ -3661,6 +3658,7 @@
           applySharedMailLogs(data.mailLogs); // quick first paint; the shared endpoint + realtime take over below
         }
         startMailLogSync();
+        try { updateQRBadge(); } catch (e) {}
 
         // Expected total counts from server stats
         const statsObj = data.stats || {};
@@ -4110,13 +4108,9 @@
     // ─── QR Passes Gallery (Dynamic live generation) ──────────────
     let _activeQRGroup = 'all';
 
-    function renderQRPasses() {
-      const grid = document.getElementById('qr-cards-grid');
-      if (!grid) return;
-      grid.innerHTML = '';
-
+    // Every QR the portal can issue, from live data (individuals + every delegation member).
+    function buildQRItems() {
       const items = [];
-
       // 1. Process Individual Delegates
       (rawRegistrations || []).forEach(r => {
         const name = r.name || `Delegate #${r.id}`;
@@ -4125,6 +4119,7 @@
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
         const comm = r.allocated_committee || r.committee1 || 'Allotted Committee';
         items.push({
+          status: r.status || '',
           group: 'individual',
           label: 'Individual',
           color: '#1a4f8a',
@@ -4148,7 +4143,7 @@
         const dName = d.delegation_name || 'Delegation';
         const isAlliance = dName.toLowerCase().includes('alliance');
         const isCms = dName.toLowerCase().includes('cms');
-        const group = isAlliance ? 'alliance' : (isCms ? 'cms' : 'delegation');
+        const group = isAlliance ? 'alliance' : (isCms ? 'cms' : 'dlg-' + d.id);
         const label = isAlliance ? 'Alliance' : (isCms ? 'CMS' : dName);
         const color = isAlliance ? '#C8902B' : (isCms ? '#6C0D2C' : '#065F46');
         const bg = isAlliance ? '#FFF7EB' : (isCms ? '#FDE8EF' : '#D1FAE5');
@@ -4159,6 +4154,8 @@
           const passUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(token)}&m=0`;
           const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
           items.push({
+            status: d.status || '',
+            groupId: d.id,
             group,
             label,
             color,
@@ -4172,10 +4169,13 @@
         } else {
           roster.forEach((m, idx) => {
             const name = m.name || m.delegateName || m['Delegate Name'] || `Delegate ${idx + 1}`;
-            const comm = m.committee || m.portfolio || m.committee1 || 'Allotted Matrix';
+            const alloc0 = getMemberAllocation(d, idx);
+            const comm = alloc0.hasAllocation ? `${alloc0.committee} · ${alloc0.portfolio}` : (m.committee || m.portfolio || m.committee1 || 'Allocation pending');
             const passUrl = `https://mun.rnsit.ac.in/hub?t=${encodeURIComponent(token)}&m=${idx}`;
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(passUrl)}`;
             items.push({
+              status: d.status || '',
+              groupId: d.id,
               group,
               label,
               color,
@@ -4189,19 +4189,37 @@
           });
         }
       });
+      return items;
+    }
 
-      // Update pill counters
-      const allPill = document.getElementById('qr-pill-all');
-      if (allPill) allPill.textContent = `All (${items.length})`;
+    function updateQRBadge() {
+      const badge = document.getElementById('badge-count-qrpasses');
+      if (badge) badge.textContent = buildQRItems().length;
+    }
 
-      const alliancePill = document.getElementById('qr-pill-alliance');
-      if (alliancePill) alliancePill.textContent = `Alliance (${items.filter(x => x.group === 'alliance').length})`;
+    function renderQRPasses() {
+      const grid = document.getElementById('qr-cards-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const items = buildQRItems();
 
-      const cmsPill = document.getElementById('qr-pill-cms');
-      if (cmsPill) cmsPill.textContent = `CMS (${items.filter(x => x.group === 'cms').length})`;
-
-      const indPill = document.getElementById('qr-pill-individual');
-      if (indPill) indPill.textContent = `Individual (${items.filter(x => x.group === 'individual').length})`;
+      // One filter pill per group: Individual, Alliance, CMS and every other delegation (PES, MCU, KLE, ...).
+      const groups = [];
+      items.forEach(x => {
+        let g = groups.find(y => y.key === x.group);
+        if (!g) { g = { key: x.group, label: x.group === 'individual' ? 'Individual' : x.label, count: 0 }; groups.push(g); }
+        g.count++;
+      });
+      const order = k => k === 'individual' ? 0 : (k === 'alliance' ? 1 : (k === 'cms' ? 2 : 3));
+      groups.sort((a, b) => order(a.key) - order(b.key) || String(a.label).localeCompare(String(b.label)));
+      if (_activeQRGroup !== 'all' && !groups.some(g => g.key === _activeQRGroup)) _activeQRGroup = 'all';
+      const pillBox = document.getElementById('qr-pills-dynamic');
+      if (pillBox) {
+        pillBox.innerHTML = `<button class="qr-modal-pill ${_activeQRGroup === 'all' ? 'active' : ''}" id="qr-pill-all" onclick="filterQRGroup('all')">All (${items.length})</button>` +
+          groups.map(g => `<button class="qr-modal-pill ${_activeQRGroup === g.key ? 'active' : ''}" data-group="${escapeHtml(g.key)}" onclick="filterQRGroup('${String(g.key).replace(/'/g, "\\'")}')">${escapeHtml(g.label)} (${g.count})</button>`).join('');
+      }
+      const badgeEl = document.getElementById('badge-count-qrpasses');
+      if (badgeEl) badgeEl.textContent = items.length;
 
       items.forEach(item => {
         const card = document.createElement('div');
@@ -4252,6 +4270,7 @@
           </div>
           <div style="padding:7px 8px 8px; flex:1; display:flex; flex-direction:column; justify-content:center;">
             <div style="font-size:0.72rem; font-weight:800; color:#111; line-height:1.3; word-break:break-word;">${escapeHtml(item.name)}</div>
+            ${item.status ? `<div style="font-size:0.6rem; font-weight:800; margin-top:2px; color:${/confirmed/i.test(item.status) ? '#047857' : (/reject/i.test(item.status) ? '#B91C1C' : '#B45309')};">● ${escapeHtml(item.status)}</div>` : ''}
             <div style="font-size:0.65rem; color:#666; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHtml(item.committee)}">${escapeHtml(item.committee)}</div>
           </div>
         `;
@@ -4281,9 +4300,9 @@
 
     function filterQRGroup(group) {
       _activeQRGroup = group;
-      ['all','alliance','cms','individual'].forEach(g => {
-        const pill = document.getElementById('qr-pill-' + g);
-        if (pill) pill.classList.toggle('active', g === group);
+      document.querySelectorAll('#qr-pills-dynamic .qr-modal-pill').forEach(pill => {
+        const g = pill.id === 'qr-pill-all' ? 'all' : pill.dataset.group;
+        pill.classList.toggle('active', g === group);
       });
       filterQRCards();
     }
