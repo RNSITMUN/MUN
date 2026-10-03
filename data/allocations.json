@@ -1638,27 +1638,6 @@
     "payment_status": "Confirmed"
   },
   {
-    "allocation_id": "IND-189",
-    "registration_type": "Individual",
-    "record_id": 189,
-    "member_index": 0,
-    "delegate_name": "Karthik Prasad M",
-    "email": "prasadmkarthik@gmail.com",
-    "phone": "9108020250",
-    "institution": "R N S Institute of Technology",
-    "college_name": "R N S Institute of Technology",
-    "delegate_category": "External",
-    "delegation_name": "Individual",
-    "allocated_committee": "UNSC",
-    "allocated_portfolio": "Russian Federation",
-    "session_chamber": "Council Chamber • MBA Seminar Hall (2nd Floor)",
-    "whatsapp_community_url": "https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx",
-    "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=01SkYbXty7FKfy",
-    "qr_badge_path": "/qrs/individual_delegates/IND-189_Karthik_Prasad_M.png",
-    "allocation_status": "Confirmed",
-    "payment_status": "Rejected"
-  },
-  {
     "allocation_id": "IND-190",
     "registration_type": "Individual",
     "record_id": 190,
@@ -1789,7 +1768,7 @@
     "registration_type": "Individual",
     "record_id": 198,
     "member_index": 0,
-    "delegate_name": "Melvin Josh M",
+    "delegate_name": "Melvin Josh m",
     "email": "melvinofficial90@gmail.com",
     "phone": "9944154691",
     "institution": "St Joseph's university",
@@ -2706,7 +2685,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=0",
     "qr_badge_path": "/qrs/PES_University/DEL-92-01_Saakshi_Mohanty__Head_of_Delegation_.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-02",
@@ -2727,7 +2706,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=1",
     "qr_badge_path": "/qrs/PES_University/DEL-92-02_Yash_Tadi.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-03",
@@ -2748,7 +2727,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=2",
     "qr_badge_path": "/qrs/PES_University/DEL-92-03_Eshanaa_Gangamma.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-04",
@@ -2769,7 +2748,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=3",
     "qr_badge_path": "/qrs/PES_University/DEL-92-04_Atreya_B_Deshpande.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-05",
@@ -2790,7 +2769,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=4",
     "qr_badge_path": "/qrs/PES_University/DEL-92-05_Saisree_Vaishnavi.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-06",
@@ -2811,7 +2790,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=5",
     "qr_badge_path": "/qrs/PES_University/DEL-92-06_Abhay_Anish_Abraham.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-07",
@@ -2832,7 +2811,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=6",
     "qr_badge_path": "/qrs/PES_University/DEL-92-07_Ron_Jais.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-08",
@@ -2853,7 +2832,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=7",
     "qr_badge_path": "/qrs/PES_University/DEL-92-08_Shloka_Shetty.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-09",
@@ -2874,7 +2853,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=8",
     "qr_badge_path": "/qrs/PES_University/DEL-92-09_Parnika.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-10",
@@ -2895,7 +2874,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=9",
     "qr_badge_path": "/qrs/PES_University/DEL-92-10_Pratham.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-11",
@@ -2916,7 +2895,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=10",
     "qr_badge_path": "/qrs/PES_University/DEL-92-11_Aditya_R.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-12",
@@ -2937,7 +2916,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=11",
     "qr_badge_path": "/qrs/PES_University/DEL-92-12_Aaron_G_Sunil.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-92-13",
@@ -2958,7 +2937,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=12",
     "qr_badge_path": "/qrs/PES_University/DEL-92-13_Neil_Verma.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Rejected"
   },
   {
     "allocation_id": "DEL-95-01",
@@ -3294,7 +3273,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=0",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-01_Saakshi_Mohanty__Head_of_Delegation_.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-02",
@@ -3309,13 +3288,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "UNSC",
-    "allocated_portfolio": "UK",
+    "allocated_portfolio": "Somalia",
     "session_chamber": "Council Chamber • MBA Seminar Hall (2nd Floor)",
     "whatsapp_community_url": "https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=1",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-02_Yash_Tadi.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-03",
@@ -3336,7 +3315,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=2",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-03_Eshanaa_Gangamma.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-04",
@@ -3351,13 +3330,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "UNSC",
-    "allocated_portfolio": "France",
+    "allocated_portfolio": "USA",
     "session_chamber": "Council Chamber • MBA Seminar Hall (2nd Floor)",
     "whatsapp_community_url": "https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=3",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-04_Atreya_B_Deshpande.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-05",
@@ -3372,13 +3351,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "IP",
-    "allocated_portfolio": "Assigned Delegate",
+    "allocated_portfolio": "Deutsche Welle (DW)",
     "session_chamber": "Press Bureau & Media Lab • Academic Block 1",
     "whatsapp_community_url": "https://chat.whatsapp.com/Id2vun9PhQhGlRFTQZKoZm",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=4",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-05_Saisree_Vaishnavi.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-06",
@@ -3399,7 +3378,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=5",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-06_Abhay_Anish_Abraham.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-07",
@@ -3414,13 +3393,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "UNHRC",
-    "allocated_portfolio": "Assigned Delegate",
+    "allocated_portfolio": "Republic of Turkiye",
     "session_chamber": "Committee Room 102 • Mech Seminar Hall",
     "whatsapp_community_url": "https://chat.whatsapp.com/Kqgvxt2yVwsGGDcWAaC1sC",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=6",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-07_Ron_Jais.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-08",
@@ -3441,7 +3420,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=7",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-08_Shloka_Shetty.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-09",
@@ -3456,13 +3435,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "UNODC",
-    "allocated_portfolio": "UAE",
+    "allocated_portfolio": "Indonesia",
     "session_chamber": "Committee Room 301 • ECE Seminar Hall",
     "whatsapp_community_url": "https://chat.whatsapp.com/IcgBAXEcbO8F9UCf0DiFJm",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=8",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-09_Parnika.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-10",
@@ -3483,7 +3462,7 @@
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=9",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-10_Pratham.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-11",
@@ -3498,13 +3477,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "DISEC",
-    "allocated_portfolio": "Switzerland",
+    "allocated_portfolio": "Swiss Confederation",
     "session_chamber": "Committee Room 204 • Civil Seminar Hall",
     "whatsapp_community_url": "https://chat.whatsapp.com/ChdeFdrcg0U88lUuaMLrI2",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=10",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-11_Aditya_R.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-12",
@@ -3519,13 +3498,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "UNSC",
-    "allocated_portfolio": "Russia",
+    "allocated_portfolio": "Republic of the Sudan",
     "session_chamber": "Council Chamber • MBA Seminar Hall (2nd Floor)",
     "whatsapp_community_url": "https://chat.whatsapp.com/LSB4bvcexqoK3JkmQyYqCx",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=11",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-12_Aaron_G_Sunil.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-96-13",
@@ -3540,13 +3519,13 @@
     "delegate_category": "External",
     "delegation_name": "EC casino royale",
     "allocated_committee": "Lok Sabha",
-    "allocated_portfolio": "Narendra Modi",
+    "allocated_portfolio": "Pralhad Joshi",
     "session_chamber": "Central Plenary Hall • Chanakya Block",
     "whatsapp_community_url": "https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfavUNSY1&m=12",
     "qr_badge_path": "/qrs/EC_casino_royale/DEL-96-13_Neil_Verma.png",
     "allocation_status": "Confirmed",
-    "payment_status": "Confirmed"
+    "payment_status": "Verified"
   },
   {
     "allocation_id": "DEL-97-01",
@@ -3566,6 +3545,27 @@
     "whatsapp_community_url": "https://chat.whatsapp.com/G5y1o155s6y9017",
     "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BfzadDgYg&m=0",
     "qr_badge_path": "/qrs/KLE/DEL-97-01_Arpit_Ashok_Gawas__Head_of_Delegation_.png",
+    "allocation_status": "Confirmed",
+    "payment_status": "Draft Sheet Created"
+  },
+  {
+    "allocation_id": "DEL-99-01",
+    "registration_type": "Delegation Member",
+    "record_id": 99,
+    "member_index": 0,
+    "delegate_name": "Harini Krishna (Head of Delegation)",
+    "email": "harinikrishna2086@gmail.com",
+    "phone": "9535042017",
+    "institution": "jyothy Institute Of Technology",
+    "college_name": "jyothy Institute Of Technology",
+    "delegate_category": "external",
+    "delegation_name": "jyothy Institute Of Technology",
+    "allocated_committee": "Assigned Matrix",
+    "allocated_portfolio": "Assigned Delegate",
+    "session_chamber": "Main Plenary Hall • Academic Block 2",
+    "whatsapp_community_url": "https://chat.whatsapp.com/G5y1o155s6y9017",
+    "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7BgbUm2BAk&m=0",
+    "qr_badge_path": "/qrs/jyothy_Institute_Of_Technology/DEL-99-01_Harini_Krishna__Head_of_Delegation_.png",
     "allocation_status": "Confirmed",
     "payment_status": "Draft Sheet Created"
   }
