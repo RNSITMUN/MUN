@@ -209,5 +209,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/send-mail.js": {
+      "maxDuration": 30
+    }
+  }
 }

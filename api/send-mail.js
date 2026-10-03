@@ -99,16 +99,31 @@ async function sharedLogUpdate(id, patch) {
 }
 
 // Cluster-wide duplicate guard (reads the shared table, not a per-instance /tmp file).
-async function sharedAlreadySent(email, registrationId) {
+// A mail is a duplicate only if the SAME template was already sent to this person for this record;
+// sending a different template (e.g. WhatsApp reminder after the pass) is a new mail, never "skipped".
+async function sharedAlreadySent(email, registrationId, templateId) {
   const db = logDb();
   if (!db || !email) return false;
   try {
     let q = db.from('mail_logs').select('id').ilike('recipient', String(email).trim()).eq('status', 'sent');
     if (registrationId) q = q.eq('record_id', String(registrationId));
+    if (templateId) q = q.eq('template_id', String(templateId));
     const { data, error } = await q.limit(1);
     return !error && Array.isArray(data) && data.length > 0;
   } catch (e) { return false; }
 }
+
+// Turn raw Apps Script / Gmail errors into something an admin can act on.
+function explainMailError(raw) {
+  const msg = String(raw || '').trim();
+  if (/too many times|quota|limit exceeded|daily/i.test(msg)) {
+    return 'Gmail daily sending quota reached for the mailer account (about 100 recipients/day on a free @gmail.com account, 1,500 on Google Workspace). It resets ~24h after the first send. Original: ' + msg;
+  }
+  if (/lock/i.test(msg)) return 'Mail service was busy (another send held the lock). Safe to retry. Original: ' + msg;
+  if (/authorization|permission|not authorized/i.test(msg)) return 'Mail service needs authorization: re-deploy the Apps Script web app and approve access. Original: ' + msg;
+  return msg || 'Mail service reported failure';
+}
+const isRetryable = (status, msg) => status === 429 || status === 503 || /lock/i.test(String(msg || '')) && !/quota|too many times/i.test(String(msg || ''));
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
@@ -210,13 +225,13 @@ export default async function handler(req, res) {
       });
     };
     if (!isResend && logRegistrationId && recipient) {
-      const alreadySent = (await sharedAlreadySent(recipient, logRegistrationId)) || (await checkAlreadySent(recipient, logRegistrationId));
+      const alreadySent = await sharedAlreadySent(recipient, logRegistrationId, bodyTemplateId);
       if (alreadySent) {
-        await logAttempt('skipped', 'Duplicate guard: already sent');
+        // Nothing was attempted, so no log row is written: the original 'sent' row already records this mail.
         return res.status(200).json({
           success: true,
           skipped: true,
-          message: `Notice already sent to ${recipient} for ID #${logRegistrationId}. Use Resend to override.`
+          message: `"${bodyTemplateName || 'This template'}" was already sent to ${recipient} for ID #${logRegistrationId}. Use Resend to send it again, or pick a different template.`
         });
       }
     }
@@ -348,30 +363,33 @@ export default async function handler(req, res) {
       attachments: Array.isArray(attachments) ? attachments : []
     };
 
-    let response;
-    try {
-      response = await fetch(targetUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8' // Google Apps Script handles text/plain without triggering complex CORS preflights
-        },
-        body: JSON.stringify(payload),
-        redirect: 'follow'
-      });
-    } catch (netErr) {
-      if (mailLogRecord) {
-        await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: netErr.message });
+    // Call Apps Script; retry only when it is clearly safe (lock contention / 429 / 503), never after a quota error.
+    let response, responseText, responseData;
+    const MAX_ATTEMPTS = 3;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8' // Google Apps Script handles text/plain without triggering complex CORS preflights
+          },
+          body: JSON.stringify(payload),
+          redirect: 'follow'
+        });
+      } catch (netErr) {
+        const m = `Could not reach mail service: ${netErr.message}`;
+        if (mailLogRecord) await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: m });
+        await logAttempt('failed', m, preparedSubject);
+        return res.status(502).json({ success: false, error: m });
       }
-      await logAttempt('failed', netErr.message, preparedSubject);
-      return res.status(502).json({ success: false, error: `Could not reach mail service: ${netErr.message}` });
-    }
-
-    const responseText = await response.text();
-    let responseData;
-    try {
-      responseData = JSON.parse(responseText);
-    } catch (e) {
-      responseData = { rawResponse: responseText };
+      responseText = await response.text();
+      try { responseData = JSON.parse(responseText); } catch (e) { responseData = { rawResponse: responseText }; }
+      const errText = responseData.error || responseData.message || '';
+      if (attempt < MAX_ATTEMPTS && isRetryable(response.status, errText) && (!response.ok || responseData.success === false)) {
+        await new Promise(r => setTimeout(r, attempt * 1500));
+        continue;
+      }
+      break;
     }
 
     if (!response.ok) {
@@ -381,31 +399,23 @@ export default async function handler(req, res) {
         errorMsg = 'Google Apps Script 401 Unauthorized: In Google Apps Script, click "Deploy" -> "Manage deployments" -> Edit (pencil) -> Set "Who has access" to "Anyone" (not "Only myself"), then click "Deploy" and Authorize access.';
       } else if (response.status === 404) {
         errorMsg = 'Google Apps Script 404 Not Found: Check that your Web App URL ends with /exec and that the deployment is active in Google Apps Script.';
+      } else {
+        errorMsg = explainMailError(errorMsg);
       }
 
       if (mailLogRecord) {
-        await updateMailLogEntry(mailLogRecord.id, {
-          status: 'failed',
-          error: errorMsg
-        });
+        await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: errorMsg });
       }
-
       await logAttempt('failed', errorMsg, preparedSubject);
-
-      return res.status(response.status).json({
-        success: false,
-        error: errorMsg,
-        statusCode: response.status,
-        details: responseData
-      });
+      return res.status(response.status).json({ success: false, error: errorMsg, statusCode: response.status, details: responseData });
     }
 
-    // Apps Script can answer HTTP 200 with { success:false } - that is a failed attempt, not a sent mail.
-    if (responseData.success === false) {
-      const scriptErr = responseData.error || responseData.message || 'Mail service reported failure';
-      if (mailLogRecord) {
-        await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: scriptErr });
-      }
+    // Only an explicit { success: true } from Apps Script counts as sent. An HTML page (quota/login) or a
+    // JSON body without success:true is NOT proof of delivery.
+    if (responseData.success !== true) {
+      const raw = responseData.error || responseData.message || (responseData.rawResponse ? 'Unexpected non-JSON reply from mail service: ' + String(responseData.rawResponse).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) : 'Mail service reported failure');
+      const scriptErr = explainMailError(raw);
+      if (mailLogRecord) await updateMailLogEntry(mailLogRecord.id, { status: 'failed', error: scriptErr });
       await logAttempt('failed', scriptErr, preparedSubject);
       return res.status(502).json({ success: false, error: scriptErr, details: responseData });
     }
