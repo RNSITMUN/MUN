@@ -2112,6 +2112,135 @@
       letter-spacing: 0.02em;
     }
 
+    /* ===== HERO SOVEREIGN PARTNERS STRIP (SPONSORS) ===== */
+    .hero-partners {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 10px;
+      padding: 7px 16px 7px 14px;
+      background: #FFFDF9;
+      border: 2px solid #000;
+      border-radius: 14px;
+      box-shadow: 3px 3px 0 #000;
+      animation: heroPartnersIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+    }
+
+    @keyframes heroPartnersIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .hp-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      line-height: 1.12;
+      text-transform: uppercase;
+      color: #000;
+      padding-right: 14px;
+      border-right: 1.5px dashed rgba(0, 0, 0, 0.25);
+    }
+
+    .hp-label span:last-child {
+      color: #6C0D2C;
+    }
+
+    .hp-logos {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hp-logo {
+      display: block;
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .hp-logo.is-wide {
+      height: 40px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hp-logo:hover {
+        transform: translateY(-2px) scale(1.06);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .hero-partners {
+        gap: 10px;
+        margin-top: 10px;
+        padding: 6px 12px 6px 10px;
+        border-radius: 12px;
+        box-shadow: 2.5px 2.5px 0 #000;
+      }
+
+      .hp-label {
+        font-size: 0.56rem;
+        padding-right: 10px;
+      }
+
+      .hp-logos {
+        gap: 12px;
+      }
+
+      .hp-logo {
+        height: 36px;
+      }
+
+      .hp-logo.is-wide {
+        height: 32px;
+      }
+    }
+
+    /* Make room under the hero for the partners strip */
+    @media (min-width: 900px) {
+      html.home-page .carousel-container {
+        transform: translateY(210px);
+      }
+    }
+
+    @media (max-width: 899px) {
+      html.home-page .carousel-container {
+        transform: translateY(202px);
+      }
+    }
+
+    @media (max-width: 899px) and (max-height: 720px) {
+      html.home-page .carousel-container {
+        transform: translateY(170px);
+      }
+
+      .hero-partners {
+        margin-top: 6px;
+        padding: 4px 10px 4px 8px;
+      }
+
+      .hp-logo {
+        height: 30px;
+      }
+
+      .hp-logo.is-wide {
+        height: 27px;
+      }
+    }
+
     /* Landscape & Compact Screen Adjustments for Globe Positioning */
     @media (max-height: 650px) and (orientation: landscape) {
       .nav-pill {
@@ -2691,6 +2820,17 @@
           <span class="hpt-amount">₹1,00,000+</span>
           <span class="hpt-label">Prize Pool</span>
         </a>
+        <div class="hero-partners" id="partners" role="region" aria-label="Sovereign Partners — Official Sponsors">
+          <span class="hp-label" aria-hidden="true"><span>Sovereign</span><span>Partners</span></span>
+          <div class="hp-logos">
+            <img class="hp-logo" src="/Sponsers/logos/kunafa-bytes.webp" alt="Kunafa Bytes" width="254" height="216"
+              decoding="async">
+            <img class="hp-logo" src="/Sponsers/logos/vastra-core.webp" alt="Vastra Core" width="251" height="221"
+              decoding="async">
+            <img class="hp-logo is-wide" src="/Sponsers/logos/malnads-arogya.webp" alt="Malnads Arogya" width="337"
+              height="198" decoding="async">
+          </div>
+        </div>
       </div>
     </div>
 
