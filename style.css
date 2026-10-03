@@ -680,10 +680,15 @@ body.mobile-menu-open {
 }
 
 body.modal-open .mobile-floating-reg-btn,
-html.modal-open .mobile-floating-reg-btn {
+html.modal-open .mobile-floating-reg-btn,
+body:has(.hub-viewport) .mobile-floating-reg-btn,
+html:has(.hub-viewport) .mobile-floating-reg-btn,
+body:has(#scanner-container) .mobile-floating-reg-btn,
+body:has(#reader) .mobile-floating-reg-btn {
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
+  display: none !important;
 }
 
 /* Mobile Floating "Register" Quick Action Button */

@@ -69,9 +69,12 @@
 
     document.body.appendChild(root);
 
-    // If not already on the registration page, mount the discreet floating "Register Now" button
-    const isRegPage = currentPath === "/registration" || currentPath.startsWith("/registration");
-    if (!isRegPage && !document.getElementById("mobileFloatingRegBtn")) {
+    // If not already on the registration, hub, or scan pages, mount the discreet floating "Register Now" button
+    const pathLower = (window.location.pathname || "").toLowerCase();
+    const isRegPage = currentPath === "/registration" || currentPath.startsWith("/registration") || pathLower.includes("registration");
+    const isHubPage = currentPath === "/hub" || currentPath.startsWith("/hub") || pathLower.includes("hub");
+    const isScanPage = currentPath === "/scan" || currentPath.startsWith("/scan") || pathLower.includes("scan");
+    if (!isRegPage && !isHubPage && !isScanPage && !document.getElementById("mobileFloatingRegBtn")) {
       const regBtn = document.createElement("a");
       regBtn.href = "/registration";
       regBtn.id = "mobileFloatingRegBtn";
