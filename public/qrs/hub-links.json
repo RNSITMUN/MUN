@@ -563,7 +563,7 @@
     "email": "divyansh25cs@rnsit.ac.in • 8521745693",
     "delegation": "Individual Delegate",
     "committee": "Lok Sabha",
-    "portfolio": "Amit Shah (BJP)",
+    "portfolio": "Kiren Rijiju",
     "hubUrl": "https://mun.rnsit.ac.in/hub?t=01SkYbSEUqkguu"
   },
   {
@@ -754,6 +754,24 @@
     "committee": "UNHRC",
     "portfolio": "United Kingdom of Great Britain and Northern Ireland",
     "hubUrl": "https://mun.rnsit.ac.in/hub?t=01SkYbZSE6R2vG"
+  },
+  {
+    "code": "IND-197",
+    "name": "Maithreyi R",
+    "email": "maithreyivasishtar19@gmail.com • 9591887583",
+    "delegation": "Individual Delegate",
+    "committee": "UNHRC",
+    "portfolio": "Ecuador",
+    "hubUrl": "https://mun.rnsit.ac.in/hub?t=01SkYbaKH8fg9S"
+  },
+  {
+    "code": "IND-198",
+    "name": "Melvin Josh M",
+    "email": "melvinofficial90@gmail.com • 9944154691",
+    "delegation": "Individual Delegate",
+    "committee": "UNODC",
+    "portfolio": "France",
+    "hubUrl": "https://mun.rnsit.ac.in/hub?t=01SkYbajATHpPg"
   },
   {
     "code": "DEL-47-01",
@@ -1225,39 +1243,30 @@
   },
   {
     "code": "DEL-92-11",
-    "name": "Naveen Karthikeyan",
-    "email": "naveenkar25@gmail.com • 9113234885",
-    "delegation": "Delegation Member (PES University)",
-    "committee": "UNHRC",
-    "portfolio": "China",
-    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=10"
-  },
-  {
-    "code": "DEL-92-12",
     "name": "Aditya.R",
     "email": "adityar.pes@gmail.com • 8792213129",
     "delegation": "Delegation Member (PES University)",
     "committee": "DISEC",
     "portfolio": "Swiss Confederation",
-    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=11"
+    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=10"
   },
   {
-    "code": "DEL-92-13",
+    "code": "DEL-92-12",
     "name": "Aaron G Sunil",
     "email": "aarongsunil19@gmail.com • 9148709221",
     "delegation": "Delegation Member (PES University)",
     "committee": "UNSC",
     "portfolio": "Republic of the Sudan",
-    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=12"
+    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=11"
   },
   {
-    "code": "DEL-92-14",
+    "code": "DEL-92-13",
     "name": "Neil Verma",
     "email": "neilv13579@gmail.com • 8310759535",
     "delegation": "Delegation Member (PES University)",
     "committee": "Lok Sabha",
     "portfolio": "Pralhad Joshi",
-    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=13"
+    "hubUrl": "https://mun.rnsit.ac.in/hub?t=02vV7BeLIFB3Vf&m=12"
   },
   {
     "code": "DEL-95-01",
