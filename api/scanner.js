@@ -878,7 +878,7 @@ async function handleHubData(req, res) {
 
   if (tokenParam) {
     let resolved = resolvePublicToken(tokenParam);
-    if (!resolved && isStaff) {
+    if (!resolved) {
       resolved = decodePublicTokenPayload(tokenParam);
     }
     if (resolved) {
