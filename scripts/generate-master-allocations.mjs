@@ -84,7 +84,8 @@ export const DELEGATION_COLLEGE_MAP = {
   92: 'PES University',
   95: 'MCU MUN Society',
   96: 'EC casino royale',
-  97: 'KLE Society'
+  97: 'KLE Society',
+  100: 'Manipal Institute of Technology Bengaluru'
 };
 
 function resolveDelegationCollege(del) {
@@ -135,6 +136,7 @@ async function main() {
 
   // 1. Process Individual Delegates
   for (const reg of registrations) {
+    if (String(reg.status || '').toLowerCase() === 'rejected') continue;
     const k = `individual_${reg.id}_0`;
     const localKey = `individual_${reg.id}`;
     const cp = cpMap.get(k);
@@ -183,6 +185,7 @@ async function main() {
 
   // 2. Process Delegations (College / School Roster Members)
   for (const del of delegations) {
+    if (String(del.status || '').toLowerCase() === 'rejected') continue;
     const roster = Array.isArray(del.roster_data) ? del.roster_data : [];
     const qrUrls = Array.isArray(del.qr_pass_urls) ? del.qr_pass_urls : [];
     const resolvedCollege = resolveDelegationCollege(del);
