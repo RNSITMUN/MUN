@@ -48,6 +48,35 @@ const VALID_CHECKPOINTS = [
   'allocation'
 ];
 
+// ── Attendance (one row per delegate) ─────────────────────────────────────────
+// Scan stamps live in `delegate_attendance`: the first scan creates the delegate's row (name, committee,
+// portfolio, college) and every later scan fills in its own column (day1_entry_at, day1_lunch_at, ...).
+// Allocation rows stay in `delegate_checkpoints`.
+const SCAN_CHECKPOINTS = ['day1_entry', 'day1_lunch', 'day1_refreshment', 'day2_entry', 'day2_lunch', 'day2_refreshment'];
+
+// Expand one wide attendance row into the per-checkpoint objects the scan page / hub already understand.
+function expandAttendanceRow(row) {
+  const out = [];
+  if (!row) return out;
+  SCAN_CHECKPOINTS.forEach(cp => {
+    if (row[`${cp}_at`]) {
+      out.push({
+        record_type: row.record_type,
+        record_id: String(row.record_id),
+        member_index: row.member_index || 0,
+        checkpoint_key: cp,
+        redeemed: true,
+        redeemed_at: row[`${cp}_at`],
+        redeemed_by: row[`${cp}_by`] || null,
+        allocated_committee: row.committee || null,
+        allocated_portfolio: row.portfolio || null,
+        notes: row.notes || null
+      });
+    }
+  });
+  return out;
+}
+
 function applyCors(req, res, methods = 'GET,POST,OPTIONS') {
   const origin = req.headers.origin || '';
   const allowedOrigins = [
@@ -219,6 +248,9 @@ async function handleUpdateCheckpoint(req, res) {
     });
   }
 
+  const isScanKey = SCAN_CHECKPOINTS.includes(cleanKey);
+  let delegateCollege = '';
+  let delegateAllocId = '';
   let delegateName = '';
   let allocComm = allocated_committee || '';
   let allocPort = allocated_portfolio || '';
@@ -228,17 +260,34 @@ async function handleUpdateCheckpoint(req, res) {
 
   if (supabase) {
     try {
-      const [regRes, cpRes] = await Promise.all([
+      const [regRes, cpRes, allocRes] = await Promise.all([
         recordType === 'delegation'
           ? supabase.from('delegations').select('id, delegation_name, head_name, roster_data').eq('id', recordId).maybeSingle()
           : supabase.from('registrations').select('id, name, institution, committee1, portfolio1_1').eq('id', recordId).maybeSingle(),
-        supabase.from('delegate_checkpoints')
-          .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
-          .eq('record_type', recordType)
-          .eq('record_id', String(recordId))
-          .eq('member_index', memberIdx)
-          .eq('checkpoint_key', cleanKey)
-          .maybeSingle()
+        isScanKey
+          ? supabase.from('delegate_attendance')
+              .select('*')
+              .eq('record_type', recordType)
+              .eq('record_id', String(recordId))
+              .eq('member_index', memberIdx)
+              .maybeSingle()
+          : supabase.from('delegate_checkpoints')
+              .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
+              .eq('record_type', recordType)
+              .eq('record_id', String(recordId))
+              .eq('member_index', memberIdx)
+              .eq('checkpoint_key', cleanKey)
+              .maybeSingle(),
+        // Real allocation (committee/portfolio) assigned in the admin portal
+        isScanKey
+          ? supabase.from('delegate_checkpoints')
+              .select('allocated_committee, allocated_portfolio')
+              .eq('record_type', recordType)
+              .eq('record_id', String(recordId))
+              .eq('member_index', memberIdx)
+              .eq('checkpoint_key', 'allocation')
+              .maybeSingle()
+          : Promise.resolve({ data: null })
       ]);
 
       if (regRes.error) {
@@ -259,21 +308,34 @@ async function handleUpdateCheckpoint(req, res) {
         });
       }
 
+      delegateAllocId = recordType === 'delegation' ? `DEL-${recordId}-${String(memberIdx + 1).padStart(2, '0')}` : `IND-${recordId}`;
       if (recordType === 'individual') {
         delegateName = rec.name || '';
+        delegateCollege = rec.institution || '';
         if (!allocComm) allocComm = rec.committee1 || '';
         if (!allocPort) allocPort = rec.portfolio1_1 || '';
       } else {
         const roster = Array.isArray(rec.roster_data) ? rec.roster_data : [];
         if (roster[memberIdx]) {
           delegateName = roster[memberIdx].name || roster[memberIdx]['Delegate Name'] || '';
+          delegateCollege = roster[memberIdx].institution || roster[memberIdx]['Institution / College Name'] || '';
           if (!allocComm) allocComm = roster[memberIdx].allocated_committee || roster[memberIdx].committee || '';
           if (!allocPort) allocPort = roster[memberIdx].allocated_portfolio || roster[memberIdx].portfolio || '';
         }
         if (!delegateName) delegateName = rec.head_name || rec.delegation_name || '';
+        if (!delegateCollege) delegateCollege = rec.delegation_name || '';
       }
 
-      if (cpRes.data) {
+      if (isScanKey) {
+        // Real allocation from the admin portal wins over the registration-time preference
+        if (allocRes?.data?.allocated_committee && !allocated_committee) allocComm = allocRes.data.allocated_committee;
+        if (allocRes?.data?.allocated_portfolio && !allocated_portfolio) allocPort = allocRes.data.allocated_portfolio;
+        if (cpRes.data && cpRes.data[`${cleanKey}_at`]) {
+          existingRedeemed = true;
+          existingRedeemedAt = cpRes.data[`${cleanKey}_at`];
+          existingRedeemedBy = cpRes.data[`${cleanKey}_by`];
+        }
+      } else if (cpRes.data) {
         if (cpRes.data.redeemed) {
           existingRedeemed = true;
           existingRedeemedAt = cpRes.data.redeemed_at;
@@ -348,6 +410,63 @@ async function handleUpdateCheckpoint(req, res) {
     localStore[baseLocalKey][cleanKey] = updatedRecord;
   }
   writeLocalCheckpoints(localStore);
+
+  if (supabase && isScanKey) {
+    try {
+      const { data: rpc, error: rpcErr } = await supabase.rpc('stamp_attendance', {
+        p_record_type: recordType,
+        p_record_id: String(recordId),
+        p_member_index: memberIdx,
+        p_checkpoint: cleanKey,
+        p_by: staffName,
+        p_force: force,
+        p_redeem: isRedeemed,
+        p_name: delegateName || null,
+        p_committee: allocComm || null,
+        p_portfolio: allocPort || null,
+        p_college: delegateCollege || null,
+        p_allocation_id: delegateAllocId || null,
+        p_notes: notes || null
+      });
+      if (rpcErr) {
+        console.error('Supabase error stamping attendance:', rpcErr);
+        return res.status(502).json({ success: false, code: 'DB_ERROR', error: 'Database error recording attendance: ' + rpcErr.message });
+      }
+      if (rpc?.duplicate) {
+        // Lost a race with another staff scan (or the pre-check was stale): same duplicate answer as above.
+        const at = rpc.redeemed_at || null;
+        const by = rpc.redeemed_by || null;
+        const t = at ? new Date(at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
+        return res.status(200).json({
+          success: false, duplicate: true,
+          message: `Pass was already stamped for ${cleanKey} at ${t} by ${by || 'Staff'}.`,
+          delegateName, allocatedCommittee: allocComm, allocatedPortfolio: allocPort,
+          redeemedAt: at, redeemed_at: at, redeemedBy: by, redeemed_by: by,
+          checkpoint: { checkpoint_key: cleanKey, redeemed: true, redeemed_at: at, redeemed_by: by }
+        });
+      }
+      const row = rpc?.row || {};
+      const stamped = {
+        record_type: recordType, record_id: String(recordId), member_index: memberIdx,
+        checkpoint_key: cleanKey, redeemed: isRedeemed,
+        redeemed_at: row[`${cleanKey}_at`] || null, redeemed_by: row[`${cleanKey}_by`] || null,
+        allocated_committee: row.committee || allocComm || null,
+        allocated_portfolio: row.portfolio || allocPort || null
+      };
+      return res.status(200).json({
+        success: true, duplicate: false, source: 'database',
+        firstScan: !!rpc?.created,
+        message: `Checkpoint ${cleanKey} successfully stamped.`,
+        delegateName, allocatedCommittee: allocComm, allocatedPortfolio: allocPort,
+        redeemedAt: stamped.redeemed_at, redeemed_at: stamped.redeemed_at,
+        redeemedBy: staffName, redeemed_by: staffName,
+        checkpoint: stamped
+      });
+    } catch (e) {
+      console.error('Unexpected exception stamping attendance:', e);
+      return res.status(502).json({ success: false, code: 'DB_ERROR', error: 'Failed to record attendance in database.' });
+    }
+  }
 
   if (supabase) {
     try {
@@ -535,10 +654,10 @@ async function handleScanStats(req, res) {
 
   if (supabase) {
     try {
-      const { data: dbCheckpoints, error } = await supabase
-        .from('delegate_checkpoints')
-        .select('record_type, record_id, member_index, checkpoint_key, redeemed, allocated_committee')
-        .eq('redeemed', true);
+      const { data: attRows, error } = await supabase
+        .from('delegate_attendance')
+        .select('record_type, record_id, member_index, committee, ' + SCAN_CHECKPOINTS.map(c => `${c}_at`).join(', '));
+      const dbCheckpoints = Array.isArray(attRows) ? attRows.flatMap(expandAttendanceRow) : null;
 
       if (!error && Array.isArray(dbCheckpoints)) {
         const dbStats = {
@@ -800,12 +919,15 @@ async function handleHubData(req, res) {
         if (delIds.length > 0) cpFilters.push(`and(record_type.eq.delegation,record_id.in.(${delIds.join(',')}))`);
 
         if (cpFilters.length > 0) {
-          const { data: cpRows, error: cpErr } = await supabase
-            .from('delegate_checkpoints')
-            .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
-            .or(cpFilters.join(','));
+          const [{ data: allocRows, error: cpErr }, { data: attRows }] = await Promise.all([
+            supabase.from('delegate_checkpoints')
+              .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
+              .or(cpFilters.join(',')),
+            supabase.from('delegate_attendance').select('*').or(cpFilters.join(','))
+          ]);
+          const cpRows = (Array.isArray(allocRows) ? allocRows : []).concat((Array.isArray(attRows) ? attRows : []).flatMap(expandAttendanceRow));
 
-          if (!cpErr && Array.isArray(cpRows)) {
+          if (!cpErr) {
             cpRows.forEach(row => {
               const match = topResults.find(r =>
                 r.type === row.record_type &&
@@ -952,15 +1074,15 @@ async function handleHubData(req, res) {
       }
 
       if (record) {
-        const { data: cpRows, error: cpError } = await supabase
-          .from('delegate_checkpoints')
-          .select('*')
-          .eq('record_type', targetType)
-          .eq('record_id', String(targetId));
+        const [{ data: allocRows, error: cpError }, { data: attRows }] = await Promise.all([
+          supabase.from('delegate_checkpoints').select('*').eq('record_type', targetType).eq('record_id', String(targetId)),
+          supabase.from('delegate_attendance').select('*').eq('record_type', targetType).eq('record_id', String(targetId))
+        ]);
+        const cpRows = (Array.isArray(allocRows) ? allocRows : []).concat((Array.isArray(attRows) ? attRows : []).flatMap(expandAttendanceRow));
 
         if (cpError) {
           console.error('Supabase error fetching delegate checkpoints:', cpError);
-        } else if (Array.isArray(cpRows)) {
+        } else {
           cpRows.forEach(row => {
             const mIdx = row.member_index || 0;
             if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
