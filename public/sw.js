@@ -7,6 +7,7 @@ const PRECACHE_ASSETS = [
   '/team',
   '/stay-connected',
   '/venue',
+  '/blog',
   '/code-of-conduct',
   '/404',
   '/assets/Logos/25_logo.webp',

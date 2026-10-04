@@ -438,7 +438,7 @@ const ebProfiles = {
     song: "",
     insta: "sum1t_s"
   },
-  "Sahit Bhangre": {
+  "Sahit Bangre": {
     desc: "<p>Sahit S Bangre is a working professional at EY India. A scholarship student who pursued his PG Diploma in Finance from the University of London. He is also a B.Com graduate from JAIN (Deemed-to-be University) in Bangalore and the ex-President of Jain University MUN Society.</p><p>He was introduced to the world of MUNs as an escape from mundane school life. As they say - \"Love is found in the most unexpected places\", this was a classic example of that and there was no turning back. On the back of 9 years on the circuit, he's explored and experienced the entire length and breadth of MUNs from Press to Chairing but predominantly operates and specializes in the Security Council with an indomitable 100% top 3 placement record in the Security Council.</p><p>Apart from MUNs, he is also a passionate avgeek and religiously follows F1 and football like his life depends on it.</p>",
     quote: "",
     song: "",

@@ -215,9 +215,10 @@
           </div>
         </div>
 
-        <!-- Option 2: Delegation (9+ Members) -->
-        <div class="reg-choice-card reg-choice-card-gold" onclick="selectRegistrationPath('delegation')" role="button" tabindex="0"
-          onkeydown="if(event.key==='Enter') selectRegistrationPath('delegation')" aria-label="Register as Group Representation (9+ Members)">
+        <!-- Option 2: Delegation (9+ Members) — CLOSED -->
+        <div class="reg-choice-card reg-choice-card-gold is-closed" role="button" tabindex="-1"
+          aria-label="Delegation registrations are closed" aria-disabled="true"
+          style="opacity: 0.62; cursor: not-allowed; pointer-events: none;">
           <div class="reg-choice-top">
             <div class="reg-choice-badge reg-choice-badge-dlg">GROUP REPRESENTATION</div>
             <div class="reg-choice-icon dlg-icon" aria-hidden="true">
@@ -230,7 +231,10 @@
 
           <div>
             <h2 class="reg-choice-title">DELEGATION — 9+ MEMBERS</h2>
-            <div class="reg-choice-steps" style="margin-top: 10px;">
+            <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(108,13,44,0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 2px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin: 6px 0;">
+              REGISTRATIONS CLOSED
+            </div>
+            <div class="reg-choice-steps" style="margin-top: 8px; opacity: 0.5;">
               <span class="step-item">Build your roster</span>
               <span class="step-arrow">&rarr;</span>
               <span class="step-item">Submit delegation</span>
@@ -240,7 +244,7 @@
           </div>
 
           <div class="reg-choice-action">
-            <div class="reg-choice-btn reg-choice-btn-gold">Continue as Delegation &rarr;</div>
+            <div class="reg-choice-btn reg-choice-btn-gold" style="opacity: 0.5;">Delegation Registrations Closed</div>
           </div>
         </div>
       </div>
@@ -473,12 +477,9 @@
         </div>
       </div>
 
-      <!-- Switch to Delegation prompt -->
-      <div class="reg-switch-prompt">
-        <span>Registering an institutional delegation of 9+ members?</span>
-        <button type="button" class="btn-switch-link" onclick="selectRegistrationPath('delegation')">
-          Switch to Delegation Registration &rarr;
-        </button>
+      <!-- Switch to Delegation prompt (Closed) -->
+      <div class="reg-switch-prompt" style="opacity: 0.5; pointer-events: none; cursor: default;">
+        <span>Delegation registrations are now closed.</span>
       </div>
     </div>
 
@@ -506,11 +507,15 @@
           Groups of 9 or more delegates can register as an institutional delegation to compete for the prestigious <strong>Best Delegation</strong> title and flagship award (<strong>₹10,000 &amp; Trophy</strong>).
         </p>
 
-        <div class="delegation-hub-actions">
-          <button type="button" class="hub-primary-btn" onclick="openDelegationRegistrationModal()" aria-label="Open Delegation Registration Form">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-            <span>Open Delegation Form</span>
-          </button>
+        <!-- Delegation Closed Notice -->
+        <div style="background: #FFFDF9; border: 2.5px solid var(--text-primary); box-shadow: 4px 4px 0px var(--text-primary); border-radius: 12px; padding: 22px 20px; text-align: center; margin-bottom: 4px;">
+          <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(108, 13, 44, 0.08); color: var(--accent-color); border: 1.5px solid var(--accent-color); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+            REGISTRATIONS CLOSED
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 900; color: var(--text-primary); margin-bottom: 8px;">Delegation Registrations Are Closed</h3>
+          <p style="font-size: 0.85rem; color: rgba(17, 17, 19, 0.72); font-weight: 500; line-height: 1.5; max-width: 420px; margin: 0 auto 14px auto;">Institutional delegation registrations have reached maximum capacity and are now officially closed. Thank you for your interest in RNSMUN 2026.</p>
+        </div>
+        <div class="delegation-hub-actions" style="margin-top: 10px;">
           <a href="https://docs.google.com/spreadsheets/d/1qOp6gJYndOc7b3xpyF1BmxrFWXyaRoDa/edit?gid=201693632#gid=201693632"
             target="_blank" rel="noopener noreferrer" class="hub-secondary-btn"
             aria-label="View Master Portfolio Matrix">

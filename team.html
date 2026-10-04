@@ -1372,6 +1372,257 @@
       .eb-modal-role { text-align: left; }
       .eb-modal-body { overflow-y: auto; flex: 1; height: 100%; min-height: 0; }
     }
+
+    /* ── Team Page Navigator (Page 1: EB / Page 2: OC) ── */
+    .team-page-nav-wrapper {
+      position: sticky;
+      top: 76px;
+      z-index: 100;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 16px clamp(16px, 4vw, 40px);
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    .team-page-nav {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(254, 252, 248, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(140, 109, 59, 0.22);
+      border-radius: 999px;
+      padding: 6px 8px;
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(108, 13, 44, 0.06);
+      gap: 6px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .team-page-tab {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: #555555;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .team-page-tab:hover {
+      color: #111111;
+      background: rgba(108, 13, 44, 0.06);
+    }
+
+    .team-page-tab.active {
+      background: #6C0D2C;
+      color: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(108, 13, 44, 0.35);
+    }
+
+    .tab-page-number {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.07);
+      color: currentColor;
+      transition: all 0.3s ease;
+    }
+
+    .team-page-tab.active .tab-page-number {
+      background: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+    }
+
+    .tab-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      line-height: 1.15;
+    }
+
+    .tab-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .tab-meta {
+      font-size: 0.72rem;
+      font-weight: 500;
+      opacity: 0.78;
+    }
+
+    .team-page-tab-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    /* ── View Transitions ── */
+    .team-views-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .team-view-page {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .team-view-page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Subtitle in OC header ── */
+    .oc-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.95rem, 1.4vw, 1.12rem);
+      font-weight: 400;
+      color: #555555;
+      max-width: 660px;
+      margin: -4px auto 0;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* ── Bottom Pagination Footer ── */
+    .team-page-footer-nav {
+      width: calc(100% - clamp(40px, 8vw, 160px));
+      max-width: 1100px;
+      margin: clamp(60px, 8vw, 90px) auto clamp(40px, 6vw, 70px);
+      padding: clamp(24px, 4vw, 36px) clamp(24px, 4vw, 44px);
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(140, 109, 59, 0.22);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.05);
+    }
+
+    .page-footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .page-current-indicator {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: #8C6D3B;
+      text-transform: uppercase;
+    }
+
+    .page-footer-desc {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      color: #444444;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .page-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #6C0D2C;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 28px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(108, 13, 44, 0.25);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page-switch-btn:hover {
+      background: #4E081F;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(108, 13, 44, 0.35);
+    }
+
+    .page-switch-btn svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .page-switch-btn:hover svg {
+      transform: translateX(4px);
+    }
+
+    .page-switch-btn.btn-prev:hover svg {
+      transform: translateX(-4px);
+    }
+
+    .page-switch-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.22);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 768px) {
+      .team-page-nav-wrapper {
+        top: 64px;
+        padding: 10px 12px;
+      }
+      .team-page-tab {
+        padding: 8px 14px;
+        gap: 8px;
+      }
+      .tab-title {
+        font-size: 0.82rem;
+      }
+      .tab-meta {
+        display: none;
+      }
+      .team-page-footer-nav {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+        padding: 20px 16px;
+      }
+      .page-footer-info {
+        align-items: center;
+      }
+      .page-switch-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 
   <script>
@@ -1506,6 +1757,33 @@
     </div>
   </main>
 
+  <!-- Team Page Navigator -->
+  <div class="team-page-nav-wrapper" id="team-page-nav-wrapper">
+    <nav class="team-page-nav" role="tablist" aria-label="Team sections">
+      <button class="team-page-tab active" id="tab-eb" data-page="1" role="tab" aria-selected="true" aria-controls="team-view-1">
+        <span class="tab-page-number">01</span>
+        <span class="tab-text-group">
+          <span class="tab-title">Executive Board</span>
+          <span class="tab-meta">6 committees · 17 members</span>
+        </span>
+      </button>
+      <div class="team-page-tab-divider" aria-hidden="true"></div>
+      <button class="team-page-tab" id="tab-oc" data-page="2" role="tab" aria-selected="false" aria-controls="team-view-2">
+        <span class="tab-page-number">02</span>
+        <span class="tab-text-group">
+          <span class="tab-title">Organising Committee</span>
+          <span class="tab-meta">10 departments · behind the scenes</span>
+        </span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Team Views Container -->
+  <div class="team-views-container">
+
+  <!-- ── PAGE 1: Executive Board ── -->
+  <div class="team-view-page active" id="team-view-1" role="tabpanel" aria-labelledby="tab-eb">
+
   <!-- Executive Board Section -->
   <section class="eb-section" id="eb-section">
     <div class="eb-main-title-container">
@@ -1583,9 +1861,9 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bhangre" loading="lazy" class="eb-zoom-sahit" onerror="this.style.display='none'">
+            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bangre" loading="lazy" class="eb-zoom-sahit" onerror="this.style.display='none'">
           </div>
-          <div class="eb-name">Sahit Bhangre</div>
+          <div class="eb-name">Sahit Bangre</div>
           <div class="eb-role">Co-Chair</div>
         </div>
         <div class="eb-card">
@@ -1783,39 +2061,440 @@
       </div>
     </div>
 
-    <!-- EB Modal -->
-    <div class="eb-modal-overlay" id="ebModal">
-      <div class="eb-modal-content">
-        <button class="eb-modal-close" id="ebModalClose" aria-label="Close dialog" title="Close">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        <div class="eb-modal-scroll" id="ebModalScroll">
-          <div class="eb-modal-left">
-            <img src="" alt="" id="ebModalImg">
+  </section>
+
+  <!-- Page 1 Footer Nav -->
+  <div class="team-page-footer-nav" id="footer-nav-p1">
+    <div class="page-footer-info">
+      <div class="page-current-indicator">Page 01 of 02 · Executive Board</div>
+      <p class="page-footer-desc">Meet the Organising Committee — the team behind the scenes.</p>
+    </div>
+    <button class="page-switch-btn" id="go-to-oc" aria-label="View Organising Committee">
+      Organising Committee
+      <span class="page-switch-num">02</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  </div><!-- /team-view-1 -->
+
+  <!-- ── PAGE 2: Organising Committee ── -->
+  <div class="team-view-page" id="team-view-2" role="tabpanel" aria-labelledby="tab-oc">
+
+  <section class="eb-section" id="oc-section">
+    <div class="eb-main-title-container">
+      <div class="team-kicker">✦ ORGANISING COMMITTEE</div>
+      <h2 class="eb-main-title">The Organising Committee</h2>
+      <p class="oc-subtitle">The people who make the magic happen — across 10 departments running every facet of RNSMUN 2026.</p>
+    </div>
+
+    <div class="eb-section-divider"></div>
+
+    <!-- Dept 01: Apex Secretariat -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">01 &nbsp;·&nbsp; APEX</div>
+        <h3 class="committee-title">Apex Secretariat</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/team/nikhil.webp" alt="Nikhil Nayak" loading="lazy" onerror="this.style.display='none'">
           </div>
-          <div class="eb-modal-right">
-            <div class="eb-modal-header">
-              <span class="eb-modal-role" id="ebModalRole">Role</span>
-              <h2 class="eb-modal-name" id="ebModalName">Name</h2>
-            </div>
-            <div class="eb-modal-body">
-              <div class="eb-modal-desc" id="ebModalDesc"></div>
-              <div class="eb-modal-meta" id="ebModalMeta"></div>
-            </div>
+          <div class="eb-name">Nikhil Nayak</div>
+          <div class="eb-role">Secretary General</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/team/koushik.webp" alt="V Koushik" loading="lazy" style="object-position: center 30%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">V Koushik</div>
+          <div class="eb-role">Director General</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Aditi Maktedar.webp" alt="Aditi Maktedar" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Aditi Maktedar</div>
+          <div class="eb-role">Chargé d'Affaires</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/team/karthik.webp" alt="Karthik Prasad M" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Karthik Prasad M</div>
+          <div class="eb-role">Head of Equity</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Vamshi Ganesh.webp" alt="Vamshi Ganesh" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Vamshi Ganesh</div>
+          <div class="eb-role">Head of Equity</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 02: Delegate Affairs -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">02 &nbsp;·&nbsp; DELEGATE AFFAIRS</div>
+        <h3 class="committee-title">Delegate Affairs</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Zeyan Shahid Khan.webp -->
+          </div>
+          <div class="eb-name">Zeyan Shahid Khan</div>
+          <div class="eb-role">USG – Delegate Affairs</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Adith D H.webp -->
+          </div>
+          <div class="eb-name">Adith D H</div>
+          <div class="eb-role">USG – Delegate Affairs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 03: EB Affairs -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">03 &nbsp;·&nbsp; EB AFFAIRS</div>
+        <h3 class="committee-title">EB Affairs</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Vachan B Hindiskere.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Vachan B Hindiskere</div>
+          <div class="eb-role">USG – EB Affairs</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Tanmay P Shetty.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Tanmay P Shetty</div>
+          <div class="eb-role">USG – EB Affairs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 04: Finance -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">04 &nbsp;·&nbsp; FINANCE</div>
+        <h3 class="committee-title">Finance</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Poorvika Nagaraj.webp -->
+          </div>
+          <div class="eb-name">Poorvika Nagaraj</div>
+          <div class="eb-role">USG – Finance</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 05: Media & Social Media -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">05 &nbsp;·&nbsp; MEDIA</div>
+        <h3 class="committee-title">Media &amp; Social Media</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Vamshi Ganesh.webp" alt="Vamshi Ganesh B" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Vamshi Ganesh B</div>
+          <div class="eb-role">USG – Media</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 06: Operations -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">06 &nbsp;·&nbsp; OPERATIONS</div>
+        <h3 class="committee-title">Operations</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Nihal N.webp -->
+          </div>
+          <div class="eb-name">Nihal N</div>
+          <div class="eb-role">USG – Operations</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Manu T.webp -->
+          </div>
+          <div class="eb-name">Manu T</div>
+          <div class="eb-role">USG – Operations</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 07: Creatives (Décor) -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">07 &nbsp;·&nbsp; CREATIVES</div>
+        <h3 class="committee-title">Creatives &amp; Décor</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Nuha Alishba.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Nuha Alishba</div>
+          <div class="eb-role">Head – Creatives</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Divya Sharma.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Divya Sharma</div>
+          <div class="eb-role">Head – Creatives</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 08: Outreach (Marketing) -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">08 &nbsp;·&nbsp; OUTREACH</div>
+        <h3 class="committee-title">Outreach &amp; Marketing</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Rudra Chakraborty.webp -->
+          </div>
+          <div class="eb-name">Rudra Chakraborty</div>
+          <div class="eb-role">USG – Outreach</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/Kapil Pal.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">Kapil Pal</div>
+          <div class="eb-role">USG – Outreach</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 09: Partnerships -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">09 &nbsp;·&nbsp; PARTNERSHIPS</div>
+        <h3 class="committee-title">Partnerships &amp; Sponsorship</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Anantha Narayan Prabhu.webp -->
+          </div>
+          <div class="eb-name">Anantha Narayan Prabhu</div>
+          <div class="eb-role">Head – Partnerships</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="committee-sep"></div>
+
+    <!-- Dept 10: Content & Technical -->
+    <div class="committee-block">
+      <div class="committee-header">
+        <div class="committee-kicker">10 &nbsp;·&nbsp; CONTENT &amp; TECHNICAL</div>
+        <h3 class="committee-title">Content &amp; Technical</h3>
+      </div>
+      <div class="eb-grid">
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Dhatri V A.webp -->
+          </div>
+          <div class="eb-name">Dhatri V A</div>
+          <div class="eb-role">Head – Content</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Add photo: /OC/Bhargavi Gangoor.webp -->
+          </div>
+          <div class="eb-name">Bhargavi Gangoor</div>
+          <div class="eb-role">Head – Technical</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Page 2 Footer Nav -->
+  <div class="team-page-footer-nav" id="footer-nav-p2">
+    <div class="page-footer-info">
+      <div class="page-current-indicator">Page 02 of 02 · Organising Committee</div>
+      <p class="page-footer-desc">Back to the Executive Board — committee chairs &amp; vice-chairs.</p>
+    </div>
+    <button class="page-switch-btn btn-prev" id="go-to-eb" aria-label="View Executive Board">
+      <svg style="transform:scaleX(-1)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span class="page-switch-num">01</span>
+      Executive Board
+    </button>
+  </div>
+
+  </div><!-- /team-view-2 -->
+  </div><!-- /team-views-container -->
+
+  <!-- EB Modal (shared) -->
+  <div class="eb-modal-overlay" id="ebModal">
+    <div class="eb-modal-content">
+      <button class="eb-modal-close" id="ebModalClose" aria-label="Close dialog" title="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="eb-modal-scroll" id="ebModalScroll">
+        <div class="eb-modal-left">
+          <img src="" alt="" id="ebModalImg">
+        </div>
+        <div class="eb-modal-right">
+          <div class="eb-modal-header">
+            <span class="eb-modal-role" id="ebModalRole">Role</span>
+            <h2 class="eb-modal-name" id="ebModalName">Name</h2>
+          </div>
+          <div class="eb-modal-body">
+            <div class="eb-modal-desc" id="ebModalDesc"></div>
+            <div class="eb-modal-meta" id="ebModalMeta"></div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>
   <script type="module" src="./team.js"></script>
   <script src="/register-sw.js"></script>
   <script type="module" src="./analytics.js"></script>
+  <script>
+  // ── Team Page Switcher ──
+  (function() {
+    const tabs = document.querySelectorAll('.team-page-tab');
+    const pages = document.querySelectorAll('.team-view-page');
+
+    function switchPage(targetPage) {
+      tabs.forEach(t => {
+        const isActive = parseInt(t.dataset.page) === targetPage;
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-selected', String(isActive));
+      });
+
+      pages.forEach(p => {
+        const isTarget = p.id === 'team-view-' + targetPage;
+        if (isTarget) {
+          p.style.display = 'block';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              p.classList.add('active');
+            });
+          });
+        } else {
+          p.classList.remove('active');
+          // Re-trigger EB scroll animations when switching back to page 1
+          if (p.id === 'team-view-1' && !isTarget) {
+            // nothing needed — cards keep is-visible state
+          }
+        }
+      });
+
+      // After transition delay, hide inactive pages
+      setTimeout(() => {
+        pages.forEach(p => {
+          if (!p.classList.contains('active')) {
+            p.style.display = 'none';
+          }
+        });
+      }, 420);
+
+      // Re-run OC scroll animations when entering page 2
+      if (targetPage === 2) {
+        setTimeout(() => {
+          const ocCards = document.querySelectorAll('#team-view-2 .eb-card');
+          ocCards.forEach((card, i) => {
+            setTimeout(() => card.classList.add('is-visible'), i * 60);
+          });
+          const ocBlocks = document.querySelectorAll('#team-view-2 .committee-block');
+          ocBlocks.forEach((block, i) => {
+            setTimeout(() => block.classList.add('is-visible'), i * 80);
+          });
+        }, 100);
+      }
+
+      // Scroll to top of page view
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Tab buttons
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const page = parseInt(tab.dataset.page);
+        switchPage(page);
+      });
+    });
+
+    // Footer CTA buttons
+    const goToOC = document.getElementById('go-to-oc');
+    const goToEB = document.getElementById('go-to-eb');
+    if (goToOC) goToOC.addEventListener('click', () => switchPage(2));
+    if (goToEB) goToEB.addEventListener('click', () => switchPage(1));
+
+    // Initialise: hide page 2 (display:none initially, active class on p1 via HTML)
+    const page2 = document.getElementById('team-view-2');
+    if (page2) page2.style.display = 'none';
+  })();
+  </script>
 
 </body>
 

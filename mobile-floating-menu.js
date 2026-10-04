@@ -2,6 +2,7 @@
 (function () {
   const menuItems = [
     { label: "Home", href: "/" },
+    { label: "Blog", href: "/blog" },
     { label: "Registration", href: "/registration" },
     { label: "Venue", href: "/venue" },
     { label: "Contact", href: "/stay-connected" },

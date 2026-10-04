@@ -147,6 +147,8 @@ const cleanUrlsPlugin = () => ({
           req.url = '/code-of-conduct.html';
         } else if (url === '/venue' || url === '/location') {
           req.url = '/venue.html';
+        } else if (url === '/blog') {
+          req.url = '/blog.html' + (queryString ? '?' + queryString : '');
         } else if (url === '/admin') {
           req.url = '/admin.html';
         } else if (url === '/hub') {
@@ -218,6 +220,7 @@ export default defineConfig({
         channels: resolve(process.cwd(), 'channels.html'),
         coc: resolve(process.cwd(), 'code-of-conduct.html'),
         venue: resolve(process.cwd(), 'venue.html'),
+        blog: resolve(process.cwd(), 'blog.html'),
         admin: resolve(process.cwd(), 'admin.html'),
         hub: resolve(process.cwd(), 'hub.html'),
         scan: resolve(process.cwd(), 'scan.html'),
