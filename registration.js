@@ -1422,6 +1422,16 @@
         }
         return;
       }
+      if (type === 'external') {
+        if (typeof showToast === 'function') {
+          showToast('External Delegate registrations are officially closed.', 'error');
+        } else if (typeof showNotification === 'function') {
+          showNotification('External Delegate registrations are officially closed.', 'error');
+        } else {
+          alert('External Delegate registrations are officially closed.');
+        }
+        return;
+      }
       currentDelegateType = type;
 
       // Clear any prior draft of a different delegate type so it doesn't cross-contaminate
@@ -4741,11 +4751,20 @@
 
       if (currentDelegateType === 'internal') {
         if (typeof showToast === 'function') {
-          showToast('Internal registrations are closed. Please register as an External Delegate.', 'error');
+          showToast('Internal registrations are officially closed.', 'error');
         } else {
-          alert('Internal registrations are closed. Please register as an External Delegate.');
+          alert('Internal registrations are officially closed.');
         }
-        selectDelegateType('external');
+        goToStep(4);
+        return;
+      }
+
+      if (currentDelegateType === 'external') {
+        if (typeof showToast === 'function') {
+          showToast('External registrations are officially closed.', 'error');
+        } else {
+          alert('External registrations are officially closed.');
+        }
         goToStep(4);
         return;
       }
