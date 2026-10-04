@@ -1414,21 +1414,11 @@
     function selectDelegateType(type) {
       if (type === 'internal') {
         if (typeof showToast === 'function') {
-          showToast('Internal Delegate registrations are officially closed.', 'error');
+          showToast('Internal registrations are closed. Please register as an External Delegate.', 'error');
         } else if (typeof showNotification === 'function') {
-          showNotification('Internal Delegate registrations are officially closed.', 'error');
+          showNotification('Internal registrations are closed. Please register as an External Delegate.', 'error');
         } else {
-          alert('Internal Delegate registrations are officially closed.');
-        }
-        return;
-      }
-      if (type === 'external') {
-        if (typeof showToast === 'function') {
-          showToast('External Delegate registrations are officially closed.', 'error');
-        } else if (typeof showNotification === 'function') {
-          showNotification('External Delegate registrations are officially closed.', 'error');
-        } else {
-          alert('External Delegate registrations are officially closed.');
+          alert('Internal registrations are closed. Please register as an External Delegate.');
         }
         return;
       }
@@ -4751,20 +4741,11 @@
 
       if (currentDelegateType === 'internal') {
         if (typeof showToast === 'function') {
-          showToast('Internal registrations are officially closed.', 'error');
+          showToast('Internal registrations are closed. Please register as an External Delegate.', 'error');
         } else {
-          alert('Internal registrations are officially closed.');
+          alert('Internal registrations are closed. Please register as an External Delegate.');
         }
-        goToStep(4);
-        return;
-      }
-
-      if (currentDelegateType === 'external') {
-        if (typeof showToast === 'function') {
-          showToast('External registrations are officially closed.', 'error');
-        } else {
-          alert('External registrations are officially closed.');
-        }
+        selectDelegateType('external');
         goToStep(4);
         return;
       }

@@ -1,6 +1,6 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js?v=13', { scope: '/' })
+    navigator.serviceWorker.register('/sw.js?v=14', { scope: '/' })
       .then((reg) => {
         console.log('Service Worker registered successfully on scope:', reg.scope);
         // Force an immediate check for SW updates on every page visit
