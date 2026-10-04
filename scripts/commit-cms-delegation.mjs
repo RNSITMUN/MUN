@@ -17,7 +17,7 @@ const CMS_DELEGATES = [
   { sno: 3,  name: 'Chavi',                      email: 'chavi.1763@gmail.com',                 phone: '8550000630', committee: 'Lok Sabha',  portfolio: 'Kanimozhi Karunanidhi' },
   { sno: 4,  name: 'Areeb Umar',                 email: 'umarareeb2@gmail.com',                 phone: '7428463945', committee: 'Lok Sabha',  portfolio: 'Nitin Gadkari' },
   { sno: 5,  name: 'Vaibhav Raj Deota',          email: 'vaibhavdeota@gmail.com',               phone: '7489744953', committee: 'Lok Sabha',  portfolio: 'Rajnath Singh' },
-  { sno: 6,  name: 'R Jainav Bohra',             email: 'jainav1029@gmail.com',                 phone: '8884222990', committee: 'Lok Sabha',  portfolio: 'Priyanka Gandhi' },
+  { sno: 6,  name: 'R Jainav Bohra',             email: 'jainav1029@gmail.com',                 phone: '8884222990', committee: 'Lok Sabha',  portfolio: 'Rahul Gandhi' },
   { sno: 7,  name: 'Ronith',                     email: 'khantedronith@gmail.com',              phone: '9945473052', committee: 'UNSC',       portfolio: 'DRC' },
   { sno: 8,  name: 'Manas Kulkarni',             email: 'mannuk2307@gmail.com',                 phone: '9148028207', committee: 'UNSC',       portfolio: 'France' },
   { sno: 9,  name: 'Naman Nagori',               email: 'nagorinaman07@gmail.com',              phone: '9019347460', committee: 'UNODC',      portfolio: 'Canada' },

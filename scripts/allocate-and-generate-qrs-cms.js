@@ -90,7 +90,7 @@ const CMS_ALLOCATIONS = [
     email: 'jainav1029@gmail.com',
     phone: '8884222990',
     committee: 'Lok Sabha',
-    portfolio: 'Priyanka Gandhi'
+    portfolio: 'Rahul Gandhi'
   },
   {
     sNo: 7,
