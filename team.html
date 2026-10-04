@@ -1373,103 +1373,120 @@
       .eb-modal-body { overflow-y: auto; flex: 1; height: 100%; min-height: 0; }
     }
 
-    /* ── Team Page Navigator (Page 1: EB / Page 2: OC) ── */
+    /* ── Team Page Navigator ── */
     .team-page-nav-wrapper {
       position: sticky;
-      top: 76px;
+      top: 64px;
       z-index: 100;
       width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 16px clamp(16px, 4vw, 40px);
       box-sizing: border-box;
       pointer-events: none;
     }
 
     .team-page-nav {
       pointer-events: auto;
-      display: inline-flex;
-      align-items: center;
-      background: rgba(254, 252, 248, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(140, 109, 59, 0.22);
-      border-radius: 999px;
-      padding: 6px 8px;
-      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(108, 13, 44, 0.06);
-      gap: 6px;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      background: rgba(253, 250, 246, 0.82);
+      backdrop-filter: blur(20px) saturate(1.8);
+      -webkit-backdrop-filter: blur(20px) saturate(1.8);
+      border-bottom: 1px solid rgba(140, 109, 59, 0.14);
+      gap: 0;
+    }
+
+    /* Sliding ink-block indicator */
+    .tab-sliding-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2.5px;
+      width: 50%;
+      background: #6C0D2C;
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(0);
+      border-radius: 2px 2px 0 0;
     }
 
     .team-page-tab {
+      position: relative;
+      z-index: 1;
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 22px;
-      border-radius: 999px;
+      gap: 16px;
+      padding: 16px clamp(20px, 4vw, 48px);
       border: none;
       background: transparent;
-      color: #555555;
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
+      transition: background 0.2s ease;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      text-align: left;
     }
 
-    .team-page-tab:hover {
-      color: #111111;
-      background: rgba(108, 13, 44, 0.06);
-    }
-
-    .team-page-tab.active {
-      background: #6C0D2C;
-      color: #FFFFFF;
-      box-shadow: 0 4px 16px rgba(108, 13, 44, 0.35);
+    .team-page-tab:hover:not(.active) {
+      background: rgba(108, 13, 44, 0.03);
     }
 
     .tab-page-number {
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.07);
-      color: currentColor;
-      transition: all 0.3s ease;
+      flex-shrink: 0;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1;
+      color: rgba(140, 109, 59, 0.30);
+      transition: color 0.3s ease;
+      letter-spacing: -0.02em;
+      user-select: none;
     }
 
     .team-page-tab.active .tab-page-number {
-      background: rgba(255, 255, 255, 0.22);
-      color: #FFFFFF;
+      color: rgba(108, 13, 44, 0.22);
     }
 
     .tab-text-group {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      text-align: left;
-      line-height: 1.15;
+      line-height: 1.2;
     }
 
     .tab-title {
-      font-size: 0.96rem;
-      font-weight: 700;
+      font-size: clamp(0.82rem, 1.8vw, 0.96rem);
+      font-weight: 600;
       letter-spacing: 0.01em;
+      color: #aaaaaa;
+      transition: color 0.3s ease;
+    }
+
+    .team-page-tab.active .tab-title {
+      color: #111113;
+      font-weight: 700;
     }
 
     .tab-meta {
-      font-size: 0.72rem;
+      font-size: 0.70rem;
       font-weight: 500;
-      opacity: 0.78;
+      color: rgba(140, 109, 59, 0);
+      transition: color 0.3s ease;
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .team-page-tab.active .tab-meta {
+      color: rgba(140, 109, 59, 0.72);
     }
 
     .team-page-tab-divider {
       width: 1px;
-      height: 24px;
-      background: rgba(0, 0, 0, 0.12);
+      margin: 12px 0;
+      background: rgba(140, 109, 59, 0.12);
+      flex-shrink: 0;
+      align-self: stretch;
     }
 
     /* ── View Transitions ── */
@@ -1596,15 +1613,17 @@
 
     @media (max-width: 768px) {
       .team-page-nav-wrapper {
-        top: 64px;
-        padding: 10px 12px;
+        top: 56px;
       }
       .team-page-tab {
-        padding: 8px 14px;
-        gap: 8px;
+        padding: 13px clamp(14px, 4vw, 24px);
+        gap: 10px;
+      }
+      .tab-page-number {
+        font-size: 1.2rem;
       }
       .tab-title {
-        font-size: 0.82rem;
+        font-size: 0.80rem;
       }
       .tab-meta {
         display: none;
@@ -1760,8 +1779,10 @@
   <!-- Team Page Navigator -->
   <div class="team-page-nav-wrapper" id="team-page-nav-wrapper">
     <nav class="team-page-nav" role="tablist" aria-label="Team sections">
+      <!-- Sliding indicator -->
+      <span class="tab-sliding-indicator" id="tab-indicator" aria-hidden="true"></span>
       <button class="team-page-tab active" id="tab-eb" data-page="1" role="tab" aria-selected="true" aria-controls="team-view-1">
-        <span class="tab-page-number">01</span>
+        <span class="tab-page-number" aria-hidden="true">01</span>
         <span class="tab-text-group">
           <span class="tab-title">Executive Board</span>
           <span class="tab-meta">6 committees · 17 members</span>
@@ -1769,7 +1790,7 @@
       </button>
       <div class="team-page-tab-divider" aria-hidden="true"></div>
       <button class="team-page-tab" id="tab-oc" data-page="2" role="tab" aria-selected="false" aria-controls="team-view-2">
-        <span class="tab-page-number">02</span>
+        <span class="tab-page-number" aria-hidden="true">02</span>
         <span class="tab-text-group">
           <span class="tab-title">Organising Committee</span>
           <span class="tab-meta">10 departments · behind the scenes</span>
@@ -2403,17 +2424,7 @@
           <div class="eb-modal-header">
             <span class="eb-modal-role" id="ebModalRole">Role</span>
             <h2 class="eb-modal-name" id="ebModalName">Name</h2>
-          </div>
-          <div class="eb-modal-body">
-            <div class="eb-modal-desc" id="ebModalDesc"></div>
-            <div class="eb-modal-meta" id="ebModalMeta"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script type="module" src="./topology-background.js"></script>
+          <script type="module" src="./topology-background.js"></script>
   <script type="module" src="./mobile-floating-menu.js"></script>
   <script type="module" src="./team.js"></script>
   <script src="/register-sw.js"></script>
@@ -2423,13 +2434,29 @@
   (function() {
     const tabs = document.querySelectorAll('.team-page-tab');
     const pages = document.querySelectorAll('.team-view-page');
+    const indicator = document.getElementById('tab-indicator');
+
+    function positionIndicator(activeTab) {
+      if (!indicator || !activeTab) return;
+      const nav = activeTab.closest('.team-page-nav');
+      if (!nav) return;
+      const navRect = nav.getBoundingClientRect();
+      const tabRect = activeTab.getBoundingClientRect();
+      const left = tabRect.left - navRect.left;
+      indicator.style.width = tabRect.width + 'px';
+      indicator.style.transform = 'translateX(' + left + 'px)';
+    }
 
     function switchPage(targetPage) {
+      let activeTab = null;
       tabs.forEach(t => {
         const isActive = parseInt(t.dataset.page) === targetPage;
         t.classList.toggle('active', isActive);
         t.setAttribute('aria-selected', String(isActive));
+        if (isActive) activeTab = t;
       });
+
+      positionIndicator(activeTab);
 
       pages.forEach(p => {
         const isTarget = p.id === 'team-view-' + targetPage;
@@ -2442,10 +2469,6 @@
           });
         } else {
           p.classList.remove('active');
-          // Re-trigger EB scroll animations when switching back to page 1
-          if (p.id === 'team-view-1' && !isTarget) {
-            // nothing needed — cards keep is-visible state
-          }
         }
       });
 
@@ -2472,7 +2495,6 @@
         }, 100);
       }
 
-      // Scroll to top of page view
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -2490,9 +2512,20 @@
     if (goToOC) goToOC.addEventListener('click', () => switchPage(2));
     if (goToEB) goToEB.addEventListener('click', () => switchPage(1));
 
-    // Initialise: hide page 2 (display:none initially, active class on p1 via HTML)
+    // Initialise: hide page 2, set initial indicator position
     const page2 = document.getElementById('team-view-2');
     if (page2) page2.style.display = 'none';
+
+    // Position indicator on load (after fonts settle)
+    requestAnimationFrame(() => {
+      const activeTab = document.querySelector('.team-page-tab.active');
+      positionIndicator(activeTab);
+    });
+    // Also reposition on resize
+    window.addEventListener('resize', () => {
+      const activeTab = document.querySelector('.team-page-tab.active');
+      positionIndicator(activeTab);
+    }, { passive: true });
   })();
   </script>
 
