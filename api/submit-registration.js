@@ -57,15 +57,7 @@ export default async function handler(req, res) {
     return res.status(403).json({
       success: false,
       closed: true,
-      error: 'Internal delegate registrations are officially closed.'
-    });
-  }
-  if (normalizedType === 'external' || normalizedType.includes('external') || !normalizedType) {
-    console.warn('⚠️ [submit-registration] Rejected closed external registration request for:', email);
-    return res.status(403).json({
-      success: false,
-      closed: true,
-      error: 'External delegate registrations are officially closed.'
+      error: 'Internal delegate registrations are officially closed. Only external delegate passes remain available.'
     });
   }
 
