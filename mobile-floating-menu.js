@@ -69,25 +69,51 @@
 
     document.body.appendChild(root);
 
-    // If not already on the registration, hub, or scan pages, mount the discreet floating "Register Now" button
+    // Check if user has an active accredited delegate pass saved in localStorage
+    let savedToken = null;
+    try {
+      savedToken = localStorage.getItem('rnsmun_delegate_token');
+    } catch (e) {}
+
+    // If not already on hub or scan pages, mount the quick action floating button (My Pass if accredited, Register if guest)
     const pathLower = (window.location.pathname || "").toLowerCase();
     const isRegPage = currentPath === "/registration" || currentPath.startsWith("/registration") || pathLower.includes("registration");
     const isHubPage = currentPath === "/hub" || currentPath.startsWith("/hub") || pathLower.includes("hub");
     const isScanPage = currentPath === "/scan" || currentPath.startsWith("/scan") || pathLower.includes("scan");
-    if (!isRegPage && !isHubPage && !isScanPage && !document.getElementById("mobileFloatingRegBtn")) {
-      const regBtn = document.createElement("a");
-      regBtn.href = "/registration";
-      regBtn.id = "mobileFloatingRegBtn";
-      regBtn.className = "mobile-floating-reg-btn";
-      regBtn.setAttribute("aria-label", "Register for RNSMUN 2026");
-      regBtn.innerHTML = `
-        <span>Register</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-          <polyline points="12 5 19 12 12 19"></polyline>
-        </svg>
-      `;
-      document.body.appendChild(regBtn);
+
+    if (!isHubPage && !isScanPage && !document.getElementById("mobileFloatingRegBtn")) {
+      if (savedToken && savedToken.trim()) {
+        const tokenVal = savedToken.trim();
+        const hubHref = `/hub?t=${encodeURIComponent(tokenVal)}`;
+        const passBtn = document.createElement("a");
+        passBtn.href = hubHref;
+        passBtn.id = "mobileFloatingRegBtn";
+        passBtn.className = "mobile-floating-reg-btn is-delegate-pass";
+        passBtn.setAttribute("aria-label", "View My Delegate Pass");
+        passBtn.innerHTML = `
+          <span>My Pass</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+            <circle cx="12" cy="10" r="2.5"></circle>
+            <path d="M7 16c0-1.5 2-2.5 5-2.5s5 1 5 2.5"></path>
+          </svg>
+        `;
+        document.body.appendChild(passBtn);
+      } else if (!isRegPage) {
+        const regBtn = document.createElement("a");
+        regBtn.href = "/registration";
+        regBtn.id = "mobileFloatingRegBtn";
+        regBtn.className = "mobile-floating-reg-btn";
+        regBtn.setAttribute("aria-label", "Register for RNSMUN 2026");
+        regBtn.innerHTML = `
+          <span>Register</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        `;
+        document.body.appendChild(regBtn);
+      }
     }
 
   const container = document.getElementById("floatingMenuContainer");

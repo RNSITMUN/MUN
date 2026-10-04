@@ -2686,10 +2686,20 @@
 
     async function loadPassData(isBackgroundPoll = false) {
       const urlParams = new URLSearchParams(window.location.search);
-      const token = getTokenFromUrl();
+      let token = getTokenFromUrl();
       const id = (urlParams.get('id') || '').trim();
       const type = (urlParams.get('type') || 'individual').trim();
       const contentEl = document.getElementById('hub-content');
+
+      // Auto-recover pass token from localStorage if visiting bare /hub
+      if (!token && !id) {
+        try {
+          const savedToken = localStorage.getItem('rnsmun_delegate_token');
+          if (savedToken && savedToken.trim()) {
+            token = savedToken.trim();
+          }
+        } catch (e) {}
+      }
 
       if (!token && !id) {
         if (!isBackgroundPoll) {
@@ -2742,9 +2752,21 @@
         }
 
         const raw = json.data || json;
+        const validToken = pass.token || token || '';
+
+        // Seamlessly persist token to localStorage for mobile navigation persistence
+        if (validToken) {
+          try {
+            localStorage.setItem('rnsmun_delegate_token', validToken.trim());
+            const passUrlToSave = pass.pass_url || pass.passUrl || window.location.href;
+            if (passUrlToSave) {
+              localStorage.setItem('rnsmun_pass_url', passUrlToSave);
+            }
+          } catch (e) {}
+        }
 
         passData = {
-          token: pass.token || token || '',
+          token: validToken,
           id: pass.id || raw.id || id,
           delegateId: pass.delegate_id || pass.delegateId || pass.id || id || 'IND-00',
           name: pass.full_name || pass.name || pass.delegation_name || 'Accredited Delegate',
@@ -2774,6 +2796,12 @@
             newUrl.searchParams.delete('id');
             newUrl.searchParams.delete('type');
             newUrl.searchParams.set('t', pass.token);
+            window.history.replaceState({}, '', newUrl.toString());
+          } catch (_) {}
+        } else if (!urlParams.get('t') && validToken) {
+          try {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('t', validToken);
             window.history.replaceState({}, '', newUrl.toString());
           } catch (_) {}
         }
