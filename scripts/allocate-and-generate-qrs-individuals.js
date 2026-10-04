@@ -111,7 +111,7 @@ const INDIVIDUAL_DELEGATES = [
   { name: 'Ashish', type: 'External', phone: '8861066040', email: 'ashishjitarwal@gmail.com', comm: 'DISEC', port: 'Russia' },
   { name: 'RASHMI M KABADI', type: 'Internal (RNSIT)', phone: '9591936752', email: 'rashmi.m.kabadi@gmail.com', comm: 'UNHRC', port: 'DRC' },
   { name: 'Chinmayi V Hegde', type: 'Internal (RNSIT)', phone: '8431534438', email: 'chinmayivhegde25ci@rnsit.ac.in', comm: 'UNODC', port: 'Laos' },
-  { name: 'Braghadeesh Ruban', type: 'External', phone: '7092339204', email: 'braghadeesh190807@gmail.com', comm: 'Lok Sabha', port: 'Basavaraj Bommai' },
+  { name: 'Braghadeesh Ruban', type: 'External', phone: '7092339204', email: 'braghadeesh190807@gmail.com', comm: 'Lok Sabha', port: 'Piyush Goyal' },
   { name: 'Aaruni Mohan Shastri', type: 'External', phone: '6362328147', email: 'shastriaaruni@gmail.com', comm: 'UNHRC', port: 'Republic Of India' }
 ];
 
