@@ -2961,6 +2961,27 @@
     "payment_status": "Confirmed"
   },
   {
+    "allocation_id": "DEL-95-16",
+    "registration_type": "Delegation Member",
+    "record_id": 95,
+    "member_index": 15,
+    "delegate_name": "Aathif Hussain",
+    "email": "aaxxfhussn112@gmail.com",
+    "phone": "7899980007",
+    "institution": "MCU MUN Society",
+    "college_name": "MCU MUN Society",
+    "delegate_category": "External",
+    "delegation_name": "MCU MUN Society",
+    "allocated_committee": "Lok Sabha",
+    "allocated_portfolio": "Priyanka Gandhi Vadra (INC)",
+    "session_chamber": "Central Plenary Hall • Chanakya Block",
+    "whatsapp_community_url": "https://chat.whatsapp.com/BA9IXk3MU8c6oEH69noPf5",
+    "hub_pass_url": "https://mun.rnsit.ac.in/hub?t=02vV7Bf7hE7bPu&m=15",
+    "qr_badge_path": "/qrs/MCU_MUN_Society/DEL-95-16_Aathif_Hussain.png",
+    "allocation_status": "Confirmed",
+    "payment_status": "Confirmed"
+  },
+  {
     "allocation_id": "DEL-96-01",
     "registration_type": "Delegation Member",
     "record_id": 96,
