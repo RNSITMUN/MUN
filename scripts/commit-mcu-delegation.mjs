@@ -29,7 +29,9 @@ const MCU_DELEGATES = [
   { sno: 13, name: 'Eesith Anand',        email: 'Aaxxfhussn112@gmail.com',      phone: '7899980007', committee: 'DISEC',     portfolio: 'Belgium' },
   { sno: 14, name: 'Mohammad Affan',      email: 'Aaxxfhussn112@gmail.com',      phone: '7899980007', committee: 'IP',        portfolio: 'Times Of India' },
   { sno: 15, name: 'Nischal Agarwal',     email: 'nischalagarwal53@gmail.com',   phone: '8653531423', committee: 'Lok Sabha', portfolio: 'Karti Chidambaram' },
+  { sno: 16, name: 'Aathif Hussain',      email: 'aaxxfhussn112@gmail.com',      phone: '7899980007', committee: 'Lok Sabha', portfolio: 'Priyanka Gandhi Vadra (INC)' },
 ];
+
 
 const DELEGATION_ID = 95;
 
