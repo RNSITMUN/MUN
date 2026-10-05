@@ -43,8 +43,10 @@
   <meta name="country" content="India">
 
   <!-- Subject, Discovery & Topic Classification -->
-  <meta name="subject" content="RNSMUN / MUN RNS / MUNRNS / RNS-MUN Secretariat & Executive Board - Model United Nations Bangalore India">
-  <meta name="topic" content="rnsmun, RNSMUN, RNS-MUN, rns-mun, mun rns, MUN RNS, MUNRNS, munrns, RNSMUN, MUN conferences Bangalore, MUN conferences India, MUN bnaglore, MUN banglore">
+  <meta name="subject"
+    content="RNSMUN / MUN RNS / MUNRNS / RNS-MUN Secretariat & Executive Board - Model United Nations Bangalore India">
+  <meta name="topic"
+    content="rnsmun, RNSMUN, RNS-MUN, rns-mun, mun rns, MUN RNS, MUNRNS, munrns, RNSMUN, MUN conferences Bangalore, MUN conferences India, MUN bnaglore, MUN banglore">
   <meta name="keywords"
     content="rnsmun, RNSMUN, RNS-MUN, rns-mun, mun rns, MUN RNS, MUNRNS, munrns, RNSMUN team, RNS MUN, rns mun, RNS, RNSIT, RNSIT MUN, RNSITMUN, RNSMUNSOC, rnsmunsoc, MUNSoc RNSIT, MUN bnaglore, mun bnaglore, bnaglore mun, MUN banglore, mun banglore, MUN Bangalore, mun bangalore, mun confer4ences india, mun conferences india, MUN conferences India, mun conferences banglore, mun conferences bangalore, MUN conferences Bangalore, MUNSoc RNSIT secretariat, Model United Nations executive board, RNSMUN organizers, MUN India, mun india, Model United Nations India, Model United Nations Bangalore">
 
@@ -252,10 +254,10 @@
       border: 1px solid rgba(0, 0, 0, 0.09);
       box-shadow: 0 2px 8px -2px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(0, 0, 0, 0.02);
       transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                  background 0.22s ease,
-                  border-color 0.22s ease,
-                  box-shadow 0.22s ease,
-                  opacity 0.3s ease;
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        opacity 0.3s ease;
       white-space: nowrap;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -579,10 +581,10 @@
         transform: translateX(-50%) scale(calc(1 / var(--profile-scale, 1)));
         transform-origin: top center;
         transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-                    background 0.22s ease,
-                    border-color 0.22s ease,
-                    box-shadow 0.22s ease,
-                    opacity 0.3s ease;
+          background 0.22s ease,
+          border-color 0.22s ease,
+          box-shadow 0.22s ease,
+          opacity 0.3s ease;
       }
 
       /* Mobile touch target extension for effortless finger taps */
@@ -952,7 +954,9 @@
       margin: 0;
     }
 
-    .committee-accent-line { display: none; }
+    .committee-accent-line {
+      display: none;
+    }
 
     /* ── EB grid (right column, horizontal cards) ── */
     .eb-grid {
@@ -1023,29 +1027,36 @@
       transform: scale(1.6);
       transform-origin: center 80%;
     }
+
     .eb-card:hover .eb-image-wrap img.eb-zoom-adwityo {
       transform: scale(1.65);
     }
+
     img.eb-zoom-anshuman {
       transform: scale(1.3);
       object-position: 80% 80%;
     }
+
     .eb-card:hover .eb-image-wrap img.eb-zoom-anshuman {
       transform: scale(1.35);
     }
+
     img.eb-zoom-sahit {
       transform: scale(1.4);
       transform-origin: center 40%;
     }
+
     .eb-card:hover .eb-image-wrap img.eb-zoom-sahit {
       transform: scale(1.45);
     }
 
     .eb-placeholder-icon {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      width: 30%; height: 30%;
+      width: 30%;
+      height: 30%;
       opacity: 0.1;
       color: #000;
     }
@@ -1062,7 +1073,9 @@
       transition: color 0.2s ease;
     }
 
-    .eb-card:hover .eb-name { color: #6C0D2C; }
+    .eb-card:hover .eb-name {
+      color: #6C0D2C;
+    }
 
     /* ── Role label below name ── */
     .eb-role {
@@ -1107,7 +1120,7 @@
       width: calc(100% - clamp(80px, 12vw, 240px));
       margin: 0 clamp(40px, 6vw, 120px) clamp(50px, 6vw, 75px);
       height: 1px;
-      background: rgba(0,0,0,0.08);
+      background: rgba(0, 0, 0, 0.08);
     }
 
     /* ── Scroll-fade-in animation ── */
@@ -1118,10 +1131,12 @@
         opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
         transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .eb-card.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
+
     .committee-block {
       opacity: 0;
       transform: translateY(20px);
@@ -1129,6 +1144,7 @@
         opacity 0.6s ease,
         transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .committee-block.is-visible {
       opacity: 1;
       transform: translateY(0);
@@ -1138,8 +1154,10 @@
     /* ── EB Member Modal ── */
     .eb-modal-overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0, 0, 0, 0.45);
       z-index: 1000;
       display: flex;
@@ -1150,88 +1168,287 @@
       transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       padding: 1.5rem;
     }
+
     .eb-modal-overlay::before {
       content: "";
-      position: absolute; inset: 0;
+      position: absolute;
+      inset: 0;
       background-image: var(--bg-img);
-      background-size: cover; background-position: center;
+      background-size: cover;
+      background-position: center;
       filter: blur(14px) brightness(0.55);
-      z-index: -1; transform: scale(1.08); opacity: 0;
+      z-index: -1;
+      transform: scale(1.08);
+      opacity: 0;
       transition: opacity 0.6s ease;
     }
-    .eb-modal-overlay.active { opacity: 1; pointer-events: all; }
-    .eb-modal-overlay.active::before { opacity: 1; }
+
+    .eb-modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .eb-modal-overlay.active::before {
+      opacity: 1;
+    }
+
     .eb-modal-content {
       background: linear-gradient(155deg, #FFFFFF 0%, #FAF7F2 100%);
       border: 1px solid rgba(255, 255, 255, 0.85);
-      width: 100%; max-width: 890px; max-height: min(88vh, 630px);
+      width: 100%;
+      max-width: 890px;
+      max-height: min(88vh, 630px);
       border-radius: 26px;
-      display: flex; flex-direction: column;
-      padding: 1.5rem; box-sizing: border-box;
-      overflow: hidden; position: relative;
-      box-shadow: 0 35px 90px -15px rgba(0,0,0,0.5), 0 10px 30px -10px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.95);
-      transform: translateY(22px) scale(0.98); opacity: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+      transform: translateY(22px) scale(0.98);
+      opacity: 0;
       transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
     }
-    .eb-modal-overlay.active .eb-modal-content { transform: translateY(0) scale(1); opacity: 1; }
+
+    .eb-modal-overlay.active .eb-modal-content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
     .eb-modal-close {
-      position: absolute; top: 1.15rem; right: 1.15rem;
-      background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(0,0,0,0.08);
-      cursor: pointer; color: #333;
+      position: absolute;
+      top: 1.15rem;
+      right: 1.15rem;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      color: #333;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 50; width: 34px; height: 34px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; padding: 0;
+      z-index: 50;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      padding: 0;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    .eb-modal-close:hover { background: #111; color: #fff; border-color: #111; transform: rotate(90deg) scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .eb-modal-close:hover {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+      transform: rotate(90deg) scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
     .eb-modal-scroll {
-      display: flex; flex-direction: row;
-      width: 100%; flex: 1 1 auto; min-height: 0;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
       gap: 1.75rem;
       overflow: hidden;
     }
+
     .eb-modal-left {
-      flex: 0 0 340px; align-self: stretch; min-height: 460px;
-      border-radius: 18px; overflow: hidden; position: relative;
-      box-shadow: 0 12px 32px -4px rgba(0,0,0,0.14), inset 0 0 0 1px rgba(0,0,0,0.06);
+      flex: 0 0 340px;
+      align-self: stretch;
+      min-height: 460px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.14), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
       background: #111;
     }
+
     .eb-modal-left img {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 20%; display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .eb-modal-content:hover .eb-modal-left img { transform: scale(1.02); }
-    .eb-modal-right { flex: 1; min-width: 0; min-height: 0; padding: 0.5rem 0.25rem; display: flex; flex-direction: column; overflow: hidden; }
-    .eb-modal-header { flex: 0 0 auto; margin-bottom: 0.85rem; padding-right: 3.2rem; }
-    .eb-modal-body {
-      flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
-      display: flex; flex-direction: column; padding-right: 0.85rem;
-      scrollbar-width: thin; scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
+
+    .eb-modal-content:hover .eb-modal-left img {
+      transform: scale(1.02);
     }
-    .eb-modal-body::-webkit-scrollbar { width: 4px; }
-    .eb-modal-body::-webkit-scrollbar-track { background: transparent; }
-    .eb-modal-body::-webkit-scrollbar-thumb { background: rgba(108, 13, 44, 0.25); border-radius: 999px; }
-    .eb-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(108, 13, 44, 0.55); }
-    .eb-modal-body::-webkit-scrollbar-button { display: none; }
-    .eb-modal-role { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #6C0D2C; margin-bottom: 0.35rem; display: block; }
-    .eb-modal-name { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.1rem, 3.2vw, 2.65rem); font-weight: 600; color: #141414; line-height: 1.12; letter-spacing: -0.015em; margin: 0; word-break: break-word; }
-    .eb-modal-desc { font-family: 'Outfit', sans-serif; font-size: 0.92rem; line-height: 1.74; color: #383838; font-weight: 350; margin-bottom: 1.25rem; }
-    .eb-modal-desc p { margin: 0 0 0.85rem 0; }
-    .eb-modal-desc p:last-child { margin-bottom: 0; }
-    .eb-modal-meta { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-top: 0.5rem; }
-    .eb-modal-quote { background: rgba(108, 13, 44, 0.035); border-radius: 14px; padding: 13px 18px; margin: 0; }
-    .eb-quote-text { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 1.02rem; line-height: 1.55; color: #1c1c1c; margin: 0; }
-    .eb-modal-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 0.4rem; }
-    .eb-meta-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,0.035); border: 1px solid rgba(0,0,0,0.05); font-size: 0.82rem; color: #2b2b2b; text-decoration: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    a.eb-meta-pill:hover { background: rgba(108, 13, 44, 0.07); border-color: rgba(108, 13, 44, 0.2); color: #6C0D2C; transform: translateY(-1px); }
-    .eb-meta-icon { color: #6C0D2C; flex-shrink: 0; }
-    .eb-meta-val { font-weight: 450; color: #222; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .eb-meta-arrow { font-size: 0.85rem; opacity: 0.6; margin-left: 2px; transition: transform 0.2s ease, opacity 0.2s ease; }
-    a.eb-meta-pill:hover .eb-meta-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+    .eb-modal-right {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 0.5rem 0.25rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .eb-modal-header {
+      flex: 0 0 auto;
+      margin-bottom: 0.85rem;
+      padding-right: 3.2rem;
+    }
+
+    .eb-modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-right: 0.85rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
+    }
+
+    .eb-modal-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .eb-modal-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .eb-modal-body::-webkit-scrollbar-thumb {
+      background: rgba(108, 13, 44, 0.25);
+      border-radius: 999px;
+    }
+
+    .eb-modal-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(108, 13, 44, 0.55);
+    }
+
+    .eb-modal-body::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    .eb-modal-role {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #6C0D2C;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .eb-modal-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.1rem, 3.2vw, 2.65rem);
+      font-weight: 600;
+      color: #141414;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .eb-modal-desc {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.74;
+      color: #383838;
+      font-weight: 350;
+      margin-bottom: 1.25rem;
+    }
+
+    .eb-modal-desc p {
+      margin: 0 0 0.85rem 0;
+    }
+
+    .eb-modal-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .eb-modal-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .eb-modal-quote {
+      background: rgba(108, 13, 44, 0.035);
+      border-radius: 14px;
+      padding: 13px 18px;
+      margin: 0;
+    }
+
+    .eb-quote-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.02rem;
+      line-height: 1.55;
+      color: #1c1c1c;
+      margin: 0;
+    }
+
+    .eb-modal-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px;
+      padding-top: 0.4rem;
+    }
+
+    .eb-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.035);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 0.82rem;
+      color: #2b2b2b;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    a.eb-meta-pill:hover {
+      background: rgba(108, 13, 44, 0.07);
+      border-color: rgba(108, 13, 44, 0.2);
+      color: #6C0D2C;
+      transform: translateY(-1px);
+    }
+
+    .eb-meta-icon {
+      color: #6C0D2C;
+      flex-shrink: 0;
+    }
+
+    .eb-meta-val {
+      font-weight: 450;
+      color: #222;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .eb-meta-arrow {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-left: 2px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    a.eb-meta-pill:hover .eb-meta-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
 
     /* ── Mobile ── */
     @media (max-width: 768px) {
@@ -1239,22 +1456,26 @@
         padding: 24px 6% max(112px, calc(92px + env(safe-area-inset-bottom, 0px)));
         box-sizing: border-box;
       }
+
       .eb-main-title-container {
         padding: clamp(18px, 3.5vh, 28px) 16px 24px;
         gap: 18px;
         align-items: center;
         text-align: center;
       }
+
       .eb-main-title-container .team-kicker {
         font-size: clamp(0.74rem, 2.8vw, 0.86rem);
         letter-spacing: 0.24em;
         margin-bottom: 2px;
       }
+
       .eb-main-title {
         font-size: clamp(2.35rem, 11vw, 3.4rem);
         line-height: 1.05;
         letter-spacing: 0.035em;
       }
+
       .committee-block {
         display: flex;
         flex-direction: column;
@@ -1262,6 +1483,7 @@
         margin-bottom: clamp(40px, 8vw, 56px);
         gap: 20px;
       }
+
       .committee-header {
         position: static;
         width: 100%;
@@ -1270,17 +1492,21 @@
         gap: 8px;
         padding-top: 0;
       }
+
       .committee-kicker {
         font-size: 0.68rem;
         letter-spacing: 0.22em;
       }
+
       .committee-title {
         font-size: clamp(1.35rem, 5.5vw, 1.65rem);
         text-align: center;
       }
+
       .committee-accent-line {
         margin: 4px auto 0;
       }
+
       .eb-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1288,6 +1514,7 @@
         row-gap: clamp(24px, 5vw, 36px);
         align-items: start;
       }
+
       .eb-card {
         align-items: center;
         text-align: center;
@@ -1297,11 +1524,13 @@
         opacity: 1;
         transform: none;
       }
-      .eb-grid > .eb-card:last-child:nth-child(odd) {
+
+      .eb-grid>.eb-card:last-child:nth-child(odd) {
         grid-column: 1 / -1;
         justify-self: center;
         width: min(calc(50% - 7px), 170px);
       }
+
       .eb-image-wrap {
         width: 100%;
         height: clamp(158px, 47vw, 190px);
@@ -1309,40 +1538,88 @@
         margin-bottom: 10px;
         border-radius: 12px;
       }
+
       .eb-image-wrap img {
         transform: none;
       }
+
       .eb-image-wrap img.eb-zoom-adwityo,
       .eb-image-wrap img.eb-zoom-anshuman {
         transform: none;
       }
+
       .eb-name {
         font-size: clamp(0.92rem, 3.4vw, 1.02rem);
         font-weight: 700;
         text-align: center;
       }
+
       .eb-role {
         font-size: clamp(0.74rem, 2.7vw, 0.8rem);
         font-weight: 600;
         color: #383838;
         text-align: center;
       }
+
       .eb-ig-link {
         font-size: clamp(0.74rem, 2.8vw, 0.82rem);
         justify-content: center;
         margin: 4px auto 0 auto;
       }
+
       .eb-section-divider,
       .committee-sep {
         display: none;
       }
-      .eb-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100dvh; padding: clamp(14px, 3vh, 24px) clamp(14px, 4vw, 20px); box-sizing: border-box; display: flex; align-items: center; justify-content: center; z-index: 2500; }
-      .eb-modal-content { display: flex; flex-direction: column; width: min(88vw, 360px); max-height: min(82dvh, 600px); border-radius: 24px; overflow: hidden; padding: 0; gap: 0; position: relative; }
-      .eb-modal-close { position: absolute; top: 12px; right: 12px; z-index: 50; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+      .eb-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100dvh;
+        padding: clamp(14px, 3vh, 24px) clamp(14px, 4vw, 20px);
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2500;
+      }
+
+      .eb-modal-content {
+        display: flex;
+        flex-direction: column;
+        width: min(88vw, 360px);
+        max-height: min(82dvh, 600px);
+        border-radius: 24px;
+        overflow: hidden;
+        padding: 0;
+        gap: 0;
+        position: relative;
+      }
+
+      .eb-modal-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
       .eb-modal-scroll {
-        display: flex; flex-direction: column;
-        width: 100%; height: 100%; max-height: 100%;
-        overflow-y: auto; overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
         padding: 1.35rem 1.15rem 1.25rem;
@@ -1351,32 +1628,144 @@
         scrollbar-width: thin;
         scrollbar-color: rgba(108, 13, 44, 0.25) transparent;
       }
-      .eb-modal-scroll::-webkit-scrollbar { width: 4px; }
-      .eb-modal-scroll::-webkit-scrollbar-track { background: transparent; }
-      .eb-modal-scroll::-webkit-scrollbar-thumb { background: rgba(108, 13, 44, 0.25); border-radius: 999px; }
-      .eb-modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(108, 13, 44, 0.55); }
-      .eb-modal-left { flex: 0 0 auto; width: 140px; height: 180px; min-height: 180px; max-height: 180px; border-radius: 18px; margin: 4px auto 14px auto; }
-      .eb-modal-right { flex: 0 0 auto; width: 100%; min-height: auto; padding: 0; align-items: center; text-align: center; overflow: visible; display: flex; flex-direction: column; }
-      .eb-modal-header { margin-bottom: 0.85rem; padding-right: 0; width: 100%; text-align: center; flex: 0 0 auto; }
-      .eb-modal-name { font-size: clamp(1.45rem, 5.2vw, 1.75rem); text-align: center; }
-      .eb-modal-body { overflow: visible; width: 100%; padding-right: 0; flex: 0 0 auto; min-height: auto; height: auto; }
-      .eb-modal-meta-row { justify-content: center; }
+
+      .eb-modal-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .eb-modal-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .eb-modal-scroll::-webkit-scrollbar-thumb {
+        background: rgba(108, 13, 44, 0.25);
+        border-radius: 999px;
+      }
+
+      .eb-modal-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(108, 13, 44, 0.55);
+      }
+
+      .eb-modal-left {
+        flex: 0 0 auto;
+        width: 140px;
+        height: 180px;
+        min-height: 180px;
+        max-height: 180px;
+        border-radius: 18px;
+        margin: 4px auto 14px auto;
+      }
+
+      .eb-modal-right {
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: auto;
+        padding: 0;
+        align-items: center;
+        text-align: center;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .eb-modal-header {
+        margin-bottom: 0.85rem;
+        padding-right: 0;
+        width: 100%;
+        text-align: center;
+        flex: 0 0 auto;
+      }
+
+      .eb-modal-name {
+        font-size: clamp(1.45rem, 5.2vw, 1.75rem);
+        text-align: center;
+      }
+
+      .eb-modal-body {
+        overflow: visible;
+        width: 100%;
+        padding-right: 0;
+        flex: 0 0 auto;
+        min-height: auto;
+        height: auto;
+      }
+
+      .eb-modal-meta-row {
+        justify-content: center;
+      }
     }
+
     @media (max-width: 360px) {
-      .eb-grid { column-gap: 10px; row-gap: 24px; }
-      .eb-image-wrap { height: clamp(148px, 47vw, 170px); }
-      .eb-name { font-size: 0.82rem; }
-      .eb-modal-content { width: 92vw; }
+      .eb-grid {
+        column-gap: 10px;
+        row-gap: 24px;
+      }
+
+      .eb-image-wrap {
+        height: clamp(148px, 47vw, 170px);
+      }
+
+      .eb-name {
+        font-size: 0.82rem;
+      }
+
+      .eb-modal-content {
+        width: 92vw;
+      }
     }
+
     @media (max-height: 520px) and (orientation: landscape) {
-      .eb-modal-content { width: min(92vw, 600px); max-height: calc(100dvh - 24px); padding: 0; }
-      .eb-modal-scroll { flex-direction: row; padding: 14px; gap: 14px; overflow-y: hidden; }
-      .eb-modal-left { flex: 0 0 42%; height: 100%; min-height: 0; max-height: none; border-radius: 14px; margin: 0; }
-      .eb-modal-right { text-align: left; align-items: flex-start; padding: 10px 14px; overflow: hidden; flex: 1; min-height: 0; }
-      .eb-modal-header { text-align: left; padding-right: 2.5rem; }
-      .eb-modal-name { text-align: left; font-size: 1.25rem; }
-      .eb-modal-role { text-align: left; }
-      .eb-modal-body { overflow-y: auto; flex: 1; height: 100%; min-height: 0; }
+      .eb-modal-content {
+        width: min(92vw, 600px);
+        max-height: calc(100dvh - 24px);
+        padding: 0;
+      }
+
+      .eb-modal-scroll {
+        flex-direction: row;
+        padding: 14px;
+        gap: 14px;
+        overflow-y: hidden;
+      }
+
+      .eb-modal-left {
+        flex: 0 0 42%;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+        border-radius: 14px;
+        margin: 0;
+      }
+
+      .eb-modal-right {
+        text-align: left;
+        align-items: flex-start;
+        padding: 10px 14px;
+        overflow: hidden;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .eb-modal-header {
+        text-align: left;
+        padding-right: 2.5rem;
+      }
+
+      .eb-modal-name {
+        text-align: left;
+        font-size: 1.25rem;
+      }
+
+      .eb-modal-role {
+        text-align: left;
+      }
+
+      .eb-modal-body {
+        overflow-y: auto;
+        flex: 1;
+        height: 100%;
+        min-height: 0;
+      }
     }
 
     /* ── Team Page Navigator ── */
@@ -1621,28 +2010,35 @@
       .team-page-nav-wrapper {
         top: 56px;
       }
+
       .team-page-tab {
         padding: 13px clamp(14px, 4vw, 24px);
         gap: 10px;
       }
+
       .tab-page-number {
         font-size: 1.2rem;
       }
+
       .tab-title {
         font-size: 0.80rem;
       }
+
       .tab-meta {
         display: none;
       }
+
       .team-page-footer-nav {
         flex-direction: column;
         text-align: center;
         gap: 16px;
         padding: 20px 16px;
       }
+
       .page-footer-info {
         align-items: center;
       }
+
       .page-switch-btn {
         width: 100%;
         justify-content: center;
@@ -1723,44 +2119,80 @@
       <div class="profile-img-container" data-index="0" data-first-name="NIKHIL" data-full-name="Nikhil Nayak"
         data-role="Secretary General" data-insta="nikhil7n7">
         <div class="profile-img-clip">
-          <img src="/team/nikhil.webp" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/nikhil.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}" alt="MUNSoc - Nikhil Nayak">
+          <img src="/team/nikhil.webp"
+            onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/nikhil.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}"
+            alt="MUNSoc - Nikhil Nayak">
         </div>
-        <a href="https://www.instagram.com/nikhil7n7/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Nikhil Nayak on Instagram">
-          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <a href="https://www.instagram.com/nikhil7n7/" target="_blank" rel="noopener noreferrer"
+          class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Nikhil Nayak on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
           <span class="profile-ig-badge-handle">@nikhil7n7</span>
-          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path>
+          </svg>
         </a>
       </div>
       <div class="profile-img-container" data-index="1" data-first-name="KOUSHIK" data-full-name="V Koushik"
         data-role="Director General" data-insta="koushik_v__">
         <div class="profile-img-clip">
-          <img src="/team/koushik.webp" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/koushik.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}" alt="MUNSoc - V Koushik" style="object-position: center 30%;">
+          <img src="/team/koushik.webp"
+            onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/koushik.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}"
+            alt="MUNSoc - V Koushik" style="object-position: center 30%;">
         </div>
-        <a href="https://www.instagram.com/koushik_v__/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="V Koushik on Instagram">
-          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <a href="https://www.instagram.com/koushik_v__/" target="_blank" rel="noopener noreferrer"
+          class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="V Koushik on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
           <span class="profile-ig-badge-handle">@koushik_v__</span>
-          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path>
+          </svg>
         </a>
       </div>
       <div class="profile-row-break" aria-hidden="true"></div>
       <div class="profile-img-container" data-index="2" data-first-name="KARTHIK" data-full-name="Karthik Prasad M"
         data-role="Head of Equity" data-insta="kkarthhikk">
         <div class="profile-img-clip">
-          <img src="/team/karthik.webp" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/karthik.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}" alt="MUNSoc - Karthik Prasad M">
+          <img src="/team/karthik.webp"
+            onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/karthik.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}"
+            alt="MUNSoc - Karthik Prasad M">
         </div>
-        <a href="https://www.instagram.com/kkarthhikk/" target="_blank" rel="noopener noreferrer" class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Karthik Prasad M on Instagram">
-          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <a href="https://www.instagram.com/kkarthhikk/" target="_blank" rel="noopener noreferrer"
+          class="profile-ig-badge" onclick="event.stopPropagation()" aria-label="Karthik Prasad M on Instagram">
+          <svg class="profile-ig-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
           <span class="profile-ig-badge-handle">@kkarthhikk</span>
-          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path></svg>
+          <svg class="profile-ig-badge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"></path>
+          </svg>
         </a>
       </div>
       <div class="profile-img-container" data-index="3" data-first-name="VAMSHI" data-full-name="Vamshi Ganesh"
         data-role="Head of Equity">
         <div class="profile-img-clip">
-          <img src="/team/vamshi.webp" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/vamshi.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}" alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
+          <img src="/team/vamshi.webp"
+            onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='./team/vamshi.webp';}else{this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23F2EDE4%22/%3E%3Ccircle cx=%22100%22 cy=%2275%22 r=%2235%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3Cpath d=%22M40 170c0-33.14 26.86-60 60-60s60 26.86 60 60z%22 fill=%22%236C0D2C%22 opacity=%220.35%22/%3E%3C/svg%3E';}"
+            alt="MUNSoc - Vamshi Ganesh" style="object-position: center 20%;">
         </div>
         <span class="profile-ig-badge" style="cursor:default; pointer-events:none;">
-          <span class="profile-ig-badge-handle" style="font-style:italic; letter-spacing:0.01em;">&ldquo;Lawyer Denied Insta&rdquo;</span>
+          <span class="profile-ig-badge-handle" style="font-style:italic; letter-spacing:0.01em;">&ldquo;Lawyer Denied
+            Insta&rdquo;</span>
         </span>
       </div>
     </div>
@@ -1787,7 +2219,8 @@
     <nav class="team-page-nav" role="tablist" aria-label="Team sections">
       <!-- Sliding indicator -->
       <span class="tab-sliding-indicator" id="tab-indicator" aria-hidden="true"></span>
-      <button class="team-page-tab active" id="tab-eb" data-page="1" role="tab" aria-selected="true" aria-controls="team-view-1">
+      <button class="team-page-tab active" id="tab-eb" data-page="1" role="tab" aria-selected="true"
+        aria-controls="team-view-1">
         <span class="tab-page-number" aria-hidden="true">01</span>
         <span class="tab-text-group">
           <span class="tab-title">Executive Board</span>
@@ -1795,7 +2228,8 @@
         </span>
       </button>
       <div class="team-page-tab-divider" aria-hidden="true"></div>
-      <button class="team-page-tab" id="tab-oc" data-page="2" role="tab" aria-selected="false" aria-controls="team-view-2">
+      <button class="team-page-tab" id="tab-oc" data-page="2" role="tab" aria-selected="false"
+        aria-controls="team-view-2">
         <span class="tab-page-number" aria-hidden="true">02</span>
         <span class="tab-text-group">
           <span class="tab-title">Organising Committee</span>
@@ -1808,624 +2242,822 @@
   <!-- Team Views Container -->
   <div class="team-views-container">
 
-  <!-- ── PAGE 1: Executive Board ── -->
-  <div class="team-view-page active" id="team-view-1" role="tabpanel" aria-labelledby="tab-eb">
+    <!-- ── PAGE 1: Executive Board ── -->
+    <div class="team-view-page active" id="team-view-1" role="tabpanel" aria-labelledby="tab-eb">
 
-  <!-- Executive Board Section -->
-  <section class="eb-section" id="eb-section">
-    <div class="eb-main-title-container">
-      <div class="team-kicker">✦ EXECUTIVE BOARD</div>
-      <h2 class="eb-main-title">The Executive Board</h2>
-    </div>
+      <!-- Executive Board Section -->
+      <section class="eb-section" id="eb-section">
+        <div class="eb-main-title-container">
+          <div class="team-kicker">✦ EXECUTIVE BOARD</div>
+          <h2 class="eb-main-title">The Executive Board</h2>
+        </div>
 
-    <div class="eb-section-divider"></div>
+        <div class="eb-section-divider"></div>
 
-    <!-- Committee: UNSC -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">01 &nbsp;·&nbsp; UNSC</div>
-        <h3 class="committee-title">United Nations Security Council</h3>
-        <div class="committee-accent-line"></div>
+        <!-- Committee: UNSC -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">01 &nbsp;·&nbsp; UNSC</div>
+            <h3 class="committee-title">United Nations Security Council</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Shishir Simha.webp" alt="Shishir Simha" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Shishir Simha</div>
+              <div class="eb-role">Chair</div>
+              <a href="https://www.instagram.com/shishir.simha/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @shishir.simha
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Sathya Shiva GP.webp" alt="Sathya Shiva" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Sathya Shiva</div>
+              <div class="eb-role">Vice Chair</div>
+              <a href="https://www.instagram.com/s4thya._/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @s4thya._
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/kapil.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Kapil Pal</div>
+              <div class="eb-role">Moderator</div>
+              <span class="eb-ig-link" style="pointer-events:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @stoic_kapil
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Committee: UNHRC -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">02 &nbsp;·&nbsp; UNHRC</div>
+            <h3 class="committee-title">United Nations Human Rights Council</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Kshitij Saha.webp" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Kshitij Saha</div>
+              <div class="eb-role">Co-Chair</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bangre" loading="lazy" class="eb-zoom-sahit"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Sahit Bangre</div>
+              <div class="eb-role">Co-Chair</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Tanmay.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Tanmay P Shetty</div>
+              <div class="eb-role">Vice Chair</div>
+              <a href="https://www.instagram.com/tanmay_p_shetty/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @tanmay_p_shetty
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Committee: DISEC -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">03 &nbsp;·&nbsp; DISEC</div>
+            <h3 class="committee-title">Disarmament &amp; International Security Committee</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Sumit Shingare.webp" alt="Sumit Shingare" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Sumit Shingare</div>
+              <div class="eb-role">Co-Chair</div>
+              <a href="https://www.instagram.com/sum1t_s/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @sum1t_s
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Sanchya Prathish.webp" alt="Sanchya Prathish" loading="lazy"
+                  style="object-position: center 10%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Sanchya Prathish</div>
+              <div class="eb-role">Co-Chair</div>
+              <a href="https://www.instagram.com/sanchya_prathish/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @sanchya_prathish
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Vachan.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Vachan B Hindiskere</div>
+              <div class="eb-role">Vice Chair</div>
+              <a href="https://www.instagram.com/chanchan_69420/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @chanchan_69420
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Committee: Lok Sabha -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">04 &nbsp;·&nbsp; PARLIAMENT</div>
+            <h3 class="committee-title">Lok Sabha</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Anshuman.webp" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Anshuman Pandey</div>
+              <div class="eb-role">Chair</div>
+              <a href="https://www.instagram.com/_.anshuman_.07/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @_.anshuman_.07
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Rajath R.webp" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Rajath R</div>
+              <div class="eb-role">Vice Chair</div>
+              <a href="https://www.instagram.com/rajathrr_4/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @rajathrr_4
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Jayanth N.webp" alt="Jayanth N" loading="lazy" style="object-position: center 10%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Jayanth N</div>
+              <div class="eb-role">Moderator</div>
+              <a href="https://www.instagram.com/mr_jayanth___07/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @mr_jayanth___07
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Committee: UNODC -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">05 &nbsp;·&nbsp; UNODC</div>
+            <h3 class="committee-title">United Nations Office on Drugs and Crime</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Adwityo Das.webp" alt="Adwitiyo Das" class="eb-zoom-adwityo" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Adwitiyo Das</div>
+              <div class="eb-role">Chair</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/pranathi naik.webp" alt="Pranathi Naik" loading="lazy"
+                  style="object-position: center 100%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Pranathi Naik</div>
+              <div class="eb-role">Vice Chair</div>
+              <a href="https://www.instagram.com/pranathinaik.27/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @pranathinaik.27
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Divya.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Divya Sharma</div>
+              <div class="eb-role">Moderator</div>
+              <a href="https://www.instagram.com/divyasharma_2810/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @divyasharma_2810
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Committee: IP -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">06 &nbsp;·&nbsp; INTERNATIONAL PRESS</div>
+            <h3 class="committee-title">International Press</h3>
+            <div class="committee-accent-line"></div>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/Pranav Sivakumar.webp" alt="Pranav Sivakumar" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Pranav Sivakumar</div>
+              <div class="eb-role">Head</div>
+              <a href="https://www.instagram.com/therealfakist/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @therealfakist
+              </a>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/EB/nuha.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Nuha Alishba</div>
+              <div class="eb-role">Deputy Head</div>
+              <a href="https://www.instagram.com/draw_ingur_attention/" target="_blank" class="eb-ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @draw_ingur_attention
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Page 1 Footer Nav -->
+      <div class="team-page-footer-nav" id="footer-nav-p1">
+        <div class="page-footer-info">
+          <div class="page-current-indicator">Page 01 of 02 · Executive Board</div>
+          <p class="page-footer-desc">Meet the Organising Committee — the team behind the scenes.</p>
+        </div>
+        <button class="page-switch-btn" id="go-to-oc" aria-label="View Organising Committee">
+          Organising Committee
+          <span class="page-switch-num">02</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Shishir Simha.webp" alt="Shishir Simha" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Shishir Simha</div>
-          <div class="eb-role">Chair</div>
-          <a href="https://www.instagram.com/shishir.simha/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @shishir.simha
-          </a>
+
+    </div><!-- /team-view-1 -->
+
+    <!-- ── PAGE 2: Organising Committee ── -->
+    <div class="team-view-page" id="team-view-2" role="tabpanel" aria-labelledby="tab-oc">
+
+      <section class="eb-section" id="oc-section">
+        <div class="eb-main-title-container">
+          <div class="team-kicker">✦ ORGANISING COMMITTEE</div>
+          <h2 class="eb-main-title">The Organising Committee</h2>
+          <p class="oc-subtitle">The people who make the magic happen — across 10 departments running every facet of
+            RNSMUN 2026.</p>
         </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Sathya Shiva GP.webp" alt="Sathya Shiva" loading="lazy" onerror="this.style.display='none'">
+
+        <div class="eb-section-divider"></div>
+
+        <!-- Dept 01: Technical -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">01 &nbsp;·&nbsp; TECHNICAL</div>
+            <h3 class="committee-title">Technical</h3>
           </div>
-          <div class="eb-name">Sathya Shiva</div>
-          <div class="eb-role">Vice Chair</div>
-          <a href="https://www.instagram.com/s4thya._/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @s4thya._
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/kapil.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;" onerror="this.style.display='none'">
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/team/karthik.webp" alt="Karthik Prasad M" loading="lazy" style="object-position: center 20%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Karthik Prasad M</div>
+              <div class="eb-role">Head – Technical</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Shriyanshu Kumar.webp" alt="Shriyanshu Kumar Kapsime" loading="lazy"
+                  style="object-position: center 20%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Shriyanshu Kumar Kapsime</div>
+              <div class="eb-role">Co-Head – Technical</div>
+            </div>
           </div>
-          <div class="eb-name">Kapil Pal</div>
-          <div class="eb-role">Moderator</div>
-          <span class="eb-ig-link" style="pointer-events:none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @stoic_kapil
-          </span>
         </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 02: Delegate Affairs -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">02 &nbsp;·&nbsp; DELEGATE AFFAIRS</div>
+            <h3 class="committee-title">Delegate Affairs</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Zeyan Shahid Khan.webp" alt="Zeyan Shahid Khan" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Zeyan Shahid Khan</div>
+              <div class="eb-role">USG – Delegate Affairs</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Adith D H.webp" alt="Adith D H" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Adith D H</div>
+              <div class="eb-role">USG – Delegate Affairs</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 03: EB Affairs -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">03 &nbsp;·&nbsp; EB AFFAIRS</div>
+            <h3 class="committee-title">EB Affairs</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Vachan B Hindiskere.webp" alt="Vachan B Hindiskere" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Vachan B Hindiskere</div>
+              <div class="eb-role">USG – EB Affairs</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Tanmay P Shetty.webp" alt="Tanmay P Shetty" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Tanmay P Shetty</div>
+              <div class="eb-role">USG – EB Affairs</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 04: Finance -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">04 &nbsp;·&nbsp; FINANCE</div>
+            <h3 class="committee-title">Finance</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Poorvika Nagaraj.webp" alt="Poorvika Nagaraj" loading="lazy"
+                  style="object-position: center 20%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Poorvika Nagaraj</div>
+              <div class="eb-role">USG – Finance</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 05: Media & Design -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">05 &nbsp;·&nbsp; MEDIA &amp; DESIGN</div>
+            <h3 class="committee-title">Media &amp; Design</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Vamshi Ganesh.webp" alt="Vamshi Ganesh B" loading="lazy"
+                  style="object-position: center 20%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Vamshi Ganesh B</div>
+              <div class="eb-role">Head – Media &amp; Design</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 06: Operations -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">06 &nbsp;·&nbsp; OPERATIONS</div>
+            <h3 class="committee-title">Operations</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Manu T.webp" alt="Manu T" loading="lazy" style="object-position: center 20%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Manu T</div>
+              <div class="eb-role">USG – Operations</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/R J VARSHA (Co-Head, Operations).webp" alt="R J Varsha" loading="lazy"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">R J Varsha</div>
+              <div class="eb-role">USG – Operations</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 07: Creatives (Décor) -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">07 &nbsp;·&nbsp; CREATIVES</div>
+            <h3 class="committee-title">Creatives &amp; Décor</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Nuha Alishba.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Nuha Alishba</div>
+              <div class="eb-role">Head – Creatives</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Divya Sharma.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Divya Sharma</div>
+              <div class="eb-role">Head – Creatives</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 08: Outreach (Marketing) -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">08 &nbsp;·&nbsp; OUTREACH</div>
+            <h3 class="committee-title">Outreach &amp; Marketing</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Rudra Chakraborty.webp" alt="Rudra Chakraborty" loading="lazy"
+                  style="object-position: center 20%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Rudra Chakraborty</div>
+              <div class="eb-role">USG – Outreach</div>
+            </div>
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Kapil Pal.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Kapil Pal</div>
+              <div class="eb-role">USG – Outreach</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 09: Partnerships -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">09 &nbsp;·&nbsp; PARTNERSHIPS</div>
+            <h3 class="committee-title">Partnerships &amp; Sponsorship</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Anantha Narayan Prabhu.webp" alt="Anantha Narayan Prabhu" loading="lazy"
+                  style="object-position: center 20%;" onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Anantha Narayan Prabhu</div>
+              <div class="eb-role">Head – Partnerships</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="committee-sep"></div>
+
+        <!-- Dept 10: Content -->
+        <div class="committee-block">
+          <div class="committee-header">
+            <div class="committee-kicker">10 &nbsp;·&nbsp; CONTENT</div>
+            <h3 class="committee-title">Content</h3>
+          </div>
+          <div class="eb-grid">
+            <div class="eb-card">
+              <div class="eb-image-wrap">
+                <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img src="/OC/Dhatri V A.webp" alt="Dhatri V A" loading="lazy" style="object-position: center 20%;"
+                  onerror="this.style.display='none'">
+              </div>
+              <div class="eb-name">Dhatri V A</div>
+              <div class="eb-role">Head – Content</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Page 2 Footer Nav -->
+      <div class="team-page-footer-nav" id="footer-nav-p2">
+        <div class="page-footer-info">
+          <div class="page-current-indicator">Page 02 of 02 · Organising Committee</div>
+          <p class="page-footer-desc">Back to the Executive Board — committee chairs &amp; vice-chairs.</p>
+        </div>
+        <button class="page-switch-btn btn-prev" id="go-to-eb" aria-label="View Executive Board">
+          <svg style="transform:scaleX(-1)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          <span class="page-switch-num">01</span>
+          Executive Board
+        </button>
       </div>
-    </div>
 
-    <div class="committee-sep"></div>
-
-    <!-- Committee: UNHRC -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">02 &nbsp;·&nbsp; UNHRC</div>
-        <h3 class="committee-title">United Nations Human Rights Council</h3>
-        <div class="committee-accent-line"></div>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Kshitij Saha.webp" alt="Kshitij Saha" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Kshitij Saha</div>
-          <div class="eb-role">Co-Chair</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Sahit S Bangre.webp" alt="Sahit Bangre" loading="lazy" class="eb-zoom-sahit" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Sahit Bangre</div>
-          <div class="eb-role">Co-Chair</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Tanmay.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Tanmay P Shetty</div>
-          <div class="eb-role">Vice Chair</div>
-          <a href="https://www.instagram.com/tanmay_p_shetty/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @tanmay_p_shetty
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Committee: DISEC -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">03 &nbsp;·&nbsp; DISEC</div>
-        <h3 class="committee-title">Disarmament &amp; International Security Committee</h3>
-        <div class="committee-accent-line"></div>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Sumit Shingare.webp" alt="Sumit Shingare" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Sumit Shingare</div>
-          <div class="eb-role">Co-Chair</div>
-          <a href="https://www.instagram.com/sum1t_s/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @sum1t_s
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Sanchya Prathish.webp" alt="Sanchya Prathish" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Sanchya Prathish</div>
-          <div class="eb-role">Co-Chair</div>
-          <a href="https://www.instagram.com/sanchya_prathish/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @sanchya_prathish
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Vachan.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Vachan B Hindiskere</div>
-          <div class="eb-role">Vice Chair</div>
-          <a href="https://www.instagram.com/chanchan_69420/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @chanchan_69420
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Committee: Lok Sabha -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">04 &nbsp;·&nbsp; PARLIAMENT</div>
-        <h3 class="committee-title">Lok Sabha</h3>
-        <div class="committee-accent-line"></div>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Anshuman.webp" alt="Anshuman Pandey" class="eb-zoom-anshuman" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Anshuman Pandey</div>
-          <div class="eb-role">Chair</div>
-          <a href="https://www.instagram.com/_.anshuman_.07/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @_.anshuman_.07
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Rajath R.webp" alt="Rajath R" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Rajath R</div>
-          <div class="eb-role">Vice Chair</div>
-          <a href="https://www.instagram.com/rajathrr_4/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @rajathrr_4
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Jayanth N.webp" alt="Jayanth N" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Jayanth N</div>
-          <div class="eb-role">Moderator</div>
-          <a href="https://www.instagram.com/mr_jayanth___07/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @mr_jayanth___07
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Committee: UNODC -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">05 &nbsp;·&nbsp; UNODC</div>
-        <h3 class="committee-title">United Nations Office on Drugs and Crime</h3>
-        <div class="committee-accent-line"></div>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Adwityo Das.webp" alt="Adwitiyo Das" class="eb-zoom-adwityo" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Adwitiyo Das</div>
-          <div class="eb-role">Chair</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/pranathi naik.webp" alt="Pranathi Naik" loading="lazy" style="object-position: center 100%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Pranathi Naik</div>
-          <div class="eb-role">Vice Chair</div>
-          <a href="https://www.instagram.com/pranathinaik.27/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @pranathinaik.27
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Divya.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Divya Sharma</div>
-          <div class="eb-role">Moderator</div>
-          <a href="https://www.instagram.com/divyasharma_2810/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @divyasharma_2810
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Committee: IP -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">06 &nbsp;·&nbsp; INTERNATIONAL PRESS</div>
-        <h3 class="committee-title">International Press</h3>
-        <div class="committee-accent-line"></div>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/Pranav Sivakumar.webp" alt="Pranav Sivakumar" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Pranav Sivakumar</div>
-          <div class="eb-role">Head</div>
-          <a href="https://www.instagram.com/therealfakist/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @therealfakist
-          </a>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/EB/nuha.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Nuha Alishba</div>
-          <div class="eb-role">Deputy Head</div>
-          <a href="https://www.instagram.com/draw_ingur_attention/" target="_blank" class="eb-ig-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            @draw_ingur_attention
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Page 1 Footer Nav -->
-  <div class="team-page-footer-nav" id="footer-nav-p1">
-    <div class="page-footer-info">
-      <div class="page-current-indicator">Page 01 of 02 · Executive Board</div>
-      <p class="page-footer-desc">Meet the Organising Committee — the team behind the scenes.</p>
-    </div>
-    <button class="page-switch-btn" id="go-to-oc" aria-label="View Organising Committee">
-      Organising Committee
-      <span class="page-switch-num">02</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-  </div>
-
-  </div><!-- /team-view-1 -->
-
-  <!-- ── PAGE 2: Organising Committee ── -->
-  <div class="team-view-page" id="team-view-2" role="tabpanel" aria-labelledby="tab-oc">
-
-  <section class="eb-section" id="oc-section">
-    <div class="eb-main-title-container">
-      <div class="team-kicker">✦ ORGANISING COMMITTEE</div>
-      <h2 class="eb-main-title">The Organising Committee</h2>
-      <p class="oc-subtitle">The people who make the magic happen — across 10 departments running every facet of RNSMUN 2026.</p>
-    </div>
-
-    <div class="eb-section-divider"></div>
-
-    <!-- Dept 01: Apex Secretariat -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">01 &nbsp;·&nbsp; APEX</div>
-        <h3 class="committee-title">Apex Secretariat</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/team/nikhil.webp" alt="Nikhil Nayak" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Nikhil Nayak</div>
-          <div class="eb-role">Secretary General</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/team/koushik.webp" alt="V Koushik" loading="lazy" style="object-position: center 30%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">V Koushik</div>
-          <div class="eb-role">Director General</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Aditi Maktedar.webp" alt="Aditi Maktedar" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Aditi Maktedar</div>
-          <div class="eb-role">Chargé d'Affaires</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/team/karthik.webp" alt="Karthik Prasad M" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Karthik Prasad M</div>
-          <div class="eb-role">Head of Equity</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Vamshi Ganesh.webp" alt="Vamshi Ganesh" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Vamshi Ganesh</div>
-          <div class="eb-role">Head of Equity</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 02: Delegate Affairs -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">02 &nbsp;·&nbsp; DELEGATE AFFAIRS</div>
-        <h3 class="committee-title">Delegate Affairs</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Zeyan Shahid Khan.webp" alt="Zeyan Shahid Khan" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Zeyan Shahid Khan</div>
-          <div class="eb-role">USG – Delegate Affairs</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Adith D H.webp" alt="Adith D H" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Adith D H</div>
-          <div class="eb-role">USG – Delegate Affairs</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 03: EB Affairs -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">03 &nbsp;·&nbsp; EB AFFAIRS</div>
-        <h3 class="committee-title">EB Affairs</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Vachan B Hindiskere.webp" alt="Vachan B Hindiskere" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Vachan B Hindiskere</div>
-          <div class="eb-role">USG – EB Affairs</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Tanmay P Shetty.webp" alt="Tanmay P Shetty" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Tanmay P Shetty</div>
-          <div class="eb-role">USG – EB Affairs</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 04: Finance -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">04 &nbsp;·&nbsp; FINANCE</div>
-        <h3 class="committee-title">Finance</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Poorvika Nagaraj.webp" alt="Poorvika Nagaraj" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Poorvika Nagaraj</div>
-          <div class="eb-role">USG – Finance</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 05: Media & Social Media -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">05 &nbsp;·&nbsp; MEDIA</div>
-        <h3 class="committee-title">Media &amp; Social Media</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Vamshi Ganesh.webp" alt="Vamshi Ganesh B" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Vamshi Ganesh B</div>
-          <div class="eb-role">USG – Media</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 06: Operations -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">06 &nbsp;·&nbsp; OPERATIONS</div>
-        <h3 class="committee-title">Operations</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Nihal N.webp -->
-          </div>
-          <div class="eb-name">Nihal N</div>
-          <div class="eb-role">USG – Operations</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Manu T.webp" alt="Manu T" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Manu T</div>
-          <div class="eb-role">USG – Operations</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/R J VARSHA (Co-Head, Operations).webp" alt="R J Varsha" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">R J Varsha</div>
-          <div class="eb-role">Co-Head – Operations</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 07: Creatives (Décor) -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">07 &nbsp;·&nbsp; CREATIVES</div>
-        <h3 class="committee-title">Creatives &amp; Décor</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Nuha Alishba.webp" alt="Nuha Alishba" loading="lazy" style="object-position: center 60%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Nuha Alishba</div>
-          <div class="eb-role">Head – Creatives</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Divya Sharma.webp" alt="Divya Sharma" loading="lazy" style="object-position: center 10%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Divya Sharma</div>
-          <div class="eb-role">Head – Creatives</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 08: Outreach (Marketing) -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">08 &nbsp;·&nbsp; OUTREACH</div>
-        <h3 class="committee-title">Outreach &amp; Marketing</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Rudra Chakraborty.webp" alt="Rudra Chakraborty" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Rudra Chakraborty</div>
-          <div class="eb-role">USG – Outreach</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Kapil Pal.webp" alt="Kapil Pal" loading="lazy" style="object-position: center 5%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Kapil Pal</div>
-          <div class="eb-role">USG – Outreach</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 09: Partnerships -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">09 &nbsp;·&nbsp; PARTNERSHIPS</div>
-        <h3 class="committee-title">Partnerships &amp; Sponsorship</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Anantha Narayan Prabhu.webp" alt="Anantha Narayan Prabhu" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Anantha Narayan Prabhu</div>
-          <div class="eb-role">Head – Partnerships</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="committee-sep"></div>
-
-    <!-- Dept 10: Content & Technical -->
-    <div class="committee-block">
-      <div class="committee-header">
-        <div class="committee-kicker">10 &nbsp;·&nbsp; CONTENT &amp; TECHNICAL</div>
-        <h3 class="committee-title">Content &amp; Technical</h3>
-      </div>
-      <div class="eb-grid">
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <img src="/OC/Dhatri V A.webp" alt="Dhatri V A" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
-          </div>
-          <div class="eb-name">Dhatri V A</div>
-          <div class="eb-role">Head – Content</div>
-        </div>
-        <div class="eb-card">
-          <div class="eb-image-wrap">
-            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Bhargavi Gangoor.webp -->
-          </div>
-          <div class="eb-name">Bhargavi Gangoor</div>
-          <div class="eb-role">Head – Technical</div>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Page 2 Footer Nav -->
-  <div class="team-page-footer-nav" id="footer-nav-p2">
-    <div class="page-footer-info">
-      <div class="page-current-indicator">Page 02 of 02 · Organising Committee</div>
-      <p class="page-footer-desc">Back to the Executive Board — committee chairs &amp; vice-chairs.</p>
-    </div>
-    <button class="page-switch-btn btn-prev" id="go-to-eb" aria-label="View Executive Board">
-      <svg style="transform:scaleX(-1)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      <span class="page-switch-num">01</span>
-      Executive Board
-    </button>
-  </div>
-
-  </div><!-- /team-view-2 -->
+    </div><!-- /team-view-2 -->
   </div><!-- /team-views-container -->
 
   <!-- EB Modal (shared) -->
   <div class="eb-modal-overlay" id="ebModal">
     <div class="eb-modal-content">
       <button class="eb-modal-close" id="ebModalClose" aria-label="Close dialog" title="Close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -2438,110 +3070,110 @@
           <div class="eb-modal-header">
             <span class="eb-modal-role" id="ebModalRole">Role</span>
             <h2 class="eb-modal-name" id="ebModalName">Name</h2>
-          <script type="module" src="./topology-background.js"></script>
-  <script type="module" src="./mobile-floating-menu.js"></script>
-  <script type="module" src="./team.js"></script>
-  <script src="/register-sw.js"></script>
-  <script type="module" src="./analytics.js"></script>
-  <script>
-  // ── Team Page Switcher ──
-  (function() {
-    const tabs = document.querySelectorAll('.team-page-tab');
-    const pages = document.querySelectorAll('.team-view-page');
-    const indicator = document.getElementById('tab-indicator');
+            <script type="module" src="./topology-background.js"></script>
+            <script type="module" src="./mobile-floating-menu.js"></script>
+            <script type="module" src="./team.js"></script>
+            <script src="/register-sw.js"></script>
+            <script type="module" src="./analytics.js"></script>
+            <script>
+              // ── Team Page Switcher ──
+              (function () {
+                const tabs = document.querySelectorAll('.team-page-tab');
+                const pages = document.querySelectorAll('.team-view-page');
+                const indicator = document.getElementById('tab-indicator');
 
-    function positionIndicator(activeTab) {
-      if (!indicator || !activeTab) return;
-      const nav = activeTab.closest('.team-page-nav');
-      if (!nav) return;
-      const navRect = nav.getBoundingClientRect();
-      const tabRect = activeTab.getBoundingClientRect();
-      const left = tabRect.left - navRect.left;
-      indicator.style.width = tabRect.width + 'px';
-      indicator.style.transform = 'translateX(' + left + 'px)';
-    }
+                function positionIndicator(activeTab) {
+                  if (!indicator || !activeTab) return;
+                  const nav = activeTab.closest('.team-page-nav');
+                  if (!nav) return;
+                  const navRect = nav.getBoundingClientRect();
+                  const tabRect = activeTab.getBoundingClientRect();
+                  const left = tabRect.left - navRect.left;
+                  indicator.style.width = tabRect.width + 'px';
+                  indicator.style.transform = 'translateX(' + left + 'px)';
+                }
 
-    function switchPage(targetPage) {
-      let activeTab = null;
-      tabs.forEach(t => {
-        const isActive = parseInt(t.dataset.page) === targetPage;
-        t.classList.toggle('active', isActive);
-        t.setAttribute('aria-selected', String(isActive));
-        if (isActive) activeTab = t;
-      });
+                function switchPage(targetPage) {
+                  let activeTab = null;
+                  tabs.forEach(t => {
+                    const isActive = parseInt(t.dataset.page) === targetPage;
+                    t.classList.toggle('active', isActive);
+                    t.setAttribute('aria-selected', String(isActive));
+                    if (isActive) activeTab = t;
+                  });
 
-      positionIndicator(activeTab);
+                  positionIndicator(activeTab);
 
-      pages.forEach(p => {
-        const isTarget = p.id === 'team-view-' + targetPage;
-        if (isTarget) {
-          p.style.display = 'block';
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              p.classList.add('active');
-            });
-          });
-        } else {
-          p.classList.remove('active');
-        }
-      });
+                  pages.forEach(p => {
+                    const isTarget = p.id === 'team-view-' + targetPage;
+                    if (isTarget) {
+                      p.style.display = 'block';
+                      requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                          p.classList.add('active');
+                        });
+                      });
+                    } else {
+                      p.classList.remove('active');
+                    }
+                  });
 
-      // After transition delay, hide inactive pages
-      setTimeout(() => {
-        pages.forEach(p => {
-          if (!p.classList.contains('active')) {
-            p.style.display = 'none';
-          }
-        });
-      }, 420);
+                  // After transition delay, hide inactive pages
+                  setTimeout(() => {
+                    pages.forEach(p => {
+                      if (!p.classList.contains('active')) {
+                        p.style.display = 'none';
+                      }
+                    });
+                  }, 420);
 
-      // Re-run OC scroll animations when entering page 2
-      if (targetPage === 2) {
-        setTimeout(() => {
-          const ocCards = document.querySelectorAll('#team-view-2 .eb-card');
-          ocCards.forEach((card, i) => {
-            setTimeout(() => card.classList.add('is-visible'), i * 60);
-          });
-          const ocBlocks = document.querySelectorAll('#team-view-2 .committee-block');
-          ocBlocks.forEach((block, i) => {
-            setTimeout(() => block.classList.add('is-visible'), i * 80);
-          });
-        }, 100);
-      }
+                  // Re-run OC scroll animations when entering page 2
+                  if (targetPage === 2) {
+                    setTimeout(() => {
+                      const ocCards = document.querySelectorAll('#team-view-2 .eb-card');
+                      ocCards.forEach((card, i) => {
+                        setTimeout(() => card.classList.add('is-visible'), i * 60);
+                      });
+                      const ocBlocks = document.querySelectorAll('#team-view-2 .committee-block');
+                      ocBlocks.forEach((block, i) => {
+                        setTimeout(() => block.classList.add('is-visible'), i * 80);
+                      });
+                    }, 100);
+                  }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
 
-    // Tab buttons
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const page = parseInt(tab.dataset.page);
-        switchPage(page);
-      });
-    });
+                // Tab buttons
+                tabs.forEach(tab => {
+                  tab.addEventListener('click', () => {
+                    const page = parseInt(tab.dataset.page);
+                    switchPage(page);
+                  });
+                });
 
-    // Footer CTA buttons
-    const goToOC = document.getElementById('go-to-oc');
-    const goToEB = document.getElementById('go-to-eb');
-    if (goToOC) goToOC.addEventListener('click', () => switchPage(2));
-    if (goToEB) goToEB.addEventListener('click', () => switchPage(1));
+                // Footer CTA buttons
+                const goToOC = document.getElementById('go-to-oc');
+                const goToEB = document.getElementById('go-to-eb');
+                if (goToOC) goToOC.addEventListener('click', () => switchPage(2));
+                if (goToEB) goToEB.addEventListener('click', () => switchPage(1));
 
-    // Initialise: hide page 2, set initial indicator position
-    const page2 = document.getElementById('team-view-2');
-    if (page2) page2.style.display = 'none';
+                // Initialise: hide page 2, set initial indicator position
+                const page2 = document.getElementById('team-view-2');
+                if (page2) page2.style.display = 'none';
 
-    // Position indicator on load (after fonts settle)
-    requestAnimationFrame(() => {
-      const activeTab = document.querySelector('.team-page-tab.active');
-      positionIndicator(activeTab);
-    });
-    // Also reposition on resize
-    window.addEventListener('resize', () => {
-      const activeTab = document.querySelector('.team-page-tab.active');
-      positionIndicator(activeTab);
-    }, { passive: true });
-  })();
-  </script>
+                // Position indicator on load (after fonts settle)
+                requestAnimationFrame(() => {
+                  const activeTab = document.querySelector('.team-page-tab.active');
+                  positionIndicator(activeTab);
+                });
+                // Also reposition on resize
+                window.addEventListener('resize', () => {
+                  const activeTab = document.querySelector('.team-page-tab.active');
+                  positionIndicator(activeTab);
+                }, { passive: true });
+              })();
+            </script>
 
 </body>
 
