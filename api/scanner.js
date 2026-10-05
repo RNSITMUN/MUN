@@ -299,6 +299,15 @@ async function handleUpdateCheckpoint(req, res) {
         });
       }
 
+      if (regRes.data && String(regRes.data.status || '').toLowerCase() === 'rejected') {
+        return res.status(403).json({
+          success: false,
+          code: 'REGISTRATION_REJECTED',
+          error: 'Cannot stamp checkpoint: delegate registration is marked as rejected / cancelled.'
+        });
+      }
+
+
       const rec = regRes.data;
       if (!rec) {
         return res.status(404).json({
@@ -798,11 +807,13 @@ async function handleHubData(req, res) {
           const [regRes, delRes] = await Promise.all([
             supabase
               .from('registrations')
-              .select('id, name, institution, committee1, portfolio1_1, usn')
+              .select('id, name, institution, committee1, portfolio1_1, usn, status')
+              .neq('status', 'Rejected')
               .limit(300),
             supabase
               .from('delegations')
-              .select('id, delegation_name, head_name, member_count, roster_data')
+              .select('id, delegation_name, head_name, member_count, roster_data, status')
+              .neq('status', 'Rejected')
               .limit(100)
           ]);
           if (!regRes.error && Array.isArray(regRes.data)) {
@@ -816,6 +827,7 @@ async function handleHubData(req, res) {
 
         const regList = directoryCache.registrations || [];
         for (const r of regList) {
+          if (String(r.status || '').toLowerCase() === 'rejected') continue;
           const rName = r.name || '';
           const match =
             (rName && rName.toLowerCase().includes(cleanQ)) ||
@@ -838,12 +850,14 @@ async function handleHubData(req, res) {
 
         const delList = directoryCache.delegations || [];
         for (const d of delList) {
+          if (String(d.status || '').toLowerCase() === 'rejected') continue;
           if (results.length >= 30) break;
           const dName = d.delegation_name || d.head_name || '';
           const delMatch =
             (d.delegation_name && d.delegation_name.toLowerCase().includes(cleanQ)) ||
             (d.head_name && d.head_name.toLowerCase().includes(cleanQ)) ||
             String(d.id) === rawQ;
+
 
           if (delMatch) {
             results.push({
@@ -1106,6 +1120,15 @@ async function handleHubData(req, res) {
       error: 'Accreditation credential not found in conference registry.'
     });
   }
+
+  if (record && String(record.status || '').toLowerCase() === 'rejected') {
+    return res.status(403).json({
+      success: false,
+      code: 'REGISTRATION_REJECTED',
+      error: 'Accreditation credential has been marked as rejected or cancelled.'
+    });
+  }
+
 
   // Merge local store checkpoints
   const localStore = readLocalCheckpoints();
