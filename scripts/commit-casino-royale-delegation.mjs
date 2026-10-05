@@ -1,4 +1,4 @@
-﻿import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
 import path from "path";
 
@@ -14,7 +14,7 @@ const CASINO_DELEGATES = [
   { sno: 1,  name: "Saakshi Mohanty",       email: "saakshi.mohanty@gmail.com",       phone: "8660473698", committee: "IPC",       portfolio: "Xinhua News Agency" },
   { sno: 2,  name: "Yash Tadi",             email: "yashtadi17046@gmail.com",          phone: "7016553540", committee: "UNSC",      portfolio: "Somalia" },
   { sno: 3,  name: "Eshanaa Gangamma",      email: "eshanaagangamma@gmail.com",        phone: "9148029623", committee: "DISEC",     portfolio: "India" },
-  { sno: 4,  name: "Atreya B Deshpande",   email: "atreyabdeshpande@gmail.com",       phone: "8050031005", committee: "UNSC",      portfolio: "USA" },
+  { sno: 4,  name: "Atreya B Deshpande",   email: "atreyabdeshpande@gmail.com",       phone: "8050031005", committee: "UNHRC",     portfolio: "USA" },
   { sno: 5,  name: "Saisree Vaishnavi",     email: "saisreevaishnavi07@gmail.com",     phone: "9972346513", committee: "IPC",       portfolio: "Deutsche Welle (DW)" },
   { sno: 6,  name: "Abhay Anish Abraham",   email: "abhayanish007@gmail.com",          phone: "9611969808", committee: "UNHRC",     portfolio: "Cyprus" },
   { sno: 7,  name: "Ron Jais",              email: "ronjaisck@gmail.com",              phone: "9148892550", committee: "UNHRC",     portfolio: "Republic of Turkiye" },
