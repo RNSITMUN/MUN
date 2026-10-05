@@ -536,6 +536,8 @@ allEbCards.forEach(card => {
       ebModalImg.style.objectPosition = "center 18%";
     } else if (name.includes("Nuha")) {
       ebModalImg.style.objectPosition = "center 25%";
+    } else if (name.includes("Shriyanshu")) {
+      ebModalImg.style.objectPosition = "center 65%";
     } else {
       ebModalImg.style.objectPosition = "center 20%";
     }
