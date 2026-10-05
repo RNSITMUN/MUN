@@ -43,6 +43,7 @@ async function syncDirectory(dir) {
         if (shouldConvert) {
           console.log(`Converting: ${path.relative(rootDir, sourcePath)} -> ${basename}.webp`);
           await sharp(sourcePath)
+            .rotate()
             .webp({ quality: 80 })
             .toFile(webpPath);
         }

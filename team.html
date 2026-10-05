@@ -985,6 +985,9 @@
       isolation: isolate;
       border: 1px solid rgba(0, 0, 0, 0.05);
       box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
       transition:
         transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
         box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -992,7 +995,7 @@
     }
 
     .eb-card:hover .eb-image-wrap {
-      transform: translateY(-8px);
+      transform: translateY(-8px) translateZ(0);
       box-shadow: 0 22px 42px -10px rgba(108, 13, 44, 0.2), 0 6px 16px -4px rgba(0, 0, 0, 0.08);
       border-color: rgba(108, 13, 44, 0.22);
     }
@@ -1004,12 +1007,15 @@
       display: block;
       position: relative;
       z-index: 1;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
       transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
       filter: none;
     }
 
     .eb-card:hover .eb-image-wrap img {
-      transform: scale(1.04);
+      transform: scale(1.04) translateZ(0);
     }
 
     /* Manual Image Adjustments */
@@ -2173,7 +2179,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Zeyan Shahid Khan.webp -->
+            <img src="/OC/Zeyan Shahid Khan.webp" alt="Zeyan Shahid Khan" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Zeyan Shahid Khan</div>
           <div class="eb-role">USG – Delegate Affairs</div>
@@ -2181,7 +2187,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Adith D H.webp -->
+            <img src="/OC/Adith D H.webp" alt="Adith D H" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Adith D H</div>
           <div class="eb-role">USG – Delegate Affairs</div>
@@ -2229,7 +2235,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Poorvika Nagaraj.webp -->
+            <img src="/OC/Poorvika Nagaraj.webp" alt="Poorvika Nagaraj" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Poorvika Nagaraj</div>
           <div class="eb-role">USG – Finance</div>
@@ -2277,10 +2283,18 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Manu T.webp -->
+            <img src="/OC/Manu T.webp" alt="Manu T" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Manu T</div>
           <div class="eb-role">USG – Operations</div>
+        </div>
+        <div class="eb-card">
+          <div class="eb-image-wrap">
+            <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="/OC/R J VARSHA (Co-Head, Operations).webp" alt="R J Varsha" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="eb-name">R J Varsha</div>
+          <div class="eb-role">Co-Head – Operations</div>
         </div>
       </div>
     </div>
@@ -2325,7 +2339,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Rudra Chakraborty.webp -->
+            <img src="/OC/Rudra Chakraborty.webp" alt="Rudra Chakraborty" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Rudra Chakraborty</div>
           <div class="eb-role">USG – Outreach</div>
@@ -2353,7 +2367,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Anantha Narayan Prabhu.webp -->
+            <img src="/OC/Anantha Narayan Prabhu.webp" alt="Anantha Narayan Prabhu" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Anantha Narayan Prabhu</div>
           <div class="eb-role">Head – Partnerships</div>
@@ -2373,7 +2387,7 @@
         <div class="eb-card">
           <div class="eb-image-wrap">
             <svg class="eb-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <!-- Add photo: /OC/Dhatri V A.webp -->
+            <img src="/OC/Dhatri V A.webp" alt="Dhatri V A" loading="lazy" style="object-position: center 20%;" onerror="this.style.display='none'">
           </div>
           <div class="eb-name">Dhatri V A</div>
           <div class="eb-role">Head – Content</div>
