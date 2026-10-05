@@ -39,6 +39,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed. Only POST is supported.' });
   }
 
+  // ─── Closed Registration Guard ──────────────────────────────
+  const incomingEmail = req.body?.email || '';
+  console.warn('⚠️ [submit-delegation] Rejected closed delegation registration request for:', incomingEmail);
+  return res.status(403).json({
+    success: false,
+    closed: true,
+    error: 'Delegation registrations are officially closed.'
+  });
+
   // ─── Input Validation ────────────────────────────────────────
   const body = req.body || {};
 
