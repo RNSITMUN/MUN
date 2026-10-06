@@ -2703,7 +2703,7 @@
     }
 
     // ─── Network Request Wrapper with AbortController ────────────────
-    async function fetchJson(url, options = {}, timeoutMs = 12000) {
+    async function fetchJson(url, options = {}, timeoutMs = 15000) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
       try {
@@ -2729,6 +2729,10 @@
         if (res.status === 401) {
           logout();
           return { ok: false, status: 401, data: data || { success: false, error: 'Staff session expired. Please re-authenticate.' } };
+        }
+
+        if (res.status === 429) {
+          return { ok: false, status: 429, data: data || { success: false, error: 'Server busy. Please wait a moment and try again.' } };
         }
 
         return { ok: res.ok, status: res.status, data };
@@ -3606,10 +3610,14 @@
             checkpoint_key: current.stationKey,
             redeemed: true,
             force,
+            name: current.personName || current.candidate?.name || '',
+            allocated_committee: current.member?.committee || current.candidate?.allocatedCommittee || current.candidate?.allocated_committee || '',
+            allocated_portfolio: current.member?.portfolio || current.candidate?.allocatedPortfolio || current.candidate?.allocated_portfolio || '',
+            institution: current.candidate?.institution || '',
             redeemed_by: getStaffName(),
             staffName: getStaffName()
           })
-        }, 12000);
+        }, 15000);
         if (status === 401) { logout(); return; }
         if (data?.duplicate) {
           isCheckingIn = false;
@@ -3640,6 +3648,13 @@
           fields: sheetDetailsForConfirmation(current, data),
           status: 'Checked in'
         });
+
+        // Instant optimistic stats increment for 0ms UI lag
+        if (cachedScanStats?.stats?.checkpoints && cachedScanStats.stats.checkpoints[current.stationKey] !== undefined) {
+          cachedScanStats.stats.checkpoints[current.stationKey]++;
+          renderStatsUI();
+        }
+
         loadScanStats();
         clearTimeout(confirmationTimer);
         confirmationTimer = setTimeout(() => scanNextFromSheet(), 4000);
@@ -4195,6 +4210,8 @@
         btn.textContent = 'Checking in...';
       }
 
+      const member = activeModalCandidate?.roster?.[memberIndex] || {};
+
       try {
         const { ok, status, data: result } = await fetchJson('/api/update-checkpoint', {
           method: 'POST',
@@ -4213,10 +4230,14 @@
             redeemed: true,
             status: true,
             force: force,
+            name: member.name || '',
+            allocated_committee: member.committee || '',
+            allocated_portfolio: member.portfolio || '',
+            institution: activeModalCandidate.institution || activeModalCandidate.delegationName || '',
             redeemed_by: getStaffName(),
             staffName: getStaffName()
           })
-        }, 12000);
+        }, 15000);
 
         if (status === 401) { isCheckingIn = false; logout(); return; }
 
@@ -4255,6 +4276,13 @@
 
           renderDelegationModalRoster();
           showDelegationMemberSuccessResult(activeModalCandidate, memberIndex, stationKey, activeModalPayload, result);
+
+          // Instant optimistic stats increment for 0ms UI lag
+          if (cachedScanStats?.stats?.checkpoints && cachedScanStats.stats.checkpoints[stationKey] !== undefined) {
+            cachedScanStats.stats.checkpoints[stationKey]++;
+            renderStatsUI();
+          }
+
           loadScanStats();
         } else {
           isCheckingIn = false;

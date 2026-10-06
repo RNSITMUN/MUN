@@ -249,177 +249,14 @@ async function handleUpdateCheckpoint(req, res) {
   }
 
   const isScanKey = SCAN_CHECKPOINTS.includes(cleanKey);
-  let delegateCollege = '';
-  let delegateAllocId = '';
-  let delegateName = '';
-  let allocComm = allocated_committee || '';
-  let allocPort = allocated_portfolio || '';
-  let existingRedeemed = false;
-  let existingRedeemedAt = null;
-  let existingRedeemedBy = null;
-
-  if (supabase) {
-    try {
-      const [regRes, cpRes, allocRes] = await Promise.all([
-        recordType === 'delegation'
-          ? supabase.from('delegations').select('id, delegation_name, head_name, roster_data').eq('id', recordId).maybeSingle()
-          : supabase.from('registrations').select('id, name, institution, committee1, portfolio1_1').eq('id', recordId).maybeSingle(),
-        isScanKey
-          ? supabase.from('delegate_attendance')
-              .select('*')
-              .eq('record_type', recordType)
-              .eq('record_id', String(recordId))
-              .eq('member_index', memberIdx)
-              .maybeSingle()
-          : supabase.from('delegate_checkpoints')
-              .select('record_type, record_id, member_index, checkpoint_key, redeemed, redeemed_at, redeemed_by, allocated_committee, allocated_portfolio')
-              .eq('record_type', recordType)
-              .eq('record_id', String(recordId))
-              .eq('member_index', memberIdx)
-              .eq('checkpoint_key', cleanKey)
-              .maybeSingle(),
-        // Real allocation (committee/portfolio) assigned in the admin portal
-        isScanKey
-          ? supabase.from('delegate_checkpoints')
-              .select('allocated_committee, allocated_portfolio')
-              .eq('record_type', recordType)
-              .eq('record_id', String(recordId))
-              .eq('member_index', memberIdx)
-              .eq('checkpoint_key', 'allocation')
-              .maybeSingle()
-          : Promise.resolve({ data: null })
-      ]);
-
-      if (regRes.error) {
-        console.error('Supabase error verifying record in updateCheckpoint:', regRes.error);
-        return res.status(502).json({
-          success: false,
-          code: 'DB_ERROR',
-          error: 'Database error verifying delegate record: ' + regRes.error.message
-        });
-      }
-
-      if (regRes.data && String(regRes.data.status || '').toLowerCase() === 'rejected') {
-        return res.status(403).json({
-          success: false,
-          code: 'REGISTRATION_REJECTED',
-          error: 'Cannot stamp checkpoint: delegate registration is marked as rejected / cancelled.'
-        });
-      }
-
-
-      const rec = regRes.data;
-      if (!rec) {
-        return res.status(404).json({
-          success: false,
-          code: 'RECORD_NOT_FOUND',
-          error: 'No registration found for this pass.'
-        });
-      }
-
-      delegateAllocId = recordType === 'delegation' ? `DEL-${recordId}-${String(memberIdx + 1).padStart(2, '0')}` : `IND-${recordId}`;
-      if (recordType === 'individual') {
-        delegateName = rec.name || '';
-        delegateCollege = rec.institution || '';
-        if (!allocComm) allocComm = rec.committee1 || '';
-        if (!allocPort) allocPort = rec.portfolio1_1 || '';
-      } else {
-        const roster = Array.isArray(rec.roster_data) ? rec.roster_data : [];
-        if (roster[memberIdx]) {
-          delegateName = roster[memberIdx].name || roster[memberIdx]['Delegate Name'] || '';
-          delegateCollege = roster[memberIdx].institution || roster[memberIdx]['Institution / College Name'] || '';
-          if (!allocComm) allocComm = roster[memberIdx].allocated_committee || roster[memberIdx].committee || '';
-          if (!allocPort) allocPort = roster[memberIdx].allocated_portfolio || roster[memberIdx].portfolio || '';
-        }
-        if (!delegateName) delegateName = rec.head_name || rec.delegation_name || '';
-        if (!delegateCollege) delegateCollege = rec.delegation_name || '';
-      }
-
-      if (isScanKey) {
-        // Real allocation from the admin portal wins over the registration-time preference
-        if (allocRes?.data?.allocated_committee && !allocated_committee) allocComm = allocRes.data.allocated_committee;
-        if (allocRes?.data?.allocated_portfolio && !allocated_portfolio) allocPort = allocRes.data.allocated_portfolio;
-        if (cpRes.data && cpRes.data[`${cleanKey}_at`]) {
-          existingRedeemed = true;
-          existingRedeemedAt = cpRes.data[`${cleanKey}_at`];
-          existingRedeemedBy = cpRes.data[`${cleanKey}_by`];
-        }
-      } else if (cpRes.data) {
-        if (cpRes.data.redeemed) {
-          existingRedeemed = true;
-          existingRedeemedAt = cpRes.data.redeemed_at;
-          existingRedeemedBy = cpRes.data.redeemed_by;
-        }
-        if (cpRes.data.allocated_committee && !allocated_committee) {
-          allocComm = cpRes.data.allocated_committee;
-        }
-        if (cpRes.data.allocated_portfolio && !allocated_portfolio) {
-          allocPort = cpRes.data.allocated_portfolio;
-        }
-      }
-    } catch (e) {
-      console.error('Unexpected error checking record in updateCheckpoint:', e);
-      return res.status(502).json({
-        success: false,
-        code: 'DB_ERROR',
-        error: 'Database error verifying delegate record.'
-      });
-    }
-  }
-
-  const localKey = `${recordType}_${recordId}_${memberIdx}`;
-  const baseLocalKey = `${recordType}_${recordId}`;
-  const localStore = readLocalCheckpoints();
-  const existingLocal = localStore[localKey]?.[cleanKey] || (memberIdx === 0 ? localStore[baseLocalKey]?.[cleanKey] : undefined);
-
-  if (!existingRedeemed && existingLocal?.redeemed) {
-    existingRedeemed = true;
-    existingRedeemedAt = existingLocal.redeemed_at;
-    existingRedeemedBy = existingLocal.redeemed_by;
-  }
-
-  if (!delegateName) {
-    delegateName = recordType === 'delegation' ? `Delegation #${recordId} Member ${memberIdx + 1}` : `Delegate #${recordId}`;
-  }
-
-  // If already redeemed and not forced, return duplicate alert!
-  if (existingRedeemed && !force && isRedeemed) {
-    const timeFormatted = existingRedeemedAt ? new Date(existingRedeemedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
-    return res.status(200).json({
-      success: false,
-      duplicate: true,
-      message: `Pass was already stamped for ${cleanKey} at ${timeFormatted} by ${existingRedeemedBy || 'Staff'}.`,
-      delegateName,
-      allocatedCommittee: allocComm,
-      allocatedPortfolio: allocPort,
-      redeemedAt: existingRedeemedAt,
-      redeemed_at: existingRedeemedAt,
-      redeemedBy: existingRedeemedBy,
-      redeemed_by: existingRedeemedBy,
-      checkpoint: existingLocal || { checkpoint_key: cleanKey, redeemed: true, redeemed_at: existingRedeemedAt, redeemed_by: existingRedeemedBy }
-    });
-  }
-
+  let delegateCollege = String(body.institution || body.college || body.delegateCollege || '').trim();
+  let delegateName = String(body.name || body.delegateName || body.delegate_name || '').trim();
+  let allocComm = String(allocated_committee || body.committee || '').trim();
+  let allocPort = String(allocated_portfolio || body.portfolio || '').trim();
+  let delegateAllocId = recordType === 'delegation' ? `DEL-${recordId}-${String(memberIdx + 1).padStart(2, '0')}` : `IND-${recordId}`;
   const nowIso = new Date().toISOString();
-  let updatedRecord = {
-    checkpoint_key: cleanKey,
-    redeemed: isRedeemed,
-    redeemed_at: isRedeemed ? nowIso : null,
-    redeemed_by: isRedeemed ? staffName : null,
-    notes: notes || null
-  };
 
-  if (allocComm) updatedRecord.allocated_committee = allocComm;
-  if (allocPort) updatedRecord.allocated_portfolio = allocPort;
-
-  if (!localStore[localKey]) localStore[localKey] = {};
-  localStore[localKey][cleanKey] = updatedRecord;
-  if (memberIdx === 0) {
-    if (!localStore[baseLocalKey]) localStore[baseLocalKey] = {};
-    localStore[baseLocalKey][cleanKey] = updatedRecord;
-  }
-  writeLocalCheckpoints(localStore);
-
+  // ── Database Path for Scan Checkpoints (Atomic RPC) ──
   if (supabase && isScanKey) {
     try {
       const { data: rpc, error: rpcErr } = await supabase.rpc('stamp_attendance', {
@@ -437,38 +274,75 @@ async function handleUpdateCheckpoint(req, res) {
         p_allocation_id: delegateAllocId || null,
         p_notes: notes || null
       });
+
       if (rpcErr) {
         console.error('Supabase error stamping attendance:', rpcErr);
         return res.status(502).json({ success: false, code: 'DB_ERROR', error: 'Database error recording attendance: ' + rpcErr.message });
       }
+
+      // Invalidate server stats cache so subsequent stats calls fetch fresh numbers
+      cachedAttRowsTime = 0;
+
       if (rpc?.duplicate) {
-        // Lost a race with another staff scan (or the pre-check was stale): same duplicate answer as above.
         const at = rpc.redeemed_at || null;
         const by = rpc.redeemed_by || null;
+        const row = rpc.row || {};
         const t = at ? new Date(at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
         return res.status(200).json({
-          success: false, duplicate: true,
+          success: false,
+          duplicate: true,
           message: `Pass was already stamped for ${cleanKey} at ${t} by ${by || 'Staff'}.`,
-          delegateName, allocatedCommittee: allocComm, allocatedPortfolio: allocPort,
-          redeemedAt: at, redeemed_at: at, redeemedBy: by, redeemed_by: by,
+          delegateName: row.delegate_name || delegateName || (recordType === 'delegation' ? `Delegation #${recordId} Member ${memberIdx + 1}` : `Delegate #${recordId}`),
+          allocatedCommittee: row.committee || allocComm,
+          allocatedPortfolio: row.portfolio || allocPort,
+          redeemedAt: at,
+          redeemed_at: at,
+          redeemedBy: by,
+          redeemed_by: by,
           checkpoint: { checkpoint_key: cleanKey, redeemed: true, redeemed_at: at, redeemed_by: by }
         });
       }
+
       const row = rpc?.row || {};
       const stamped = {
-        record_type: recordType, record_id: String(recordId), member_index: memberIdx,
-        checkpoint_key: cleanKey, redeemed: isRedeemed,
-        redeemed_at: row[`${cleanKey}_at`] || null, redeemed_by: row[`${cleanKey}_by`] || null,
+        record_type: recordType,
+        record_id: String(recordId),
+        member_index: memberIdx,
+        checkpoint_key: cleanKey,
+        redeemed: isRedeemed,
+        redeemed_at: row[`${cleanKey}_at`] || nowIso,
+        redeemed_by: row[`${cleanKey}_by`] || staffName,
         allocated_committee: row.committee || allocComm || null,
         allocated_portfolio: row.portfolio || allocPort || null
       };
+
+      // Asynchronously update localStore fallback
+      try {
+        const localStore = readLocalCheckpoints();
+        const localKey = `${recordType}_${recordId}_${memberIdx}`;
+        const baseLocalKey = `${recordType}_${recordId}`;
+        if (!localStore[localKey]) localStore[localKey] = {};
+        localStore[localKey][cleanKey] = stamped;
+        if (memberIdx === 0) {
+          if (!localStore[baseLocalKey]) localStore[baseLocalKey] = {};
+          localStore[baseLocalKey][cleanKey] = stamped;
+        }
+        writeLocalCheckpoints(localStore);
+      } catch (_) {}
+
       return res.status(200).json({
-        success: true, duplicate: false, source: 'database',
+        success: true,
+        duplicate: false,
+        source: 'database',
         firstScan: !!rpc?.created,
         message: `Checkpoint ${cleanKey} successfully stamped.`,
-        delegateName, allocatedCommittee: allocComm, allocatedPortfolio: allocPort,
-        redeemedAt: stamped.redeemed_at, redeemed_at: stamped.redeemed_at,
-        redeemedBy: staffName, redeemed_by: staffName,
+        delegateName: row.delegate_name || delegateName || (recordType === 'delegation' ? `Delegation #${recordId} Member ${memberIdx + 1}` : `Delegate #${recordId}`),
+        allocatedCommittee: row.committee || allocComm,
+        allocatedPortfolio: row.portfolio || allocPort,
+        redeemedAt: stamped.redeemed_at,
+        redeemed_at: stamped.redeemed_at,
+        redeemedBy: staffName,
+        redeemed_by: staffName,
         checkpoint: stamped
       });
     } catch (e) {
@@ -477,6 +351,7 @@ async function handleUpdateCheckpoint(req, res) {
     }
   }
 
+  // ── Database Path for Other Checkpoints (e.g. allocation) ──
   if (supabase) {
     try {
       const payload = {
@@ -514,7 +389,7 @@ async function handleUpdateCheckpoint(req, res) {
           duplicate: false,
           source: 'database',
           message: `Checkpoint ${cleanKey} successfully stamped.`,
-          delegateName,
+          delegateName: delegateName || `Delegate #${recordId}`,
           allocatedCommittee: allocComm,
           allocatedPortfolio: allocPort,
           redeemedAt: nowIso,
@@ -534,12 +409,54 @@ async function handleUpdateCheckpoint(req, res) {
     }
   }
 
+  // ── Local Storage Fallback ──
+  const localKey = `${recordType}_${recordId}_${memberIdx}`;
+  const baseLocalKey = `${recordType}_${recordId}`;
+  const localStore = readLocalCheckpoints();
+  const existingLocal = localStore[localKey]?.[cleanKey] || (memberIdx === 0 ? localStore[baseLocalKey]?.[cleanKey] : undefined);
+
+  if (existingLocal?.redeemed && !force && isRedeemed) {
+    const timeFormatted = existingLocal.redeemed_at ? new Date(existingLocal.redeemed_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
+    return res.status(200).json({
+      success: false,
+      duplicate: true,
+      message: `Pass was already stamped for ${cleanKey} at ${timeFormatted} by ${existingLocal.redeemed_by || 'Staff'}.`,
+      delegateName: delegateName || `Delegate #${recordId}`,
+      allocatedCommittee: allocComm,
+      allocatedPortfolio: allocPort,
+      redeemedAt: existingLocal.redeemed_at,
+      redeemed_at: existingLocal.redeemed_at,
+      redeemedBy: existingLocal.redeemed_by,
+      redeemed_by: existingLocal.redeemed_by,
+      checkpoint: existingLocal
+    });
+  }
+
+  let updatedRecord = {
+    checkpoint_key: cleanKey,
+    redeemed: isRedeemed,
+    redeemed_at: isRedeemed ? nowIso : null,
+    redeemed_by: isRedeemed ? staffName : null,
+    notes: notes || null
+  };
+
+  if (allocComm) updatedRecord.allocated_committee = allocComm;
+  if (allocPort) updatedRecord.allocated_portfolio = allocPort;
+
+  if (!localStore[localKey]) localStore[localKey] = {};
+  localStore[localKey][cleanKey] = updatedRecord;
+  if (memberIdx === 0) {
+    if (!localStore[baseLocalKey]) localStore[baseLocalKey] = {};
+    localStore[baseLocalKey][cleanKey] = updatedRecord;
+  }
+  writeLocalCheckpoints(localStore);
+
   return res.status(200).json({
     success: true,
     duplicate: false,
     source: 'local_store',
     message: `Checkpoint ${cleanKey} stamped in local cache.`,
-    delegateName,
+    delegateName: delegateName || `Delegate #${recordId}`,
     allocatedCommittee: allocComm,
     allocatedPortfolio: allocPort,
     redeemedAt: nowIso,
@@ -551,10 +468,13 @@ async function handleUpdateCheckpoint(req, res) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 3. Scan Statistics
+// 3. Scan Statistics (with in-memory Server Cache)
 // ─────────────────────────────────────────────────────────────
 let cachedMasterAllocations = null;
 let cachedMasterAllocationsTime = 0;
+let cachedAttRows = null;
+let cachedAttRowsTime = 0;
+const STATS_CACHE_TTL_MS = 10000;
 
 function getMasterAllocations() {
   const now = Date.now();
@@ -663,12 +583,26 @@ async function handleScanStats(req, res) {
 
   if (supabase) {
     try {
-      const { data: attRows, error } = await supabase
-        .from('delegate_attendance')
-        .select('record_type, record_id, member_index, committee, ' + SCAN_CHECKPOINTS.map(c => `${c}_at`).join(', '));
+      const now = Date.now();
+      let attRows = null;
+
+      if (cachedAttRows && (now - cachedAttRowsTime < STATS_CACHE_TTL_MS)) {
+        attRows = cachedAttRows;
+      } else {
+        const { data, error } = await supabase
+          .from('delegate_attendance')
+          .select('record_type, record_id, member_index, committee, ' + SCAN_CHECKPOINTS.map(c => `${c}_at`).join(', '));
+
+        if (!error && Array.isArray(data)) {
+          attRows = data;
+          cachedAttRows = data;
+          cachedAttRowsTime = now;
+        }
+      }
+
       const dbCheckpoints = Array.isArray(attRows) ? attRows.flatMap(expandAttendanceRow) : null;
 
-      if (!error && Array.isArray(dbCheckpoints)) {
+      if (Array.isArray(dbCheckpoints)) {
         const dbStats = {
           day1_entry: 0,
           day1_lunch: 0,
@@ -1045,64 +979,34 @@ async function handleHubData(req, res) {
 
   if (supabase) {
     try {
-      if (targetType === 'individual') {
-        const { data, error } = await supabase
-          .from('registrations')
-          .select('*')
-          .eq('id', targetId)
-          .single();
-        if (error) {
-          if (error.code === 'PGRST116' || error.message?.includes('0 rows')) {
-            record = null;
-          } else {
-            console.error('Supabase error fetching individual registration:', error);
-            return res.status(502).json({
-              success: false,
-              code: 'DB_ERROR',
-              error: 'Database error fetching delegate record: ' + error.message
-            });
-          }
-        } else {
-          record = data;
-        }
-      } else {
-        const { data, error } = await supabase
-          .from('delegations')
-          .select('*')
-          .eq('id', targetId)
-          .single();
-        if (error) {
-          if (error.code === 'PGRST116' || error.message?.includes('0 rows')) {
-            record = null;
-          } else {
-            console.error('Supabase error fetching delegation record:', error);
-            return res.status(502).json({
-              success: false,
-              code: 'DB_ERROR',
-              error: 'Database error fetching delegation record: ' + error.message
-            });
-          }
-        } else {
-          record = data;
-        }
+      const [recRes, allocRes, attRes] = await Promise.all([
+        targetType === 'delegation'
+          ? supabase.from('delegations').select('*').eq('id', targetId).maybeSingle()
+          : supabase.from('registrations').select('*').eq('id', targetId).maybeSingle(),
+        supabase.from('delegate_checkpoints').select('*').eq('record_type', targetType).eq('record_id', String(targetId)),
+        supabase.from('delegate_attendance').select('*').eq('record_type', targetType).eq('record_id', String(targetId))
+      ]);
+
+      if (recRes.error) {
+        console.error('Supabase error fetching record:', recRes.error);
+        return res.status(502).json({
+          success: false,
+          code: 'DB_ERROR',
+          error: 'Database error fetching delegate record: ' + recRes.error.message
+        });
       }
 
-      if (record) {
-        const [{ data: allocRows, error: cpError }, { data: attRows }] = await Promise.all([
-          supabase.from('delegate_checkpoints').select('*').eq('record_type', targetType).eq('record_id', String(targetId)),
-          supabase.from('delegate_attendance').select('*').eq('record_type', targetType).eq('record_id', String(targetId))
-        ]);
-        const cpRows = (Array.isArray(allocRows) ? allocRows : []).concat((Array.isArray(attRows) ? attRows : []).flatMap(expandAttendanceRow));
+      record = recRes.data;
 
-        if (cpError) {
-          console.error('Supabase error fetching delegate checkpoints:', cpError);
-        } else {
-          cpRows.forEach(row => {
-            const mIdx = row.member_index || 0;
-            if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
-            checkpoints[mIdx][row.checkpoint_key] = row;
-          });
-        }
+      if (record) {
+        const cpRows = (Array.isArray(allocRes.data) ? allocRes.data : []).concat(
+          (Array.isArray(attRes.data) ? attRes.data : []).flatMap(expandAttendanceRow)
+        );
+        cpRows.forEach(row => {
+          const mIdx = row.member_index || 0;
+          if (!checkpoints[mIdx]) checkpoints[mIdx] = {};
+          checkpoints[mIdx][row.checkpoint_key] = row;
+        });
       }
     } catch (e) {
       console.error('Unexpected exception during Supabase query:', e);
