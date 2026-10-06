@@ -10,6 +10,7 @@ const rootDir = path.resolve(__dirname, '..');
 const directoriesToSync = [
   path.join(rootDir, 'public', 'globe'),
   path.join(rootDir, 'public', 'team'),
+  path.join(rootDir, 'public', 'EB'),
   path.join(rootDir, 'public', 'OC'),
   path.join(rootDir, 'public', 'assets', 'channels'),
   path.join(rootDir, 'public', 'assets', 'Logos'),
