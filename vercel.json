@@ -3,92 +3,13 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/contact",
-      "destination": "/stay-connected.html"
-    },
-    {
-      "source": "/teams",
-      "destination": "/team.html"
-    },
-    {
-      "source": "/coc",
-      "destination": "/code-of-conduct.html"
-    },
-    {
-      "source": "/code-of-conduct",
-      "destination": "/code-of-conduct.html"
-    },
-    {
-      "source": "/equity-policy",
-      "destination": "/code-of-conduct.html"
-    },
-    {
-      "source": "/venue",
-      "destination": "/venue.html"
-    },
-    {
-      "source": "/location",
-      "destination": "/venue.html"
-    },
-    {
-      "source": "/hub",
-      "destination": "/hub.html"
-    },
-    {
-      "source": "/scan",
-      "destination": "/scan.html"
-    },
-    {
-      "source": "/api/hub-data",
-      "destination": "/api/scanner"
-    },
-    {
-      "source": "/api/staff-auth",
-      "destination": "/api/scanner"
-    },
-    {
-      "source": "/api/update-checkpoint",
-      "destination": "/api/scanner"
-    },
-    {
-      "source": "/api/scan-stats",
-      "destination": "/api/scanner"
-    },
-    {
-      "source": "/api/admin-mail-log",
-      "destination": "/api/send-mail"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/globe/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/team/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/RNSMUN_LOGO/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -114,105 +35,8 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=()"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        }
-      ]
-    },
-    {
-      "source": "/scan(.*)",
-      "headers": [
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(self), microphone=(), geolocation=(), payment=()"
-        }
-      ]
-    },
-    {
-      "source": "/((?!assets|globe|team|RNSMUN_LOGO).*)\\.html|/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
-        }
-      ]
-    },
-    {
-      "source": "/register-sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
-        }
-      ]
-    },
-    {
-      "source": "/admin(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
-        }
-      ]
-    },
-    {
-      "source": "/Payment_external/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
-  ],
-  "functions": {
-    "api/send-mail.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
