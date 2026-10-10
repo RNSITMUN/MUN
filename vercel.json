@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://rnsitmun.vercel.app/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
